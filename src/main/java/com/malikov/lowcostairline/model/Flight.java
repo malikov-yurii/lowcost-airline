@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * Created by Malikov on 4/24/2017.
+ * @author Yurii Malikov
  */
 public class Flight extends BaseEntity{
 

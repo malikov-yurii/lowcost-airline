@@ -1,7 +1,7 @@
 package com.malikov.lowcostairline.model;
 
 /**
- * Created by Malikov on 4/24/2017.
+ * @author Yurii Malikov
  */
 public abstract class BaseEntity {
 

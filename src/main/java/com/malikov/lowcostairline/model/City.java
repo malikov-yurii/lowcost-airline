@@ -1,19 +1,33 @@
 package com.malikov.lowcostairline.model;
 
-import java.util.TimeZone;
+import java.time.ZoneId;
 
 /**
- * Created by Malikov on 4/24/2017.
+  * @author Yurii Malikov
  */
 public class City extends NamedEntity {
 
-    private TimeZone timeZone;
+    private ZoneId zoneId;
 
-    public TimeZone getTimeZone() {
-        return timeZone;
+    public City(long id, String name, ZoneId zoneId) {
+        super(id, name);
+        this.zoneId = zoneId;
     }
 
-    public void setTimeZone(TimeZone timeZone) {
-        this.timeZone = timeZone;
+    public City(String name, ZoneId zoneId) {
+        super(name);
+        this.zoneId = zoneId;
+    }
+
+    public City(ZoneId zoneId) {
+        this.zoneId = zoneId;
+    }
+
+    public ZoneId getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(ZoneId zoneId) {
+        this.zoneId = zoneId;
     }
 }

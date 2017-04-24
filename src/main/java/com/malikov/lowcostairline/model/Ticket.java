@@ -3,7 +3,7 @@ package com.malikov.lowcostairline.model;
 import java.math.BigDecimal;
 
 /**
- * Created by Malikov on 4/24/2017.
+ * @author Yurii Malikov
  */
 public class Ticket extends BaseEntity {
 
