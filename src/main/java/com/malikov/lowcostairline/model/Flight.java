@@ -22,8 +22,4 @@ public class Flight extends BaseEntity{
 
     private int totalSeatQuantity;
 
-    private int freeSeatQuantity;
-
-
-
 }
