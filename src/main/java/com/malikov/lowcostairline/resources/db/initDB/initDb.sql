@@ -12,10 +12,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE users (
   id           BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name         VARCHAR(255) NOT NULL,
-  last_name    VARCHAR(255) NOT NULL,
+  name         VARCHAR(50) NOT NULL,
+  last_name    VARCHAR(50) NOT NULL,
   email        VARCHAR(255) NOT NULL UNIQUE ,
-  phone_number VARCHAR(255) NOT NULL UNIQUE
+  phone_number VARCHAR(15) NOT NULL UNIQUE
 
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE time_zones (
 
 CREATE TABLE cities (
   id           BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name         VARCHAR(255) NOT NULL,
+  name         VARCHAR(50) NOT NULL,
   time_zone_id TINYINT   NOT NULL,
   FOREIGN KEY (time_zone_id) REFERENCES time_zones (id)
 );
@@ -77,7 +77,6 @@ CREATE TABLE flights (
  * -priority_registration_tariff is fee for priority registration(EUR)
  *
  *  Example:
- *
  *  start_ticket_base_price                              100 EUR
  *  max_ticket_base_price                                200 EUR
  *  total_seat_quantity                                  61 seats
