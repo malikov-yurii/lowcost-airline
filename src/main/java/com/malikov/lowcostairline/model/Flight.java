@@ -8,55 +8,55 @@ import java.time.LocalDateTime;
  */
 public class Flight extends BaseEntity{
 
-    private LocalDateTime departureTime;
+    private LocalDateTime departureLocalDateTime;
 
-    private LocalDateTime arrivalTime;
+    private LocalDateTime arrivalLocalDateTime;
 
     private Airport departureAirport;
 
     private Airport arrivalAirport;
 
-    private BigDecimal startBaseTicketPrice;
+    private Aircraft aircraft;
 
-    private BigDecimal maxBaseTicketPrice;
+    private BigDecimal startTicketBasePrice;
 
-    private int totalSeatQuantity;
+    private BigDecimal maxTicketBasePrice;
 
-    public Flight(long id, LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startBaseTicketPrice, BigDecimal maxBaseTicketPrice, int totalSeatQuantity) {
+    public Flight(long id, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
         super(id);
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+        this.departureLocalDateTime = departureLocalDateTime;
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
-        this.startBaseTicketPrice = startBaseTicketPrice;
-        this.maxBaseTicketPrice = maxBaseTicketPrice;
-        this.totalSeatQuantity = totalSeatQuantity;
+        this.aircraft = aircraft;
+        this.startTicketBasePrice = startTicketBasePrice;
+        this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
-    public Flight(LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startBaseTicketPrice, BigDecimal maxBaseTicketPrice, int totalSeatQuantity) {
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+    public Flight(LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+        this.departureLocalDateTime = departureLocalDateTime;
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
-        this.startBaseTicketPrice = startBaseTicketPrice;
-        this.maxBaseTicketPrice = maxBaseTicketPrice;
-        this.totalSeatQuantity = totalSeatQuantity;
+        this.aircraft = aircraft;
+        this.startTicketBasePrice = startTicketBasePrice;
+        this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
-    public LocalDateTime getDepartureTime() {
-        return departureTime;
+    public LocalDateTime getDepartureLocalDateTime() {
+        return departureLocalDateTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
-        this.departureTime = departureTime;
+    public void setDepartureLocalDateTime(LocalDateTime departureLocalDateTime) {
+        this.departureLocalDateTime = departureLocalDateTime;
     }
 
-    public LocalDateTime getArrivalTime() {
-        return arrivalTime;
+    public LocalDateTime getArrivalLocalDateTime() {
+        return arrivalLocalDateTime;
     }
 
-    public void setArrivalTime(LocalDateTime arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void setArrivalLocalDateTime(LocalDateTime arrivalLocalDateTime) {
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
     }
 
     public Airport getDepartureAirport() {
@@ -75,28 +75,28 @@ public class Flight extends BaseEntity{
         this.arrivalAirport = arrivalAirport;
     }
 
-    public BigDecimal getStartBaseTicketPrice() {
-        return startBaseTicketPrice;
+    public Aircraft getAircraft() {
+        return aircraft;
     }
 
-    public void setStartBaseTicketPrice(BigDecimal startBaseTicketPrice) {
-        this.startBaseTicketPrice = startBaseTicketPrice;
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
 
-    public BigDecimal getMaxBaseTicketPrice() {
-        return maxBaseTicketPrice;
+    public BigDecimal getStartTicketBasePrice() {
+        return startTicketBasePrice;
     }
 
-    public void setMaxBaseTicketPrice(BigDecimal maxBaseTicketPrice) {
-        this.maxBaseTicketPrice = maxBaseTicketPrice;
+    public void setStartTicketBasePrice(BigDecimal startTicketBasePrice) {
+        this.startTicketBasePrice = startTicketBasePrice;
     }
 
-    public int getTotalSeatQuantity() {
-        return totalSeatQuantity;
+    public BigDecimal getMaxTicketBasePrice() {
+        return maxTicketBasePrice;
     }
 
-    public void setTotalSeatQuantity(int totalSeatQuantity) {
-        this.totalSeatQuantity = totalSeatQuantity;
+    public void setMaxTicketBasePrice(BigDecimal maxTicketBasePrice) {
+        this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
 }

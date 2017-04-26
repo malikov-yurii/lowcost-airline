@@ -5,6 +5,8 @@ TRUNCATE TABLE credentials;
 TRUNCATE TABLE time_zones;
 TRUNCATE TABLE cities;
 TRUNCATE TABLE airports;
+TRUNCATE TABLE aircraft_models;
+TRUNCATE TABLE aircrafts;
 TRUNCATE TABLE flights;
 TRUNCATE TABLE tariffs_details;
 TRUNCATE TABLE tickets;
@@ -14,10 +16,16 @@ ALTER TABLE users
   AUTO_INCREMENT 1;
 ALTER TABLE roles
   AUTO_INCREMENT 1;
-ALTER TABLE cities
+ALTER TABLE time_zones
   AUTO_INCREMENT 1;
+ALTER TABLE cities
+AUTO_INCREMENT 1;
 ALTER TABLE airports
   AUTO_INCREMENT 1;
+ALTER TABLE aircraft_models
+AUTO_INCREMENT 1;
+ALTER TABLE aircrafts
+AUTO_INCREMENT 1;
 ALTER TABLE flights
   AUTO_INCREMENT 1;
 ALTER TABLE tickets
@@ -94,17 +102,28 @@ INSERT INTO airports (name, city_id) VALUES
   ('London Luton Airport', 2),
   ('Leonardo da Vinci International Airport', 3);
 
-INSERT INTO flights (departure_airport_id, arrival_airport_id, departure_localdatetime,
+INSERT INTO aircraft_models (model_name, passanger_seats_quantity)
+VALUES
+  ('BOEING 737', 10),
+  ('BOEING 767', 10);
+
+INSERT INTO aircrafts (name, model_id)
+VALUES
+  ('B747-1', 1),
+  ('B767-1', 2),
+  ('B767-3', 2);
+
+INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_localdatetime,
                      arrival_localdatetime, start_ticket_base_price, max_ticket_base_price, total_seat_quantity)
 VALUES
-  (1, 2, '2017-04-30 10:30:00', '2017-04-30 12:00:00', 30, 50, 10),
-  (1, 2, '2017-04-23 10:30:00', '2017-04-23 12:00:00', 30, 50, 10),
-  (2, 1, '2017-04-27 12:30:00', '2017-04-27 18:00:00', 30, 50, 10),
-  (1, 3, '2017-04-22 09:30:00', '2017-04-22 09:00:00', 40, 60, 10),
-  (3, 1, '2017-04-26 13:00:00', '2017-04-26 18:30:00', 40, 60, 10),
-  (4, 1, '2017-04-27 14:00:00', '2017-04-27 16:00:00', 20, 40, 10),
+  (1, 2, 1, '2017-04-30 10:30:00', '2017-04-30 12:00:00', 30, 50, 10),
+  (1, 2, 1, '2017-04-23 10:30:00', '2017-04-23 12:00:00', 30, 50, 10),
+  (2, 1, 1, '2017-04-27 12:30:00', '2017-04-27 18:00:00', 30, 50, 10),
+  (1, 3, 2, '2017-04-22 09:30:00', '2017-04-22 09:00:00', 40, 60, 10),
+  (3, 1, 2, '2017-04-26 13:00:00', '2017-04-26 18:30:00', 40, 60, 10),
+  (4, 1, 3, '2017-04-27 14:00:00', '2017-04-27 16:00:00', 20, 40, 10),
 
-  (1, 4, '2017-04-21 11:00:00', '2017-04-21 13:00:00', 20, 40, 10);
+  (1, 4, 3, '2017-04-21 11:00:00', '2017-04-21 13:00:00', 20, 40, 10);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)

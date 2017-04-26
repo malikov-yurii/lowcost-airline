@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS credentials;
 DROP TABLE IF EXISTS time_zones;
 DROP TABLE IF EXISTS cities;
 DROP TABLE IF EXISTS airports;
+DROP TABLE IF EXISTS aircraft_models;
+DROP TABLE IF EXISTS aircrafts;
 DROP TABLE IF EXISTS flights;
 DROP TABLE IF EXISTS tariffs_details;
 DROP TABLE IF EXISTS tickets;
@@ -51,6 +53,19 @@ CREATE TABLE airports (
   FOREIGN KEY (city_id) REFERENCES cities (id)
 );
 
+CREATE TABLE aircraft_models (
+  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  model_name    VARCHAR(255) NOT NULL,
+  passanger_seats_quantity     SMALLINT      NOT NULL
+)
+
+CREATE TABLE aircrafts (
+  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name    VARCHAR(255) NOT NULL,
+  model_id    BIGINT NOT NULL,
+  FOREIGN KEY (model_id) REFERENCES aircraft_models(id)
+);
+
 /*
  * start_ticket_base_price is base price for first ticket without any growth factors impact.
  * max_ticket_base_price indicates how much two growth factors (plane filling and time before departure) can impact the ticket price.
@@ -60,13 +75,14 @@ CREATE TABLE flights (
   id                      BIGINT PRIMARY KEY AUTO_INCREMENT,
   departure_airport_id    BIGINT        NOT NULL,
   arrival_airport_id      BIGINT        NOT NULL,
+  aircraft_id              BIGINT        NOT NULL,
   departure_localdatetime DATETIME      NOT NULL,
   arrival_localdatetime   DATETIME      NOT NULL,
   start_ticket_base_price DECIMAL(8, 2) NOT NULL,
   max_ticket_base_price   DECIMAL(8, 2) NOT NULL,
-  total_seat_quantity     SMALLINT      NOT NULL,
   FOREIGN KEY (departure_airport_id) REFERENCES airports (id),
-  FOREIGN KEY (arrival_airport_id) REFERENCES airports (id)
+  FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
+  FOREIGN KEY (aircraft_id) REFERENCES aircrafts (id)
 );
 
 /*
