@@ -67,4 +67,5 @@ public class User extends NamedEntity{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    
 }

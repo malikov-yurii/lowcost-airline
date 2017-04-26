@@ -31,7 +31,4 @@ public class Airport extends NamedEntity {
         this.city = city;
     }
 
-
-
-
 }

@@ -30,4 +30,5 @@ public class City extends NamedEntity {
     public void setZoneId(ZoneId zoneId) {
         this.zoneId = zoneId;
     }
+
 }

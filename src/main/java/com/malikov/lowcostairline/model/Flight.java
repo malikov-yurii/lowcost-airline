@@ -16,30 +16,30 @@ public class Flight extends BaseEntity{
 
     private Airport arrivalAirport;
 
-    private BigDecimal startTicketPrice;
+    private BigDecimal startBaseTicketPrice;
 
-    private BigDecimal endTicketPrice;
+    private BigDecimal maxBaseTicketPrice;
 
     private int totalSeatQuantity;
 
-    public Flight(long id, LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startTicketPrice, BigDecimal endTicketPrice, int totalSeatQuantity) {
+    public Flight(long id, LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startBaseTicketPrice, BigDecimal maxBaseTicketPrice, int totalSeatQuantity) {
         super(id);
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
-        this.startTicketPrice = startTicketPrice;
-        this.endTicketPrice = endTicketPrice;
+        this.startBaseTicketPrice = startBaseTicketPrice;
+        this.maxBaseTicketPrice = maxBaseTicketPrice;
         this.totalSeatQuantity = totalSeatQuantity;
     }
 
-    public Flight(LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startTicketPrice, BigDecimal endTicketPrice, int totalSeatQuantity) {
+    public Flight(LocalDateTime departureTime, LocalDateTime arrivalTime, Airport departureAirport, Airport arrivalAirport, BigDecimal startBaseTicketPrice, BigDecimal maxBaseTicketPrice, int totalSeatQuantity) {
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
-        this.startTicketPrice = startTicketPrice;
-        this.endTicketPrice = endTicketPrice;
+        this.startBaseTicketPrice = startBaseTicketPrice;
+        this.maxBaseTicketPrice = maxBaseTicketPrice;
         this.totalSeatQuantity = totalSeatQuantity;
     }
 
@@ -75,20 +75,20 @@ public class Flight extends BaseEntity{
         this.arrivalAirport = arrivalAirport;
     }
 
-    public BigDecimal getStartTicketPrice() {
-        return startTicketPrice;
+    public BigDecimal getStartBaseTicketPrice() {
+        return startBaseTicketPrice;
     }
 
-    public void setStartTicketPrice(BigDecimal startTicketPrice) {
-        this.startTicketPrice = startTicketPrice;
+    public void setStartBaseTicketPrice(BigDecimal startBaseTicketPrice) {
+        this.startBaseTicketPrice = startBaseTicketPrice;
     }
 
-    public BigDecimal getEndTicketPrice() {
-        return endTicketPrice;
+    public BigDecimal getMaxBaseTicketPrice() {
+        return maxBaseTicketPrice;
     }
 
-    public void setEndTicketPrice(BigDecimal endTicketPrice) {
-        this.endTicketPrice = endTicketPrice;
+    public void setMaxBaseTicketPrice(BigDecimal maxBaseTicketPrice) {
+        this.maxBaseTicketPrice = maxBaseTicketPrice;
     }
 
     public int getTotalSeatQuantity() {
@@ -98,4 +98,5 @@ public class Flight extends BaseEntity{
     public void setTotalSeatQuantity(int totalSeatQuantity) {
         this.totalSeatQuantity = totalSeatQuantity;
     }
+
 }
