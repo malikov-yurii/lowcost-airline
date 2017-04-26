@@ -78,7 +78,6 @@ INSERT INTO credentials (login, password, role_id) VALUES
   ('brusov@gmail.com', '1111', 1),
   ('markov@gmail.com', '1111', 1);
 
-
 INSERT INTO time_zones (time_zone_offset) VALUES
   ('+3'),
   ('+1'),
@@ -107,8 +106,8 @@ VALUES
 
   (1, 4, '2017-04-21 11:00:00', '2017-04-21 13:00:00', 20, 40, 10);
 
-INSERT INTO tariffs_details (days_before_flight_price_starts_to_grow, weight_of_time_growth_factor,
-                             baggage_surcharge_over_ticket_max_price, priority_registration_tariff)
+INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
+                             baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)
 VALUES
   (10, 50, 2, 7);
 

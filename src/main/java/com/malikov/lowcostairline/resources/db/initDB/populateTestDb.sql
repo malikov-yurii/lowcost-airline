@@ -74,8 +74,8 @@ VALUES
   (3, 1, '2017-04-26 13:00:00', '2017-04-26 18:30:00', 40, 60, 10),
   (4, 1, '2017-04-27 14:00:00', '2017-04-27 16:00:00', 20, 40, 10);
 
-INSERT INTO tariffs_details (days_before_flight_price_starts_to_grow, weight_of_time_growth_factor,
-                             baggage_surcharge_over_ticket_max_price, priority_registration_tariff)
+INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
+                             baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)
 VALUES
   (10, 50, 2, 7);
 
