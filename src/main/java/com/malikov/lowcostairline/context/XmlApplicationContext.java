@@ -24,7 +24,7 @@ import java.util.Queue;
 /**
  * @author Yurii Malikov
  */
-public class ApplicationContext {
+public class XmlApplicationContext implements IApplicationContext{
 
     private static final String BEANS = "beans";
     private static final String BEAN = "bean";
@@ -42,17 +42,24 @@ public class ApplicationContext {
 
     private String[] xmlDocumentsPaths;
 
-    public ApplicationContext(String... xmlDocumentsPaths) {
+    public XmlApplicationContext(String... xmlDocumentsPaths) {
         this.xmlDocumentsPaths = xmlDocumentsPaths;
     }
 
-    public void initializeXmlDocuments() {
+    @Override
+    public Object getBean(String beanName) {
+        return contextMap.get(beanName);
+    }
+
+    @Override
+    public void initialize() {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             URL[] xmlDocumentsUrls = new URL[xmlDocumentsPaths.length];
+            xmlDocuments = new Document[xmlDocumentsPaths.length];
             for (int i = 0; i < xmlDocuments.length; i++) {
-                xmlDocumentsUrls[0] = getClass().getClassLoader().getResource(xmlDocumentsPaths[i]);
-                if (xmlDocumentsUrls[0] == null) {
+                xmlDocumentsUrls[i] = getClass().getClassLoader().getResource(xmlDocumentsPaths[i]);
+                if (xmlDocumentsUrls[i] == null) {
                     throw new FileNotFoundException("XML document has not been found.");
                 }
                 xmlDocuments[i] = documentBuilder.parse(xmlDocumentsUrls[i].getPath());
@@ -78,9 +85,10 @@ public class ApplicationContext {
                     String beanName = createBean(xmlBean);
 
                     NodeList xmlProperties = xmlBean.getChildNodes();
+
                     for (int j = 0; j < xmlProperties.getLength(); j++) {
-                        if (PROPERTY.equals(xmlProperties.item(i).getNodeName())) {
-                            commonXmlBeanPropertiesQueue.offer(new XmlBeanProperty(beanName, xmlProperties.item(i)));
+                        if (PROPERTY.equals(xmlProperties.item(j).getNodeName())) {
+                            commonXmlBeanPropertiesQueue.offer(new XmlBeanProperty(beanName, xmlProperties.item(j)));
                         }
                     }
                 }
@@ -101,7 +109,7 @@ public class ApplicationContext {
         Node propertyRefNode = xmlBeanPropertyAttributes.getNamedItem(REF);
         Node propertyValueNode = xmlBeanPropertyAttributes.getNamedItem(VALUE);
 
-        if (propertyNameNode == null || propertyRefNode == null ^ propertyValueNode == null) {
+        if (propertyNameNode == null || (propertyRefNode == null) == (propertyValueNode == null)) {
             throw new ContextException(String.format("Bean property initialization failure. Bad syntax. "
                     + "Tag \"%s\" and one of \"%s\" or \"%s\" should be declared.", NAME, REF, VALUE));
         }
@@ -128,7 +136,11 @@ public class ApplicationContext {
             }
             beanFieldValue = getFieldValue(beanField, propertyValueNode.getNodeValue());
         }
-
+        try {
+            beanField.set(bean, beanFieldValue);
+        } catch (IllegalAccessException e) {
+            throw new ContextException(e);
+        }
     }
 
     private Object getFieldValue(Field beanField, String stringValue) {
@@ -154,7 +166,7 @@ public class ApplicationContext {
         }
         Class superClass = clazz.getSuperclass();
         if (superClass != null) {
-            findClassField(superClass, fieldName);
+            return findClassField(superClass, fieldName);
         }
         return null;
     }
@@ -167,6 +179,7 @@ public class ApplicationContext {
         return xmlBeanId;
     }
 
+
     private Object instantiateXmlBean(String xmlBeanClass) {
         try {
             Class<?> cls = Class.forName(xmlBeanClass);
@@ -175,7 +188,6 @@ public class ApplicationContext {
             throw new ContextException("Bean instantiation failure.", e);
         }
     }
-
 
     private class XmlBeanProperty {
 
@@ -191,12 +203,10 @@ public class ApplicationContext {
         public String getBeanName() {
             return beanName;
         }
-
         public Node getBeanProperty() {
             return beanProperty;
         }
+
     }
-
-
 
 }
