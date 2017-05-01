@@ -1,7 +1,6 @@
 package com.malikov.lowcostairline.context;
 
-import com.malikov.lowcostairline.context.exceptions.ApplicationContextInitializationException;
-import com.malikov.lowcostairline.context.exceptions.ContextException;
+import com.malikov.lowcostairline.context.exception.ContextException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -24,7 +23,7 @@ import java.util.Queue;
 /**
  * @author Yurii Malikov
  */
-public class XmlApplicationContext implements IApplicationContext{
+public class XMLApplicationContext implements IApplicationContext{
 
     private static final String BEANS = "beans";
     private static final String BEAN = "bean";
@@ -36,19 +35,19 @@ public class XmlApplicationContext implements IApplicationContext{
     private static final String VALUE = "value";
 
 
-    private Map<String, Object> contextMap = new HashMap<>();
+    private Map<String, Object> contextBeanMap = new HashMap<>();
 
     private Document[] xmlDocuments;
 
     private String[] xmlDocumentsPaths;
 
-    public XmlApplicationContext(String... xmlDocumentsPaths) {
+    public XMLApplicationContext(String... xmlDocumentsPaths) {
         this.xmlDocumentsPaths = xmlDocumentsPaths;
     }
 
     @Override
     public Object getBean(String beanName) {
-        return contextMap.get(beanName);
+        return contextBeanMap.get(beanName);
     }
 
     @Override
@@ -65,19 +64,19 @@ public class XmlApplicationContext implements IApplicationContext{
                 xmlDocuments[i] = documentBuilder.parse(xmlDocumentsUrls[i].getPath());
             }
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            throw new ApplicationContextInitializationException(e);
+            throw new ContextException("Failed to initialize context", e);
         }
-        parseXmlDocuments();
+        parseXMLDocuments();
     }
 
-    private void parseXmlDocuments() {
+    private void parseXMLDocuments() {
         for (Document document : xmlDocuments) {
             NodeList beanDeclarationNodes = document.getElementsByTagName(BEANS);
             Node xmlBeansTagNode = beanDeclarationNodes.item(0);
             if (xmlBeansTagNode == null) {
                 throw new ContextException("There is no <beans> tag in " + document.getDocumentURI() + " file to parse");
             }
-            Queue<XmlBeanProperty> commonXmlBeanPropertiesQueue = new LinkedList<>();
+            Queue<XMLBeanProperty> commonXMLBeanPropertiesQueue = new LinkedList<>();
             NodeList xmlBeans = xmlBeansTagNode.getChildNodes();
             for (int i = 0; i < xmlBeans.getLength(); i++) {
                 Node xmlBean = xmlBeans.item(i);
@@ -88,19 +87,19 @@ public class XmlApplicationContext implements IApplicationContext{
 
                     for (int j = 0; j < xmlProperties.getLength(); j++) {
                         if (PROPERTY.equals(xmlProperties.item(j).getNodeName())) {
-                            commonXmlBeanPropertiesQueue.offer(new XmlBeanProperty(beanName, xmlProperties.item(j)));
+                            commonXMLBeanPropertiesQueue.offer(new XMLBeanProperty(beanName, xmlProperties.item(j)));
                         }
                     }
                 }
             }
-            while (!commonXmlBeanPropertiesQueue.isEmpty()) {
-                instantiateXmlBeanProperties(commonXmlBeanPropertiesQueue.poll());
+            while (!commonXMLBeanPropertiesQueue.isEmpty()) {
+                instantiateXmlBeanProperties(commonXMLBeanPropertiesQueue.poll());
             }
         }
 
     }
 
-    private void instantiateXmlBeanProperties(XmlBeanProperty xmlBeanProperty) {
+    private void instantiateXmlBeanProperties(XMLBeanProperty xmlBeanProperty) {
 
         Node xmlBeanPropertyNode = xmlBeanProperty.getBeanProperty();
 
@@ -114,7 +113,7 @@ public class XmlApplicationContext implements IApplicationContext{
                     + "Tag \"%s\" and one of \"%s\" or \"%s\" should be declared.", NAME, REF, VALUE));
         }
 
-        Object bean = contextMap.get(xmlBeanProperty.getBeanName());
+        Object bean = contextBeanMap.get(xmlBeanProperty.getBeanName());
         String propertyNameValue = propertyNameNode.getNodeValue();
         Class<?> beanClass = bean.getClass();
 
@@ -129,7 +128,7 @@ public class XmlApplicationContext implements IApplicationContext{
 
         Object beanFieldValue;
         if (propertyRefNode != null) {
-            beanFieldValue = contextMap.get(propertyRefNode.getNodeValue());
+            beanFieldValue = contextBeanMap.get(propertyRefNode.getNodeValue());
         } else {
             if (propertyValueNode.getNodeValue() == null) {
                 throw new NullPointerException(String.format("Property value for bean \"%s\" not provided",  bean));
@@ -175,12 +174,12 @@ public class XmlApplicationContext implements IApplicationContext{
         NamedNodeMap xmlBeanAttributes = bean.getAttributes();
         String xmlBeanId = xmlBeanAttributes.getNamedItem(ID).getNodeValue();
         String xmlBeanClass = xmlBeanAttributes.getNamedItem(CLASS).getNodeValue();
-        contextMap.put(xmlBeanId, instantiateXmlBean(xmlBeanClass));
+        contextBeanMap.put(xmlBeanId, instantiateXMLBean(xmlBeanClass));
         return xmlBeanId;
     }
 
 
-    private Object instantiateXmlBean(String xmlBeanClass) {
+    private Object instantiateXMLBean(String xmlBeanClass) {
         try {
             Class<?> cls = Class.forName(xmlBeanClass);
             return cls.newInstance();
@@ -189,13 +188,13 @@ public class XmlApplicationContext implements IApplicationContext{
         }
     }
 
-    private class XmlBeanProperty {
+    private class XMLBeanProperty {
 
         String beanName;
 
         Node beanProperty;
 
-        public XmlBeanProperty(String beanName, Node beanProperty) {
+        public XMLBeanProperty(String beanName, Node beanProperty) {
             this.beanName = beanName;
             this.beanProperty = beanProperty;
         }

@@ -1,4 +1,4 @@
-package com.malikov.lowcostairline.context.exceptions;
+package com.malikov.lowcostairline.context.exception;
 
 /**
  * @author Yurii Malikov

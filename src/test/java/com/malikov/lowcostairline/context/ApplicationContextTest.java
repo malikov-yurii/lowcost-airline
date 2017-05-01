@@ -13,7 +13,7 @@ public class ApplicationContextTest {
 
     @Test
     public void testApplicationContextInstantiation() throws Exception {
-        LowcostAirlineContext.initialize(new XmlApplicationContext("context/mockApplicationContext.xml"));
+        LowcostAirlineContext.initialize(new XMLApplicationContext("context/mockApplicationContext.xml"));
         IApplicationContext context = LowcostAirlineContext.getSingleton();
         PoolProperties poolProperties = (PoolProperties) context.getBean("poolProperties");
         DataSource dataSource = (DataSource) context.getBean("dataSource");

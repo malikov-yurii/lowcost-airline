@@ -36,6 +36,13 @@ public class User extends NamedEntity{
         this.phoneNumber = phoneNumber;
     }
 
+    public User(long id, String name, String lastName, String email, String phoneNumber) {
+        super(id, name);
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getLastName() {
         return lastName;
     }
