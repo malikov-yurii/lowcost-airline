@@ -20,6 +20,8 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   phone_number VARCHAR(15) NOT NULL UNIQUE
 );
+CREATE UNIQUE INDEX users_unique_email_idx
+  ON users (email);
 
 CREATE TABLE roles (
   id   BIGINT PRIMARY KEY AUTO_INCREMENT,
