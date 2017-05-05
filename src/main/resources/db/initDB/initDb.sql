@@ -1,12 +1,12 @@
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS credentials;
+DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS time_zones;
 DROP TABLE IF EXISTS cities;
 DROP TABLE IF EXISTS airports;
 DROP TABLE IF EXISTS aircraft_models;
-DROP TABLE IF EXISTS aircrafts;
+DROP TABLE IF EXISTS aircraft;
 DROP TABLE IF EXISTS flights;
 DROP TABLE IF EXISTS tariffs_details;
 DROP TABLE IF EXISTS tickets;
@@ -17,8 +17,8 @@ CREATE TABLE users (
   name         VARCHAR(50) NOT NULL,
   last_name    VARCHAR(50) NOT NULL,
   email        VARCHAR(255) NOT NULL UNIQUE ,
+  password VARCHAR(255) NOT NULL,
   phone_number VARCHAR(15) NOT NULL UNIQUE
-
 );
 
 CREATE TABLE roles (
@@ -26,10 +26,12 @@ CREATE TABLE roles (
   role VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE credentials (
-  login    VARCHAR(255) NOT NULL UNIQUE ,
-  password VARCHAR(255) NOT NULL,
-  role_id  BIGINT       NOT NULL,
+CREATE TABLE user_roles (
+  user_id BIGINT NOT NULL,
+  role_id BIGINT NOT NULL,
+  CONSTRAINT user_rolex_idx UNIQUE (user_id, role_id),
+  FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE,
   FOREIGN KEY (role_id) REFERENCES roles (id)
     ON DELETE CASCADE
 );
@@ -57,9 +59,9 @@ CREATE TABLE aircraft_models (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
   model_name    VARCHAR(255) NOT NULL,
   passanger_seats_quantity     SMALLINT      NOT NULL
-)
+);
 
-CREATE TABLE aircrafts (
+CREATE TABLE aircraft (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
   name    VARCHAR(255) NOT NULL,
   model_id    BIGINT NOT NULL,
@@ -82,7 +84,7 @@ CREATE TABLE flights (
   max_ticket_base_price   DECIMAL(8, 2) NOT NULL,
   FOREIGN KEY (departure_airport_id) REFERENCES airports (id),
   FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
-  FOREIGN KEY (aircraft_id) REFERENCES aircrafts (id)
+  FOREIGN KEY (aircraft_id) REFERENCES aircraft (id)
 );
 
 /*

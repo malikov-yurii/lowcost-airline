@@ -1,12 +1,12 @@
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE users;
 TRUNCATE TABLE roles;
-TRUNCATE TABLE credentials;
+TRUNCATE TABLE user_roles;
 TRUNCATE TABLE time_zones;
 TRUNCATE TABLE cities;
 TRUNCATE TABLE airports;
 TRUNCATE TABLE aircraft_models;
-TRUNCATE TABLE aircrafts;
+TRUNCATE TABLE aircraft;
 TRUNCATE TABLE flights;
 TRUNCATE TABLE tariffs_details;
 TRUNCATE TABLE tickets;
@@ -24,67 +24,67 @@ ALTER TABLE airports
   AUTO_INCREMENT 1;
 ALTER TABLE aircraft_models
 AUTO_INCREMENT 1;
-ALTER TABLE aircrafts
+ALTER TABLE aircraft
 AUTO_INCREMENT 1;
 ALTER TABLE flights
   AUTO_INCREMENT 1;
 ALTER TABLE tickets
   AUTO_INCREMENT 1;
 
-INSERT INTO users (name, last_name, email, phone_number) VALUES
-  ('Eduard', 'Eduardov', 'eduardov@gmail.com', '+380671234567'),
-  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '+380661234567'),
-  ('Petr', 'Petrov', 'petrov@gmail.com', '+380911234567'),
-  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '+380921234567'),
-  ('Victor', 'Victorov', 'victorov@gmail.com', '+380931234567'),
-  ('Robert', 'Black', 'black@gmail.com', '+380941234567'),
-  ('Hong', 'Wang', 'wang@gmail.com', '+380951234567'),
-  ('Abu', 'Kumar', 'kumar@gmail.com', '+380961234567'),
+INSERT INTO users (name, last_name, email, password, phone_number) VALUES
+  ('Eduard', 'Eduardov', 'eduardov@gmail.com', '1111', '+380671234567'),
+  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '1111', '+380661234567'),
+  ('Petr', 'Petrov', 'petrov@gmail.com', '1111', '+380911234567'),
+  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '1111', '+380921234567'),
+  ('Victor', 'Victorov', 'victorov@gmail.com', '1111', '+380931234567'),
+  ('Robert', 'Black', 'black@gmail.com', '1111', '+380941234567'),
+  ('Hong', 'Wang', 'wang@gmail.com', '1111', '+380951234567'),
+  ('Abu', 'Kumar', 'kumar@gmail.com', '1111', '+380961234567'),
 
-  ('Viola', 'White', 'white@gmail.com', '+380971234567'),
-  ('Roza', 'Rozenko', 'rozenko@gmail.com', '+380981234567'),
-  ('Moisha', 'Moishev', 'voishev@gmail.com', '+399241234567'),
-  ('Usama', 'Naladan', 'naladan@gmail.com', '+391311234567'),
-  ('Muhammad', 'Ali', 'ali@gmail.com', '+391651234567'),
-  ('Kim', 'Basinger', 'kim@gmail.com', '+397361234567'),
-  ('Emma', 'Watson', 'watson@gmail.com', '+394711234567'),
-  ('Ron', 'Ronov', 'ronov@gmail.com', '+440711234567'),
-  ('Luke', 'Lukov', 'lukov@gmail.com', '+440721234567'),
-  ('Zack', 'Zackov', 'zakov@gmail.com', '+440731234567'),
-  ('Rock', 'Jonson', 'jonson@gmail.com', '+440741234567'),
-  ('Lil', 'John', 'john@gmail.com', '+440751234567'),
-  ('Bruce', 'Brusov', 'brusov@gmail.com', '+440761234567'),
-  ('Mark', 'Markov', 'markov@gmail.com', '+440771234567');
+  ('Viola', 'White', 'white@gmail.com', '1111', '+380971234567'),
+  ('Roza', 'Rozenko', 'rozenko@gmail.com', '1111', '+380981234567'),
+  ('Moisha', 'Moishev', 'voishev@gmail.com', '1111', '+399241234567'),
+  ('Usama', 'Naladan', 'naladan@gmail.com', '1111', '+391311234567'),
+  ('Muhammad', 'Ali', 'ali@gmail.com', '1111', '+391651234567'),
+  ('Kim', 'Basinger', 'kim@gmail.com', '1111', '+397361234567'),
+  ('Emma', 'Watson', 'watson@gmail.com', '1111', '+394711234567'),
+  ('Ron', 'Ronov', 'ronov@gmail.com', '1111', '+440711234567'),
+  ('Luke', 'Lukov', 'lukov@gmail.com', '1111', '+440721234567'),
+  ('Zack', 'Zackov', 'zakov@gmail.com', '1111', '+440731234567'),
+  ('Rock', 'Jonson', 'jonson@gmail.com', '1111', '+440741234567'),
+  ('Lil', 'John', 'john@gmail.com', '1111', '+440751234567'),
+  ('Bruce', 'Brusov', 'brusov@gmail.com', '1111', '+440761234567'),
+  ('Mark', 'Markov', 'markov@gmail.com', '1111', '+440771234567');
 
 INSERT INTO roles (role) VALUES
   ('USER'),
   ('ADMIN');
 
-INSERT INTO credentials (login, password, role_id) VALUES
-  ('eduardov@gmail.com', '1111', 1),
-  ('ivanov@gmail.com', '1111', 1),
-  ('petrov@gmail.com', '1111', 1),
-  ('ibragimov@gmail.com', '1111', 1),
-  ('victorov@gmail.com', '1111', 1),
-  ('black@gmail.com', '1111', 1),
-  ('wang@gmail.com', '1111', 1),
-  ('kumar@gmail.com', '1111', 1),
-  ('admin@gmail.com', '1111', 2),
+INSERT INTO user_roles (user_id, role_id) VALUES
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 1),
+  (5, 1),
+  (6, 1),
+  (7, 1),
+  (8, 1),
+  (8, 2),
 
-  ('white@gmail.com', '1111', 1),
-  ('rozenko@gmail.com', '1111', 1),
-  ('voishev@gmail.com', '1111', 1),
-  ('naladan@gmail.com', '1111', 1),
-  ('ali@gmail.com', '1111', 1),
-  ('kim@gmail.com', '1111', 1),
-  ('watson@gmail.com', '1111', 1),
-  ('ronov@gmail.com', '1111', 1),
-  ('lukov@gmail.com', '1111', 1),
-  ('zakov@gmail.com', '1111', 1),
-  ('jonson@gmail.com', '1111', 1),
-  ('john@gmail.com', '1111', 1),
-  ('brusov@gmail.com', '1111', 1),
-  ('markov@gmail.com', '1111', 1);
+  (9, 1),
+  (10, 1),
+  (11, 1),
+  (12, 1),
+  (13, 1),
+  (14, 1),
+  (15, 1),
+  (16, 1),
+  (17, 1),
+  (18, 1),
+  (19, 1),
+  (20, 1),
+  (21, 1),
+  (22, 1);
 
 INSERT INTO time_zones (time_zone_offset) VALUES
   ('+3'),
@@ -107,23 +107,23 @@ VALUES
   ('BOEING 737', 10),
   ('BOEING 767', 10);
 
-INSERT INTO aircrafts (name, model_id)
+INSERT INTO aircraft (name, model_id)
 VALUES
   ('B747-1', 1),
   ('B767-1', 2),
   ('B767-3', 2);
 
 INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_localdatetime,
-                     arrival_localdatetime, start_ticket_base_price, max_ticket_base_price, total_seat_quantity)
+                     arrival_localdatetime, start_ticket_base_price, max_ticket_base_price)
 VALUES
-  (1, 2, 1, '2017-04-30 10:30:00', '2017-04-30 12:00:00', 30, 50, 10),
-  (1, 2, 1, '2017-04-23 10:30:00', '2017-04-23 12:00:00', 30, 50, 10),
-  (2, 1, 1, '2017-04-27 12:30:00', '2017-04-27 18:00:00', 30, 50, 10),
-  (1, 3, 2, '2017-04-22 09:30:00', '2017-04-22 09:00:00', 40, 60, 10),
-  (3, 1, 2, '2017-04-26 13:00:00', '2017-04-26 18:30:00', 40, 60, 10),
-  (4, 1, 3, '2017-04-27 14:00:00', '2017-04-27 16:00:00', 20, 40, 10),
+  (1, 2, 1, '2017-04-30 10:30:00', '2017-04-30 12:00:00', 30, 50),
+  (1, 2, 1, '2017-04-23 10:30:00', '2017-04-23 12:00:00', 30, 50),
+  (2, 1, 1, '2017-04-27 12:30:00', '2017-04-27 18:00:00', 30, 50),
+  (1, 3, 2, '2017-04-22 09:30:00', '2017-04-22 09:00:00', 40, 60),
+  (3, 1, 2, '2017-04-26 13:00:00', '2017-04-26 18:30:00', 40, 60),
+  (4, 1, 3, '2017-04-27 14:00:00', '2017-04-27 16:00:00', 20, 40),
 
-  (1, 4, 3, '2017-04-21 11:00:00', '2017-04-21 13:00:00', 20, 40, 10);
+  (1, 4, 3, '2017-04-21 11:00:00', '2017-04-21 13:00:00', 20, 40);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)

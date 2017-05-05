@@ -3,7 +3,7 @@ package com.malikov.lowcostairline.dao;
 /**
  * @author Yurii Malikov
  */
-public interface IGenericDAO<T> {
+public interface IGenericRepository<T> {
 
     T get(long id);
 
