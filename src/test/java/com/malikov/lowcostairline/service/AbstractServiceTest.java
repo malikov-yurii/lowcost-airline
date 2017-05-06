@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "classpath:db/scripts/populateTestDb.sql"},
         config = @SqlConfig(encoding = "UTF-8"))
 //@ActiveProfiles({Profiles.ACTIVE_DB})
-public class AbstractServiceTest {
+public abstract class AbstractServiceTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServiceTest.class);
 

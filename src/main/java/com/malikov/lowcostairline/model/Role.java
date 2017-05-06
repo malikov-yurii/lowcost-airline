@@ -13,8 +13,7 @@ import javax.persistence.Table;
 @AttributeOverride(name = "name", column = @Column(name = "role"))
 public class Role extends NamedEntity{
 
-    public Role() {
-    }
+    public Role() {}
 
     public Role(String name) {
         super(name);

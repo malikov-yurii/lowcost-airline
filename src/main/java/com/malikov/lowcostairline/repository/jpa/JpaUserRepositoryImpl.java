@@ -18,7 +18,7 @@ import java.util.List;
 public class JpaUserRepositoryImpl implements IUserRepository {
 
     @PersistenceContext
-    private EntityManager em;
+    protected EntityManager em;
 
     @Override
     @Transactional
@@ -32,13 +32,13 @@ public class JpaUserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public User get(long id) {
-        return em.find(User.class, id);
+    public boolean delete(long id) {
+        return em.createNamedQuery(User.DELETE).setParameter("id", id).executeUpdate() != 0;
     }
 
     @Override
-    public boolean delete(long id) {
-        return em.createNamedQuery(User.DELETE).setParameter("id", id).executeUpdate() != 0;
+    public User get(long id) {
+        return em.find(User.class, id);
     }
 
     @Override

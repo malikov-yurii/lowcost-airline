@@ -73,7 +73,7 @@ INSERT INTO airports (name, city_id) VALUES
   ('London Luton Airport', 2),
   ('Leonardo da Vinci International Airport', 3);
 
-INSERT INTO aircraft_models (model_name, passanger_seats_quantity)
+INSERT INTO aircraft_models (model_name, passenger_seats_quantity)
 VALUES
   ('BOEING 737', 10),
   ('BOEING 767', 10);

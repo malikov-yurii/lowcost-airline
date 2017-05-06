@@ -24,6 +24,7 @@ public class User extends NamedEntity {
 
     public static final String DELETE = "User.delete";
     public static final String ALL_SORTED = "User.allSorted";
+
     @NotBlank
     @Column(name = "last_name", nullable = false)
     @SafeHtml
@@ -53,8 +54,7 @@ public class User extends NamedEntity {
     private Set<Role> roles;
 
 
-    public User() {
-    }
+    public User() {}
 
     public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         this.lastName = lastName;
@@ -170,8 +170,8 @@ public class User extends NamedEntity {
     public String toString() {
         return "User{" +
                 "id='" + getId() + '\'' +
-                ",name='" + getName() + '\'' +
-                ",lastName='" + lastName + '\'' +
+                ", name='" + getName() + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +

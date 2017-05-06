@@ -60,7 +60,7 @@ CREATE TABLE airports (
 CREATE TABLE aircraft_models (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
   model_name    VARCHAR(255) NOT NULL,
-  passanger_seats_quantity     SMALLINT      NOT NULL
+  passenger_seats_quantity     SMALLINT      NOT NULL
 );
 
 CREATE TABLE aircraft (
