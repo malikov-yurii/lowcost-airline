@@ -80,9 +80,9 @@ VALUES
 
 INSERT INTO aircraft (name, model_id)
 VALUES
-  ('B747-1', 1),
+  ('B737-1', 1),
   ('B767-1', 2),
-  ('B767-3', 2);
+  ('B767-2', 2);
 
 INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_localdatetime,
                      arrival_localdatetime, start_ticket_base_price, max_ticket_base_price)

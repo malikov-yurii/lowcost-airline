@@ -1,7 +1,7 @@
 package com.malikov.lowcostairline.service;
 
-import com.malikov.lowcostairline.model.AircraftModel;
-import com.malikov.lowcostairline.repository.IAircraftModelRepository;
+import com.malikov.lowcostairline.model.Aircraft;
+import com.malikov.lowcostairline.repository.IAircraftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -11,34 +11,34 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-@Service("aircraftModelService")
-public class AircraftServiceImpl implements IAircraftModelService {
+@Service("aircraftService")
+public class AircraftServiceImpl implements IAircraftService {
 
     @Autowired
-    private IAircraftModelRepository repository;
+    private IAircraftRepository repository;
 
     @Override
-    public AircraftModel save(AircraftModel aircraftModel) {
-        Assert.notNull(aircraftModel, "aircraftModel should not be null");
-        // TODO: 5/5/2017 prepare aircraftModel to save
-        return repository.save(aircraftModel);
+    public Aircraft save(Aircraft aircraft) {
+        Assert.notNull(aircraft, "aircraft should not be null");
+        // TODO: 5/5/2017 prepare aircraft to save
+        return repository.save(aircraft);
     }
 
     @Override
-    public void update(AircraftModel aircraftModel) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save aircraftModel
-        Assert.notNull(aircraftModel, "aircraftModel should not be null");
-        repository.save(aircraftModel);
+    public void update(Aircraft aircraft) {
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save aircraft
+        Assert.notNull(aircraft, "aircraft should not be null");
+        repository.save(aircraft);
     }
 
     @Override
-    public AircraftModel get(long id) {
+    public Aircraft get(long id) {
         // TODO: 5/5/2017 check not found with id
         return repository.get(id);
     }
 
     @Override
-    public List<AircraftModel> getAll() {
+    public List<Aircraft> getAll() {
         return repository.getAll();
     }
 
