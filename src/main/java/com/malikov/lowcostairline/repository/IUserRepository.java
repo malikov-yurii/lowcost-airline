@@ -1,4 +1,4 @@
-package com.malikov.lowcostairline.dao;
+package com.malikov.lowcostairline.repository;
 
 import com.malikov.lowcostairline.model.User;
 

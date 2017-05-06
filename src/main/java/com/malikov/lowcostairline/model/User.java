@@ -7,15 +7,23 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Yurii Malikov
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id ASC")
+})
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
 public class User extends NamedEntity {
 
+    public static final String DELETE = "User.delete";
+    public static final String ALL_SORTED = "User.allSorted";
     @NotBlank
     @Column(name = "last_name", nullable = false)
     @SafeHtml
@@ -44,34 +52,52 @@ public class User extends NamedEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
-    public User(long id, String name, String lastName, String email, String password, String phoneNumber) {
-        super(id, name);
+
+    public User() {
+    }
+
+    public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.roles = roles;
     }
 
-    public User(String name, String lastName, String email, String password, String phoneNumber) {
+    public User(String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         super(name);
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.roles = roles;
     }
 
-    public User(String lastName, String email, String password, String phoneNumber) {
+    public User(Long id, String name, String lastName, String email, String password, String phoneNumber, Role... roles) {
+        super(id, name);
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.roles = new HashSet<>(Arrays.asList(roles));
     }
 
-    public User(long id, String name, String lastName, String email, String phoneNumber) {
+    public User(Long id, String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         super(id, name);
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
+        this.roles = roles;
+    }
+
+    public User(User user) {
+        super(user.getId(), user.getName());
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.phoneNumber = user.getPhoneNumber();
+        this.roles = user.getRoles();
     }
 
     public String getLastName() {
@@ -112,6 +138,45 @@ public class User extends NamedEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
+        return roles != null ? roles.equals(user.roles) : user.roles == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + getId() + '\'' +
+                ",name='" + getName() + '\'' +
+                ",lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 
 }
