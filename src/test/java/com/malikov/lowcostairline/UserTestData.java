@@ -6,8 +6,8 @@ import com.malikov.lowcostairline.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -30,8 +30,8 @@ public class UserTestData {
     public static final User ADMIN_1_WANG = new User(7L, "Hong", "Wang", "wang@gmail.com", "1111", "+380951234567", ROLE_USER, ROLE_ADMIN);
     public static final User ADMIN_2_KUMAR = new User(8L,"Abu", "Kumar", "kumar@gmail.com", "1111", "+380961234567", ROLE_USER, ROLE_ADMIN);
 
-    public static final ArrayList<User> USERS = new ArrayList<>(Arrays.asList(USER_1_EDUARDOV, USER_2_IVANOV, USER_3_PETROV, USER_4_IBRAGIM,
-            USER_5_VICTOROV, USER_6_ROBERTOV, ADMIN_1_WANG, ADMIN_2_KUMAR));
+    public static final List USERS = Arrays.asList(USER_1_EDUARDOV, USER_2_IVANOV, USER_3_PETROV, USER_4_IBRAGIM,
+            USER_5_VICTOROV, USER_6_ROBERTOV, ADMIN_1_WANG, ADMIN_2_KUMAR);
 
     public static final ModelMatcher<User> MATCHER = ModelMatcher.of(User.class,
             (expected, actual) -> expected == actual ||

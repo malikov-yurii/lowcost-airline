@@ -1,10 +1,23 @@
 package com.malikov.lowcostairline.model;
 
+import javax.persistence.*;
+
 /**
  * @author Yurii Malikov
  */
+@Entity
+@NamedQueries({
+        @NamedQuery(name = Airport.DELETE, query = "DELETE FROM Airport a WHERE a.id=:id"),
+        @NamedQuery(name = Airport.ALL_SORTED, query = "SELECT a FROM Airport a ORDER BY a.id ASC")
+})
+@Table(name = "airports")
 public class Airport extends NamedEntity {
 
+    public static final String DELETE = "Airport.delete";
+    public static final String ALL_SORTED = "Airport.allSorted";
+
+    @OneToOne
+    @JoinColumn(name = "city_id")
     private City city;
 
     public Airport(){}
@@ -21,6 +34,11 @@ public class Airport extends NamedEntity {
 
     public Airport(City city) {
         this.city = city;
+    }
+
+    public Airport(Airport airport) {
+        super(airport.getId(), airport.getName());
+        city = airport.getCity();
     }
 
     public City getCity() {
@@ -57,4 +75,5 @@ public class Airport extends NamedEntity {
                 ", city=" + city +
                 '}';
     }
+
 }
