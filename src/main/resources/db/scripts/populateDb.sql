@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE users;
 TRUNCATE TABLE roles;
 TRUNCATE TABLE user_roles;
-TRUNCATE TABLE time_zones;
 TRUNCATE TABLE cities;
 TRUNCATE TABLE airports;
 TRUNCATE TABLE aircraft_models;
@@ -15,8 +14,6 @@ SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE users
   AUTO_INCREMENT 1;
 ALTER TABLE roles
-  AUTO_INCREMENT 1;
-ALTER TABLE time_zones
   AUTO_INCREMENT 1;
 ALTER TABLE cities
 AUTO_INCREMENT 1;
@@ -87,15 +84,10 @@ INSERT INTO user_roles (user_id, role_id) VALUES
   (21, 1),
   (22, 1);
 
-INSERT INTO time_zones (time_zone_offset) VALUES
-  ('+3'),
-  ('+1'),
-  ('+2');
-
-INSERT INTO cities (name, time_zone_id) VALUES
-  ('Kyiv', 3),
-  ('London', 1),
-  ('Rome', 2);
+INSERT INTO cities (name, time_zone) VALUES
+  ('Kyiv', 'Europe/Kiev'),
+  ('London', 'Europe/London'),
+  ('Rome', 'Europe/Rome');
 
 INSERT INTO airports (name, city_id) VALUES
   ('Boryspil International Airport', 1),
@@ -131,46 +123,46 @@ INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_
 VALUES
   (10, 50, 2, 7);
 
-INSERT INTO tickets (flight_id, user_id, price, purchase_localdatetime, time_zone_id,
+INSERT INTO tickets (flight_id, user_id, price, purchase_localdatetime, time_zone,
                      baggage, priority_registration)
 VALUES
-  (1, 1, 30.00, '2017-03-30 07:30:00', 3, FALSE, FALSE),
-  (2, 2, 30.00, '2017-03-23 08:30:00', 3, FALSE, FALSE),
-  (2, 3, 83.00, '2017-03-23 09:30:00', 3, TRUE, FALSE),
-  (2, 4, 39.00, '2017-03-23 10:30:00', 3, FALSE, TRUE),
-  (2, 5, 92.00, '2017-03-23 11:30:00', 3, TRUE, TRUE),
-  (3, 2, 30.00, '2017-03-23 08:30:00', 1, FALSE, FALSE),
-  (4, 6, 40.00, '2017-03-22 08:30:00', 3, FALSE, FALSE),
-  (4, 7, 103.00, '2017-03-22 09:30:00', 3, TRUE, FALSE),
-  (5, 6, 40.00, '2017-03-22 08:30:00', 1, FALSE, FALSE),
-  (6, 8, 40.00, '2017-03-20 08:30:00', 2, FALSE, FALSE),
+  (1, 1, 30.00, '2017-03-30 07:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (2, 2, 30.00, '2017-03-23 08:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (2, 3, 83.00, '2017-03-23 09:30:00', 'Europe/Kiev', TRUE, FALSE),
+  (2, 4, 39.00, '2017-03-23 10:30:00', 'Europe/Kiev', FALSE, TRUE),
+  (2, 5, 92.00, '2017-03-23 11:30:00', 'Europe/Kiev', TRUE, TRUE),
+  (3, 2, 30.00, '2017-03-23 08:30:00', 'Europe/London', FALSE, FALSE),
+  (4, 6, 40.00, '2017-03-22 08:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (4, 7, 103.00, '2017-03-22 09:30:00', 'Europe/Kiev', TRUE, FALSE),
+  (5, 6, 40.00, '2017-03-22 08:30:00', 'Europe/London', FALSE, FALSE),
+  (6, 8, 40.00, '2017-03-20 08:30:00', 'Europe/Rome', FALSE, FALSE),
 
-  (2, 9, 34.00, '2017-03-23 12:30:00', 3, FALSE, FALSE),
-  (2, 10, 35.00, '2017-03-23 13:30:00', 3, FALSE, FALSE),
-  (2, 15, 95.00, '2017-03-23 14:30:00', 3, TRUE, TRUE),
-  (3, 3, 83.00, '2017-03-23 09:30:00', 1, TRUE, FALSE),
-  (3, 4, 39.00, '2017-03-23 10:30:00', 1, FALSE, TRUE),
-  (3, 5, 92.00, '2017-03-23 11:30:00', 1, TRUE, TRUE),
-  (3, 9, 34.00, '2017-03-23 12:30:00', 1, FALSE, FALSE),
-  (4, 11, 49.00, '2017-03-22 10:30:00', 3, FALSE, TRUE),
-  (4, 12, 112.00, '2017-03-22 11:30:00', 3, TRUE, TRUE),
-  (4, 13, 44.00, '2017-03-22 12:30:00', 3, FALSE, FALSE),
-  (4, 14, 45.00, '2017-03-22 13:30:00', 3, FALSE, FALSE),
-  (4, 15, 115.00, '2017-03-22 14:30:00', 3, TRUE, TRUE),
-  (5, 7, 103.00, '2017-03-22 09:30:00', 1, TRUE, FALSE),
-  (5, 11, 49.00, '2017-03-22 10:30:00', 1, FALSE, TRUE),
-  (5, 12, 112.00, '2017-03-22 11:30:00', 1, TRUE, TRUE),
-  (5, 13, 44.00, '2017-03-22 12:30:00', 1, FALSE, FALSE),
-  (5, 14, 45.00, '2017-03-22 13:30:00', 1, FALSE, FALSE),
-  (6, 16, 103.00, '2017-03-20 09:30:00', 2, TRUE, FALSE),
-  (6, 17, 49.00, '2017-03-20 10:30:00', 2, FALSE, TRUE),
-  (6, 18, 112.00, '2017-03-20 11:30:00', 2, TRUE, TRUE),
-  (6, 19, 44.00, '2017-03-20 12:30:00', 2, FALSE, FALSE),
-  (6, 20, 45.00, '2017-03-20 13:30:00', 2, FALSE, FALSE),
-  (7, 8, 40.00, '2017-03-20 08:30:00', 3, FALSE, FALSE),
-  (7, 16, 103.00, '2017-03-20 09:30:00', 3, TRUE, FALSE),
-  (7, 17, 49.00, '2017-03-20 10:30:00', 3, FALSE, TRUE),
-  (7, 18, 112.00, '2017-03-20 11:30:00', 3, TRUE, TRUE),
-  (7, 19, 44.00, '2017-03-20 12:30:00', 3, FALSE, FALSE),
-  (7, 20, 45.00, '2017-03-20 13:30:00', 3, FALSE, FALSE),
-  (7, 21, 115.00, '2017-03-20 14:30:00', 3, TRUE, TRUE);
+  (2, 9, 34.00, '2017-03-23 12:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (2, 10, 35.00, '2017-03-23 13:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (2, 15, 95.00, '2017-03-23 14:30:00', 'Europe/Kiev', TRUE, TRUE),
+  (3, 3, 83.00, '2017-03-23 09:30:00', 'Europe/London', TRUE, FALSE),
+  (3, 4, 39.00, '2017-03-23 10:30:00', 'Europe/London', FALSE, TRUE),
+  (3, 5, 92.00, '2017-03-23 11:30:00', 'Europe/London', TRUE, TRUE),
+  (3, 9, 34.00, '2017-03-23 12:30:00', 'Europe/London', FALSE, FALSE),
+  (4, 11, 49.00, '2017-03-22 10:30:00', 'Europe/Kiev', FALSE, TRUE),
+  (4, 12, 112.00, '2017-03-22 11:30:00', 'Europe/Kiev', TRUE, TRUE),
+  (4, 13, 44.00, '2017-03-22 12:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (4, 14, 45.00, '2017-03-22 13:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (4, 15, 115.00, '2017-03-22 14:30:00', 'Europe/Kiev', TRUE, TRUE),
+  (5, 7, 103.00, '2017-03-22 09:30:00', 'Europe/London', TRUE, FALSE),
+  (5, 11, 49.00, '2017-03-22 10:30:00', 'Europe/London', FALSE, TRUE),
+  (5, 12, 112.00, '2017-03-22 11:30:00', 'Europe/London', TRUE, TRUE),
+  (5, 13, 44.00, '2017-03-22 12:30:00', 'Europe/London', FALSE, FALSE),
+  (5, 14, 45.00, '2017-03-22 13:30:00', 'Europe/London', FALSE, FALSE),
+  (6, 16, 103.00, '2017-03-20 09:30:00', 'Europe/Rome', TRUE, FALSE),
+  (6, 17, 49.00, '2017-03-20 10:30:00', 'Europe/Rome', FALSE, TRUE),
+  (6, 18, 112.00, '2017-03-20 11:30:00', 'Europe/Rome', TRUE, TRUE),
+  (6, 19, 44.00, '2017-03-20 12:30:00', 'Europe/Rome', FALSE, FALSE),
+  (6, 20, 45.00, '2017-03-20 13:30:00', 'Europe/Rome', FALSE, FALSE),
+  (7, 8, 40.00, '2017-03-20 08:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (7, 16, 103.00, '2017-03-20 09:30:00', 'Europe/Kiev', TRUE, FALSE),
+  (7, 17, 49.00, '2017-03-20 10:30:00', 'Europe/Kiev', FALSE, TRUE),
+  (7, 18, 112.00, '2017-03-20 11:30:00', 'Europe/Kiev', TRUE, TRUE),
+  (7, 19, 44.00, '2017-03-20 12:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (7, 20, 45.00, '2017-03-20 13:30:00', 'Europe/Kiev', FALSE, FALSE),
+  (7, 21, 115.00, '2017-03-20 14:30:00', 'Europe/Kiev', TRUE, TRUE);

@@ -1,12 +1,27 @@
 package com.malikov.lowcostairline.model;
 
+import com.malikov.lowcostairline.util.converters.ZoneIdConverter;
+
+import javax.persistence.*;
 import java.time.ZoneId;
 
 /**
   * @author Yurii Malikov
  */
+@Entity
+@NamedQueries({
+        @NamedQuery(name = City.DELETE, query = "DELETE FROM City c WHERE c.id=:id"),
+        @NamedQuery(name = City.ALL_SORTED, query = "SELECT c FROM City c ORDER BY c.id ASC")
+})
+@Table(name = "cities")
 public class City extends NamedEntity {
 
+    public static final String DELETE = "City.delete";
+    public static final String ALL_SORTED = "City.allSorted";
+
+
+    @Column(name = "time_zone")
+    @Convert(converter = ZoneIdConverter.class)
     private ZoneId zoneId;
 
     public City(){}
@@ -23,6 +38,11 @@ public class City extends NamedEntity {
 
     public City(ZoneId zoneId) {
         this.zoneId = zoneId;
+    }
+
+    public City(City city) {
+        super(city.getId(), city.getName());
+        zoneId = city.getZoneId();
     }
 
     public ZoneId getZoneId() {

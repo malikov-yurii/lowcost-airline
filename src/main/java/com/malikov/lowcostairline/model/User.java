@@ -1,6 +1,6 @@
 package com.malikov.lowcostairline.model;
 
-import com.malikov.lowcostairline.util.phoneNumber.PhoneNumber;
+import com.malikov.lowcostairline.util.validator.PhoneNumber;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;

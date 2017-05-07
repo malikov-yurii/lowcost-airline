@@ -1,4 +1,4 @@
-package com.malikov.lowcostairline.util.phoneNumber;
+package com.malikov.lowcostairline.util.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
