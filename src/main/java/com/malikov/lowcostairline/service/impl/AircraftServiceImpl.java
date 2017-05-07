@@ -1,7 +1,8 @@
-package com.malikov.lowcostairline.service;
+package com.malikov.lowcostairline.service.impl;
 
 import com.malikov.lowcostairline.model.Aircraft;
 import com.malikov.lowcostairline.repository.IAircraftRepository;
+import com.malikov.lowcostairline.service.IAircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

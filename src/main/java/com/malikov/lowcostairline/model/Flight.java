@@ -1,48 +1,84 @@
 package com.malikov.lowcostairline.model;
 
+import com.malikov.lowcostairline.util.DateTimeUtil;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
  * @author Yurii Malikov
  */
+@Entity
+@NamedQueries({
+        @NamedQuery(name = Flight.DELETE, query = "DELETE FROM Flight f WHERE f.id=:id"),
+        @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC")
+})
+@Table(name = "flights")
 public class Flight extends BaseEntity{
 
-    private LocalDateTime departureLocalDateTime;
+    public static final String DELETE = "Flight.delete";
+    public static final String ALL_SORTED = "Flight.allSorted";
 
-    private LocalDateTime arrivalLocalDateTime;
-
+    @OneToOne
+    @JoinColumn(name = "departure_airport_id")
     private Airport departureAirport;
 
+    @OneToOne
+    @JoinColumn(name = "arrival_airport_id")
     private Airport arrivalAirport;
 
+    @OneToOne
+    @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 
+    @Column(name = "departure_localdatetime")
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    private LocalDateTime departureLocalDateTime;
+
+    @Column(name = "arrival_localdatetime")
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    private LocalDateTime arrivalLocalDateTime;
+
+    @Column(name = "start_ticket_base_price")
     private BigDecimal startTicketBasePrice;
 
+    @Column(name = "max_ticket_base_price")
     private BigDecimal maxTicketBasePrice;
 
     public Flight(){}
 
-    public Flight(Long id, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
-        super(id);
-        this.departureLocalDateTime = departureLocalDateTime;
-        this.arrivalLocalDateTime = arrivalLocalDateTime;
+    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
+        this.departureLocalDateTime = departureLocalDateTime;
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.startTicketBasePrice = startTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
-    public Flight(LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
-        this.departureLocalDateTime = departureLocalDateTime;
-        this.arrivalLocalDateTime = arrivalLocalDateTime;
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+        super(id);
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
+        this.departureLocalDateTime = departureLocalDateTime;
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.startTicketBasePrice = startTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
+    }
+
+    public Flight(Flight flight) {
+        super(flight.getId());
+        departureAirport = flight.getDepartureAirport();
+        arrivalAirport = flight.getArrivalAirport();
+        aircraft = flight.getAircraft();
+        departureLocalDateTime = flight.getDepartureLocalDateTime();
+        arrivalLocalDateTime = flight.getArrivalLocalDateTime();
+        startTicketBasePrice = flight.getStartTicketBasePrice();
+        maxTicketBasePrice = flight.getMaxTicketBasePrice();
     }
 
     public LocalDateTime getDepartureLocalDateTime() {

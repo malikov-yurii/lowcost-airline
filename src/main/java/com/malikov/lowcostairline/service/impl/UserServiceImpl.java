@@ -1,7 +1,8 @@
-package com.malikov.lowcostairline.service;
+package com.malikov.lowcostairline.service.impl;
 
 import com.malikov.lowcostairline.model.User;
 import com.malikov.lowcostairline.repository.IUserRepository;
+import com.malikov.lowcostairline.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Yurii Malikov
  */
 @Service("userService")
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserRepository repository;
