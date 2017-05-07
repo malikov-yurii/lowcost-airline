@@ -28,7 +28,7 @@ public class UserServiceImplTest extends AbstractServiceTest {
 
     @Test
     public void update() throws Exception {
-        User updated = new User(USER_1_EDUARDOV);
+        User updated = new User(USER_1);
         updated.setName("NewName");
         updated.setLastName("NewLastName");
         service.update(updated);
@@ -37,8 +37,8 @@ public class UserServiceImplTest extends AbstractServiceTest {
 
     @Test
     public void get() throws Exception {
-        User user = service.get(USER_1_EDUARDOV.getId());
-        MATCHER.assertEquals(USER_1_EDUARDOV, user);
+        User user = service.get(USER_1.getId());
+        MATCHER.assertEquals(USER_1, user);
     }
 
     @Test
@@ -49,9 +49,9 @@ public class UserServiceImplTest extends AbstractServiceTest {
     // TODO: 5/6/2017 How to test delete despite constraints? At first I sould delete tickets perhaps
     @Test(expected = PersistenceException.class)
     public void delete() throws Exception {
-        service.delete(USER_2_IVANOV.getId());
+        service.delete(USER_2.getId());
         List<User> all = new ArrayList<>(USERS);
-        all.remove(USER_2_IVANOV);
+        all.remove(USER_2);
         MATCHER.assertCollectionEquals(all, service.getAll());
     }
 

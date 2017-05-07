@@ -1,52 +1,78 @@
 package com.malikov.lowcostairline.model;
 
+import com.malikov.lowcostairline.util.converters.OffsetDateTimeConverter;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * @author Yurii Malikov
  */
+@Entity
+@NamedQueries({
+        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
+        @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t ORDER BY t.id ASC")
+})
+@Table(name = "tickets")
 public class Ticket extends BaseEntity {
 
-    private User user;
+    public static final String DELETE = "Ticket.delete";
+    public static final String ALL_SORTED = "Ticket.allSorted";
 
+    @OneToOne
+    @JoinColumn(name = "flight_id")
     private Flight flight;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "price")
     private BigDecimal price;
 
-    private ZonedDateTime purchaseDateTime;
+    @Column(name = "purchase_offsetdatetime")
+    @Convert(converter = OffsetDateTimeConverter.class)
+    private OffsetDateTime purchaseOffsetDateTime;
 
-    private boolean hasBaggage;
+    @Column(name = "has_baggage")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean hasBaggage;
 
-    private boolean hasPriorityRegistration;
+    @Column(name = "has_priority_registration")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean hasPriorityRegistration;
 
     public Ticket(){}
 
-    public Ticket(Long id, User user, Flight flight, BigDecimal price, ZonedDateTime purchaseDateTime, boolean hasBaggage, boolean hasPriorityRegistration) {
+    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration) {
+        this.flight = flight;
+        this.user = user;
+        this.price = price;
+        this.purchaseOffsetDateTime = purchaseOffsetDateTime;
+        this.hasBaggage = hasBaggage;
+        this.hasPriorityRegistration = hasPriorityRegistration;
+    }
+
+    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration) {
         super(id);
-        this.user = user;
         this.flight = flight;
+        this.user = user;
         this.price = price;
-        this.purchaseDateTime = purchaseDateTime;
+        this.purchaseOffsetDateTime = purchaseOffsetDateTime;
         this.hasBaggage = hasBaggage;
         this.hasPriorityRegistration = hasPriorityRegistration;
     }
 
-    public Ticket(User user, Flight flight, BigDecimal price, ZonedDateTime purchaseDateTime, boolean hasBaggage, boolean hasPriorityRegistration) {
-        this.user = user;
-        this.flight = flight;
-        this.price = price;
-        this.purchaseDateTime = purchaseDateTime;
-        this.hasBaggage = hasBaggage;
-        this.hasPriorityRegistration = hasPriorityRegistration;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public Ticket(Ticket ticket) {
+        super(ticket.getId());
+        flight = ticket.getFlight();
+        user = ticket.getUser();
+        price = ticket.getPrice();
+        purchaseOffsetDateTime = ticket.getPurchaseOffsetDateTime();
+        hasBaggage = ticket.hasBaggage;
+        hasPriorityRegistration = ticket.hasPriorityRegistration;
     }
 
     public Flight getFlight() {
@@ -57,6 +83,14 @@ public class Ticket extends BaseEntity {
         this.flight = flight;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -65,27 +99,27 @@ public class Ticket extends BaseEntity {
         this.price = price;
     }
 
-    public ZonedDateTime getPurchaseDateTime() {
-        return purchaseDateTime;
+    public OffsetDateTime getPurchaseOffsetDateTime() {
+        return purchaseOffsetDateTime;
     }
 
-    public void setPurchaseDateTime(ZonedDateTime purchaseDateTime) {
-        this.purchaseDateTime = purchaseDateTime;
+    public void setPurchaseOffsetDateTime(OffsetDateTime purchaseOffsetDateTime) {
+        this.purchaseOffsetDateTime = purchaseOffsetDateTime;
     }
 
-    public boolean isHasBaggage() {
+    public Boolean isHasBaggage() {
         return hasBaggage;
     }
 
-    public void setHasBaggage(boolean hasBaggage) {
+    public void setHasBaggage(Boolean hasBaggage) {
         this.hasBaggage = hasBaggage;
     }
 
-    public boolean isHasPriorityRegistration() {
+    public Boolean isHasPriorityRegistration() {
         return hasPriorityRegistration;
     }
 
-    public void setHasPriorityRegistration(boolean hasPriorityRegistration) {
+    public void setHasPriorityRegistration(Boolean hasPriorityRegistration) {
         this.hasPriorityRegistration = hasPriorityRegistration;
     }
 
@@ -97,21 +131,22 @@ public class Ticket extends BaseEntity {
 
         Ticket ticket = (Ticket) o;
 
-        if (hasBaggage != ticket.hasBaggage) return false;
-        if (hasPriorityRegistration != ticket.hasPriorityRegistration) return false;
-        if (user != null ? !user.equals(ticket.user) : ticket.user != null) return false;
         if (flight != null ? !flight.equals(ticket.flight) : ticket.flight != null) return false;
+        if (user != null ? !user.equals(ticket.user) : ticket.user != null) return false;
         if (price != null ? !price.equals(ticket.price) : ticket.price != null) return false;
-        return purchaseDateTime != null ? purchaseDateTime.equals(ticket.purchaseDateTime) : ticket.purchaseDateTime == null;
+        if (purchaseOffsetDateTime != null ? !purchaseOffsetDateTime.equals(ticket.purchaseOffsetDateTime) : ticket.purchaseOffsetDateTime != null)
+            return false;
+        if (hasBaggage != null ? !hasBaggage.equals(ticket.hasBaggage) : ticket.hasBaggage != null) return false;
+        return hasPriorityRegistration != null ? hasPriorityRegistration.equals(ticket.hasPriorityRegistration) : ticket.hasPriorityRegistration == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (flight != null ? flight.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (purchaseDateTime != null ? purchaseDateTime.hashCode() : 0);
+        result = 31 * result + (purchaseOffsetDateTime != null ? purchaseOffsetDateTime.hashCode() : 0);
         result = 31 * result + (hasBaggage ? 1 : 0);
         result = 31 * result + (hasPriorityRegistration ? 1 : 0);
         return result;
@@ -121,10 +156,10 @@ public class Ticket extends BaseEntity {
     public String toString() {
         return "Ticket{" +
                 "id=" + getId() +
-                ", user=" + user +
                 ", flight=" + flight +
+                ", user=" + user +
                 ", price=" + price +
-                ", purchaseDateTime=" + purchaseDateTime +
+                ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
                 ", hasBaggage=" + hasBaggage +
                 ", hasPriorityRegistration=" + hasPriorityRegistration +
                 '}';

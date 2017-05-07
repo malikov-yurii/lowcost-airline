@@ -128,10 +128,9 @@ CREATE TABLE tickets (
   flight_id              BIGINT        NOT NULL,
   user_id                BIGINT        NOT NULL,
   price                  DECIMAL(8, 2) NOT NULL,
-  purchase_localdatetime DATETIME      NOT NULL,
-  time_zone              VARCHAR(50)   NOT NULL,
-  baggage                BOOLEAN       NOT NULL,
-  priority_registration  BOOLEAN       NOT NULL,
+  purchase_offsetdatetime VARCHAR(22)      NOT NULL,
+  has_baggage                BOOLEAN       NOT NULL,
+  has_priority_registration  BOOLEAN       NOT NULL,
   FOREIGN KEY (flight_id) REFERENCES flights (id),
   FOREIGN KEY (user_id) REFERENCES users (id)
 );

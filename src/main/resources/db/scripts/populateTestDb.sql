@@ -91,16 +91,16 @@ INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_
 VALUES
   (10, 50, 2, 7);
 
-INSERT INTO tickets (flight_id, user_id, price, purchase_localdatetime, time_zone,
-                     baggage, priority_registration)
+INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime,
+                     has_baggage, has_priority_registration)
 VALUES
-  (1, 1, 30, '2017-03-30 07:30', 'Europe/Kiev', FALSE, FALSE),
-  (2, 2, 30, '2017-03-23 08:30', 'Europe/Kiev', FALSE, FALSE),
-  (2, 3, 83, '2017-03-23 09:30', 'Europe/Kiev', TRUE, FALSE),
-  (2, 4, 39, '2017-03-23 10:30', 'Europe/Kiev', FALSE, TRUE),
-  (2, 5, 92, '2017-03-23 11:30', 'Europe/Kiev', TRUE, TRUE),
-  (3, 2, 30, '2017-03-23 08:30', 'Europe/London', FALSE, FALSE),
-  (4, 6, 40, '2017-03-22 08:30', 'Europe/Kiev', FALSE, FALSE),
-  (4, 7, 103, '2017-03-22 09:30', 'Europe/Kiev', TRUE, FALSE),
-  (5, 6, 40, '2017-03-22 08:30', 'Europe/London', FALSE, FALSE),
-  (6, 8, 40, '2017-03-20 08:30', 'Europe/Rome', FALSE, FALSE);
+  (1, 1, 30, '2017-03-30T07:30+02:00', FALSE, FALSE),
+  (2, 2, 30, '2017-03-23T08:30+02:00', FALSE, FALSE),
+  (2, 3, 83, '2017-03-23T09:30+02:00', TRUE, FALSE),
+  (2, 4, 39, '2017-03-23T10:30+02:00', FALSE, TRUE),
+  (2, 5, 92, '2017-03-23T11:30+02:00', TRUE, TRUE),
+  (3, 2, 30, '2017-03-23T08:30+00:00', FALSE, FALSE),
+  (4, 6, 40, '2017-03-22T08:30+02:00', FALSE, FALSE),
+  (4, 7, 103, '2017-03-22T09:30+02:00', TRUE, FALSE),
+  (5, 6, 40, '2017-03-22T08:30+00:00', FALSE, FALSE),
+  (6, 8, 40, '2017-03-20T08:30+01:00', FALSE, FALSE);
