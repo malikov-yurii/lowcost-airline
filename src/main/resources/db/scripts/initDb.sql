@@ -38,8 +38,8 @@ CREATE TABLE user_roles (
 );
 
 CREATE TABLE cities (
-  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name    VARCHAR(70) NOT NULL,
+  id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name      VARCHAR(70) NOT NULL,
   time_zone VARCHAR(50) NOT NULL
 );
 
@@ -47,7 +47,8 @@ CREATE TABLE airports (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
   name    VARCHAR(255) NOT NULL,
   city_id BIGINT       NOT NULL
-  ,FOREIGN KEY (city_id) REFERENCES cities (id)
+  ,
+  FOREIGN KEY (city_id) REFERENCES cities (id)
 );
 
 CREATE TABLE aircraft_models (
@@ -124,15 +125,19 @@ CREATE TABLE tariffs_details (
 
 
 CREATE TABLE tickets (
-  id                     BIGINT PRIMARY KEY AUTO_INCREMENT,
-  flight_id              BIGINT        NOT NULL,
-  user_id                BIGINT        NOT NULL,
-  price                  DECIMAL(8, 2) NOT NULL,
-  purchase_offsetdatetime VARCHAR(22)      NOT NULL,
-  has_baggage                BOOLEAN       NOT NULL,
-  has_priority_registration  BOOLEAN       NOT NULL,
-  FOREIGN KEY (flight_id) REFERENCES flights (id),
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  id                          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  flight_id                   BIGINT        NOT NULL,
+  user_id                     BIGINT        NOT NULL,
+  price                       DECIMAL(8, 2) NOT NULL,
+  purchase_offsetdatetime     VARCHAR(22)   NOT NULL,
+  has_baggage                 BOOLEAN       NOT NULL,
+  has_priority_registration   BOOLEAN       NOT NULL,
+  passager_full_name          VARCHAR(101)  NOT NULL,
+  departure_airport_full_name VARCHAR(255)  NOT NULL,
+  arrival_airport_full_name   VARCHAR(255)  NOT NULL,
+  departure_localdatetime     DATETIME      NOT NULL,
+  arrival_localdatetime       DATETIME      NOT NULL,
+  seat_number                 SMALLINT      NOT NULL
 );
 
 

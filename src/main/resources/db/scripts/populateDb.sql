@@ -124,45 +124,125 @@ VALUES
   (10, 50, 2, 7);
 
 INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime,
-                     has_baggage, has_priority_registration)
+                     has_baggage, has_priority_registration,
+                     passager_full_name, departure_airport_full_name, arrival_airport_full_name,
+                     departure_localdatetime, arrival_localdatetime, seat_number)
 VALUES
-  (1, 1, 30, '2017-03-30T07:30+02:00', FALSE, FALSE),
-  (2, 2, 30, '2017-03-23T08:30+02:00', FALSE, FALSE),
-  (2, 3, 83, '2017-03-23T09:30+02:00', TRUE, FALSE),
-  (2, 4, 39, '2017-03-23T10:30+02:00', FALSE, TRUE),
-  (2, 5, 92, '2017-03-23T11:30+02:00', TRUE, TRUE),
-  (3, 2, 30, '2017-03-23T08:30+00:00', FALSE, FALSE),
-  (4, 6, 40, '2017-03-22T08:30+02:00', FALSE, FALSE),
-  (4, 7, 103, '2017-03-22T09:30+02:00', TRUE, FALSE),
-  (5, 6, 40, '2017-03-22T08:30+00:00', FALSE, FALSE),
-  (6, 8, 40, '2017-03-20T08:30+01:00', FALSE, FALSE),
+  (1, 1, 30, '2017-03-30T07:30+02:00', FALSE, FALSE, 'Eduard Eduardov', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-30 10:30', '2017-04-30 12:00', 1),
 
-  (2, 9, 34, '2017-03-23T12:30+02:00', FALSE, FALSE),
-  (2, 10, 35, '2017-03-23T13:30+02:00', FALSE, FALSE),
-  (2, 15, 95, '2017-03-23T14:30+02:00', TRUE, TRUE),
-  (3, 3, 83, '2017-03-23T09:30+00:00', TRUE, FALSE),
-  (3, 4, 39, '2017-03-23T10:30+00:00', FALSE, TRUE),
-  (3, 5, 92, '2017-03-23T11:30+00:00', TRUE, TRUE),
-  (3, 9, 34, '2017-03-23T12:30+00:00', FALSE, FALSE),
-  (4, 11, 49, '2017-03-22T10:30+02:00', FALSE, TRUE),
-  (4, 12, 112, '2017-03-22T11:30+02:00', TRUE, TRUE),
-  (4, 13, 44, '2017-03-22T12:30+02:00', FALSE, FALSE),
-  (4, 14, 45, '2017-03-22T13:30+02:00', FALSE, FALSE),
-  (4, 15, 115, '2017-03-22T14:30+02:00', TRUE, TRUE),
-  (5, 7, 103, '2017-03-22T09:30+00:00', TRUE, FALSE),
-  (5, 11, 49, '2017-03-22T10:30+00:00', FALSE, TRUE),
-  (5, 12, 112, '2017-03-22T11:30+00:00', TRUE, TRUE),
-  (5, 13, 44, '2017-03-22T12:30+00:00', FALSE, FALSE),
-  (5, 14, 45, '2017-03-22T13:30+00:00', FALSE, FALSE),
-  (6, 16, 103, '2017-03-20T09:30+01:00', TRUE, FALSE),
-  (6, 17, 49, '2017-03-20T10:30+01:00', FALSE, TRUE),
-  (6, 18, 112, '2017-03-20T11:30+01:00', TRUE, TRUE),
-  (6, 19, 44, '2017-03-20T12:30+01:00', FALSE, FALSE),
-  (6, 20, 45, '2017-03-20T13:30+01:00', FALSE, FALSE),
-  (7, 8, 40, '2017-03-20T08:30+00:00', FALSE, FALSE),
-  (7, 16, 103, '2017-03-20T09:30+02:00', TRUE, FALSE),
-  (7, 17, 49, '2017-03-20T10:30+02:00', FALSE, TRUE),
-  (7, 18, 112, '2017-03-20T11:30+02:00', TRUE, TRUE),
-  (7, 19, 44, '2017-03-20T12:30+02:00', FALSE, FALSE),
-  (7, 20, 45, '2017-03-20T13:30+02:00', FALSE, FALSE),
-  (7, 21, 115, '2017-03-20T14:30+02:00', TRUE, TRUE);
+  (2, 2, 30, '2017-03-23T08:30+02:00', FALSE, FALSE, 'Ivan Ivanov', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 1),
+
+  (2, 3, 83, '2017-03-23T09:30+02:00', TRUE, FALSE, 'Petr Petrov', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 2),
+
+  (2, 4, 39, '2017-03-23T10:30+02:00', FALSE, TRUE, 'Ibragim Ibragimov', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 3),
+
+  (2, 5, 92, '2017-03-23T11:30+02:00', TRUE, TRUE, 'Victor Victorov', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 4),
+
+  (3, 2, 30, '2017-03-23T08:30+00:00', FALSE, FALSE, 'Ivan Ivanov', 'Heathrow Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 12:30', '2017-04-27 18:00', 1),
+
+  (4, 6, 40, '2017-03-22T08:30+02:00', FALSE, FALSE, 'Robert Black', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 1),
+
+  (4, 7, 103, '2017-03-22T09:30+02:00', TRUE, FALSE, 'Hong Wang', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 2),
+
+  (5, 6, 40, '2017-03-22T08:30+00:00', FALSE, FALSE, 'Robert Black', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 1),
+
+  (6, 8, 40, '2017-03-20T08:30+01:00', FALSE, FALSE, 'Abu Kumar', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 1),
+
+
+  (2, 9, 34, '2017-03-23T12:30+02:00', FALSE, FALSE, 'Viola White', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 5),
+
+  (2, 10, 35, '2017-03-23T13:30+02:00', FALSE, FALSE, 'Roza Rozenko', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 6),
+
+  (2, 15, 95, '2017-03-23T14:30+02:00', TRUE, TRUE, 'Emma Watson', 'Boryspil International Airport (Kyiv)',
+      'Heathrow Airport (London)', '2017-04-23 10:30', '2017-04-23 12:00', 7),
+
+  (3, 3, 83, '2017-03-23T09:30+00:00', TRUE, FALSE, 'Petr Petrov', 'Heathrow Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 12:30', '2017-04-27 18:00', 2),
+
+  (3, 4, 39, '2017-03-23T10:30+00:00', FALSE, TRUE, 'Ibragim Ibragimov', 'Heathrow Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 12:30', '2017-04-27 18:00', 3),
+
+  (3, 5, 92, '2017-03-23T11:30+00:00', TRUE, TRUE, 'Victor Victorov', 'Heathrow Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 12:30', '2017-04-27 18:00', 4),
+
+  (3, 9, 34, '2017-03-23T12:30+00:00', FALSE, FALSE, 'Viola White', 'Heathrow Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 12:30', '2017-04-27 18:00', 5),
+
+  (4, 11, 49, '2017-03-22T10:30+02:00', FALSE, TRUE, 'Moisha Moishev', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 3),
+
+  (4, 12, 112, '2017-03-22T11:30+02:00', TRUE, TRUE, 'Usama Naladan', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 4),
+
+  (4, 13, 44, '2017-03-22T12:30+02:00', FALSE, FALSE, 'Muhammad Ali', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 5),
+
+  (4, 14, 45, '2017-03-22T13:30+02:00', FALSE, FALSE, 'Kim Basinger', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 6),
+
+  (4, 15, 115, '2017-03-22T14:30+02:00', TRUE, TRUE, 'Emma Watson', 'Boryspil International Airport (Kyiv)',
+      'London Luton Airport (London)', '2017-04-22 09:30', '2017-04-22 09:00', 7),
+
+  (5, 7, 103, '2017-03-22T09:30+00:00', TRUE, FALSE, 'Hong Wang', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 2),
+
+  (5, 11, 49, '2017-03-22T10:30+00:00', FALSE, TRUE, 'Moisha Moishev', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 3),
+
+  (5, 12, 112, '2017-03-22T11:30+00:00', TRUE, TRUE, 'Usama Naladan', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 4),
+
+  (5, 13, 44, '2017-03-22T12:30+00:00', FALSE, FALSE, 'Muhammad Ali', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 5),
+
+  (5, 14, 45, '2017-03-22T13:30+00:00', FALSE, FALSE, 'Kim Basinger', 'London Luton Airport (London)',
+      'Boryspil International Airport (Kyiv)', '2017-04-26 13:00', '2017-04-26 18:30', 6),
+
+  (6, 16, 103, '2017-03-20T09:30+01:00', TRUE, FALSE, 'Ron Ronov', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 2),
+
+  (6, 17, 49, '2017-03-20T10:30+01:00', FALSE, TRUE, 'Luke Lukov', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 3),
+
+  (6, 18, 112, '2017-03-20T11:30+01:00', TRUE, TRUE, 'Zack Zackov', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 4),
+
+  (6, 19, 44, '2017-03-20T12:30+01:00', FALSE, FALSE, 'Rock Jonson', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 5),
+
+  (6, 20, 45, '2017-03-20T13:30+01:00', FALSE, FALSE, 'Lil John', 'Leonardo da Vinci International Airport (Rome)',
+      'Boryspil International Airport (Kyiv)', '2017-04-27 14:00', '2017-04-27 16:00', 6),
+
+  (7, 8, 40, '2017-03-20T08:30+00:00', FALSE, FALSE, 'Abu Kumar', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 1),
+
+  (7, 16, 103, '2017-03-20T09:30+02:00', TRUE, FALSE, 'Ron Ronov', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 2),
+
+  (7, 17, 49, '2017-03-20T10:30+02:00', FALSE, TRUE, 'Luke Lukov', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 3),
+
+  (7, 18, 112, '2017-03-20T11:30+02:00', TRUE, TRUE, 'Zack Zackov', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 4),
+
+  (7, 19, 44, '2017-03-20T12:30+02:00', FALSE, FALSE, 'Rock Jonson', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 5),
+
+  (7, 20, 45, '2017-03-20T13:30+02:00', FALSE, FALSE, 'Lil John', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 6),
+
+  (7, 21, 115, '2017-03-20T14:30+02:00', TRUE, TRUE, 'Bruce Brusov', 'Boryspil International Airport (Kyiv)',
+      'Leonardo da Vinci International Airport (Rome)', '2017-04-21 11:00', '2017-04-21 13:00', 7);
+
