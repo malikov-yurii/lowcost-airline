@@ -132,11 +132,11 @@ CREATE TABLE tickets (
   purchase_offsetdatetime     VARCHAR(22)   NOT NULL,
   has_baggage                 BOOLEAN       NOT NULL,
   has_priority_registration   BOOLEAN       NOT NULL,
-  passager_full_name          VARCHAR(101)  NOT NULL,
+  passanger_full_name          VARCHAR(101)  NOT NULL,
   departure_airport_full_name VARCHAR(255)  NOT NULL,
   arrival_airport_full_name   VARCHAR(255)  NOT NULL,
-  departure_localdatetime     DATETIME      NOT NULL,
-  arrival_localdatetime       DATETIME      NOT NULL,
+  departure_offsetdatetime     VARCHAR(22)      NOT NULL,
+  arrival_offsetdatetime       VARCHAR(22)      NOT NULL,
   seat_number                 SMALLINT      NOT NULL
 );
 
