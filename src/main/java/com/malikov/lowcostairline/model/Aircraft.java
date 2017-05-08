@@ -5,11 +5,12 @@ import javax.persistence.*;
 /**
  * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = Aircraft.DELETE, query = "DELETE FROM Aircraft a WHERE a.id=:id"),
         @NamedQuery(name = Aircraft.ALL_SORTED, query = "SELECT a FROM Aircraft a ORDER BY a.id ASC")
 })
+@Entity
 @Table(name = "aircraft")
 public class Aircraft extends NamedEntity {
 

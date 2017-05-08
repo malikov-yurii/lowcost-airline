@@ -6,19 +6,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = Flight.DELETE, query = "DELETE FROM Flight f WHERE f.id=:id"),
         @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC")
 })
+@Entity
 @Table(name = "flights")
-public class Flight extends BaseEntity{
+public class Flight extends BaseEntity {
 
     public static final String DELETE = "Flight.delete";
+
     public static final String ALL_SORTED = "Flight.allSorted";
 
     @OneToOne
@@ -47,7 +50,11 @@ public class Flight extends BaseEntity{
     @Column(name = "max_ticket_base_price")
     private BigDecimal maxTicketBasePrice;
 
-    public Flight(){}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "flight")
+    private List<Ticket> tickets;
+
+    public Flight() {
+    }
 
     public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
         this.departureAirport = departureAirport;
@@ -135,6 +142,14 @@ public class Flight extends BaseEntity{
 
     public void setMaxTicketBasePrice(BigDecimal maxTicketBasePrice) {
         this.maxTicketBasePrice = maxTicketBasePrice;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override

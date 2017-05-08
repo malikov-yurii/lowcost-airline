@@ -14,11 +14,12 @@ import java.util.Set;
 /**
  * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id ASC")
 })
+@Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
 public class User extends NamedEntity {
 
@@ -52,6 +53,9 @@ public class User extends NamedEntity {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Ticket> tickets;
 
 
     public User() {}

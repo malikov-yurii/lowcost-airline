@@ -11,7 +11,8 @@ public interface IService<T> {
 
     void update(T t);
 
-    T get(long id);
+    // TODO: 5/8/2017 Should name them properties or hints
+    T get(long id, String... hintNames);
 
     List<T> getAll();
 

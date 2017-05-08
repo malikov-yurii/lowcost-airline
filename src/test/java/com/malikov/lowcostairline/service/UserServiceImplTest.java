@@ -4,7 +4,6 @@ import com.malikov.lowcostairline.model.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +45,6 @@ public class UserServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(USERS, service.getAll());
     }
 
-    // TODO: 5/6/2017 How to test delete despite constraints? At first I sould delete tickets perhaps
-    @Test(expected = PersistenceException.class)
     public void delete() throws Exception {
         service.delete(USER_2.getId());
         List<User> all = new ArrayList<>(USERS);

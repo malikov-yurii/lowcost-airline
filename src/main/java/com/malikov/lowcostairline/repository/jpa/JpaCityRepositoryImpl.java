@@ -36,7 +36,7 @@ public class JpaCityRepositoryImpl implements ICityRepository {
     }
 
     @Override
-    public City get(long id) {
+    public City get(long id, String... hintNames) {
         return em.find(City.class, id);
     }
 

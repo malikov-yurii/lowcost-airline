@@ -34,9 +34,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User get(long id) {
+    public User get(long id, String... hintNames) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id);
+        return repository.get(id, hintNames);
     }
 
     @Override

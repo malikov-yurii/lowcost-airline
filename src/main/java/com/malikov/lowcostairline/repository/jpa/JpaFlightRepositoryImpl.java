@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yurii Malikov
@@ -36,7 +38,16 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public Flight get(long id) {
+    public Flight get(long id, String... hintNames) {
+        Map<String, Object> hintsMap;
+        // TODO: 5/8/2017 is it correct comparision??
+        if (hintNames != null && hintNames.length != 0) {
+            hintsMap = new HashMap<String, Object>();
+            for (String hintName : hintNames) {
+                hintsMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
+            }
+            return em.find(Flight.class, id, hintsMap);
+        }
         return em.find(Flight.class, id);
     }
 

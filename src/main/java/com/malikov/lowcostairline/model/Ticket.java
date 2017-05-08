@@ -1,6 +1,8 @@
 package com.malikov.lowcostairline.model;
 
 import com.malikov.lowcostairline.util.converters.OffsetDateTimeConverter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -10,23 +12,36 @@ import java.time.OffsetDateTime;
 /**
  * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
         @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t ORDER BY t.id ASC")
 })
+@Entity
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = Ticket.WITH_USER, attributeNodes = {@NamedAttributeNode("user")}),
+        @NamedEntityGraph(name = Ticket.WITH_FLIGHT, attributeNodes = {@NamedAttributeNode("flight")}),
+        @NamedEntityGraph(name = Ticket.WITH_USER_AND_FLIGHT, attributeNodes = {@NamedAttributeNode("user"),
+                @NamedAttributeNode("flight")})
+})
 @Table(name = "tickets")
 public class Ticket extends BaseEntity {
+
+    public static final String WITH_USER = "Ticket.graphWithUser";
+    public static final String WITH_FLIGHT = "Ticket.graphWithFlight";
+    public static final String WITH_USER_AND_FLIGHT = "Ticket.graphWithUserAndFlight";
 
     public static final String DELETE = "Ticket.delete";
     public static final String ALL_SORTED = "Ticket.allSorted";
 
-    @OneToOne
-    @JoinColumn(name = "flight_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Flight flight;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User user;
 
     @Column(name = "price")
@@ -44,7 +59,29 @@ public class Ticket extends BaseEntity {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean hasPriorityRegistration;
 
-    public Ticket(){}
+    // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parse if I need to??? But in a such case I cannot easily add column with additional ticket information
+    @Column(name = "passanger_full_name")
+    private String passangerFullName;
+
+    @Column(name = "departure_airport_full_name")
+    private String departureAirportFullName;
+
+    @Column(name = "arrival_airport_full_name")
+    private String arrivalAirportFullName;
+
+    @Column(name = "departure_offsetdatetime")
+    @Convert(converter = OffsetDateTimeConverter.class)
+    private OffsetDateTime departureOffsetDateTime;
+
+    @Column(name = "arrival_offsetdatetime")
+    @Convert(converter = OffsetDateTimeConverter.class)
+    private OffsetDateTime arrivalOffsetDateTime;
+
+    @Column(name = "seat_number")
+    private Integer seatNumber;
+
+    public Ticket() {
+    }
 
     public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration) {
         this.flight = flight;
@@ -55,7 +92,7 @@ public class Ticket extends BaseEntity {
         this.hasPriorityRegistration = hasPriorityRegistration;
     }
 
-    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration) {
+    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration, Integer seatNumber) {
         super(id);
         this.flight = flight;
         this.user = user;
@@ -63,6 +100,14 @@ public class Ticket extends BaseEntity {
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
         this.hasBaggage = hasBaggage;
         this.hasPriorityRegistration = hasPriorityRegistration;
+        passangerFullName = user.getName() + " " + user.getLastName();
+        departureAirportFullName = flight.getDepartureAirport().getName() + " (" + flight.getDepartureAirport().getCity().getName() + ")";
+        arrivalAirportFullName = flight.getArrivalAirport().getName() + " (" + flight.getArrivalAirport().getCity().getName() + ")";
+        departureOffsetDateTime = OffsetDateTime.of(flight.getDepartureLocalDateTime(),
+                flight.getDepartureAirport().getCity().getZoneId().getRules().getOffset(flight.getDepartureLocalDateTime()));
+        arrivalOffsetDateTime = OffsetDateTime.of(flight.getArrivalLocalDateTime(),
+                flight.getArrivalAirport().getCity().getZoneId().getRules().getOffset(flight.getArrivalLocalDateTime()));
+        this.seatNumber = seatNumber;
     }
 
     public Ticket(Ticket ticket) {
@@ -73,6 +118,12 @@ public class Ticket extends BaseEntity {
         purchaseOffsetDateTime = ticket.getPurchaseOffsetDateTime();
         hasBaggage = ticket.hasBaggage;
         hasPriorityRegistration = ticket.hasPriorityRegistration;
+        passangerFullName = ticket.getPassangerFullName();
+        departureAirportFullName = ticket.getDepartureAirportFullName();
+        arrivalAirportFullName = ticket.getArrivalAirportFullName();
+        departureOffsetDateTime = ticket.getDepartureOffsetDateTime();
+        arrivalOffsetDateTime = ticket.getArrivalOffsetDateTime();
+        seatNumber = ticket.getSeatNumber();
     }
 
     public Flight getFlight() {
@@ -123,6 +174,62 @@ public class Ticket extends BaseEntity {
         this.hasPriorityRegistration = hasPriorityRegistration;
     }
 
+    public Boolean getHasBaggage() {
+        return hasBaggage;
+    }
+
+    public Boolean getHasPriorityRegistration() {
+        return hasPriorityRegistration;
+    }
+
+    public String getPassangerFullName() {
+        return passangerFullName;
+    }
+
+    public void setPassangerFullName(String passangerFullName) {
+        this.passangerFullName = passangerFullName;
+    }
+
+    public String getDepartureAirportFullName() {
+        return departureAirportFullName;
+    }
+
+    public void setDepartureAirportFullName(String departureAirportFullName) {
+        this.departureAirportFullName = departureAirportFullName;
+    }
+
+    public String getArrivalAirportFullName() {
+        return arrivalAirportFullName;
+    }
+
+    public void setArrivalAirportFullName(String arrivalAirportFullName) {
+        this.arrivalAirportFullName = arrivalAirportFullName;
+    }
+
+    public OffsetDateTime getDepartureOffsetDateTime() {
+        return departureOffsetDateTime;
+    }
+
+    public void setDepartureOffsetDateTime(OffsetDateTime departureOffsetDateTime) {
+        this.departureOffsetDateTime = departureOffsetDateTime;
+    }
+
+    public OffsetDateTime getArrivalOffsetDateTime() {
+        return arrivalOffsetDateTime;
+    }
+
+    public void setArrivalOffsetDateTime(OffsetDateTime arrivalOffsetDateTime) {
+        this.arrivalOffsetDateTime = arrivalOffsetDateTime;
+    }
+
+    public Integer getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(Integer seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -156,12 +263,18 @@ public class Ticket extends BaseEntity {
     public String toString() {
         return "Ticket{" +
                 "id=" + getId() +
-                ", flight=" + flight +
-                ", user=" + user +
+//                ", flight=" + (flight != null ? flight : "null")  +
+//                ", user=" + (user != null ? user : "null") +
                 ", price=" + price +
                 ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
                 ", hasBaggage=" + hasBaggage +
                 ", hasPriorityRegistration=" + hasPriorityRegistration +
+                ", passangerFullName=" + passangerFullName +
+                ", departureAirportFullName=" + departureAirportFullName +
+                ", arrivalAirportFullName=" + arrivalAirportFullName +
+                ", departureOffsetDateTime=" + departureOffsetDateTime +
+                ", arrivalOffsetDateTime=" + arrivalOffsetDateTime +
+                ", seatNumber=" + seatNumber +
                 '}';
     }
 }

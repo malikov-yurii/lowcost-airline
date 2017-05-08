@@ -36,7 +36,7 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
     }
 
     @Override
-    public Airport get(long id) {
+    public Airport get(long id, String... hintNames) {
         return em.find(Airport.class, id);
     }
 

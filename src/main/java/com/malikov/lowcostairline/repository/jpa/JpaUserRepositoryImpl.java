@@ -37,7 +37,7 @@ public class JpaUserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public User get(long id) {
+    public User get(long id, String... hintNames) {
         return em.find(User.class, id);
     }
 

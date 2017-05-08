@@ -8,11 +8,12 @@ import java.time.ZoneId;
 /**
   * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = City.DELETE, query = "DELETE FROM City c WHERE c.id=:id"),
         @NamedQuery(name = City.ALL_SORTED, query = "SELECT c FROM City c ORDER BY c.id ASC")
 })
+@Entity
 @Table(name = "cities")
 public class City extends NamedEntity {
 

@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yurii Malikov
@@ -36,7 +38,16 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public Ticket get(long id) {
+    public Ticket get(long id, String... hintNames) {
+        Map<String, Object> hintMap;
+        // TODO: 5/8/2017 is it correct comparision??
+        if (hintNames != null && hintNames.length != 0) {
+            hintMap = new HashMap<String, Object>();
+            for (String hintName : hintNames) {
+                hintMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
+            }
+            return em.find(Ticket.class, id, hintMap);
+        }
         return em.find(Ticket.class, id);
     }
 

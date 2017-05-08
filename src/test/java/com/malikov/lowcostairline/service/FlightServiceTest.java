@@ -4,7 +4,6 @@ import com.malikov.lowcostairline.model.Flight;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,8 +51,6 @@ public class FlightServiceTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(FLIGHTS, service.getAll());
     }
 
-    // TODO: 5/6/2017 How to test delete despite constraints? At first I sould delete planes? perhaps
-    @Test(expected = PersistenceException.class)
     public void delete() throws Exception {
         service.delete(FLIGHT_4.getId());
         MATCHER.assertCollectionEquals(

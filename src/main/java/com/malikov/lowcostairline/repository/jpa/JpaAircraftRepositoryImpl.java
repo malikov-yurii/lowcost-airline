@@ -36,7 +36,7 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
     }
 
     @Override
-    public Aircraft get(long id) {
+    public Aircraft get(long id, String... hintNames) {
         return em.find(Aircraft.class, id);
     }
 

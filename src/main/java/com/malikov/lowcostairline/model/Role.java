@@ -13,6 +13,8 @@ import javax.persistence.Table;
 @AttributeOverride(name = "name", column = @Column(name = "role"))
 public class Role extends NamedEntity{
 
+    // TODO: 5/8/2017 write tests for role dao
+
     public Role() {}
 
     public Role(String name) {

@@ -12,8 +12,9 @@ public interface IGenericRepository<T> {
     // false if not found
     boolean delete(long id);
 
+    // TODO: 5/8/2017 Should name them properties or hints
     // null if not found
-    T get(long id);
+    T get(long id, String... hintNames);
 
     List<T> getAll();
 

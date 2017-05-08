@@ -33,9 +33,9 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     @Override
-    public Ticket get(long id) {
+    public Ticket get(long id, String... hintNames) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id);
+        return repository.get(id, hintNames);
     }
 
     @Override

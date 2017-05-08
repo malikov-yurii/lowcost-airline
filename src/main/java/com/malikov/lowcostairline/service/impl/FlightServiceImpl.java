@@ -33,9 +33,9 @@ public class FlightServiceImpl implements IFlightService {
     }
 
     @Override
-    public Flight get(long id) {
+    public Flight get(long id, String... hintNames) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id);
+        return repository.get(id, hintNames);
     }
 
     @Override

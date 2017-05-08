@@ -7,11 +7,12 @@ import javax.persistence.*;
 /**
  * @author Yurii Malikov
  */
-@Entity
+@SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = AircraftModel.DELETE, query = "DELETE FROM AircraftModel am WHERE am.id=:id"),
         @NamedQuery(name = AircraftModel.ALL_SORTED, query = "SELECT am FROM AircraftModel am ORDER BY am.id ASC")
 })
+@Entity
 @Table(name = "aircraft_models")
 @AttributeOverride(name = "name", column = @Column(name = "model_name"))
 public class AircraftModel extends NamedEntity {
