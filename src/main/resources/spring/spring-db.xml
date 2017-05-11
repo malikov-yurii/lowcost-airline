@@ -11,7 +11,7 @@
 
     <beans profile="mySql">
         <context:property-placeholder
-                location="classpath:db/mysqldb.properties"
+                location="classpath:db/mysqldb.properties,classpath:db/hibernate.properties"
                 system-properties-mode="OVERRIDE"/>
         <bean id="dataSource"
               class="org.apache.tomcat.jdbc.pool.DataSource"
@@ -33,7 +33,7 @@
     </beans>
 
     <beans profile="mySqlTest">
-        <context:property-placeholder location="classpath:db/mysqldbtest.properties"
+        <context:property-placeholder location="classpath:db/mysqldbtest.properties,classpath:db/hibernate.properties"
                                       system-properties-mode="OVERRIDE"/>
         <bean id="dataSource"
               class="org.apache.tomcat.jdbc.pool.DataSource"
@@ -55,9 +55,6 @@
     </beans>
 
     <beans profile="mySql, mySqlTest">
-        <context:property-placeholder location="classpath:db/hibernate.properties"
-                                      system-properties-mode="OVERRIDE"/>
-
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="com.malikov.**.model">
@@ -79,7 +76,7 @@
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
-        <context:component-scan base-package="com.malikov.lowcostairline.repository"/>
+        <context:component-scan base-package="com.malikov.ticketsystem.repository"/>
     </beans>
 
 </beans>

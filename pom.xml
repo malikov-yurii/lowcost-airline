@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.malikov</groupId>
-    <artifactId>lowcostairline</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>ticket-system</artifactId>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <build>
@@ -53,6 +53,8 @@
 
         <spring.version>4.3.2.RELEASE</spring.version>
 
+        <tomcat.version>8.0.33</tomcat.version>
+
     </properties>
 
     <dependencies>
@@ -75,6 +77,20 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <!--Web-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
 
         <!-- Tomcat -->
@@ -130,6 +146,18 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
             <exclusions>
                 <exclusion>

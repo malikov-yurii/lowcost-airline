@@ -1,0 +1,369 @@
+@import url('//use.fontawesome.com/releases/v4.7.0/css/font-awesome-css.min.css'); @font-face {
+    font-family: 'FontAwesome';
+    src: url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.eot');
+    src: url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype'), url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.ttf') format('truetype'), url('//use.fontawesome.com/releases/v4.7.0/fonts/fontawesome-webfont.svg#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.project-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.project-table td {
+    padding: 5px;
+}
+
+.project-id {
+    width: 20px;
+}
+
+.project-client-id {
+    width: 40px;
+}
+
+.project-status {
+    width: 230px;
+}
+
+.project-payment {
+    width: 70px;
+}
+
+.project-client-last-name {
+    width: 100px;
+}
+
+.project-description {
+    width: 250px;
+}
+
+/* LOGIN PAGE */
+.login-page {
+    padding: 30px 0;
+}
+
+.login-info__block {
+    text-align: center;
+}
+
+.login-info {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 14px;
+    border-right: 1px solid;
+}
+
+.login-info:last-child {
+    border-right: 0;
+}
+
+.login-logo {
+    margin: 25px 0 0;
+    font-size: 36px;
+    text-align: center;
+}
+
+.login-block {
+    max-width: 300px;
+    margin: 30px auto 50px;
+}
+
+.login-form {
+    margin: 0 0 15px;
+}
+
+.login-form input {
+    margin: 0 0 7px;
+}
+
+.login-form button {
+    width: 100%;
+}
+
+.login-register {
+    display: block;
+    vertical-align: top;
+    margin: 6px 0 0;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.login-register:hover {
+    text-decoration: none;
+}
+
+.login-register-text {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 25px 0 20px;
+    font-size: 17px;
+}
+
+.login-register-text:before, .login-register-text:after {
+    content: '';
+    display: block;
+    border-top: 1px solid #ccc;
+    flex-grow: 2;
+}
+
+.login-register-text:before {
+    margin-right: 3%;
+}
+
+.login-register-text:after {
+    margin-left: 3%;
+}
+
+.login-footer {
+    padding: 10px 5%;
+    font-size: 18px;
+}
+
+/* HEADER */
+.nav-block {
+    background: #5bc0de;
+}
+
+.navbar-brand {
+    color: #fff;
+}
+
+.navbar-brand:hover {
+    color: #fff;
+    background: hsla(194, 67%, 55%, 1);
+}
+
+.nav-block .btn {
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+    border-radius: 0;
+    line-height: 50px;
+}
+.nav-block .btn:focus {
+    outline: none;
+}
+.nav-block .navbar-form {
+    margin: 0;
+}
+
+.jumbotron {
+    padding: 30px 0;
+}
+
+table.dataTable thead>tr>th[class*="sorting"] {
+    padding-right: 5px;
+}
+
+table.dataTable thead>tr>th[class*="sorting"]:after {
+    content: '';
+}
+
+.project-table>thead tr {
+    background: rgb(57, 140, 199);
+    color: #fff;
+}
+
+.project-table th {
+    padding: 10px 5px;
+    text-align: center;
+    font-weight: normal;
+}
+
+table.datatable {
+    border-collapse: collapse !important;
+}
+
+.project-table>thead th {
+    border: 1px solid rgb(27, 102, 156);
+    border-bottom: 0;
+}
+
+td.child-row {
+    padding: 0 0 50px;
+}
+
+.child-content {
+    padding: 15px;
+    position: relative;
+    z-index: 20;
+    box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.21);
+}
+
+.project-table .parent-row.odd, .project-table .parent-row.odd + .child-row .child-content {
+    background: rgb(200, 227, 235);
+}
+
+.project-table .parent-row.even, .project-table .parent-row.even + .child-row .child-content {
+    background: rgb(226, 232, 237);
+}
+
+.project-table .project-id {
+    width: 24px;
+    text-align: center;
+}
+
+.project-table .project-client-id {
+    width: 45px;
+    text-align: center;
+}
+
+.project-table .order-table-head .project-name {
+    width: 120px;
+}
+
+.project-table .order-table-head .project-description {
+    width: 280px;
+}
+
+.project-table .project-payment {
+    width: 60px;
+    text-align: center;
+}
+
+.project-table .project-client-last-name {
+    width: 97px;
+    text-align: center;
+}
+
+.project-table .project-status {
+    width: 100px;
+}
+.project-table .project-required-skills {
+    width: 200px;
+}
+.parent-row {
+    position: relative;
+    z-index: 10;
+    box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.34);
+}
+.comment-table {
+    table-layout: fixed;
+    width: 100%;
+    margin: 0 0 20px;
+}
+
+.comment-table
+th:first-child {
+    width: calc(100% - 60px);
+    font-weight: bold;
+}
+
+.comment-table
+th:nth-child(2), .comment-table
+th:nth-child(3), .comment-table
+th:nth-child(4) {
+    width: 30px;
+}
+
+.applied-freelancer-table td, .comment-table td {
+    padding: 8px 7px;
+    border-bottom: 1px solid #ccc;
+}
+
+.applied-freelancer-table tbody tr:hover, .comment-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+.btn-project {
+    margin: 5px 0;
+    padding: 4px 4px;
+    font-size: 15px;
+}
+.project-table .parent-row td:nth-last-child(1),
+.project-table .parent-row td:nth-last-child(2),
+.project-table .parent-row td:nth-last-child(3) {
+    text-align: center;
+}
+
+.comment-table .btn {
+    font-size: 19px;
+}
+
+.btn-unblock-comment {
+    color: #13a713;
+}
+.btn-unblock-comment:hover {
+    color: #109b10;
+}
+.btn-block-comment {
+    color: #c60404;
+}
+.btn-block-comment:hover {
+    color: #aa0505;
+}
+.btn-delete-comment {
+    color: #c60404;
+}
+.btn-delete-comment:hover {
+    color: #aa0505;
+}
+.order-table-head th:nth-last-child(1), .order-table-head th:nth-last-child(2), .order-table-head th:nth-last-child(3) {
+     border-right: 0;
+     border-left: 0;
+ }
+
+.applied-freelancer-table {
+    width: 100%;
+    margin: 10px 0 30px;
+}
+.applied-freelancer-table th {
+    font-weight: bold;
+}
+.profile-page {
+    max-width: 500px;
+    margin: 0 auto;
+}
+.profile-page h3 {
+    margin: 10px 0;
+    font-size: 30px;
+    line-height: 1;
+    text-align: center;
+}
+.profile-form label, .profile-form input {
+    display: inline-block;
+    vertical-align: top;
+}
+.profile-form label {
+    width: 30%;
+}
+.profile-form input {
+    width: 65%;
+    margin: 0 0 0 4%;
+}
+.profile-form .table-row {
+    margin: 10px 0 0;
+}
+.profile-submit {
+    float: right;
+    min-width: 200px;
+    width: 65%;
+    margin: 10px auto 0;
+    background: #25a1c5;
+    border: 0;
+    color: #fff;
+    font-size: 19px;
+    line-height: 43px;
+}
+.profile-form:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.profile-form {
+    position: relative;
+    left: -15%;
+}
+.profile-submit:hover {
+    background: #26add4;
+}
+.show-add-new-modal {
+    margin: 7px 0 16px;
+}
