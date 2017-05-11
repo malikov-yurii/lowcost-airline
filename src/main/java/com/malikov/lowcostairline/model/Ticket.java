@@ -238,8 +238,6 @@ public class Ticket extends BaseEntity {
 
         Ticket ticket = (Ticket) o;
 
-        if (flight != null ? !flight.equals(ticket.flight) : ticket.flight != null) return false;
-        if (user != null ? !user.equals(ticket.user) : ticket.user != null) return false;
         if (price != null ? !price.equals(ticket.price) : ticket.price != null) return false;
         if (purchaseOffsetDateTime != null ? !purchaseOffsetDateTime.equals(ticket.purchaseOffsetDateTime) : ticket.purchaseOffsetDateTime != null)
             return false;
@@ -250,8 +248,6 @@ public class Ticket extends BaseEntity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (flight != null ? flight.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (purchaseOffsetDateTime != null ? purchaseOffsetDateTime.hashCode() : 0);
         result = 31 * result + (hasBaggage ? 1 : 0);
@@ -263,8 +259,6 @@ public class Ticket extends BaseEntity {
     public String toString() {
         return "Ticket{" +
                 "id=" + getId() +
-//                ", flight=" + (flight != null ? flight : "null")  +
-//                ", user=" + (user != null ? user : "null") +
                 ", price=" + price +
                 ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
                 ", hasBaggage=" + hasBaggage +

@@ -9,46 +9,77 @@
 
     <tx:annotation-driven/>
 
-    <context:property-placeholder location="classpath:db/mysql.properties" system-properties-mode="OVERRIDE"/>
+    <beans profile="mySql">
+        <context:property-placeholder
+                location="classpath:db/mysqldb.properties"
+                system-properties-mode="OVERRIDE"/>
+        <bean id="dataSource"
+              class="org.apache.tomcat.jdbc.pool.DataSource"
+              p:driverClassName="${jdbc.driver.class}"
+              p:url="${database.url}"
+              p:username="${database.username}"
+              p:password="${database.password}"
+              p:removeAbandoned="true"
+              p:maxWait="20000"
+              p:testWhileIdle="true"
+              p:validationQuery="SELECT 1 FROM users"
+              p:testOnBorrow="true"
+              p:maxActive="10"
+              p:minIdle="2"
+              p:maxIdle="5"
+              p:initialSize="2"
+              p:testOnConnect="true"
+        />
+    </beans>
 
-    <bean id="dataSource"
-          class="org.apache.tomcat.jdbc.pool.DataSource"
-          p:driverClassName="${jdbc.driver.class}"
-          p:url="${database.url}"
-          p:username="${database.username}"
-          p:password="${database.password}"
-          p:removeAbandoned="true"
-          p:maxWait="20000"
-          p:testWhileIdle="true"
-          p:validationQuery="SELECT 1 FROM users"
-          p:testOnBorrow="true"
-          p:maxActive="10"
-          p:minIdle="2"
-          p:maxIdle="5"
-          p:initialSize="2"
-          p:testOnConnect="true"
-    />
+    <beans profile="mySqlTest">
+        <context:property-placeholder location="classpath:db/mysqldbtest.properties"
+                                      system-properties-mode="OVERRIDE"/>
+        <bean id="dataSource"
+              class="org.apache.tomcat.jdbc.pool.DataSource"
+              p:driverClassName="${jdbc.driver.class}"
+              p:url="${database.url}"
+              p:username="${database.username}"
+              p:password="${database.password}"
+              p:removeAbandoned="true"
+              p:maxWait="20000"
+              p:testWhileIdle="true"
+              p:validationQuery="SELECT 1 FROM users"
+              p:testOnBorrow="true"
+              p:maxActive="10"
+              p:minIdle="2"
+              p:maxIdle="5"
+              p:initialSize="2"
+              p:testOnConnect="true"
+        />
+    </beans>
 
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:dataSource-ref="dataSource"
-          p:packagesToScan="com.malikov.**.model">
-        <property name="jpaPropertyMap">
-            <map>
-                <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
-                <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
-            </map>
-        </property>
+    <beans profile="mySql, mySqlTest">
+        <context:property-placeholder location="classpath:db/hibernate.properties"
+                                      system-properties-mode="OVERRIDE"/>
 
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-                  p:showSql="${jpa.showSql}">
-            </bean>
-        </property>
-    </bean>
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+              p:dataSource-ref="dataSource"
+              p:packagesToScan="com.malikov.**.model">
+            <property name="jpaPropertyMap">
+                <map>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}"
+                           value="${hibernate.use_sql_comments}"/>
+                </map>
+            </property>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
-          p:entityManagerFactory-ref="entityManagerFactory"/>
+            <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                      p:showSql="${jpa.showSql}">
+                </bean>
+            </property>
+        </bean>
 
-    <context:component-scan base-package="com.malikov.lowcostairline.repository"/>
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+              p:entityManagerFactory-ref="entityManagerFactory"/>
+
+        <context:component-scan base-package="com.malikov.lowcostairline.repository"/>
+    </beans>
 
 </beans>
