@@ -9,6 +9,8 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
+
 /**
  * @author Yurii Malikov
  */
@@ -19,33 +21,46 @@ public class TicketServiceImpl implements ITicketService {
     private ITicketRepository repository;
 
     @Override
-    public Ticket save(Ticket ticket) {
+    public Ticket save(Ticket ticket, long userId) {
         Assert.notNull(ticket, "ticket should not be null");
-        // TODO: 5/5/2017 prepare ticket to save
-        return repository.save(ticket);
+        return repository.save(ticket, userId);
     }
 
     @Override
-    public void update(Ticket ticket) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save ticket
+    public Ticket update(Ticket ticket, long userId) {
+        // TODO: 5/5/2017 get rid of message  duplicating
         Assert.notNull(ticket, "ticket should not be null");
-        repository.save(ticket);
+        return checkNotFoundWithId(repository.save(ticket, userId), ticket.getId());
     }
 
     @Override
-    public Ticket get(long id, String... hintNames) {
-        // TODO: 5/5/2017 check not found with id
-        return repository.get(id, hintNames);
+    public Ticket get(long id, long userId) {
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override
-    public List<Ticket> getAll() {
-        return repository.getAll();
+    public Ticket getWithUser(long id, long userId) {
+        return checkNotFoundWithId(repository.get(id, userId, Ticket.WITH_USER), id);
     }
 
     @Override
-    public void delete(long id) {
-        repository.delete(id);
+    public Ticket getWithFlight(long id, long userId) {
+        return checkNotFoundWithId(repository.get(id, userId, Ticket.WITH_FLIGHT), id);
+    }
+
+    @Override
+    public Ticket getWithUserAndFlight(long id, long userId) {
+        return checkNotFoundWithId(repository.get(id, userId, Ticket.WITH_USER_AND_FLIGHT), id);
+    }
+
+    @Override
+    public void delete(long id, long userId) {
+        checkNotFoundWithId(repository.delete(id, userId), id);
+    }
+
+    @Override
+    public List<Ticket> getAll(long userId) {
+        return repository.getAll(userId);
     }
 
 }

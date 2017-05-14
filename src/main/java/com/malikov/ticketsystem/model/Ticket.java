@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
  */
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
-        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
-        @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t ORDER BY t.id ASC")
+        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id AND t.user.id=:userId"),
+        @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC")
 })
 @Entity
 @NamedEntityGraphs({

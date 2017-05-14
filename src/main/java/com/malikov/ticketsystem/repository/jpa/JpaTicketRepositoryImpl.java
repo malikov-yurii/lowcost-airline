@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Ticket;
+import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,12 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     protected EntityManager em;
     
     @Override
-    public Ticket save(Ticket ticket) {
+    public Ticket save(Ticket ticket, long userId) {
+        if (!ticket.isNew() && get(ticket.getId(), userId) == null) {
+            return null;
+        }
+
+        ticket.setUser(em.getReference(User.class, userId));
         if (ticket.isNew()){
             em.persist((ticket));
             return ticket;
@@ -33,27 +39,35 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public boolean delete(long id) {
-        return em.createNamedQuery(Ticket.DELETE).setParameter("id", id).executeUpdate() != 0;
+    public boolean delete(long id, long userId) {
+        return em.createNamedQuery(Ticket.DELETE)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .executeUpdate() != 0;
     }
 
     @Override
-    public Ticket get(long id, String... hintNames) {
+    public Ticket get(long id, long userId, String... hintNames) {
         Map<String, Object> hintMap;
+        Ticket ticket;
         // TODO: 5/8/2017 is it correct comparision??
         if (hintNames != null && hintNames.length != 0) {
             hintMap = new HashMap<String, Object>();
             for (String hintName : hintNames) {
                 hintMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
             }
-            return em.find(Ticket.class, id, hintMap);
+            ticket = em.find(Ticket.class, id, hintMap);
+        } else {
+            ticket = em.find(Ticket.class, id);
         }
-        return em.find(Ticket.class, id);
+        return ticket != null && ticket.getUser().getId() == userId ? ticket : null;
     }
 
     @Override
-    public List<Ticket> getAll() {
-        return em.createNamedQuery(Ticket.ALL_SORTED, Ticket.class).getResultList();
+    public List<Ticket> getAll(long userId) {
+        return em.createNamedQuery(Ticket.ALL_SORTED, Ticket.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
 }

@@ -1,6 +1,8 @@
 package com.malikov.ticketsystem.service;
 
 import com.malikov.ticketsystem.Profiles;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,5 +29,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class AbstractServiceTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServiceTest.class);
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
 }
