@@ -1,5 +1,7 @@
 package com.malikov.ticketsystem.model;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "roles")
 @AttributeOverride(name = "name", column = @Column(name = "role"))
-public class Role extends NamedEntity{
+public class Role extends NamedEntity implements GrantedAuthority{
 
     // TODO: 5/8/2017 write tests for role dao
 
@@ -28,5 +30,10 @@ public class Role extends NamedEntity{
     @Override
     public String toString() {
         return "Role{" + getName() + "}";
+    }
+
+    @Override
+    public String getAuthority() {
+        return getName();
     }
 }

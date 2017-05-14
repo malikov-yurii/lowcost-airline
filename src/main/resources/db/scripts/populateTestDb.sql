@@ -29,14 +29,14 @@ ALTER TABLE tickets
   AUTO_INCREMENT 1;
 
 INSERT INTO users (name, last_name, email, password, phone_number) VALUES
-  ('Eduard', 'Eduardov', 'eduardov@gmail.com', '1111', '+380671234567'),
-  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '1111', '+380661234567'),
-  ('Petr', 'Petrov', 'petrov@gmail.com', '1111', '+380911234567'),
-  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '1111', '+380921234567'),
-  ('Victor', 'Victorov', 'victorov@gmail.com', '1111', '+380931234567'),
-  ('Robert', 'Black', 'black@gmail.com', '1111', '+380941234567'),
-  ('Hong', 'Wang', 'wang@gmail.com', '1111', '+380951234567'),
-  ('Abu', 'Kumar', 'kumar@gmail.com', '1111', '+380961234567');
+  ('Eduard', 'Eduardov', 'eduardov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380671234567'),
+  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380661234567'),
+  ('Petr', 'Petrov', 'petrov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380911234567'),
+  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380921234567'),
+  ('Victor', 'Victorov', 'victorov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380931234567'),
+  ('Robert', 'Black', 'black@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380941234567'),
+  ('Hong', 'Wang', 'wang@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380951234567'),
+  ('Abu', 'Kumar', 'kumar@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380961234567');
 
 INSERT INTO roles (role) VALUES
   ('USER'),

@@ -17,7 +17,8 @@ import java.util.Set;
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id ASC")
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id ASC"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u WHERE u.email=:email")
 })
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
@@ -25,6 +26,7 @@ public class User extends NamedEntity {
 
     public static final String DELETE = "User.delete";
     public static final String ALL_SORTED = "User.allSorted";
+    public static final String BY_EMAIL = "User.byEmail";
 
     @NotBlank
     @Column(name = "last_name", nullable = false)
