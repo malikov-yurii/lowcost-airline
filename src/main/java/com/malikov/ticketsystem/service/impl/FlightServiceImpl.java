@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,14 +34,26 @@ public class FlightServiceImpl implements IFlightService {
     }
 
     @Override
-    public Flight get(long id, String... hintNames) {
+    public Flight get(long id) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id, hintNames);
+        return repository.get(id);
     }
 
     @Override
-    public List<Flight> getAll() {
-        return repository.getAll();
+    public Flight getWithTickets(long id) {
+        // TODO: 5/5/2017 check not found with id
+        return repository.get(id, Flight.WITH_TICKETS);
+    }
+
+    //@Override
+    //public List<Flight> getAll() {
+    //    return repository.getAll();
+    //}
+
+    @Override
+    public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {
+        // TODO: 5/15/2017 Should I ensure that airports with id exists by attempt to get reference ??
+        return repository.getAllBetween(departureAirportId, arrivalAirportId, fromUtcDateTime, toUtcDateTime);
     }
 
     @Override

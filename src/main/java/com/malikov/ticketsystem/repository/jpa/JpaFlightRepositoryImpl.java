@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,18 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         return em.find(Flight.class, id);
     }
 
-    @Override
-    public List<Flight> getAll() {
-        return em.createNamedQuery(Flight.ALL_SORTED, Flight.class).getResultList();
-    }
+    //@Override
+    //public List<Flight> getAll() {
+    //    return em.createNamedQuery(Flight.ALL_SORTED, Flight.class).getResultList();
+    //}
 
+    @Override
+    public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {
+        return em.createNamedQuery(Flight.ALL_BETWEEN, Flight.class)
+                .setParameter("departureAirportId", departureAirportId)
+                .setParameter("arrivalAirportId", arrivalAirportId)
+                .setParameter("fromUtcDateTime", fromUtcDateTime)
+                .setParameter("toUtcDateTime", toUtcDateTime)
+                .getResultList();
+    }
 }

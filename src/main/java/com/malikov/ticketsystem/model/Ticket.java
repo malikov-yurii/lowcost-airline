@@ -1,6 +1,6 @@
 package com.malikov.ticketsystem.model;
 
-import com.malikov.ticketsystem.util.converters.OffsetDateTimeConverter;
+import com.malikov.ticketsystem.util.converter.OffsetDateTimeConverter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * @author Yurii Malikov
@@ -103,10 +104,10 @@ public class Ticket extends BaseEntity {
         passangerFullName = user.getName() + " " + user.getLastName();
         departureAirportFullName = flight.getDepartureAirport().getName() + " (" + flight.getDepartureAirport().getCity().getName() + ")";
         arrivalAirportFullName = flight.getArrivalAirport().getName() + " (" + flight.getArrivalAirport().getCity().getName() + ")";
-        departureOffsetDateTime = OffsetDateTime.of(flight.getDepartureLocalDateTime(),
-                flight.getDepartureAirport().getCity().getZoneId().getRules().getOffset(flight.getDepartureLocalDateTime()));
-        arrivalOffsetDateTime = OffsetDateTime.of(flight.getArrivalLocalDateTime(),
-                flight.getArrivalAirport().getCity().getZoneId().getRules().getOffset(flight.getArrivalLocalDateTime()));
+        departureOffsetDateTime = OffsetDateTime.ofInstant(flight.getDepartureUtcDateTime().toInstant(ZoneOffset.UTC),
+                flight.getDepartureAirport().getCity().getZoneId());
+        arrivalOffsetDateTime = OffsetDateTime.ofInstant(flight.getUtcLocalDateTime().toInstant(ZoneOffset.UTC),
+                flight.getArrivalAirport().getCity().getZoneId());
         this.seatNumber = seatNumber;
     }
 

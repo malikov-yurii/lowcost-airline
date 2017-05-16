@@ -1,6 +1,6 @@
 package com.malikov.ticketsystem.model;
 
-import com.malikov.ticketsystem.util.converters.ZoneIdConverter;
+import com.malikov.ticketsystem.util.converter.ZoneIdConverter;
 
 import javax.persistence.*;
 import java.time.ZoneId;

@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.util.converters;
+package com.malikov.ticketsystem.util.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

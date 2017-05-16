@@ -1,6 +1,8 @@
-package com.malikov.ticketsystem.service;
+package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.User;
+import com.malikov.ticketsystem.service.AbstractServiceTest;
+import com.malikov.ticketsystem.service.IUserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

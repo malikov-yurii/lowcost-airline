@@ -106,17 +106,17 @@ VALUES
   ('B767-1', 2),
   ('B767-2', 2);
 
-INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_localdatetime,
-                     arrival_localdatetime, start_ticket_base_price, max_ticket_base_price)
+INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_utc_datetime,
+                     arrival_utc_datetime, start_ticket_base_price, max_ticket_base_price)
 VALUES
-  (1, 2, 1, '2017-04-30 10:30', '2017-04-30 12:00', 30, 50),
-  (1, 2, 1, '2017-04-23 10:30', '2017-04-23 12:00', 30, 50),
-  (2, 1, 1, '2017-04-27 12:30', '2017-04-27 18:00', 30, 50),
-  (1, 3, 2, '2017-04-22 09:30', '2017-04-22 09:00', 40, 60),
-  (3, 1, 2, '2017-04-26 13:00', '2017-04-26 18:30', 40, 60),
-  (4, 1, 3, '2017-04-27 14:00', '2017-04-27 16:00', 20, 40),
+  (1, 2, 1, '2017-04-30 07:30', '2017-04-30 11:00', 30, 50),
+  (1, 2, 1, '2017-04-23 07:30', '2017-04-23 11:00', 30, 50),
+  (2, 1, 1, '2017-04-27 11:30', '2017-04-27 15:00', 30, 50),
+  (1, 3, 2, '2017-04-22 06:30', '2017-04-22 08:00', 40, 60),
+  (3, 1, 2, '2017-04-26 12:00', '2017-04-26 15:30', 40, 60),
+  (4, 1, 3, '2017-04-27 12:00', '2017-04-27 13:00', 20, 40),
 
-  (1, 4, 3, '2017-04-21 11:00', '2017-04-21 13:00', 20, 40);
+  (1, 4, 3, '2017-04-21 08:00', '2017-04-21 11:00', 20, 40);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)

@@ -14,15 +14,20 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = Flight.DELETE, query = "DELETE FROM Flight f WHERE f.id=:id"),
-        @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC")
+        @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC"),
+        @NamedQuery(name = Flight.ALL_BETWEEN, query = "SELECT f FROM Flight f WHERE departureAirport.id=:departureAirportId AND arrivalAirport.id=:arrivalAirportId AND (f.departureUtcDateTime BETWEEN :fromUtcDateTime AND :toUtcDateTime) ORDER BY f.id ASC")
 })
 @Entity
+@NamedEntityGraph(name = Flight.WITH_TICKETS, attributeNodes = {@NamedAttributeNode("tickets")})
 @Table(name = "flights")
 public class Flight extends BaseEntity {
 
     public static final String DELETE = "Flight.delete";
-
     public static final String ALL_SORTED = "Flight.allSorted";
+    public static final String ALL_BETWEEN = "Flight.allBetween";
+
+    public static final String WITH_TICKETS = "Flight.withTickets";
+
 
     @OneToOne
     @JoinColumn(name = "departure_airport_id")
@@ -36,13 +41,13 @@ public class Flight extends BaseEntity {
     @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 
-    @Column(name = "departure_localdatetime")
+    @Column(name = "departure_utc_datetime")
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    private LocalDateTime departureLocalDateTime;
+    private LocalDateTime departureUtcDateTime;
 
-    @Column(name = "arrival_localdatetime")
+    @Column(name = "arrival_utc_datetime")
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    private LocalDateTime arrivalLocalDateTime;
+    private LocalDateTime arrivalUtcDateTime;
 
     @Column(name = "start_ticket_base_price")
     private BigDecimal startTicketBasePrice;
@@ -56,25 +61,39 @@ public class Flight extends BaseEntity {
     public Flight() {
     }
 
-    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
-        this.departureLocalDateTime = departureLocalDateTime;
-        this.arrivalLocalDateTime = arrivalLocalDateTime;
+        this.departureUtcDateTime = departureUtcDateTime;
+        this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.startTicketBasePrice = startTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
-    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
         super(id);
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
-        this.departureLocalDateTime = departureLocalDateTime;
-        this.arrivalLocalDateTime = arrivalLocalDateTime;
+        this.departureUtcDateTime = departureUtcDateTime;
+        this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.startTicketBasePrice = startTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
+    }
+
+    // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice, List<Ticket> tickets) {
+        super(id);
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.aircraft = aircraft;
+        this.departureUtcDateTime = departureUtcDateTime;
+        this.arrivalUtcDateTime = arrivalUtcDateTime;
+        this.startTicketBasePrice = startTicketBasePrice;
+        this.maxTicketBasePrice = maxTicketBasePrice;
+
+        this.tickets = tickets;
     }
 
     public Flight(Flight flight) {
@@ -82,26 +101,26 @@ public class Flight extends BaseEntity {
         departureAirport = flight.getDepartureAirport();
         arrivalAirport = flight.getArrivalAirport();
         aircraft = flight.getAircraft();
-        departureLocalDateTime = flight.getDepartureLocalDateTime();
-        arrivalLocalDateTime = flight.getArrivalLocalDateTime();
+        departureUtcDateTime = flight.getDepartureUtcDateTime();
+        arrivalUtcDateTime = flight.getUtcLocalDateTime();
         startTicketBasePrice = flight.getStartTicketBasePrice();
         maxTicketBasePrice = flight.getMaxTicketBasePrice();
     }
 
-    public LocalDateTime getDepartureLocalDateTime() {
-        return departureLocalDateTime;
+    public LocalDateTime getDepartureUtcDateTime() {
+        return departureUtcDateTime;
     }
 
-    public void setDepartureLocalDateTime(LocalDateTime departureLocalDateTime) {
-        this.departureLocalDateTime = departureLocalDateTime;
+    public void setDepartureUtcDateTime(LocalDateTime departureUtcDateTime) {
+        this.departureUtcDateTime = departureUtcDateTime;
     }
 
-    public LocalDateTime getArrivalLocalDateTime() {
-        return arrivalLocalDateTime;
+    public LocalDateTime getUtcLocalDateTime() {
+        return arrivalUtcDateTime;
     }
 
-    public void setArrivalLocalDateTime(LocalDateTime arrivalLocalDateTime) {
-        this.arrivalLocalDateTime = arrivalLocalDateTime;
+    public void setArrivalLocalDateTime(LocalDateTime arrivalUtcDateTime) {
+        this.arrivalUtcDateTime = arrivalUtcDateTime;
     }
 
     public Airport getDepartureAirport() {
@@ -148,6 +167,7 @@ public class Flight extends BaseEntity {
         return tickets;
     }
 
+    // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
@@ -160,9 +180,9 @@ public class Flight extends BaseEntity {
 
         Flight flight = (Flight) o;
 
-        if (departureLocalDateTime != null ? !departureLocalDateTime.equals(flight.departureLocalDateTime) : flight.departureLocalDateTime != null)
+        if (departureUtcDateTime != null ? !departureUtcDateTime.equals(flight.departureUtcDateTime) : flight.departureUtcDateTime != null)
             return false;
-        if (arrivalLocalDateTime != null ? !arrivalLocalDateTime.equals(flight.arrivalLocalDateTime) : flight.arrivalLocalDateTime != null)
+        if (arrivalUtcDateTime != null ? !arrivalUtcDateTime.equals(flight.arrivalUtcDateTime) : flight.arrivalUtcDateTime != null)
             return false;
         if (departureAirport != null ? !departureAirport.equals(flight.departureAirport) : flight.departureAirport != null)
             return false;
@@ -177,8 +197,8 @@ public class Flight extends BaseEntity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (departureLocalDateTime != null ? departureLocalDateTime.hashCode() : 0);
-        result = 31 * result + (arrivalLocalDateTime != null ? arrivalLocalDateTime.hashCode() : 0);
+        result = 31 * result + (departureUtcDateTime != null ? departureUtcDateTime.hashCode() : 0);
+        result = 31 * result + (arrivalUtcDateTime != null ? arrivalUtcDateTime.hashCode() : 0);
         result = 31 * result + (departureAirport != null ? departureAirport.hashCode() : 0);
         result = 31 * result + (arrivalAirport != null ? arrivalAirport.hashCode() : 0);
         result = 31 * result + (aircraft != null ? aircraft.hashCode() : 0);
@@ -191,8 +211,8 @@ public class Flight extends BaseEntity {
     public String toString() {
         return "Flight{" +
                 "id=" + getId() +
-                ", departureLocalDateTime=" + departureLocalDateTime +
-                ", arrivalLocalDateTime=" + arrivalLocalDateTime +
+                ", departureUtcDateTime=" + departureUtcDateTime +
+                ", arrivalUtcDateTime=" + arrivalUtcDateTime +
                 ", departureAirport=" + departureAirport +
                 ", arrivalAirport=" + arrivalAirport +
                 ", aircraft=" + aircraft +
