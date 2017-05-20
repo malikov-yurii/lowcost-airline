@@ -25,7 +25,7 @@ public class UserTestData {
 
 
     public static final User USER_1 = new User(1L, "Eduard", "Eduardov",
-            "eduardov@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380671234567", ROLE_USER);
+            "user@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380671234567", ROLE_USER);
 
     public static final User USER_2 = new User(2L, "Ivan", "Ivanov",
             "ivanov@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380661234567", ROLE_USER);
@@ -46,7 +46,7 @@ public class UserTestData {
             "wang@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380951234567", ROLE_USER, ROLE_ADMIN);
 
     public static final User ADMIN_2 = new User(8L, "Abu", "Kumar",
-            "kumar@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380961234567", ROLE_USER, ROLE_ADMIN);
+            "admin@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380961234567", ROLE_USER, ROLE_ADMIN);
 
     public static final List USERS = Arrays.asList(USER_1, USER_2, USER_3, USER_4,
             USER_5, USER_6, ADMIN_1, ADMIN_2);

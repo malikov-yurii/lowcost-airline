@@ -29,14 +29,14 @@ ALTER TABLE tickets
   AUTO_INCREMENT 1;
 
 INSERT INTO users (name, last_name, email, password, phone_number) VALUES
-  ('Eduard', 'Eduardov', 'eduardov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380671234567'),
+  ('Eduard', 'Eduardov', 'user@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380671234567'),
   ('Ivan', 'Ivanov', 'ivanov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380661234567'),
   ('Petr', 'Petrov', 'petrov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380911234567'),
   ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380921234567'),
   ('Victor', 'Victorov', 'victorov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380931234567'),
   ('Robert', 'Black', 'black@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380941234567'),
   ('Hong', 'Wang', 'wang@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380951234567'),
-  ('Abu', 'Kumar', 'kumar@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380961234567'),
+  ('Abu', 'Kumar', 'admin@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380961234567'),
 
   ('Viola', 'White', 'white@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380971234567'),
   ('Roza', 'Rozenko', 'rozenko@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380981234567'),
@@ -107,7 +107,7 @@ VALUES
   ('B767-2', 2);
 
 INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_utc_datetime,
-                     arrival_utc_datetime, start_ticket_base_price, max_ticket_base_price)
+                     arrival_utc_datetime, initial_ticket_base_price, max_ticket_base_price)
 VALUES
   (1, 2, 1, '2017-04-30 07:30', '2017-04-30 11:00', 30, 50),
   (1, 2, 1, '2017-04-23 07:30', '2017-04-23 11:00', 30, 50),

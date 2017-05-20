@@ -52,10 +52,10 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         return em.find(Flight.class, id);
     }
 
-    //@Override
-    //public List<Flight> getAll() {
-    //    return em.createNamedQuery(Flight.ALL_SORTED, Flight.class).getResultList();
-    //}
+    @Override
+    public List<Flight> getAll() {
+        return em.createNamedQuery(Flight.ALL_SORTED, Flight.class).getResultList();
+    }
 
     @Override
     public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {

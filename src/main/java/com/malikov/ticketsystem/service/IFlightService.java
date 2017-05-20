@@ -19,7 +19,7 @@ public interface IFlightService {
 
     Flight getWithTickets(long id);
 
-    //List<Flight> getAll();
+    List<Flight> getAll();
 
     List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime);
 

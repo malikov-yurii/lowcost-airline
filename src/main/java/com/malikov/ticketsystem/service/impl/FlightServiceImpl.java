@@ -45,10 +45,10 @@ public class FlightServiceImpl implements IFlightService {
         return repository.get(id, Flight.WITH_TICKETS);
     }
 
-    //@Override
-    //public List<Flight> getAll() {
-    //    return repository.getAll();
-    //}
+    @Override
+    public List<Flight> getAll() {
+        return repository.getAll();
+    }
 
     @Override
     public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {

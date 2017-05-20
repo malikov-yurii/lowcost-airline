@@ -49,8 +49,8 @@ public class Flight extends BaseEntity {
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalUtcDateTime;
 
-    @Column(name = "start_ticket_base_price")
-    private BigDecimal startTicketBasePrice;
+    @Column(name = "initial_ticket_base_price")
+    private BigDecimal initialTicketBasePrice;
 
     @Column(name = "max_ticket_base_price")
     private BigDecimal maxTicketBasePrice;
@@ -61,36 +61,36 @@ public class Flight extends BaseEntity {
     public Flight() {
     }
 
-    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
         this.departureUtcDateTime = departureUtcDateTime;
         this.arrivalUtcDateTime = arrivalUtcDateTime;
-        this.startTicketBasePrice = startTicketBasePrice;
+        this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
-    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
         super(id);
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
         this.departureUtcDateTime = departureUtcDateTime;
         this.arrivalUtcDateTime = arrivalUtcDateTime;
-        this.startTicketBasePrice = startTicketBasePrice;
+        this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
     // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
-    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal startTicketBasePrice, BigDecimal maxTicketBasePrice, List<Ticket> tickets) {
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice, List<Ticket> tickets) {
         super(id);
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
         this.departureUtcDateTime = departureUtcDateTime;
         this.arrivalUtcDateTime = arrivalUtcDateTime;
-        this.startTicketBasePrice = startTicketBasePrice;
+        this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
 
         this.tickets = tickets;
@@ -103,7 +103,7 @@ public class Flight extends BaseEntity {
         aircraft = flight.getAircraft();
         departureUtcDateTime = flight.getDepartureUtcDateTime();
         arrivalUtcDateTime = flight.getUtcLocalDateTime();
-        startTicketBasePrice = flight.getStartTicketBasePrice();
+        initialTicketBasePrice = flight.getInitialTicketBasePrice();
         maxTicketBasePrice = flight.getMaxTicketBasePrice();
     }
 
@@ -113,6 +113,14 @@ public class Flight extends BaseEntity {
 
     public void setDepartureUtcDateTime(LocalDateTime departureUtcDateTime) {
         this.departureUtcDateTime = departureUtcDateTime;
+    }
+
+    public LocalDateTime getArrivalUtcDateTime() {
+        return arrivalUtcDateTime;
+    }
+
+    public void setArrivalUtcDateTime(LocalDateTime arrivalUtcDateTime) {
+        this.arrivalUtcDateTime = arrivalUtcDateTime;
     }
 
     public LocalDateTime getUtcLocalDateTime() {
@@ -147,12 +155,12 @@ public class Flight extends BaseEntity {
         this.aircraft = aircraft;
     }
 
-    public BigDecimal getStartTicketBasePrice() {
-        return startTicketBasePrice;
+    public BigDecimal getInitialTicketBasePrice() {
+        return initialTicketBasePrice;
     }
 
-    public void setStartTicketBasePrice(BigDecimal startTicketBasePrice) {
-        this.startTicketBasePrice = startTicketBasePrice;
+    public void setInitialTicketBasePrice(BigDecimal initialTicketBasePrice) {
+        this.initialTicketBasePrice = initialTicketBasePrice;
     }
 
     public BigDecimal getMaxTicketBasePrice() {
@@ -189,7 +197,7 @@ public class Flight extends BaseEntity {
         if (arrivalAirport != null ? !arrivalAirport.equals(flight.arrivalAirport) : flight.arrivalAirport != null)
             return false;
         if (aircraft != null ? !aircraft.equals(flight.aircraft) : flight.aircraft != null) return false;
-        if (startTicketBasePrice != null ? !startTicketBasePrice.equals(flight.startTicketBasePrice) : flight.startTicketBasePrice != null)
+        if (initialTicketBasePrice != null ? !initialTicketBasePrice.equals(flight.initialTicketBasePrice) : flight.initialTicketBasePrice != null)
             return false;
         return maxTicketBasePrice != null ? maxTicketBasePrice.equals(flight.maxTicketBasePrice) : flight.maxTicketBasePrice == null;
     }
@@ -202,7 +210,7 @@ public class Flight extends BaseEntity {
         result = 31 * result + (departureAirport != null ? departureAirport.hashCode() : 0);
         result = 31 * result + (arrivalAirport != null ? arrivalAirport.hashCode() : 0);
         result = 31 * result + (aircraft != null ? aircraft.hashCode() : 0);
-        result = 31 * result + (startTicketBasePrice != null ? startTicketBasePrice.hashCode() : 0);
+        result = 31 * result + (initialTicketBasePrice != null ? initialTicketBasePrice.hashCode() : 0);
         result = 31 * result + (maxTicketBasePrice != null ? maxTicketBasePrice.hashCode() : 0);
         return result;
     }
@@ -216,7 +224,7 @@ public class Flight extends BaseEntity {
                 ", departureAirport=" + departureAirport +
                 ", arrivalAirport=" + arrivalAirport +
                 ", aircraft=" + aircraft +
-                ", startTicketBasePrice=" + startTicketBasePrice +
+                ", initialTicketBasePrice=" + initialTicketBasePrice +
                 ", maxTicketBasePrice=" + maxTicketBasePrice +
                 '}';
     }

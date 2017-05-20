@@ -55,7 +55,7 @@ public class FlightTestData {
                             && Objects.equals(expected.getArrivalAirport(), actual.getArrivalAirport())
                             && Objects.equals(expected.getAircraft(), actual.getAircraft())
                             && Objects.equals(expected.getDepartureUtcDateTime(), actual.getDepartureUtcDateTime())
-                            && Objects.equals(expected.getStartTicketBasePrice(), actual.getStartTicketBasePrice())
+                            && Objects.equals(expected.getInitialTicketBasePrice(), actual.getInitialTicketBasePrice())
                             && Objects.equals(expected.getMaxTicketBasePrice(), actual.getMaxTicketBasePrice())));
 
     public static final ModelMatcher<Flight> FLIGHT_WITH_TICKETS_MATCHER = ModelMatcher.of(Flight.class,
@@ -65,7 +65,7 @@ public class FlightTestData {
                             && Objects.equals(expected.getArrivalAirport(), actual.getArrivalAirport())
                             && Objects.equals(expected.getAircraft(), actual.getAircraft())
                             && Objects.equals(expected.getDepartureUtcDateTime(), actual.getDepartureUtcDateTime())
-                            && Objects.equals(expected.getStartTicketBasePrice(), actual.getStartTicketBasePrice())
+                            && Objects.equals(expected.getInitialTicketBasePrice(), actual.getInitialTicketBasePrice())
                             && Objects.equals(expected.getMaxTicketBasePrice(), actual.getMaxTicketBasePrice())
                             && Objects.equals(expected.getTickets(), actual.getTickets())));
 

@@ -19,7 +19,7 @@ public interface IFlightRepository {
     // null if not found
     Flight get(long id, String... hintNames);
 
-    //List<Flight> getAll();
+    List<Flight> getAll();
 
     List<Flight> getAllBetween(Long fromAirportId, Long toAirportId, LocalDateTime fromUtclDateTime, LocalDateTime toUtcDateTime);
 

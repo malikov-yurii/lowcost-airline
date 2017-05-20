@@ -20,12 +20,15 @@ public class RootController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String root(ModelMap model,
-                        @RequestParam(value = "error", required = false) boolean error,
-                        @RequestParam(value = "message", required = false) String message) {
+                       @RequestParam(value = "error", required = false) boolean error,
+                       @RequestParam(value = "message", required = false) String message) {
         model.put("error", error);
         model.put("message", message);
         return "login";
     }
 
-
+    @RequestMapping(value = "/flights", method = RequestMethod.GET)
+    public String flights(){
+        return "flights";
+    }
 }

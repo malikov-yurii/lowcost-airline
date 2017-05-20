@@ -39,13 +39,11 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         return get().id;
     }
 
-
-    // TODO: 5/14/2017 suppress warning?
     @Override
     public String toString() {
         return "AuthorizedUser{" +
                 "id=" + id +
-                ", email=" + safeGet().getUsername() +
+                ", email=" + getUsername() +
                 '}';
     }
 }

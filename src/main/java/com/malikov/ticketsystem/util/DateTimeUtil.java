@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -43,6 +44,10 @@ public class DateTimeUtil {
 
     public static LocalDateTime parseLocalDateTime(String str, DateTimeFormatter formatter) {
         return StringUtils.isEmpty(str) ? LocalDateTime.now() : LocalDateTime.parse(str, formatter);
+    }
+
+    public static String fromUtcToZoneId(LocalDateTime localDateTime, ZoneId zoneId){
+        return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameLocal(zoneId).toLocalDateTime().toString();
     }
 
 }

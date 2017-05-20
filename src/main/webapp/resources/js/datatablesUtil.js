@@ -37,7 +37,7 @@ function updateTableByData(data) {
     datatableApi.clear().rows.add(data).draw();
 }
 
-function showAddUserModal() {
+function showAddFlightModal() {
     $('#modalTitle').html(i18n['common.addNew'] + entityName);
     $('#id').val(0);
     $('#firstName').val('');
