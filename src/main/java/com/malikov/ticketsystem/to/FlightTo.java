@@ -1,6 +1,12 @@
 package com.malikov.ticketsystem.to;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.malikov.ticketsystem.util.serializers.LocalDateTimeDeserializer;
+import com.malikov.ticketsystem.util.serializers.LocalDateTimeSerializer;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * @author Yurii Malikov
@@ -11,9 +17,14 @@ public class FlightTo extends BaseTo {
 
     private String arrivalAirport;
 
-    private String departureLocalDateTime;
+    // TODO: 5/20/2017 How can I replace it with spring formatter or make serializer/deserializer work globaly without declaring them explicitly??????
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime departureLocalDateTime;
 
-    private String arrivalLocalDateTime;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime arrivalLocalDateTime;
 
     private String aircraftName;
 
@@ -25,8 +36,8 @@ public class FlightTo extends BaseTo {
             Long id
             , String departureAirport
             , String arrivalAirport
-            , String departureLocalDateTime
-            , String arrivalLocalDateTime
+            , LocalDateTime departureLocalDateTime
+            , LocalDateTime arrivalLocalDateTime
             , String aircraftName
             , BigDecimal initialBaseTicketPrice
             , BigDecimal maxBaseTicketPrice
@@ -34,8 +45,10 @@ public class FlightTo extends BaseTo {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
         this.arrivalAirport = arrivalAirport != null ? arrivalAirport : "";
-        this.departureLocalDateTime = departureLocalDateTime != null ? departureLocalDateTime : "";
-        this.arrivalLocalDateTime = arrivalLocalDateTime != null ? arrivalLocalDateTime : "";
+        //this.departureLocalDateTime = departureLocalDateTime != null ? departureLocalDateTime : "";
+        this.departureLocalDateTime = departureLocalDateTime;
+        //this.arrivalLocalDateTime = arrivalLocalDateTime != null ? arrivalLocalDateTime : "";
+        this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.aircraftName = aircraftName != null ? aircraftName : "";
         this.initialBaseTicketPrice = initialBaseTicketPrice != null ? initialBaseTicketPrice : new BigDecimal(0);
         this.maxBaseTicketPrice = maxBaseTicketPrice != null ? maxBaseTicketPrice : new BigDecimal(0);
@@ -59,19 +72,19 @@ public class FlightTo extends BaseTo {
         this.arrivalAirport = arrivalAirport;
     }
 
-    public String getDepartureLocalDateTime() {
+    public LocalDateTime getDepartureLocalDateTime() {
         return departureLocalDateTime;
     }
 
-    public void setDepartureLocalDateTime(String departureLocalDateTime) {
+    public void setDepartureLocalDateTime(LocalDateTime departureLocalDateTime) {
         this.departureLocalDateTime = departureLocalDateTime;
     }
 
-    public String getArrivalLocalDateTime() {
+    public LocalDateTime getArrivalLocalDateTime() {
         return arrivalLocalDateTime;
     }
 
-    public void setArrivalLocalDateTime(String arrivalLocalDateTime) {
+    public void setArrivalLocalDateTime(LocalDateTime arrivalLocalDateTime) {
         this.arrivalLocalDateTime = arrivalLocalDateTime;
     }
 

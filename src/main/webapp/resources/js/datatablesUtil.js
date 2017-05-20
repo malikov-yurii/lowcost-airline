@@ -1,3 +1,23 @@
+function renderUpdateBtn(data, type, row) {
+    return '<a class="btn btn-xs btn-primary update-btn">Update</a>';
+}
+
+function showUpdateModal() {
+    var rowData = datatableApi.row($(this).closest('tr')).data();
+
+    $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
+
+    for (var key in rowData) {
+        var $node = $('#'+key);
+        if ($node.length) $node.val(rowData[key]);
+    }
+
+    $('#editRow').modal();
+}
+
+
+
+
 function renderUpdateUserBtn(data, type, row) {
     var result = '<a class="btn btn-xs btn-primary" onclick="showUpdateUserModal(' +
         row.id + ', \'' +
@@ -124,12 +144,4 @@ function closeNoty() {
         failedNote.close();
         failedNote = undefined;
     }
-}
-
-function onProjectTableReady() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function (e, xhr, options) {
-        xhr.setRequestHeader(header, token);
-    });
 }

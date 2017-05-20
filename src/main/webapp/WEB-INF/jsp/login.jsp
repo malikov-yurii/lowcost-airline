@@ -13,13 +13,13 @@
 
     <div class="login-info__block">
         <div class="login-info">
-            Admin login: admin1
+            Admin login: admin@gmail.com
         </div>
         <div class="login-info">
-            User login: user1
+            User login: user@gmail.com
         </div>
         <div class="login-info">
-            Password for all: 1111
+            Password: 1111
         </div>
     </div>
 

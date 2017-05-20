@@ -1,6 +1,6 @@
 var datatableApi;
 
-$(function () {
+$(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
         "ajax": {
             "url": ajaxUrl,
@@ -19,10 +19,10 @@ $(function () {
             {"data": "aircraftName", "orderable": false},
             {"data": "initialBaseTicketPrice", "orderable": false},
             {"data": "maxBaseTicketPrice", "orderable": false},
-            {"orderable": false, "render": renderUpdateFlightBtn},
+            {"orderable": false, "render": renderUpdateBtn},
             {"orderable": false, "render": renderDeleteBtn}
         ],
-        "initComplete": onProjectTableReady,
+        "initComplete": onFlightTableReady,
         "order": [
             [
                 0,
@@ -31,7 +31,20 @@ $(function () {
         ],
         "autoWidth": false
     });
+
+
+    datatableApi.on('click', '.update-btn', showUpdateModal);
+    $('#arrivalLocalDateTime').datetimepicker();
+
 });
+
+function onFlightTableReady() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+}
 
 function showAddFlightModal() {
     $('#modalTitle').html('Add new ' + entityName);
@@ -46,29 +59,5 @@ function showAddFlightModal() {
     $('#editRow').modal();
 }
 
-function renderUpdateFlightBtn(data, type, row) {
-    return '<a class="btn btn-xs btn-primary" onclick="showUpdateFlightModal(' +
-        row.id + ', \'' +
-        row.departureAirport + ', \'' +
-        row.arrivalAirport + ', \'' +
-        row.departureLocalDateTime + ', \'' +
-        row.arrivalLocalDateTime + ', \'' +
-        row.aircraftName + ', \'' +
-        row.initialBaseTicketPrice + ', \'' +
-        row.maxBaseTicketPrice +
-        '\')">' + i18n['common.update'] + '</a>';
-}
 
-function showUpdateFlightModal(id, departureAirport, arrivalAirport, departureLocalDateTime, arrivalLocalDateTime, aircraftName, initialBaseTicketPrice, maxBaseTicketprice) {
-    $('#modalTitle').html(i18n['common.update'] + entityName);
-    $('#id').val(id);
-    $('#departureAirport').val(departureAirport);
-    $('#arrivalAirport').val(arrivalAirport);
-    $('#departureLocalDateTime').val(departureLocalDateTime);
-    $('#arrivalLocalDateTime').val(arrivalLocalDateTime);
-    $('#aircraftName').val(aircraftName);
-    $('#initialBaseTicketPrice').val(initialBaseTicketPrice);
-    $('#maxBaseTicketPrice').val(maxBaseTicketPrice);
-    $('#editRow').modal();
-}
 

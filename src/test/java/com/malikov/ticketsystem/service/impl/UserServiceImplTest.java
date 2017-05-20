@@ -55,7 +55,7 @@ public class UserServiceImplTest extends AbstractServiceTest {
     }
 
     private User getNewDummyUserWithNullId(Long id) {
-        return new User(id, "newName", "newLastName", "new@gmail.com:", "newPassword", "+380501122334");
+        return new User(id, "newName", "newLastName", "new@gmail.com", "newPassword", "+380501122334");
     }
 
     private ArrayList<User> getTestDataUsersWith(User newUser) {

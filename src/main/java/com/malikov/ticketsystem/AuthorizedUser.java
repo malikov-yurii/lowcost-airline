@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem;
 
 import com.malikov.ticketsystem.model.User;
+import com.malikov.ticketsystem.to.UserTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -13,11 +14,14 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     private static final long serialVersionUID = 1L;
 
+    private String fullName;
+
     private Long id;
 
     public AuthorizedUser(User user) {
         super(user.getEmail(), user.getPassword(), true, true, true, true, user.getRoles());
         this.id = user.getId();
+        this.fullName = user.getName() + ' ' + user.getLastName();
     }
 
     public static AuthorizedUser safeGet() {
@@ -39,11 +43,20 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         return get().id;
     }
 
+    public void update(UserTo newTo) {
+        fullName = newTo.getFirstName() + ' ' + newTo.getLastName();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
     @Override
     public String toString() {
         return "AuthorizedUser{" +
                 "id=" + id +
                 ", email=" + getUsername() +
+                ", fullName=" + getFullName() +
                 '}';
     }
 }

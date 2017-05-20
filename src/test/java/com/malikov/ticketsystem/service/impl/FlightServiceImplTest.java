@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -17,6 +16,7 @@ import static com.malikov.ticketsystem.AirportTestData.*;
 import static com.malikov.ticketsystem.FlightTestData.*;
 import static com.malikov.ticketsystem.TicketTestData.TICKET_7;
 import static com.malikov.ticketsystem.TicketTestData.TICKET_8;
+import static com.malikov.ticketsystem.util.DateTimeUtil.parseLocalDateTime;
 
 /**
  * @author Yurii Malikov
@@ -62,10 +62,10 @@ public class FlightServiceImplTest extends AbstractServiceTest {
 
     }
 
-    //@Test
-    //public void getAll() throws Exception {
-    //    FLIGHT_MATCHER.assertCollectionEquals(FLIGHTS, service.getAll());
-    //}
+    @Test
+    public void getAll() throws Exception {
+        FLIGHT_MATCHER.assertCollectionEquals(FLIGHTS, service.getAll());
+    }
 
     @Test
     public void testGetAllFromAirportToAirport() throws Exception {
@@ -93,7 +93,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
 
     private Flight getNewDummyFlightWithNullId(Long id) {
         return new Flight(id, AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW, AIRCRAFT_1,
-                LocalDateTime.parse("2017-04-23T12:00:00"), LocalDateTime.parse("2017-04-23T16:00:00"),
+                parseLocalDateTime("2017-04-23 12:00"), parseLocalDateTime("2017-04-23 16:00"),
                 new BigDecimal("50.00"), new BigDecimal("70.00"));
     }
 

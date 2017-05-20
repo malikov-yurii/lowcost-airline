@@ -12,13 +12,13 @@
             <sec:authorize access="isAuthenticated()">
                 <a class="btn btn-info" role="button" href="projects"><fmt:message key="app.projects"/></a>
 
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <sec:authorize access="hasRole('ADMIN')">
                     <a class="btn btn-info" role="button" href="clients"><fmt:message key="app.clients"/></a>
                     <a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>
                     <a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>
                     <a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>
                 </sec:authorize>
-                <a class="btn btn-info" role="button" href="profile">${baseUserTo.firstName} ${baseUserTo.lastName}
+                <a class="btn btn-info" role="button" href="profile">${userFullName}
                     <fmt:message key="app.profile"/></a>
                 <input type="submit" class="btn btn-primary" value="<fmt:message key="app.logout"/>">
             </sec:authorize>
@@ -26,6 +26,6 @@
     </div>
 </div>
 <script>
-    var authorizedUserId = ${baseUserTo.id};
-    var authorizedUserRole = '${baseUserTo.role}';
+    <%--var authorizedUserId = ${baseUserTo.id};--%>
+    <%--var authorizedUserRole = '${baseUserTo.role}';--%>
 </script>

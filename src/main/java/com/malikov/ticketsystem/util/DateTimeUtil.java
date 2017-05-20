@@ -16,7 +16,7 @@ public class DateTimeUtil {
     private DateTimeUtil() {
     }
 
-    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
     public static final LocalDateTime MIN = LocalDateTime.of(2000, 1,1,1,1);
@@ -46,8 +46,8 @@ public class DateTimeUtil {
         return StringUtils.isEmpty(str) ? LocalDateTime.now() : LocalDateTime.parse(str, formatter);
     }
 
-    public static String fromUtcToZoneId(LocalDateTime localDateTime, ZoneId zoneId){
-        return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameLocal(zoneId).toLocalDateTime().toString();
+    public static LocalDateTime fromUtcToAnotherZoneId(LocalDateTime localDateTime, ZoneId zoneId){
+        return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameLocal(zoneId).toLocalDateTime();
     }
 
 }
