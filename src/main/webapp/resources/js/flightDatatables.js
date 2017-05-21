@@ -15,7 +15,7 @@ $(document).ready(function () {
             {"data": "departureAirport", "orderable": false},
             {"data": "arrivalAirport", "orderable": false},
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
-            {"data": "arrivalLocalDateTime", "className": "input-datetime","orderable": false},
+            {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "aircraftName", "orderable": false},
             {"data": "initialBaseTicketPrice", "orderable": false},
             {"data": "maxBaseTicketPrice", "orderable": false},
@@ -32,42 +32,35 @@ $(document).ready(function () {
         "autoWidth": false
     });
 
-
     datatableApi.on('click', '.update-btn', showUpdateModal);
 
-    $('.input-datetime').datetimepicker({format:	getDateTimePickerFormat()});
+    $('.input-datetime').datetimepicker({format: getDateTimePickerFormat()});
+
     $('.input-airport').autocomplete({
         source: 'ajax/profile/airport/autocomplete-by-name'
+        , select: function (event, ui) {
+            $(this).addClass('valid')
+        }
         , minLength: 0
     });
+
     $('.input-aircraft').autocomplete({
         source: 'ajax/profile/aircraft/autocomplete-by-name'
+        , select: function (event, ui) {
+            var $this = $(this);
+            $this.addClass('valid in-process');
+            $this.parents().eq(1).next().find('.form-control').focus();
+        }
+        , change: function (event, ui) {
+            var $this = $(this);
+            $this.addClass('valid');
+            if (!$this.hasClass('in-process')) {
+                $this.removeClass('valid');
+            }
+            $this.removeClass('in-process');
+        }
         , minLength: 0
     });
-    // $('#departureLocalDateTimeFilter').datetimepicker({format:	getDateTimePickerFormat()});
-    // $('#arrivalLocalDateTimeFilter').datetimepicker({format:	getDateTimePickerFormat()});
-    // $('#departureAirportFilter').autocomplete({
-    //     source: ajaxUrl + 'autocomplete-airport'
-    //     , minLength: 0
-    // });
-    // $('#arrivalAirportFilter').autocomplete({
-    //     source: ajaxUrl + 'autocomplete-airport'
-    //     , minLength: 0
-    // });
-    //
-    //
-    //
-    //
-    // $('#departureLocalDateTime').datetimepicker({format:	getDateTimePickerFormat()});
-    // $('#arrivalLocalDateTime').datetimepicker({format:	getDateTimePickerFormat()});
-    // $('#departureAirport').autocomplete({
-    //     source: ajaxUrl + 'autocomplete-airport'
-    //     , minLength: 0
-    // });
-    // $('#arrivalAirport').autocomplete({
-    //     source: ajaxUrl + 'autocomplete-airport'
-    //     , minLength: 0
-    // });
 
 });
 
@@ -90,6 +83,49 @@ function showAddFlightModal() {
     $('#initialBaseTicketPrice').val('');
     $('#maxBaseTicketPrice').val('');
     $('#editRow').modal();
+}
+
+function saveFlight() {
+
+    var message = "";
+    if (!$('#aircraftName').hasClass('valid')) {
+        message += 'Please select aircraft from drop-down list.';
+    }
+
+    if (!$('#departureAirport').hasClass('valid')) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Please select departure airport from drop-down list.';
+    }
+    if (!$('#arrivalAirport').hasClass('valid')) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Please select arrival airport from drop-down list.';
+    }
+
+    if (message.length != 0) {
+// todo replace alert with jquery popup
+        alert(message);
+    } else {
+
+        $('.valid').removeClass('valid reselected');
+        alert('success');
+
+    }
+
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: ajaxUrl,
+    //     data: $('#detailsForm').serialize(),
+    //     success: function () {
+    //         $('#editRow').modal('hide');
+    //         updateTable();
+    //         successNoty('common.saved');
+    //     }
+    // });
 }
 
 

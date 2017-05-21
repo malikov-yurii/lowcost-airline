@@ -178,7 +178,7 @@
 
                         <div class="form-group">
                             <div class="col-xs-offset-3 col-xs-9">
-                                <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
+                                <button class="form-control btn btn-primary" type="button" onclick="saveFlight()"><fmt:message
                                         key="common.save"/></button>
                             </div>
                         </div>
