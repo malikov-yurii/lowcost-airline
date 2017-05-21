@@ -94,13 +94,14 @@ function saveFlight() {
         if (message.length != 0) {
             message += '\n'
         }
-        message += 'Please set arrival local date time.';
+        message += 'Please set departure local date time.';
     } else if (new Date($("#departureLocalDateTime").val()) < currentMoment) {
         if (message.length != 0) {
             message += '\n'
         }
         message += 'Arrival local date time cannot be earlier than ' + currentMoment.toJSON().slice(0,16).replace('T', ' ');
     }
+
     if ($("#arrivalLocalDateTime").val().length == 0) {
         if (message.length != 0) {
             message += '\n'
@@ -115,7 +116,13 @@ function saveFlight() {
 
     if (message.length != 0) {
 // todo replace alert with jquery popup
-        alert(message);
+//         alert(message);
+        swal({
+            title: "Validation of inputted data failed.",
+            text: message,
+            // type: "error",
+            confirmButtonText: "OK"
+        });
     } else {
 
         $('.valid').removeClass('valid reselected');
