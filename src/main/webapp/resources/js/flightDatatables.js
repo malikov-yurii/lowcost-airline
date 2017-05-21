@@ -34,24 +34,27 @@ $(document).ready(function () {
 
     datatableApi.on('click', '.update-btn', showUpdateModal);
 
-    $('.input-datetime').datetimepicker({format: getDateTimePickerFormat()});
-
-    $('.input-airport').autocomplete({
-        source: 'ajax/profile/airport/autocomplete-by-name'
-        , select: function (event, ui) {
-            $(this).addClass('valid')
-        }
-        , minLength: 0
+    $('.input-datetime').datetimepicker({
+        format: getDateTimePickerFormat()
+        // , startDate: new Date()
+        , minDate: 0
+        // , startTime: 0
+        // , minTime: 0
     });
 
-    $('.input-aircraft').autocomplete({
-        source: 'ajax/profile/aircraft/autocomplete-by-name'
-        , select: function (event, ui) {
-            var $this = $(this);
-            $this.addClass('valid in-process');
-            $this.parents().eq(1).next().find('.form-control').focus();
-        }
-        , change: function (event, ui) {
+    $('.input-airport').autocomplete({source: 'ajax/profile/airport/autocomplete-by-name'});
+
+    $('.input-aircraft').autocomplete({source: 'ajax/profile/aircraft/autocomplete-by-name'});
+
+    $('.input-airport, .input-aircraft')
+        .on("autocompleteselect",
+            function (event, ui) {
+                var $this = $(this);
+                $this.addClass('valid in-process');
+                $this.parents().eq(1).next().find('.form-control').focus();
+            }
+        ).on("autocompletechange",
+        function (event, ui) {
             var $this = $(this);
             $this.addClass('valid');
             if (!$this.hasClass('in-process')) {
@@ -59,33 +62,13 @@ $(document).ready(function () {
             }
             $this.removeClass('in-process');
         }
-        , minLength: 0
-    });
+    ).autocomplete("option", "minLength", 0);
+
 
 });
 
-function onFlightTableReady() {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function (e, xhr, options) {
-        xhr.setRequestHeader(header, token);
-    });
-}
-
-function showAddFlightModal() {
-    $('#modalTitle').html('Add new ' + entityName);
-    $('#id').val(0);
-    $('#departureAirport').val('');
-    $('#arrivalAirport').val('');
-    $('#departureLocalDateTime').val('');
-    $('#arrivalLocalDateTime').val('');
-    $('#aircraftName').val('');
-    $('#initialBaseTicketPrice').val('');
-    $('#maxBaseTicketPrice').val('');
-    $('#editRow').modal();
-}
-
 function saveFlight() {
+
 
     var message = "";
     if (!$('#aircraftName').hasClass('valid')) {
@@ -103,6 +86,31 @@ function saveFlight() {
             message += '\n'
         }
         message += 'Please select arrival airport from drop-down list.';
+    }
+
+    var currentMoment = new Date();
+
+    if ($("#departureLocalDateTime").val().length == 0) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Please set arrival local date time.';
+    } else if (new Date($("#departureLocalDateTime").val()) < currentMoment) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Arrival local date time cannot be earlier than ' + currentMoment.toJSON().slice(0,16).replace('T', ' ');
+    }
+    if ($("#arrivalLocalDateTime").val().length == 0) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Please set arrival local date time.';
+    } else if (new Date($("#arrivalLocalDateTime").val()) < currentMoment) {
+        if (message.length != 0) {
+            message += '\n'
+        }
+        message += 'Departure local date time cannot be earlier than ' + currentMoment.toJSON().slice(0,16).replace('T', ' ');
     }
 
     if (message.length != 0) {
@@ -126,6 +134,27 @@ function saveFlight() {
     //         successNoty('common.saved');
     //     }
     // });
+}
+
+function onFlightTableReady() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+}
+
+function showAddFlightModal() {
+    $('#modalTitle').html('Add new ' + entityName);
+    $('#id').val(0);
+    $('#departureAirport').val('');
+    $('#arrivalAirport').val('');
+    $('#departureLocalDateTime').val('');
+    $('#arrivalLocalDateTime').val('');
+    $('#aircraftName').val('');
+    $('#initialBaseTicketPrice').val('');
+    $('#maxBaseTicketPrice').val('');
+    $('#editRow').modal();
 }
 
 
