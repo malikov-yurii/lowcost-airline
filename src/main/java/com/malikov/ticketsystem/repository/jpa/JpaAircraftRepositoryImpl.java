@@ -45,4 +45,11 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
         return em.createNamedQuery(Aircraft.ALL_SORTED, Aircraft.class).getResultList();
     }
 
+    @Override
+    public List<Aircraft> getByNameMask(String nameMask) {
+        return em.createNamedQuery(Aircraft.BY_NAME_MASK, Aircraft.class)
+                // TODO: 5/20/2017 Move % to NamedQuery
+                .setParameter("nameMask", '%' + nameMask + '%').getResultList();
+    }
+
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.malikov.ticketsystem.AirportTestData.*;
 import static com.malikov.ticketsystem.CityTestData.ROME;
@@ -57,12 +59,18 @@ public class AirportServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(Arrays.asList(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW, AIRPORT_3_LUTON), service.getAll());
     }
 
+    @Test
+    public void getByNameMask() throws Exception {
+        List<Airport> airportsByMask = service.getByNameMask("Bor");
+        MATCHER.assertCollectionEquals(Collections.singletonList(AIRPORT_1_BORISPOL), airportsByMask);
+    }
+
     private Airport getNewDummyAirportWithNullId(Long id) {
         return new Airport(id, "newAirportName", ROME);
     }
 
-    private ArrayList<Airport> getTestDataAirportsWith(Airport newAirport) {
-        ArrayList<Airport> airportssWithNewUser = new ArrayList<>(AIRPORTS);
+    private List<Airport> getTestDataAirportsWith(Airport newAirport) {
+        List<Airport> airportssWithNewUser = new ArrayList<>(AIRPORTS);
         airportssWithNewUser.add(newAirport);
         return airportssWithNewUser;
     }

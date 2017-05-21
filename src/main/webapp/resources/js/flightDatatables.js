@@ -14,8 +14,8 @@ $(document).ready(function () {
             {"data": "id", "orderable": false},
             {"data": "departureAirport", "orderable": false},
             {"data": "arrivalAirport", "orderable": false},
-            {"data": "departureLocalDateTime", "orderable": false},
-            {"data": "arrivalLocalDateTime", "orderable": false},
+            {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
+            {"data": "arrivalLocalDateTime", "className": "input-datetime","orderable": false},
             {"data": "aircraftName", "orderable": false},
             {"data": "initialBaseTicketPrice", "orderable": false},
             {"data": "maxBaseTicketPrice", "orderable": false},
@@ -34,7 +34,40 @@ $(document).ready(function () {
 
 
     datatableApi.on('click', '.update-btn', showUpdateModal);
-    $('#arrivalLocalDateTime').datetimepicker();
+
+    $('.input-datetime').datetimepicker({format:	getDateTimePickerFormat()});
+    $('.input-airport').autocomplete({
+        source: 'ajax/profile/airport/autocomplete-by-name'
+        , minLength: 0
+    });
+    $('.input-aircraft').autocomplete({
+        source: 'ajax/profile/aircraft/autocomplete-by-name'
+        , minLength: 0
+    });
+    // $('#departureLocalDateTimeFilter').datetimepicker({format:	getDateTimePickerFormat()});
+    // $('#arrivalLocalDateTimeFilter').datetimepicker({format:	getDateTimePickerFormat()});
+    // $('#departureAirportFilter').autocomplete({
+    //     source: ajaxUrl + 'autocomplete-airport'
+    //     , minLength: 0
+    // });
+    // $('#arrivalAirportFilter').autocomplete({
+    //     source: ajaxUrl + 'autocomplete-airport'
+    //     , minLength: 0
+    // });
+    //
+    //
+    //
+    //
+    // $('#departureLocalDateTime').datetimepicker({format:	getDateTimePickerFormat()});
+    // $('#arrivalLocalDateTime').datetimepicker({format:	getDateTimePickerFormat()});
+    // $('#departureAirport').autocomplete({
+    //     source: ajaxUrl + 'autocomplete-airport'
+    //     , minLength: 0
+    // });
+    // $('#arrivalAirport').autocomplete({
+    //     source: ajaxUrl + 'autocomplete-airport'
+    //     , minLength: 0
+    // });
 
 });
 

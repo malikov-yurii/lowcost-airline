@@ -145,3 +145,7 @@ function closeNoty() {
         failedNote = undefined;
     }
 }
+
+function getDateTimePickerFormat() {
+    return "Y-m-d H:i";
+}

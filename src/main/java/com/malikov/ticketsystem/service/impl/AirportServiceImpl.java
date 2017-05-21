@@ -48,4 +48,8 @@ public class AirportServiceImpl implements IAirportService {
         repository.delete(id);
     }
 
+    @Override
+    public List<Airport> getByNameMask(String nameMask) {
+        return repository.getByNameMask(nameMask);
+    }
 }

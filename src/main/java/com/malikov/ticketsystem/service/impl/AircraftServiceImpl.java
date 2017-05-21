@@ -48,4 +48,8 @@ public class AircraftServiceImpl implements IAircraftService {
         repository.delete(id);
     }
 
+    @Override
+    public List<Aircraft> getByNameMask(String nameMask) {
+        return repository.getByNameMask(nameMask);
+    }
 }

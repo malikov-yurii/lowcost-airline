@@ -45,4 +45,10 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
         return em.createNamedQuery(Airport.ALL_SORTED, Airport.class).getResultList();
     }
 
+    @Override
+    public List<Airport> getByNameMask(String nameMask) {
+        return em.createNamedQuery(Airport.BY_NAME_MASK, Airport.class)
+                // TODO: 5/20/2017 Move % to NamedQuery
+                .setParameter("nameMask", '%' + nameMask + '%').getResultList();
+    }
 }

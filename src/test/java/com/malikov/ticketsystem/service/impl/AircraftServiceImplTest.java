@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.PersistenceException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.malikov.ticketsystem.AircraftModelTestData.BOEING_737;
 import static com.malikov.ticketsystem.AircraftTestData.*;
@@ -54,6 +56,12 @@ public class AircraftServiceImplTest extends AbstractServiceTest {
     public void delete() throws Exception {
         service.delete(AIRCRAFT_2.getId());
         MATCHER.assertCollectionEquals(Arrays.asList(AIRCRAFT_1, AIRCRAFT_3), service.getAll());
+    }
+
+    @Test
+    public void getByNameMask() throws Exception {
+        List<Aircraft> aircraftByNameMask = service.getByNameMask("73");
+        MATCHER.assertCollectionEquals(Collections.singletonList(AIRCRAFT_1), aircraftByNameMask);
     }
 
     private Aircraft getNewDummyAircraftWithNullId(Long id) {

@@ -8,7 +8,8 @@ import javax.persistence.*;
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
         @NamedQuery(name = Aircraft.DELETE, query = "DELETE FROM Aircraft a WHERE a.id=:id"),
-        @NamedQuery(name = Aircraft.ALL_SORTED, query = "SELECT a FROM Aircraft a ORDER BY a.id ASC")
+        @NamedQuery(name = Aircraft.ALL_SORTED, query = "SELECT a FROM Aircraft a ORDER BY a.id ASC"),
+        @NamedQuery(name = Aircraft.BY_NAME_MASK, query = "SELECT a FROM Aircraft a WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC")
 })
 @Entity
 @Table(name = "aircraft")
@@ -16,6 +17,8 @@ public class Aircraft extends NamedEntity {
 
     public static final String DELETE = "Aircraft.delete";
     public static final String ALL_SORTED = "Aircraft.allSorted";
+
+    public static final String BY_NAME_MASK = "Aircraft.byNameMask";
 
     @ManyToOne
     @JoinColumn(name = "model_id")
