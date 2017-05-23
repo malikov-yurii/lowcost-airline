@@ -13,6 +13,7 @@ import static com.malikov.ticketsystem.util.DateTimeUtil.DATE_TIME_FORMATTER;
 /**
  * @author Yurii Malikov
  */
+// TODO: 5/23/2017 NEED that because @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) on TO NOT working fine??
 public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
 //public class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
 

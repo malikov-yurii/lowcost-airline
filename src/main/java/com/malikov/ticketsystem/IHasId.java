@@ -10,7 +10,7 @@ public interface IHasId {
     void setId(Long id);
 
     default boolean isNew(){
-        return getId() == null;
+        return getId() == null || getId() == 0;
     }
 
 }

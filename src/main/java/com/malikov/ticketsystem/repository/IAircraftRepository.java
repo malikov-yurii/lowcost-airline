@@ -10,4 +10,6 @@ import java.util.List;
 public interface IAircraftRepository extends IGenericRepository<Aircraft> {
 
     List<Aircraft> getByNameMask(String nameMask);
+
+    Aircraft getByName(String name);
 }

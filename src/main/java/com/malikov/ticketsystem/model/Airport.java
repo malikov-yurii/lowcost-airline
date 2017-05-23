@@ -9,7 +9,8 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = Airport.DELETE, query = "DELETE FROM Airport a WHERE a.id=:id"),
         @NamedQuery(name = Airport.ALL_SORTED, query = "SELECT a FROM Airport a ORDER BY a.id ASC"),
-        @NamedQuery(name = Airport.BY_NAME_MASK, query = "SELECT a FROM Airport a WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC")
+        @NamedQuery(name = Airport.BY_NAME_MASK, query = "SELECT a FROM Airport a WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC"),
+        @NamedQuery(name = Airport.BY_NAME, query = "SELECT a FROM Airport a WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC")
 })
 @Entity
 @Table(name = "airports")
@@ -19,6 +20,8 @@ public class Airport extends NamedEntity {
     public static final String ALL_SORTED = "Airport.allSorted";
 
     public static final String BY_NAME_MASK = "Airport.byNameMask";
+
+    public static final String BY_NAME = "Airport.byName";
 
     @OneToOne
     @JoinColumn(name = "city_id")

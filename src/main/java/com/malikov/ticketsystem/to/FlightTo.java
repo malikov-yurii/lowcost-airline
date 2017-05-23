@@ -1,9 +1,7 @@
 package com.malikov.ticketsystem.to;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.malikov.ticketsystem.util.serializers.LocalDateTimeDeserializer;
-import com.malikov.ticketsystem.util.serializers.LocalDateTimeSerializer;
+import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,12 +16,16 @@ public class FlightTo extends BaseTo {
     private String arrivalAirport;
 
     // TODO: 5/20/2017 How can I replace it with spring formatter or make serializer/deserializer work globaly without declaring them explicitly??????
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+
+    //@JsonSerialize(using = LocalDateTimeSerializer.class)
+    //@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+
+    //@JsonSerialize(using = LocalDateTimeSerializer.class)
+    //@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalLocalDateTime;
 
     private String aircraftName;

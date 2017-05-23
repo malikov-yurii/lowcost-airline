@@ -52,4 +52,9 @@ public class AircraftServiceImpl implements IAircraftService {
     public List<Aircraft> getByNameMask(String nameMask) {
         return repository.getByNameMask(nameMask);
     }
+
+    @Override
+    public Aircraft getByName(String name) {
+        return repository.getByName(name);
+    }
 }

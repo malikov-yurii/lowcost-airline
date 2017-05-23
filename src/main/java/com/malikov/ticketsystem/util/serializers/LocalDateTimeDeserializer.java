@@ -13,19 +13,18 @@ import java.time.LocalDateTime;
  * @author Yurii Malikov
  */
 
+// TODO: 5/23/2017 Don't need that because @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) on TO works fine??
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 //public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 
     private static final long serialVersionUID = 1L;
 
-    protected LocalDateTimeDeserializer() {
+    public LocalDateTimeDeserializer() {
         super(LocalDateTime.class);
     }
 
-
     @Override
-    public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         return DateTimeUtil.parseLocalDateTime(jp.readValueAs(String.class));
     }
 

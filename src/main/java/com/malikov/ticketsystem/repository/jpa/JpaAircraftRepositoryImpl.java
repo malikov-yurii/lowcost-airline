@@ -2,6 +2,7 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.repository.IAircraftRepository;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,4 +53,10 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
                 .setParameter("nameMask", '%' + nameMask + '%').getResultList();
     }
 
+    @Override
+    public Aircraft getByName(String name) {
+        List<Aircraft> airports =  em.createNamedQuery(Aircraft.BY_NAME, Aircraft.class)
+                .setParameter("name", name).getResultList();
+        return DataAccessUtils.singleResult(airports);
+    }
 }

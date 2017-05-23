@@ -52,4 +52,9 @@ public class AirportServiceImpl implements IAirportService {
     public List<Airport> getByNameMask(String nameMask) {
         return repository.getByNameMask(nameMask);
     }
+
+    @Override
+    public Airport getByName(String name) {
+        return repository.getByName(name);
+    }
 }

@@ -46,8 +46,11 @@ public class DateTimeUtil {
         return StringUtils.isEmpty(str) ? LocalDateTime.now() : LocalDateTime.parse(str, formatter);
     }
 
-    public static LocalDateTime fromUtcToAnotherZoneId(LocalDateTime localDateTime, ZoneId zoneId){
-        return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameLocal(zoneId).toLocalDateTime();
+    public static LocalDateTime utcToZoneId(LocalDateTime localDateTime, ZoneId zoneId){
+        return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId).toLocalDateTime();
     }
 
+    public static LocalDateTime zoneIdToUtc(LocalDateTime localDateTime, ZoneId zoneId) {
+        return localDateTime.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
+    }
 }

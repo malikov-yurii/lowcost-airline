@@ -7,6 +7,8 @@ function showUpdateModal() {
 
     $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
 
+    $('.form-control').addClass('valid');
+
     for (var key in rowData) {
         var $node = $('#'+key);
         if ($node.length) $node.val(rowData[key]);

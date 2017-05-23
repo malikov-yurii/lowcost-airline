@@ -64,6 +64,12 @@ public class AircraftServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(Collections.singletonList(AIRCRAFT_1), aircraftByNameMask);
     }
 
+    @Test
+    public void getByName() throws Exception {
+        Aircraft aircraftByName = service.getByName("B767-2");
+        MATCHER.assertEquals(AIRCRAFT_2, aircraftByName);
+    }
+
     private Aircraft getNewDummyAircraftWithNullId(Long id) {
         return new Aircraft(id, "newAircraftName", BOEING_737);
     }

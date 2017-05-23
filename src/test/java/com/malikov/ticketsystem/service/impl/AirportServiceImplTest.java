@@ -65,6 +65,12 @@ public class AirportServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(Collections.singletonList(AIRPORT_1_BORISPOL), airportsByMask);
     }
 
+    @Test
+    public void getByName() throws Exception {
+        Airport airportByName = service.getByName("Heathrow Airport");
+        MATCHER.assertEquals(AIRPORT_2_HEATHROW, airportByName);
+    }
+
     private Airport getNewDummyAirportWithNullId(Long id) {
         return new Airport(id, "newAirportName", ROME);
     }

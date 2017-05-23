@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.malikov.ticketsystem.util.serializers.LocalDateTimeSerializer;
+
+import java.time.LocalDateTime;
 
 /**
  * @author Yurii Malikov
@@ -20,13 +22,24 @@ public class JacksonObjectMapper extends ObjectMapper {
     }
 
     private JacksonObjectMapper() {
-        registerModule(new Hibernate5Module());
+        //ObjectMapper mapper = new ObjectMapper();
 
-        registerModule(new JavaTimeModule());
+        //registerModule(new Hibernate5Module());
+
+        //registerModule(new JavaTimeModule());
+
+
+        SimpleModule module = new SimpleModule();
+        //module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer()); // TODO: 5/23/2017 why i don't need deserializer but need serializer???????
+        module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        registerModule(module);
+
+
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 }

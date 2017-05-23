@@ -13,34 +13,35 @@
     <mvc:default-servlet-handler/>
     <mvc:annotation-driven/>
 
-    <!--<security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>-->
+    <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 
-    <mvc:annotation-driven conversion-service="conversionService">
+    <!--<mvc:annotation-driven conversion-service="conversionService">-->
+    <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="objectMapper"/>
             </bean>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>text/plain;charset=UTF-8</value>
-                        <value>text/html;charset=UTF-8</value>
-                    </list>
-                </property>
-            </bean>
+            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
+                <!--<property name="supportedMediaTypes">-->
+                    <!--<list>-->
+                        <!--<value>text/plain;charset=UTF-8</value>-->
+                        <!--<value>text/html;charset=UTF-8</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            <!--</bean>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
 
 
-    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
-        <property name="formatters">
-            <set>
+    <!--<bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">-->
+        <!--<property name="formatters">-->
+            <!--<set>-->
                 <!--<bean class="com.malikov.ticketsystem.util.converter.DateTimeFormatters.LocalTimeFormatter"/>-->
                 <!--<bean class="com.malikov.ticketsystem.util.converter.DateTimeFormatters.LocalDateFormatter"/>-->
                 <!--<bean class="com.malikov.ticketsystem.util.converter.DateTimeFormatters.LocalDateTimeFormatter"/>-->
-            </set>
-        </property>
-    </bean>
+            <!--</set>-->
+        <!--</property>-->
+    <!--</bean>-->
 
 
     <!--  all resources inside folder src/main/webapp/resources are mapped so they can be referred to inside JSP files -->

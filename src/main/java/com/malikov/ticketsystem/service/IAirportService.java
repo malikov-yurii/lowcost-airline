@@ -10,4 +10,6 @@ import java.util.List;
 public interface IAirportService extends IService<Airport> {
 
     List<Airport> getByNameMask(String nameMask);
+
+    Airport getByName(String name);
 }

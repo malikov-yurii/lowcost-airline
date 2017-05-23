@@ -2,6 +2,7 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.repository.IAirportRepository;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +51,13 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
         return em.createNamedQuery(Airport.BY_NAME_MASK, Airport.class)
                 // TODO: 5/20/2017 Move % to NamedQuery
                 .setParameter("nameMask", '%' + nameMask + '%').getResultList();
+    }
+
+    // TODO: 5/22/2017 is it ok to make name of airport unique but airport has id ????
+    @Override
+    public Airport getByName(String name) {
+        List<Airport> airports =  em.createNamedQuery(Airport.BY_NAME, Airport.class)
+                .setParameter("name", name).getResultList();
+        return DataAccessUtils.singleResult(airports);
     }
 }
