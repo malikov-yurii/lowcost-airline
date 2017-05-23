@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.model;
 
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -55,6 +56,10 @@ public class Flight extends BaseEntity {
     @Column(name = "max_ticket_base_price")
     private BigDecimal maxTicketBasePrice;
 
+    @Column(name = "canceled")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean canceled;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "flight")
     private List<Ticket> tickets;
 
@@ -69,6 +74,7 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
+        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
     }
 
     public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
@@ -80,6 +86,7 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
+        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
     }
 
     // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
@@ -92,6 +99,7 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
+        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
 
         this.tickets = tickets;
     }
@@ -105,6 +113,7 @@ public class Flight extends BaseEntity {
         arrivalUtcDateTime = flight.getUtcLocalDateTime();
         initialTicketBasePrice = flight.getInitialTicketBasePrice();
         maxTicketBasePrice = flight.getMaxTicketBasePrice();
+        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
     }
 
     public LocalDateTime getDepartureUtcDateTime() {
@@ -171,6 +180,14 @@ public class Flight extends BaseEntity {
         this.maxTicketBasePrice = maxTicketBasePrice;
     }
 
+    public Boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        this.canceled = canceled;
+    }
+
     public List<Ticket> getTickets() {
         return tickets;
     }
@@ -226,6 +243,7 @@ public class Flight extends BaseEntity {
                 ", aircraft=" + aircraft +
                 ", initialTicketBasePrice=" + initialTicketBasePrice +
                 ", maxTicketBasePrice=" + maxTicketBasePrice +
+                ", canceled=" + canceled +
                 '}';
     }
 }

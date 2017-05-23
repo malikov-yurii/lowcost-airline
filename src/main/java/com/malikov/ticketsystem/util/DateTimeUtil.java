@@ -38,11 +38,11 @@ public class DateTimeUtil {
         return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
     }
 
-    public static LocalDateTime parseLocalDateTime(String str) {
-        return parseLocalDateTime(str, DATE_TIME_FORMATTER);
+    public static LocalDateTime parseToLocalDateTime(String str) {
+        return parseToLocalDateTime(str, DATE_TIME_FORMATTER);
     }
 
-    public static LocalDateTime parseLocalDateTime(String str, DateTimeFormatter formatter) {
+    public static LocalDateTime parseToLocalDateTime(String str, DateTimeFormatter formatter) {
         return StringUtils.isEmpty(str) ? LocalDateTime.now() : LocalDateTime.parse(str, formatter);
     }
 

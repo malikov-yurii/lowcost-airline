@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.repository;
 
+import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,6 @@ public interface IFlightRepository {
 
     List<Flight> getAll();
 
-    List<Flight> getAllBetween(Long fromAirportId, Long toAirportId, LocalDateTime fromUtclDateTime, LocalDateTime toUtcDateTime);
+    List<Flight> getAllBetween(Airport departureAirport, Airport arrivalAirportId, LocalDateTime fromDepartureUtclDateTime, LocalDateTime toDepartureUtcDateTime);
 
 }

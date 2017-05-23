@@ -7,7 +7,7 @@ public class DateTimeFormatters {
     //public static class LocalDateFormatter implements Formatter<LocalDate> {
     //
     //    @Override
-    //    public LocalDate parse(String text, Locale locale) throws ParseException {
+    //    public LocalDate parseToLocalDateTime(String text, Locale locale) throws ParseException {
     //        return parseLocalDate(text);
     //    }
     //
@@ -20,7 +20,7 @@ public class DateTimeFormatters {
     //public static class LocalTimeFormatter implements Formatter<LocalTime> {
     //
     //    @Override
-    //    public LocalTime parse(String text, Locale locale) throws ParseException {
+    //    public LocalTime parseToLocalDateTime(String text, Locale locale) throws ParseException {
     //        return parseLocalTime(text);
     //    }
     //
@@ -34,8 +34,8 @@ public class DateTimeFormatters {
      //public static class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
      //
      //   @Override
-     //   public LocalDateTime parse(String text, Locale locale) throws ParseException {
-     //       return parseLocalDateTime(text);
+     //   public LocalDateTime parseToLocalDateTime(String text, Locale locale) throws ParseException {
+     //       return parseToLocalDateTime(text);
      //   }
      //
      //   @Override

@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.service.impl;
 
+import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.repository.IFlightRepository;
 import com.malikov.ticketsystem.service.IFlightService;
@@ -51,14 +52,14 @@ public class FlightServiceImpl implements IFlightService {
     }
 
     @Override
-    public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {
+    public List<Flight> getAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime) {
         // TODO: 5/15/2017 Should I ensure that airports with id exists by attempt to get reference ??
-        return repository.getAllBetween(departureAirportId, arrivalAirportId, fromUtcDateTime, toUtcDateTime);
+        return repository.getAllBetween(departureAirport, arrivalAirport, departureUtcDateTime, arrivalUtcDateTime);
     }
 
     @Override
-    public void delete(long id) {
-        repository.delete(id);
+    public boolean delete(long id) {
+        return repository.delete(id);
     }
 
 }

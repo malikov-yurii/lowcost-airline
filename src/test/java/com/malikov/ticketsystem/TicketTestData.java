@@ -48,7 +48,7 @@ public class TicketTestData {
     public static final Ticket TICKET_9 = new Ticket(9L, FLIGHT_5, USER_6, new BigDecimal("40.00"),
             OffsetDateTime.parse("2017-03-22T08:30+01:00"), false, false, 1);
 
-    public static final Ticket TICKET_10 = new Ticket(10L, FLIGHT_6, ADMIN_2, new BigDecimal("40.00"),
+    public static final Ticket TICKET_10 = new Ticket(10L, FLIGHT_6, UserTestData.SUPER_ADMIN, new BigDecimal("40.00"),
             OffsetDateTime.parse("2017-03-20T08:30+02:00"), false, false, 1);
 
     public static final List<Ticket> TICKETS = Arrays.asList(TICKET_1, TICKET_2_BELONGS_USER_2, TICKET_3_BELONGS_USER_3, TICKET_4,

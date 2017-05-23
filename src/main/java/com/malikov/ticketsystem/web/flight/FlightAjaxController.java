@@ -3,12 +3,10 @@ package com.malikov.ticketsystem.web.flight;
 import com.malikov.ticketsystem.to.FlightTo;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,7 +21,16 @@ public class FlightAjaxController extends AbstractFlightController {
         return super.getAll();
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "/filtered", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FlightTo> getFiltered(
+            @RequestParam(value = "departureLocalDateTimeCondition", required = false) LocalDateTime departureLocalDateTime,
+            @RequestParam(value = "arrivalLocalDateTimeCondition", required = false) LocalDateTime arrivalLocalDateTime,
+            @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
+            @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName) {
+        return super.getFiltered(departureLocalDateTime, arrivalLocalDateTime, departureAirportName, arrivalAirportName);
+    }
+    @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid FlightTo flightTo) {
     //public ResponseEntity<String> createOrUpdate(FlightTo flightTo) {
         if (flightTo.isNew()) {
@@ -32,6 +39,22 @@ public class FlightAjaxController extends AbstractFlightController {
             return super.update(flightTo);
         }
     }
+
+    // todo Is it ok to  use body for this parameter or i should use pathvariable??
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/{id}/set-canceled")
+    public ResponseEntity<String> setCanceled(@PathVariable("id") int id, @RequestParam("canceled") boolean canceled) {
+        return super.setCanceled(id, canceled);
+    }
+
+    //@PreAuthorize("hasRole('SUPER_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") int id){
+        return super.delete(id);
+    }
+
+
+
 
 
 

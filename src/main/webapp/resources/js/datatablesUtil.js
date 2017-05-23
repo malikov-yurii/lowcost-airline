@@ -1,5 +1,30 @@
+function showAddModal() {
+    $('#modalTitle').html('Add new ' + entityName);
+    $('.form-control').val('');
+    $('#editRow').modal();
+}
+
+
 function renderUpdateBtn(data, type, row) {
     return '<a class="btn btn-xs btn-primary update-btn">Update</a>';
+}
+
+function renderCancelDiscardCancellingBtn(data, type, row) {
+    return row.canceled === false ?
+        '<a class="btn btn-xs btn-danger" onclick="setCanceled(' + row.id + ', ' + true + ');">' + i18n['common.cancel'] + '</a>' :
+        '<a class="btn btn-xs btn-success" onclick="setCanceled(' + row.id + ', ' + false + ');">' + i18n['common.discardCancelling'] + '</a>';
+}
+
+function setCanceled(id, isCanceled) {
+    $.ajax({
+        url: ajaxUrl + id + '/set-canceled',
+        type: 'POST',
+        data: 'canceled=' + isCanceled,
+        success: function (data) {
+            updateTable();
+            successNoty('common.saved');
+        }
+    })
 }
 
 function showUpdateModal() {
@@ -16,9 +41,6 @@ function showUpdateModal() {
 
     $('#editRow').modal();
 }
-
-
-
 
 function renderUpdateUserBtn(data, type, row) {
     var result = '<a class="btn btn-xs btn-primary" onclick="showUpdateUserModal(' +
@@ -51,9 +73,10 @@ function showUpdateUserModal(id, firstName, lastName, login, email, skills) {
 
 }
 
-function updateTable(added, isTabPressed, orderId) {
-    $.get(ajaxUrl, updateTableByData);
-}
+// function updateTable(added, isTabPressed, orderId) {
+//     $.get(ajaxUrl, updateTableByData);
+// }
+
 
 function updateTableByData(data) {
     datatableApi.clear().rows.add(data).draw();
@@ -71,12 +94,6 @@ function showAddFlightModal() {
     $('#editRow').modal();
 }
 
-function renderBlockUnblockBtn(data, type, row) {
-    return row.blocked === false ?
-    '<a class="btn btn-xs btn-danger" onclick="block(' + row.id + ');">' + i18n['common.block'] + '</a>' :
-    '<a class="btn btn-xs btn-success" onclick="unblock(' + row.id + ');">' + i18n['common.unblock'] + '</a>';
-}
-
 function renderDeleteBtn(data, type, row) {
     return '<a class="btn btn-xs btn-danger" onclick="deleteEntity(' + row.id + ');">' + i18n['common.delete'] + '</a>';
 }
@@ -92,28 +109,6 @@ function deleteEntity(id) {
             }
         })
     }
-}
-
-function block(id) {
-    $.ajax({
-        url: ajaxUrl + id + '/block',
-        type: 'POST',
-        success: function (data) {
-            updateTable();
-            successNoty('common.saved');
-        }
-    })
-}
-
-function unblock(id) {
-    $.ajax({
-        url: ajaxUrl + id + '/unblock',
-        type: 'POST',
-        success: function (data) {
-            updateTable();
-            successNoty('common.saved');
-        }
-    })
 }
 
 function save() {

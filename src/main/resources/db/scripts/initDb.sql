@@ -77,6 +77,7 @@ CREATE TABLE flights (
   arrival_utc_datetime   DATETIME      NOT NULL,
   initial_ticket_base_price DECIMAL(8, 2) NOT NULL,
   max_ticket_base_price   DECIMAL(8, 2) NOT NULL,
+  canceled    SMALLINT DEFAULT 0,
   FOREIGN KEY (departure_airport_id) REFERENCES airports (id),
   FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
   FOREIGN KEY (aircraft_id) REFERENCES aircraft (id)

@@ -15,16 +15,10 @@ public class FlightTo extends BaseTo {
 
     private String arrivalAirport;
 
-    // TODO: 5/20/2017 How can I replace it with spring formatter or make serializer/deserializer work globaly without declaring them explicitly??????
-
-    //@JsonSerialize(using = LocalDateTimeSerializer.class)
-    //@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    // TODO: 5/20/2017 How can I replace it with spring formatter??????
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
-
-    //@JsonSerialize(using = LocalDateTimeSerializer.class)
-    //@JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalLocalDateTime;
 
@@ -33,6 +27,9 @@ public class FlightTo extends BaseTo {
     private BigDecimal initialBaseTicketPrice;
 
     private BigDecimal maxBaseTicketPrice;
+
+    private Boolean canceled;
+
 
     public FlightTo(
             Long id
@@ -43,6 +40,7 @@ public class FlightTo extends BaseTo {
             , String aircraftName
             , BigDecimal initialBaseTicketPrice
             , BigDecimal maxBaseTicketPrice
+            , Boolean canceled
     ) {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
@@ -54,6 +52,7 @@ public class FlightTo extends BaseTo {
         this.aircraftName = aircraftName != null ? aircraftName : "";
         this.initialBaseTicketPrice = initialBaseTicketPrice != null ? initialBaseTicketPrice : new BigDecimal(0);
         this.maxBaseTicketPrice = maxBaseTicketPrice != null ? maxBaseTicketPrice : new BigDecimal(0);
+        this.canceled = canceled;
     }
 
     public FlightTo(){}
@@ -112,5 +111,13 @@ public class FlightTo extends BaseTo {
 
     public void setMaxBaseTicketPrice(BigDecimal maxBaseTicketPrice) {
         this.maxBaseTicketPrice = maxBaseTicketPrice;
+    }
+
+    public Boolean getCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        this.canceled = canceled;
     }
 }

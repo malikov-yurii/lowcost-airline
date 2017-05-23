@@ -16,7 +16,6 @@ import static com.malikov.ticketsystem.AirportTestData.*;
 import static com.malikov.ticketsystem.FlightTestData.*;
 import static com.malikov.ticketsystem.TicketTestData.TICKET_7;
 import static com.malikov.ticketsystem.TicketTestData.TICKET_8;
-import static com.malikov.ticketsystem.util.DateTimeUtil.parseLocalDateTime;
 
 /**
  * @author Yurii Malikov
@@ -33,7 +32,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
         newFlight.setId(created.getId());
         FLIGHT_MATCHER.assertCollectionEquals(
                 Arrays.asList(FLIGHT_1, FLIGHT_2, newFlight),
-                service.getAllBetween(AIRPORT_1_BORISPOL.getId(), AIRPORT_2_HEATHROW.getId(),
+                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
                         DateTimeUtil.MIN, DateTimeUtil.MAX));
     }
 
@@ -68,17 +67,34 @@ public class FlightServiceImplTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getAllFilteredWithoutRestrictions() throws Exception {
+        FLIGHT_MATCHER.assertCollectionEquals(FLIGHTS, service.getAllFiltered(null, null, null ,null));
+    }
+
+    @Test
+    public void testGetAllWithDepartureAirportCriteria() throws Exception {
+        FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_1, FLIGHT_2, FLIGHT_4),
+                service.getAllFiltered(AIRPORT_1_BORISPOL, null, null, null));
+    }
+
+    @Test
+    public void testGetAllWithArrivalAirportCriteria() throws Exception {
+        FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_3, FLIGHT_5, FLIGHT_6),
+                service.getAllFiltered(null, AIRPORT_1_BORISPOL, null, null));
+    }
+
+    @Test
     public void testGetAllFromAirportToAirport() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_1, FLIGHT_2),
-                service.getAllBetween(AIRPORT_1_BORISPOL.getId(), AIRPORT_2_HEATHROW.getId(),
-                        DateTimeUtil.MIN, DateTimeUtil.MAX));
+                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+                        null, null));
     }
 
     @Test
     public void testGetAllBetween() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Collections.singletonList(FLIGHT_1),
-                service.getAllBetween(AIRPORT_1_BORISPOL.getId(), AIRPORT_2_HEATHROW.getId(),
-                        FLIGHT_2.getDepartureUtcDateTime().plusDays(1), DateTimeUtil.MAX));
+                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+                        FLIGHT_2.getDepartureUtcDateTime().plusDays(1), null));
     }
 
     @Test
@@ -86,14 +102,14 @@ public class FlightServiceImplTest extends AbstractServiceTest {
         service.delete(FLIGHT_2.getId());
         FLIGHT_MATCHER.assertCollectionEquals(
                 Collections.singletonList(FLIGHT_1),
-                service.getAllBetween(AIRPORT_1_BORISPOL.getId(), AIRPORT_2_HEATHROW.getId(),
+                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
                         DateTimeUtil.MIN, DateTimeUtil.MAX));
 
     }
 
     private Flight getNewDummyFlightWithNullId(Long id) {
         return new Flight(id, AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW, AIRCRAFT_1,
-                parseLocalDateTime("2017-04-23 12:00"), parseLocalDateTime("2017-04-23 16:00"),
+                DateTimeUtil.parseToLocalDateTime("2017-04-23 12:00"), DateTimeUtil.parseToLocalDateTime("2017-04-23 16:00"),
                 new BigDecimal("50.00"), new BigDecimal("70.00"));
     }
 

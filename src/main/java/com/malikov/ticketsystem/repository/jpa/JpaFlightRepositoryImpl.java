@@ -1,7 +1,11 @@
 package com.malikov.ticketsystem.repository.jpa;
 
+import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.repository.IFlightRepository;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +26,10 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     public Flight save(Flight flight) {
-        if (flight.isNew()){
+        if (flight.isNew()) {
             em.persist((flight));
             return flight;
         } else {
@@ -58,12 +62,56 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public List<Flight> getAllBetween(Long departureAirportId, Long arrivalAirportId, LocalDateTime fromUtcDateTime, LocalDateTime toUtcDateTime) {
-        return em.createNamedQuery(Flight.ALL_BETWEEN, Flight.class)
-                .setParameter("departureAirportId", departureAirportId)
-                .setParameter("arrivalAirportId", arrivalAirportId)
-                .setParameter("fromUtcDateTime", fromUtcDateTime)
-                .setParameter("toUtcDateTime", toUtcDateTime)
-                .getResultList();
+    public List<Flight> getAllBetween(Airport departureAirport, Airport arrivalAirport, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
+
+        // TODO: 5/24/2017 I should replace it with CriteriaBuilder builder = em.getCriteriaBuilder();
+
+        Session session = (Session) em.getDelegate();
+
+        Criteria criteria = session.createCriteria(Flight.class);
+
+        if (toDepartureUtcDateTime != null) {
+            criteria.add(Restrictions.lt("departureUtcDateTime", toDepartureUtcDateTime));
+        }
+
+        if (fromDepartureUtcDateTime != null) {
+            criteria.add(Restrictions.gt("departureUtcDateTime", fromDepartureUtcDateTime));
+        }
+
+        if (departureAirport != null) {
+            criteria.add(Restrictions.eq("departureAirport", departureAirport));
+        }
+
+        if (arrivalAirport != null) {
+            criteria.add(Restrictions.eq("arrivalAirport", arrivalAirport));
+        }
+
+        return criteria.list();
+/*
+
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        Metamodel metamodel = em.getMetamodel();
+        EntityType<Flight> Flight_ = metamodel.entity(Flight.class);
+        ManagedType<Flight> FFlight_ = metamodel.managedType(Flight.class);
+        CriteriaQuery<Flight> criteriaQuery = criteriaBuilder.createQuery(Flight.class);
+        Root<Flight> flight = criteriaQuery.from(Flight.class);
+        //criteriaQuery = criteriaQuery.where(criteriaBuilder.equal(flight.get(FFlight_.departureAirport), arrivalAirport));
+        //criteriaQuery = criteriaQuery.where(criteriaBuilder.equal(flight.get(Flight_.getAttribute("departureAirport"), departureAirport));
+
+
+        criteriaQuery.where(
+                criteriaBuilder.gt(flight.get(Flight_.getSingularAttribute("departureUtcDateTime")), criteriaBuilder.literal(fromDepartureUtcDateTime)),
+                criteriaBuilder.lt(flight.<LocalDateTime>get(Flight_.getName().getAttribute()getSingularAttribute("departureUtcDateTime")), criteriaBuilder.literal(toDepartureUtcDateTime))
+                criteriaBuilder.lt(flight.<LocalDateTime>get(Flight_.departureUtcDateTime), criteriaBuilder.literal(toDepartureUtcDateTime))
+        );
+
+        return em.createQuery(criteriaQuery).getResultList();*/
+
+        //return em.createNamedQuery(Flight.ALL_BETWEEN, Flight.class)
+        //        .setParameter("departureAirport", departureAirport)
+        //        .setParameter("arrivalAirport", arrivalAirport)
+        //        .setParameter("fromUtcDateTime", fromDepartureUtcDateTime)
+        //        .setParameter("toUtcDateTime", toDepartureUtcDateTime)
+        //        .getResultList();
     }
 }

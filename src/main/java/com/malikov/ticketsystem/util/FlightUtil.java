@@ -18,7 +18,9 @@ public class FlightUtil {
                                      flight.getArrivalAirport().getCity().getZoneId()),
                              flight.getAircraft().getName(),
                              flight.getInitialTicketBasePrice(),
-                             flight.getMaxTicketBasePrice());
+                             flight.getMaxTicketBasePrice(),
+                             flight.isCanceled()
+                );
     }
 
 }

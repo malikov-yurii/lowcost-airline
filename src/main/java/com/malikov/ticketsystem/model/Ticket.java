@@ -60,7 +60,7 @@ public class Ticket extends BaseEntity {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean hasPriorityRegistration;
 
-    // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parse if I need to??? But in a such case I cannot easily add column with additional ticket information
+    // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parseToLocalDateTime if I need to??? But in a such case I cannot easily add column with additional ticket information
     @Column(name = "passanger_full_name")
     private String passangerFullName;
 

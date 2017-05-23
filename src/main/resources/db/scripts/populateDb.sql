@@ -29,14 +29,20 @@ ALTER TABLE tickets
   AUTO_INCREMENT 1;
 
 INSERT INTO users (name, last_name, email, password, phone_number) VALUES
-  ('Eduard', 'Eduardov', 'user@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380671234567'),
-  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380661234567'),
-  ('Petr', 'Petrov', 'petrov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380911234567'),
-  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380921234567'),
-  ('Victor', 'Victorov', 'victorov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380931234567'),
-  ('Robert', 'Black', 'black@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380941234567'),
-  ('Hong', 'Wang', 'wang@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380951234567'),
-  ('Abu', 'Kumar', 'admin@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380961234567'),
+  ('Eduard', 'Eduardov', 'user@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380671234567'),
+  ('Ivan', 'Ivanov', 'ivanov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380661234567'),
+  ('Petr', 'Petrov', 'petrov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380911234567'),
+  ('Ibragim', 'Ibragimov', 'ibragimov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380921234567'),
+  ('Victor', 'Victorov', 'victorov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380931234567'),
+  ('Robert', 'Black', 'black@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+380941234567'),
+  ('Hong', 'Wang', 'admin@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380951234567'),
+  ('Vsevolod', 'Vsevlastov', 'superadmin@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380961234567'),
 
   ('Viola', 'White', 'white@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380971234567'),
   ('Roza', 'Rozenko', 'rozenko@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+380981234567'),
@@ -55,7 +61,8 @@ INSERT INTO users (name, last_name, email, password, phone_number) VALUES
 
 INSERT INTO roles (role) VALUES
   ('USER'),
-  ('ADMIN');
+  ('ADMIN'),
+  ('SUPER_ADMIN');
 
 INSERT INTO user_roles (user_id, role_id) VALUES
   (1, 1),
@@ -68,6 +75,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES
   (7, 2),
   (8, 1),
   (8, 2),
+  (8, 3),
 
   (9, 1),
   (10, 1),
@@ -107,16 +115,17 @@ VALUES
   ('B767-3', 2);
 
 INSERT INTO flights (departure_airport_id, arrival_airport_id, aircraft_id, departure_utc_datetime,
-                     arrival_utc_datetime, initial_ticket_base_price, max_ticket_base_price)
+                     arrival_utc_datetime, initial_ticket_base_price, max_ticket_base_price, canceled)
 VALUES
-  (1, 2, 1, '2017-04-30 07:30', '2017-04-30 11:00', 30, 50),
-  (1, 2, 1, '2017-04-23 07:30', '2017-04-23 11:00', 30, 50),
-  (2, 1, 1, '2017-04-27 11:30', '2017-04-27 15:00', 30, 50),
-  (1, 3, 2, '2017-04-22 06:30', '2017-04-22 08:00', 40, 60),
-  (3, 1, 2, '2017-04-26 12:00', '2017-04-26 15:30', 40, 60),
-  (4, 1, 3, '2017-04-27 12:00', '2017-04-27 13:00', 20, 40),
+  (1, 2, 1, '2017-04-30 07:30', '2017-04-30 11:00', 30, 50, 0),
+  (1, 2, 1, '2017-04-23 07:30', '2017-04-23 11:00', 30, 50, 0),
+  (2, 1, 1, '2017-04-27 11:30', '2017-04-27 15:00', 30, 50, 0),
+  (1, 3, 2, '2017-04-22 06:30', '2017-04-22 08:00', 40, 60, 0),
+  (3, 1, 2, '2017-04-26 12:00', '2017-04-26 15:30', 40, 60, 0),
+  (4, 1, 3, '2017-04-27 12:00', '2017-04-27 13:00', 20, 40, 0),
 
-  (1, 4, 3, '2017-04-21 08:00', '2017-04-21 11:00', 20, 40);
+  (1, 4, 3, '2017-04-21 08:00', '2017-04-21 11:00', 20, 40, 0),
+  (1, 3, 3, '2017-04-22 08:00', '2017-04-21 11:11', 20, 40, 1);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff)

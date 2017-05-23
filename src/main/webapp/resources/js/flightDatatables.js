@@ -20,6 +20,7 @@ $(document).ready(function () {
             {"data": "initialBaseTicketPrice", "orderable": false},
             {"data": "maxBaseTicketPrice", "orderable": false},
             {"orderable": false, "render": renderUpdateBtn},
+            {"orderable": false, "render": renderCancelDiscardCancellingBtn},
             {"orderable": false, "render": renderDeleteBtn}
         ],
         "initComplete": onFlightTableReady,
@@ -48,7 +49,11 @@ $(document).ready(function () {
             function (event, ui) {
                 var $this = $(this);
                 $this.addClass('valid in-process');
-                moveFocusToNextFormElement($this);
+                if ($this.hasClass('modal')){
+                    moveFocusToNextFormElement($this);
+                } else {
+                    $this.blur();
+                }
             }
         ).on("autocompletechange",
         function (event, ui) {
@@ -63,6 +68,17 @@ $(document).ready(function () {
 
 
 });
+
+function updateTable(added, isTabPressed, orderId) {
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl + "filtered",
+        data: $("#filter").serialize(),
+        success: updateTableByData
+    });
+
+}
+
 
 function saveFlight() {
     var message = "";
@@ -128,7 +144,7 @@ function saveFlight() {
 // }
 
 function moveFocusToNextFormElement(formElement) {
-    formElement.parents().eq(1).next().find('.form-control').focus();
+    formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
 
 function dateToString(date) {
@@ -150,22 +166,6 @@ function onFlightTableReady() {
     });
 }
 
-function showAddFlightModal() {
-// $('#id').val(0);
-// $('#departureAirport').val('');
-// $('#arrivalAirport').val('');
-    // todo is it working ?
-    debugger;
-    console.log($('#departureLocalDateTime').val('') + "before");
-    $('#modalTitle').html('Add new ' + entityName);
-    $('.form-control').clear();
-    console.log($('#departureLocalDateTime').val('') + "after");
-    // $('#arrivalLocalDateTime').val('');
-    // $('#aircraftName').val('');
-    // $('#initialBaseTicketPrice').val('');
-    // $('#maxBaseTicketPrice').val('');
-    // $('#editRow').modal();
-}
 
 
 
