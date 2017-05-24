@@ -28,31 +28,30 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-3" for="departureAirportCondition"><spring:message
                                                 code="airport.departure"/>:</label>
-
                                         <div class="col-sm-3">
-                                            <input class="form-control input-airport" name="departureAirportCondition" id="departureAirportCondition">
+                                            <input class="input-filter form-control input-airport valid" name="departureAirportCondition" id="departureAirportCondition">
                                         </div>
 
                                         <label class="control-label col-sm-4" for="arrivalAirportCondition"><spring:message
                                                 code="airport.arrival"/>:</label>
 
                                         <div class="col-sm-2">
-                                            <input class="form-control input-airport" name="arrivalAirportCondition" id="arrivalAirportCondition">
+                                            <input class="input-filter form-control input-airport valid" name="arrivalAirportCondition" id="arrivalAirportCondition">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="departureLocalDateTimeCondition"><spring:message
-                                                code="flight.departureLocalDateTime"/>:</label>
-
+                                        <label class="control-label col-sm-3" for="fromDepartureDateTimeCondition">
+                                            <spring:message code="flight.fromDepartureDateTime"/>:</label>
                                         <div class="col-sm-3">
-                                            <input class="form-control input-datetime" name="departureLocalDateTimeCondition" id="departureLocalDateTimeCondition">
+                                            <input class="input-filter form-control input-datetime" name="fromDepartureDateTimeCondition"
+                                                   id="fromDepartureDateTimeCondition">
                                         </div>
 
-                                        <label class="control-label col-sm-4" for="arrivalLocalDateTimeCondition"><spring:message
-                                                code="flight.arrivalLocalDateTime"/>:</label>
-
+                                        <label class="control-label col-sm-4" for="toDepartureDateTimeCondition">
+                                            <spring:message code="flight.toDepartureDateTime"/>:</label>
                                         <div class="col-sm-2">
-                                            <input class="form-control input-datetime" name="arrivalLocalDateTimeCondition" id="arrivalLocalDateTimeCondition">
+                                            <input class="input-filter form-control input-datetime" name="toDepartureDateTimeCondition"
+                                                   id="toDepartureDateTimeCondition">
                                         </div>
                                     </div>
                                 </form:form>
@@ -80,7 +79,7 @@
                             <th><fmt:message key="app.id"/></th>
                             <th><fmt:message key="airport.departure"/></th>
                             <th><fmt:message key="airport.arrival"/></th>
-                            <th><fmt:message key="flight.departureLocalDateTime"/></th>
+                            <th><fmt:message key="flight.fromDepartureDateTime"/></th>
                             <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
                             <th><fmt:message key="aircraft.name"/></th>
                             <th><fmt:message key="flight.initialTicketBasePrice"/></th>
@@ -132,7 +131,7 @@
 
                         <div class="form-group">
                             <label for="departureLocalDateTime" class="control-label col-xs-3"><fmt:message
-                                    key="flight.departureLocalDateTime"/></label>
+                                    key="flight.fromDepartureDateTime"/></label>
 
                             <div class="col-xs-9">
                                 <input type="text" class="modal form-control input-datetime" id="departureLocalDateTime"

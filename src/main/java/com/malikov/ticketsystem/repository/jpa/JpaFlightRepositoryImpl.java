@@ -89,6 +89,8 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         return criteria.list();
 /*
 
+// TODO: 5/24/2017 Why   Flight_.departureAirport  doesn't work??????????????????????
+
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         Metamodel metamodel = em.getMetamodel();
         EntityType<Flight> Flight_ = metamodel.entity(Flight.class);

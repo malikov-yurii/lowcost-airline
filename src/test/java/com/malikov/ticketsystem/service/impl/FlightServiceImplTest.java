@@ -32,7 +32,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
         newFlight.setId(created.getId());
         FLIGHT_MATCHER.assertCollectionEquals(
                 Arrays.asList(FLIGHT_1, FLIGHT_2, newFlight),
-                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+                service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
                         DateTimeUtil.MIN, DateTimeUtil.MAX));
     }
 
@@ -74,26 +74,26 @@ public class FlightServiceImplTest extends AbstractServiceTest {
     @Test
     public void testGetAllWithDepartureAirportCriteria() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_1, FLIGHT_2, FLIGHT_4),
-                service.getAllFiltered(AIRPORT_1_BORISPOL, null, null, null));
+                service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), null, null, null));
     }
 
     @Test
     public void testGetAllWithArrivalAirportCriteria() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_3, FLIGHT_5, FLIGHT_6),
-                service.getAllFiltered(null, AIRPORT_1_BORISPOL, null, null));
+                service.getAllFiltered(null, AIRPORT_1_BORISPOL.getName(), null, null));
     }
 
     @Test
     public void testGetAllFromAirportToAirport() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Arrays.asList(FLIGHT_1, FLIGHT_2),
-                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+                service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
                         null, null));
     }
 
     @Test
     public void testGetAllBetween() throws Exception {
         FLIGHT_MATCHER.assertCollectionEquals(Collections.singletonList(FLIGHT_1),
-                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+                service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
                         FLIGHT_2.getDepartureUtcDateTime().plusDays(1), null));
     }
 
@@ -102,8 +102,8 @@ public class FlightServiceImplTest extends AbstractServiceTest {
         service.delete(FLIGHT_2.getId());
         FLIGHT_MATCHER.assertCollectionEquals(
                 Collections.singletonList(FLIGHT_1),
-                service.getAllFiltered(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
-                        DateTimeUtil.MIN, DateTimeUtil.MAX));
+                service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
+                        null, null));
 
     }
 

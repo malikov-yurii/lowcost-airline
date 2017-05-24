@@ -58,8 +58,9 @@ $(document).ready(function () {
         ).on("autocompletechange",
         function (event, ui) {
             var $this = $(this);
-            $this.addClass('valid');
-            if (!$this.hasClass('in-process')) {
+            // debugger;
+            // $this.addClass('valid'); ????????????? why was uncommented???????
+            if (!($this.hasClass('in-process') || ($this.hasClass('input-filter') && ($this.val().length === 0)))){
                 $this.removeClass('valid');
             }
             $this.removeClass('in-process');
@@ -69,13 +70,52 @@ $(document).ready(function () {
 
 });
 
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get(ajaxUrl, updateTableByData);
+}
+
 function updateTable(added, isTabPressed, orderId) {
-    $.ajax({
-        type: "POST",
-        url: ajaxUrl + "filtered",
-        data: $("#filter").serialize(),
-        success: updateTableByData
-    });
+
+    var message = "";
+
+    if (!$('#departureAirportCondition').hasClass('valid')) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Please select departure airport for filter from drop-down list or clear filter input if you dont need that restriction';
+    }
+    if (!$('#arrivalAirportCondition').hasClass('valid')) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Please select arrival airport for filter from drop-down list or clear filter input if you dont need that restriction';
+    }
+
+    var fromDateTimeValue = $('#fromDepartureDateTimeCondition').val();
+    var toDateTimeValue = $('#toDepartureDateTimeCondition').val();
+
+    if (fromDateTimeValue.length !== 0 || toDateTimeValue.length !== 0){
+        var fromDateTime = new Date(fromDateTimeValue);
+        var toDateTime = new Date(toDateTimeValue);
+
+        if (fromDateTime > toDateTime){
+            message = addNextLineSymbolIfNotEmpty(message);
+            message += '"from" date should be earlier than "to" date!! Please reselect values!';
+        }
+    }
+
+    if (message.length !== 0) {
+        swal({
+            title: "Validation of entered data in filter failed.",
+            text: message,
+            // type: "error",
+            confirmButtonText: "OK"
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + "filtered",
+            data: $("#filter").serialize(),
+            success: updateTableByData
+        });
+    }
 
 }
 

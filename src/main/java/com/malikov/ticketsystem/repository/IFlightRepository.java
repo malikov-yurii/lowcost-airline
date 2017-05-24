@@ -22,6 +22,6 @@ public interface IFlightRepository {
 
     List<Flight> getAll();
 
-    List<Flight> getAllBetween(Airport departureAirport, Airport arrivalAirportId, LocalDateTime fromDepartureUtclDateTime, LocalDateTime toDepartureUtcDateTime);
+    List<Flight> getAllBetween(Airport departureAirport, Airport arrivalAirportId, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime);
 
 }

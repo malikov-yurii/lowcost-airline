@@ -86,22 +86,11 @@ public class AbstractFlightController {
     }
 
     public List<FlightTo> getFiltered(LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, String departureAirportName, String arrivalAirportName) {
-        Airport departureAirport = airportService.getByName(departureAirportName),
-                arrivalAirport = airportService.getByName(arrivalAirportName);
-// TODO: 5/23/2017 consider adding some better validation
-        LocalDateTime
-                departureUtcDateTime = departureLocalDateTime != null
-                        ? DateTimeUtil.zoneIdToUtc(departureLocalDateTime, departureAirport.getCity().getZoneId())
-                        : null,
-                arrivalUtcDateTime = arrivalLocalDateTime != null
-                        ? DateTimeUtil.zoneIdToUtc(arrivalLocalDateTime, arrivalAirport.getCity().getZoneId())
-                        : null;
-
         return flightService.getAllFiltered(
-                                    departureAirport,
-                                    arrivalAirport,
-                                    departureUtcDateTime != null ? departureUtcDateTime : DateTimeUtil.MIN,
-                                    arrivalUtcDateTime != null ? departureUtcDateTime : DateTimeUtil.MAX)
+                                    departureAirportName,
+                                    arrivalAirportName,
+                                    departureLocalDateTime,
+                                    arrivalLocalDateTime)
                                 .stream()
                                 .map(FlightUtil::asTo)
                                 .collect(Collectors.toList());

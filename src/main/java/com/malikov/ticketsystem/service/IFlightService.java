@@ -1,6 +1,5 @@
 package com.malikov.ticketsystem.service;
 
-import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 
 import java.time.LocalDateTime;
@@ -22,7 +21,7 @@ public interface IFlightService {
 
     List<Flight> getAll();
 
-    List<Flight> getAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime);
+    List<Flight> getAllFiltered(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime);
 
     boolean delete(long id);
 

@@ -1,6 +1,8 @@
 package com.malikov.ticketsystem.web.flight;
 
 import com.malikov.ticketsystem.to.FlightTo;
+import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,11 @@ public class FlightAjaxController extends AbstractFlightController {
 
     @PostMapping(value = "/filtered", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FlightTo> getFiltered(
-            @RequestParam(value = "departureLocalDateTimeCondition", required = false) LocalDateTime departureLocalDateTime,
-            @RequestParam(value = "arrivalLocalDateTimeCondition", required = false) LocalDateTime arrivalLocalDateTime,
+            @RequestParam(value = "fromDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
+            @RequestParam(value = "toDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
             @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
             @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName) {
-        return super.getFiltered(departureLocalDateTime, arrivalLocalDateTime, departureAirportName, arrivalAirportName);
+        return super.getFiltered(fromDepartureDateTime, toDepartureDateTime, departureAirportName, arrivalAirportName);
     }
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid FlightTo flightTo) {
