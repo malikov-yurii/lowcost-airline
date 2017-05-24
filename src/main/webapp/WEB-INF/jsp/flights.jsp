@@ -79,7 +79,7 @@
                             <th><fmt:message key="app.id"/></th>
                             <th><fmt:message key="airport.departure"/></th>
                             <th><fmt:message key="airport.arrival"/></th>
-                            <th><fmt:message key="flight.fromDepartureDateTime"/></th>
+                            <th><fmt:message key="flight.departureLocalDateTime"/></th>
                             <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
                             <th><fmt:message key="aircraft.name"/></th>
                             <th><fmt:message key="flight.initialTicketBasePrice"/></th>
@@ -112,7 +112,7 @@
                                     key="airport.departure"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal form-control input-airport" id="departureAirport"
+                                <input type="text" class="modal-input form-control input-airport" id="departureAirport"
                                        name="departureAirport"
                                        placeholder="please choose arrival airport from drop down list">
                             </div>
@@ -123,7 +123,7 @@
                                     key="airport.arrival"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal form-control input-airport" id="arrivalAirport"
+                                <input type="text" class="modal-input form-control input-airport" id="arrivalAirport"
                                        name="arrivalAirport"
                                        placeholder="please choose arrival airport from drop down list">
                             </div>
@@ -131,10 +131,10 @@
 
                         <div class="form-group">
                             <label for="departureLocalDateTime" class="control-label col-xs-3"><fmt:message
-                                    key="flight.fromDepartureDateTime"/></label>
+                                    key="flight.departureLocalDateTime"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal form-control input-datetime" id="departureLocalDateTime"
+                                <input type="text" class="modal-input form-control input-datetime" id="departureLocalDateTime"
                                        name="departureLocalDateTime"
                                        placeholder="please set arrival local date">
                             </div>
@@ -145,7 +145,7 @@
                                     key="flight.arrivalLocalDateTime"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal form-control input-datetime" id="arrivalLocalDateTime"
+                                <input type="text" class="modal-input form-control input-datetime" id="arrivalLocalDateTime"
                                        name="arrivalLocalDateTime"
                                        placeholder="please set arrival local date">
                             </div>
@@ -156,7 +156,7 @@
                                     key="aircraft.name"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal form-control input-aircraft" id="aircraftName"
+                                <input type="text" class="modal-input form-control input-aircraft" id="aircraftName"
                                        name="aircraftName"
                                        placeholder="please choose aircraft from drop down list">
                             </div>
@@ -167,7 +167,7 @@
                                     key="flight.initialTicketBasePrice"/></label>
 
                             <div class="col-xs-9">
-                                <input type="number" class="modal form-control" id="initialBaseTicketPrice"
+                                <input type="number" class="modal-input form-control" id="initialBaseTicketPrice"
                                        name="initialBaseTicketPrice" placeholder="100.00">
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                                     key="flight.maxTicketBasePrice"/></label>
 
                             <div class="col-xs-9">
-                                <input type="number" class="modal form-control" id="maxBaseTicketPrice"
+                                <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
                                        name="maxBaseTicketPrice" placeholder="200.00">
                             </div>
                         </div>

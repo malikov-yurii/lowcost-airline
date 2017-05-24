@@ -1,5 +1,6 @@
 var datatableApi;
 
+
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
         "ajax": {
@@ -49,7 +50,7 @@ $(document).ready(function () {
             function (event, ui) {
                 var $this = $(this);
                 $this.addClass('valid in-process');
-                if ($this.hasClass('modal')){
+                if ($this.hasClass('modal-input')) {
                     moveFocusToNextFormElement($this);
                 } else {
                     $this.blur();
@@ -58,9 +59,11 @@ $(document).ready(function () {
         ).on("autocompletechange",
         function (event, ui) {
             var $this = $(this);
-            // debugger;
             // $this.addClass('valid'); ????????????? why was uncommented???????
-            if (!($this.hasClass('in-process') || ($this.hasClass('input-filter') && ($this.val().length === 0)))){
+            // if ($this.hasClass('input-filter') && ($this.val().length === 0)) {
+            //     $this.addClass('valid');
+            // } else
+            if (!$this.hasClass('in-process')) {
                 $this.removeClass('valid');
             }
             $this.removeClass('in-process');
@@ -78,45 +81,64 @@ function clearFilter() {
 function updateTable(added, isTabPressed, orderId) {
 
     var message = "";
-
-    if (!$('#departureAirportCondition').hasClass('valid')) {
-        message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please select departure airport for filter from drop-down list or clear filter input if you dont need that restriction';
-    }
-    if (!$('#arrivalAirportCondition').hasClass('valid')) {
-        message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please select arrival airport for filter from drop-down list or clear filter input if you dont need that restriction';
-    }
-
+    var departureAirportCondition = $('#departureAirportCondition');
+    var arrivalAirportCondition = $('#arrivalAirportCondition');
     var fromDateTimeValue = $('#fromDepartureDateTimeCondition').val();
     var toDateTimeValue = $('#toDepartureDateTimeCondition').val();
 
-    if (fromDateTimeValue.length !== 0 || toDateTimeValue.length !== 0){
-        var fromDateTime = new Date(fromDateTimeValue);
-        var toDateTime = new Date(toDateTimeValue);
+    if (!(departureAirportCondition.val().length === 0 && arrivalAirportCondition.val().length === 0
+        && fromDateTimeValue.length === 0 && toDateTimeValue.length === 0)) {
 
-        if (fromDateTime > toDateTime){
+        if (!departureAirportCondition.hasClass('valid') && !(departureAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += '"from" date should be earlier than "to" date!! Please reselect values!';
+            message += 'Please select departure airport for filter from drop-down list or leave it empty.';
+            departureAirportCondition.val('');
+            departureAirportCondition.addClass('valid');
+        }
+        if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
+            message = addNextLineSymbolIfNotEmpty(message);
+            message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
+            arrivalAirportCondition.val('');
+            arrivalAirportCondition.addClass('valid');
+        }
+
+        if (departureAirportCondition.val() === arrivalAirportCondition.val()
+            && departureAirportCondition.val().length !== 0 && arrivalAirportCondition.val().length !== 0) {
+            message = addNextLineSymbolIfNotEmpty(message);
+            departureAirportCondition.val('');
+            departureAirportCondition.addClass('valid');
+            arrivalAirportCondition.val('');
+            arrivalAirportCondition.addClass('valid');
+            message += 'Departure and arrival airports can\'t be the same.';
+        }
+
+
+        if (fromDateTimeValue.length !== 0 && toDateTimeValue.length !== 0) {
+            var fromDateTime = new Date(fromDateTimeValue);
+            var toDateTime = new Date(toDateTimeValue);
+
+            if (fromDateTime > toDateTime) {
+                message = addNextLineSymbolIfNotEmpty(message);
+                message += '"from" date should be earlier than "to" date!! Please reselect values!';
+            }
+        }
+
+        if (message.length !== 0) {
+            swal({
+                title: "Validation of entered data in filter failed.",
+                text: message,
+                // type: "error",
+                confirmButtonText: "OK"
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: ajaxUrl + "filtered",
+                data: $("#filter").serialize(),
+                success: updateTableByData
+            });
         }
     }
-
-    if (message.length !== 0) {
-        swal({
-            title: "Validation of entered data in filter failed.",
-            text: message,
-            // type: "error",
-            confirmButtonText: "OK"
-        });
-    } else {
-        $.ajax({
-            type: "POST",
-            url: ajaxUrl + "filtered",
-            data: $("#filter").serialize(),
-            success: updateTableByData
-        });
-    }
-
 }
 
 
@@ -127,13 +149,25 @@ function saveFlight() {
         message += 'Please select aircraft from drop-down list.';
     }
 
-    if (!$('#departureAirport').hasClass('valid')) {
+    var departureAirport = $('#departureAirport');
+    var arrivalAirport = $('#arrivalAirport');
+    if (!departureAirport.hasClass('valid')) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Please select departure airport from drop-down list.';
     }
-    if (!$('#arrivalAirport').hasClass('valid')) {
+    if (!arrivalAirport.hasClass('valid')) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Please select arrival airport from drop-down list.';
+    }
+
+    if (departureAirport.val() === arrivalAirport.val()
+        && departureAirport.val().length !== 0 && arrivalAirport.val().length !== 0) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        departureAirport.val('');
+        departureAirport.removeClass('valid');
+        arrivalAirport.val('');
+        arrivalAirport.removeClass('valid');
+        message += 'Departure and arrival airports can\'t be the same.';
     }
 
     var currentMoment = new Date();
@@ -154,6 +188,24 @@ function saveFlight() {
     } else if (new Date(arrivalLocalDateTimeValue) < currentMoment) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Arrival local date time cannot be earlier than ' + dateToString(currentMoment);
+    }
+
+    var initialBaseTicketPrice = $('#initialBaseTicketPrice');
+    var maxBaseTicketPrice = $('#maxBaseTicketPrice');
+    var initialBaseTicketPriceInt = parseInt(initialBaseTicketPrice.val(), 10);
+    var maxBaseTicketPriceInt = parseInt(maxBaseTicketPrice.val(), 10);
+    if (initialBaseTicketPriceInt > maxBaseTicketPriceInt) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Initial price cannot be greater than max ticket price.';
+        initialBaseTicketPrice.val(5);
+        maxBaseTicketPrice.val(5);
+    }
+
+    if (initialBaseTicketPriceInt < 5) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Initial price cannot be less than 5.00$';
+        initialBaseTicketPrice.val(5);
+        maxBaseTicketPrice.val(5);
     }
 
     if (message.length !== 0) {
@@ -188,10 +240,10 @@ function moveFocusToNextFormElement(formElement) {
 }
 
 function dateToString(date) {
-    return date.toJSON().slice(0,16).replace('T', ' ');
+    return date.toJSON().slice(0, 16).replace('T', ' ');
 }
 
-function addNextLineSymbolIfNotEmpty(message){
+function addNextLineSymbolIfNotEmpty(message) {
     if (message.length !== 0) {
         message += '\n'
     }
