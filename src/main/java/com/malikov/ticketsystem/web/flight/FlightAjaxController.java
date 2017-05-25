@@ -19,17 +19,16 @@ import java.util.List;
 public class FlightAjaxController extends AbstractFlightController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FlightTo> getAll() {
-        return super.getAll();
-    }
-
-
-    @PostMapping(value = "/filtered", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FlightTo> getFiltered(
             @RequestParam(value = "fromDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
             @RequestParam(value = "toDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
             @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
-            @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName) {
+            @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName,
+            @RequestParam(value = "draw") Integer draw,
+            @RequestParam(value = "length") Integer length,
+            @RequestParam(value = "start") Integer start
+            ) {
+        // TODO: 5/26/2017 Implement length and start as in sms 
         return super.getFiltered(fromDepartureDateTime, toDepartureDateTime, departureAirportName, arrivalAirportName);
     }
     @PostMapping

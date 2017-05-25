@@ -3,8 +3,22 @@ var datatableApi;
 
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
+        "processing": true,
+        "serverSide": true,
         "ajax": {
             "url": ajaxUrl,
+            "type": "GET",
+            "data": function ( d ) {
+                // debugger;
+                return { draw: d.draw,
+                          length: d.length,
+                          start: d.start,
+                          fromDepartureDateTimeCondition: $('#fromDepartureDateTimeCondition').val(),
+                          toDepartureDateTimeCondition: $('#toDepartureDateTimeCondition').val(),
+                          departureAirportCondition: $('#departureAirportCondition').val(),
+                          arrivalAirportCondition: $('#arrivalAirportCondition').val()
+                        };
+            },
             "dataSrc": ""
         },
         "searching": false,

@@ -111,7 +111,7 @@
         <webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
         <webjars-datetimepicker.version>2.5.4</webjars-datetimepicker.version>
         <webjars-noty.version>2.3.8</webjars-noty.version>
-        <webjars-datatables.version>1.10.12-1</webjars-datatables.version>
+        <!--<webjars-datatables.version>1.10.12-1</webjars-datatables.version>-->
         <webjars-datatables.version>1.10.13</webjars-datatables.version>
 
 
