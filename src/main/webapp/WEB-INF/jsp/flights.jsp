@@ -168,7 +168,7 @@
 
                             <div class="col-xs-9">
                                 <input type="number" class="modal-input form-control" id="initialBaseTicketPrice"
-                                       name="initialBaseTicketPrice" placeholder="100.00">
+                                       name="initialBaseTicketPrice" placeholder="10.00">
                             </div>
                         </div>
 
@@ -178,7 +178,7 @@
 
                             <div class="col-xs-9">
                                 <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
-                                       name="maxBaseTicketPrice" placeholder="200.00">
+                                       name="maxBaseTicketPrice" placeholder="20.00">
                             </div>
                         </div>
 

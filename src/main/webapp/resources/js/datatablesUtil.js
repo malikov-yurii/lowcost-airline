@@ -11,17 +11,18 @@ function renderUpdateBtn(data, type, row) {
 
 function renderCancelDiscardCancellingBtn(data, type, row) {
     return row.canceled === false ?
-        '<a class="btn btn-xs btn-danger" onclick="setCanceled(' + row.id + ', ' + true + ');">' + i18n['common.cancel'] + '</a>' :
-        '<a class="btn btn-xs btn-success" onclick="setCanceled(' + row.id + ', ' + false + ');">' + i18n['common.discardCancelling'] + '</a>';
+        '<a class="cancel-btn btn btn-xs btn-danger" onclick="setCanceled(' + row.id + ', ' + true + ');">' + i18n['common.cancel'] + '</a>' :
+        '<a class="cancel-btn btn btn-xs btn-success" onclick="setCanceled(' + row.id + ', ' + false + ');">' + i18n['common.discardCancelling'] + '</a>';
 }
 
 function setCanceled(id, isCanceled) {
+    // debugger;
     $.ajax({
         url: ajaxUrl + id + '/set-canceled',
         type: 'POST',
         data: 'canceled=' + isCanceled,
         success: function (data) {
-            updateTable();
+            updateTable(true);
             successNoty('common.saved');
         }
     })
@@ -32,7 +33,8 @@ function showUpdateModal() {
 
     $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
 
-    $('.form-control').addClass('valid');
+    // debugger;
+    $('.form-control.modal-input').addClass('valid in-process');
 
     for (var key in rowData) {
         var $node = $('#'+key);
@@ -145,4 +147,8 @@ function closeNoty() {
 
 function getDateTimePickerFormat() {
     return "Y-m-d H:i";
+}
+
+function dateToString(date) {
+    return date.toJSON().slice(0, 16).replace('T', ' ');
 }

@@ -73,13 +73,27 @@ $(document).ready(function () {
 
 });
 
+function showAddModal() {
+    $('#modalTitle').html('Add new ' + entityName);
+    // $('.form-control').val('');
+
+    $('#departureAirport,#arrivalAirport,#aircraftName').val('');
+    var defaultDate = new Date();
+    defaultDate.setHours(defaultDate.getHours() + 24); // same time next day
+    $('#departureLocalDateTime').val(dateToString(defaultDate));
+    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour flight
+    $('#arrivalLocalDateTime').val(dateToString(defaultDate));
+    $('#initialBaseTicketPrice').val('10.00');
+    $('#maxBaseTicketPrice').val('20.00');
+    $('#editRow').modal();
+}
+
 function clearFilter() {
     $("#filter")[0].reset();
     $.get(ajaxUrl, updateTableByData);
 }
 
-function updateTable(added, isTabPressed, orderId) {
-
+function updateTable(forceUpdate, added, isTabPressed, orderId) {
     var message = "";
     var departureAirportCondition = $('#departureAirportCondition');
     var arrivalAirportCondition = $('#arrivalAirportCondition');
@@ -87,7 +101,7 @@ function updateTable(added, isTabPressed, orderId) {
     var toDateTimeValue = $('#toDepartureDateTimeCondition').val();
 
     if (!(departureAirportCondition.val().length === 0 && arrivalAirportCondition.val().length === 0
-        && fromDateTimeValue.length === 0 && toDateTimeValue.length === 0)) {
+        && fromDateTimeValue.length === 0 && toDateTimeValue.length === 0) || forceUpdate) {
 
         if (!departureAirportCondition.hasClass('valid') && !(departureAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
@@ -95,6 +109,8 @@ function updateTable(added, isTabPressed, orderId) {
             departureAirportCondition.val('');
             departureAirportCondition.addClass('valid');
         }
+
+        // debugger;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
             message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
@@ -163,10 +179,10 @@ function saveFlight() {
     if (departureAirport.val() === arrivalAirport.val()
         && departureAirport.val().length !== 0 && arrivalAirport.val().length !== 0) {
         message = addNextLineSymbolIfNotEmpty(message);
-        departureAirport.val('');
-        departureAirport.removeClass('valid');
-        arrivalAirport.val('');
-        arrivalAirport.removeClass('valid');
+        // departureAirport.val('');
+        // departureAirport.removeClass('valid');
+        // arrivalAirport.val('');
+        // arrivalAirport.removeClass('valid');
         message += 'Departure and arrival airports can\'t be the same.';
     }
 
@@ -197,16 +213,13 @@ function saveFlight() {
     if (initialBaseTicketPriceInt > maxBaseTicketPriceInt) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Initial price cannot be greater than max ticket price.';
-        initialBaseTicketPrice.val(5);
-        maxBaseTicketPrice.val(5);
     }
 
     if (initialBaseTicketPriceInt < 5) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Initial price cannot be less than 5.00$';
-        initialBaseTicketPrice.val(5);
-        maxBaseTicketPrice.val(5);
     }
+    // debugger;
 
     if (message.length !== 0) {
         swal({
@@ -216,15 +229,17 @@ function saveFlight() {
             confirmButtonText: "OK"
         });
     } else {
-        $('.valid, .in-process').removeClass('valid in-process');
+        $('.modal-input.valid, .modal-input.in-process').removeClass('valid in-process');
         $.ajax({
             type: "POST",
             url: ajaxUrl,
             data: $('#detailsForm').serialize(),
             success: function () {
+                // debugger;
                 $('#editRow').modal('hide');
-                updateTable();
+                updateTable(true);
                 successNoty('common.saved');
+                // debugger;
             }
         });
     }
@@ -239,9 +254,7 @@ function moveFocusToNextFormElement(formElement) {
     formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
 
-function dateToString(date) {
-    return date.toJSON().slice(0, 16).replace('T', ' ');
-}
+
 
 function addNextLineSymbolIfNotEmpty(message) {
     if (message.length !== 0) {
