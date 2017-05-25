@@ -16,16 +16,27 @@ function renderCancelDiscardCancellingBtn(data, type, row) {
 }
 
 function setCanceled(id, isCanceled) {
-    // debugger;
-    $.ajax({
-        url: ajaxUrl + id + '/set-canceled',
-        type: 'POST',
-        data: 'canceled=' + isCanceled,
-        success: function (data) {
-            updateTable(true);
-            successNoty('common.saved');
-        }
-    })
+    swal({
+            title: i18n['common.areYouSureWantToChangeCancellingStatus'],
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Yes, I am sure!',
+            cancelButtonText: "No, cancel it!",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: ajaxUrl + id + '/set-canceled',
+                    type: 'POST',
+                    data: 'canceled=' + isCanceled,
+                    success: function (data) {
+                        updateTable(true);
+                        successNoty('common.saved');
+                    }
+                });
+            }
+        });
 }
 
 function showUpdateModal() {
@@ -34,10 +45,12 @@ function showUpdateModal() {
     $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
 
     // debugger;
-    $('.form-control.modal-input').addClass('valid in-process');
+
+    $('.form-control.modal-input').addClass('valid');
+    $('.form-control.modal-input').removeClass('in-process');
 
     for (var key in rowData) {
-        var $node = $('#'+key);
+        var $node = $('#' + key);
         if ($node.length) $node.val(rowData[key]);
     }
 
@@ -55,7 +68,7 @@ function renderUpdateUserBtn(data, type, row) {
 
     if (entityName === 'freelancer')
         result += row.skills;
-    result += '\')">'+ i18n['common.update'] + '</a>';
+    result += '\')">' + i18n['common.update'] + '</a>';
 
     console.log(result);
     return result;
@@ -101,16 +114,27 @@ function renderDeleteBtn(data, type, row) {
 }
 
 function deleteEntity(id) {
-    if (confirm(i18n['common.areYouSureWantToDelete'])) {
-        $.ajax({
-            url: ajaxUrl + id,
-            type: 'DELETE',
-            success: function (data) {
-                updateTable();
-                successNoty('common.deleted');
+    swal({
+            title: i18n['common.areYouSureWantToDelete'],
+            text: "This is final delete. No way to restore data after confirmation",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Yes, I am sure',
+            cancelButtonText: "No, cancel it",
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: ajaxUrl + id,
+                    type: 'DELETE',
+                    success: function (data) {
+                        updateTable(true);
+                        successNoty('common.deleted');
+                    }
+                })
             }
-        })
-    }
+        });
 }
 
 function save() {

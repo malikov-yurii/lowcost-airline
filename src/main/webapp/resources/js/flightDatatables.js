@@ -100,6 +100,8 @@ function updateTable(forceUpdate, added, isTabPressed, orderId) {
     var fromDateTimeValue = $('#fromDepartureDateTimeCondition').val();
     var toDateTimeValue = $('#toDepartureDateTimeCondition').val();
 
+    // var
+
     if (!(departureAirportCondition.val().length === 0 && arrivalAirportCondition.val().length === 0
         && fromDateTimeValue.length === 0 && toDateTimeValue.length === 0) || forceUpdate) {
 
@@ -221,6 +223,7 @@ function saveFlight() {
     }
     // debugger;
 
+
     if (message.length !== 0) {
         swal({
             title: "Validation of entered data failed.",
@@ -230,6 +233,8 @@ function saveFlight() {
         });
     } else {
         $('.modal-input.valid, .modal-input.in-process').removeClass('valid in-process');
+        $('.in-process').removeClass('in-process');
+        debugger;
         $.ajax({
             type: "POST",
             url: ajaxUrl,
