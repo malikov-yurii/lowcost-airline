@@ -4,25 +4,28 @@ var datatableApi;
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
         "processing": true,
+        "dom": "ft<'row'<'dataTables_length_wrap'l>><'row'<'col-md-6'i><'col-md-6'p>>",
+        "lengthMenu": [3, 5, 10],
         "serverSide": true,
         "ajax": {
             "url": ajaxUrl,
-            "type": "GET",
-            "data": function ( d ) {
+            "data": function (d) {
                 // debugger;
-                return { draw: d.draw,
-                          length: d.length,
-                          start: d.start,
-                          fromDepartureDateTimeCondition: $('#fromDepartureDateTimeCondition').val(),
-                          toDepartureDateTimeCondition: $('#toDepartureDateTimeCondition').val(),
-                          departureAirportCondition: $('#departureAirportCondition').val(),
-                          arrivalAirportCondition: $('#arrivalAirportCondition').val()
-                        };
-            },
-            "dataSrc": ""
+                return {
+                    draw: d.draw,
+                    length: d.length,
+                    start: d.start,
+                    fromDepartureDateTimeCondition: $('#fromDepartureDateTimeCondition').val(),
+                    toDepartureDateTimeCondition: $('#toDepartureDateTimeCondition').val(),
+                    departureAirportCondition: $('#departureAirportCondition').val(),
+                    arrivalAirportCondition: $('#arrivalAirportCondition').val()
+                };
+            }
+            // ,"dataSrc": ""
         },
         "searching": false,
-        "pagingType": "full_numbers",
+        // "pagingType": "full_numbers",
+        "pagingType": "simple",
         "paging": true,
         "info": true,
         "columns": [
@@ -87,6 +90,14 @@ $(document).ready(function () {
 
 });
 
+function showNextPage() {
+    updateTable(false, 'nextPage')
+}
+
+function showPreviousPage() {
+    updateTable(false, 'previousPage')
+}
+
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
     // $('.form-control').val('');
@@ -107,14 +118,12 @@ function clearFilter() {
     $.get(ajaxUrl, updateTableByData);
 }
 
-function updateTable(forceUpdate, added, isTabPressed, orderId) {
+function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
     var message = "";
     var departureAirportCondition = $('#departureAirportCondition');
     var arrivalAirportCondition = $('#arrivalAirportCondition');
     var fromDateTimeValue = $('#fromDepartureDateTimeCondition').val();
     var toDateTimeValue = $('#toDepartureDateTimeCondition').val();
-
-    // var
 
     if (!(departureAirportCondition.val().length === 0 && arrivalAirportCondition.val().length === 0
         && fromDateTimeValue.length === 0 && toDateTimeValue.length === 0) || forceUpdate) {
@@ -172,6 +181,7 @@ function updateTable(forceUpdate, added, isTabPressed, orderId) {
         }
     }
 }
+
 
 
 function saveFlight() {
@@ -256,7 +266,7 @@ function saveFlight() {
             success: function () {
                 // debugger;
                 $('#editRow').modal('hide');
-                updateTable(true);
+                updateTable(true, false);
                 successNoty('common.saved');
                 // debugger;
             }
@@ -272,7 +282,6 @@ function saveFlight() {
 function moveFocusToNextFormElement(formElement) {
     formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
-
 
 
 function addNextLineSymbolIfNotEmpty(message) {

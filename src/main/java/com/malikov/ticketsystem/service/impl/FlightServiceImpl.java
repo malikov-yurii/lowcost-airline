@@ -56,10 +56,51 @@ public class FlightServiceImpl implements IFlightService {
         return flightRepository.getAll();
     }
 
+    //@Override
+    //public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
+    //    return flightRepository.countAllFiltered(
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //    );
+    //}
+    //
+    //public FlightPageDTO getFilteredPage
+
+
+    @Override
+    public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
+        return null;
+    }
+
     // TODO: 5/24/2017 does it need extra validation by userid or something?
     @Override
     public List<Flight> getAllFiltered(String departureAirportName, String arrivalAirportName,
-                                       LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime) {
+                                       LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime
+                                        , Integer first, Integer pageSize) {
         Airport departureAirport, arrivalAirport;
 
         if (departureAirportName != null && departureAirportName.length() != 0) {
@@ -88,7 +129,7 @@ public class FlightServiceImpl implements IFlightService {
             toDepartureUtcDateTime = toDepartureDateTime;
         }
 
-        return flightRepository.getAllBetween(departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime);
+        return flightRepository.getAllFiltered(departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime , first, pageSize);
     }
 
     @Override

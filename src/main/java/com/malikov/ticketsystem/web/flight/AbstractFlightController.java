@@ -85,12 +85,16 @@ public class AbstractFlightController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public List<FlightTo> getFiltered(LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, String departureAirportName, String arrivalAirportName) {
+    public List<FlightTo> getFilteredPageContent(String departureAirportName, String arrivalAirportName,
+                                                 LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
+                                                 Integer startingFrom, Integer pageCapacity) {
         return flightService.getAllFiltered(
                                     departureAirportName,
                                     arrivalAirportName,
-                                    departureLocalDateTime,
-                                    arrivalLocalDateTime)
+                                    fromDepartureDateTime,
+                                    toDepartureDateTime,
+                startingFrom,
+                pageCapacity)
                                 .stream()
                                 .map(FlightUtil::asTo)
                                 .collect(Collectors.toList());

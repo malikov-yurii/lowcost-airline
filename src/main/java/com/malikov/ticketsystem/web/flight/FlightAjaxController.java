@@ -3,8 +3,8 @@ package com.malikov.ticketsystem.web.flight;
 import com.malikov.ticketsystem.to.FlightTo;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,18 +18,29 @@ import java.util.List;
 @RequestMapping(value = "/ajax/profile/flight")
 public class FlightAjaxController extends AbstractFlightController {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FlightTo> getFiltered(
+    //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
+    //public List<FlightTo> getFiltered(
+    public ModelMap getFiltered(
             @RequestParam(value = "fromDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
             @RequestParam(value = "toDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
             @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
             @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName,
             @RequestParam(value = "draw") Integer draw,
-            @RequestParam(value = "length") Integer length,
-            @RequestParam(value = "start") Integer start
+            @RequestParam(value = "start") Integer startingFrom,
+            @RequestParam(value = "length") Integer pageCapacity
             ) {
-        // TODO: 5/26/2017 Implement length and start as in sms 
-        return super.getFiltered(fromDepartureDateTime, toDepartureDateTime, departureAirportName, arrivalAirportName);
+        List<FlightTo> flightTos = super.getFilteredPageContent(departureAirportName, arrivalAirportName,
+                fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity);
+        //int totalFiltered = super.contFiltered();
+        ModelMap model = new ModelMap();
+        model.put("draw", draw);
+        model.put("recordsTotal", flightTos.size() + 1 + startingFrom);
+        model.put("recordsFiltered", flightTos.size() + 1 + startingFrom);
+        //model.put("recordsFiltered", flightTos.size() + 1);
+        //model.put("recordsFiltered", flightTos.size());
+        model.put("data", flightTos);
+        return  model;
     }
     @PostMapping
     public ResponseEntity<String> createOrUpdate(@Valid FlightTo flightTo) {

@@ -14,9 +14,15 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
-        @NamedQuery(name = Flight.DELETE, query = "DELETE FROM Flight f WHERE f.id=:id"),
-        @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC"),
-        @NamedQuery(name = Flight.ALL_BETWEEN, query = "SELECT f FROM Flight f WHERE departureAirport.id=:departureAirportId AND arrivalAirport.id=:arrivalAirportId AND (f.departureUtcDateTime BETWEEN :fromUtcDateTime AND :toUtcDateTime) ORDER BY f.id ASC")
+        @NamedQuery(name = Flight.DELETE, query = "DELETE FROM Flight f WHERE f.id = :id"),
+        @NamedQuery(name = Flight.ALL_SORTED, query = "SELECT f FROM Flight f ORDER BY f.id ASC")
+        //,@NamedQuery(name = Flight.ALL_FILTERED_SORTED_BY_ID, query =
+        //        "SELECT f FROM Flight f" +
+        //        " WHERE ((:departureAirport is null or f.departureAirport = :departureAirport)" +
+        //        " AND (:arrivalAirport is null or f.arrivalAirport=:arrivalAirport)" +
+        //        " AND (:fromDepartureUtcDateTime is null or f.departureUtcDateTime >= :fromDepartureUtcDateTime)" +
+        //        " AND (:toDepartureUtcDateTime is null or f.departureUtcDateTime <= :toDepartureUtcDateTime))" +
+        //        " ORDER BY f.id ASC")
 })
 @Entity
 @NamedEntityGraph(name = Flight.WITH_TICKETS, attributeNodes = {@NamedAttributeNode("tickets")})
@@ -25,7 +31,7 @@ public class Flight extends BaseEntity {
 
     public static final String DELETE = "Flight.delete";
     public static final String ALL_SORTED = "Flight.allSorted";
-    public static final String ALL_BETWEEN = "Flight.allBetween";
+    //public static final String ALL_FILTERED_SORTED_BY_ID = "Flight.allBetween";
 
     public static final String WITH_TICKETS = "Flight.withTickets";
 
