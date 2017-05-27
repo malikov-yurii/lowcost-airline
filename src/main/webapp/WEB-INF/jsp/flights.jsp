@@ -10,7 +10,7 @@
     <jsp:include page="fragments/headTag.jsp"/>
 </head>
 
-<body>
+<body class="flights">
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron">

@@ -370,3 +370,11 @@ th:nth-child(4) {
 .ui-widget-content {
     z-index: 9999;
 }
+.flights .paginate_button {
+    display: none;
+}
+.flights .paginate_button.previous,
+.flights .paginate_button.active,
+.flights .paginate_button.next {
+    display: initial;
+}

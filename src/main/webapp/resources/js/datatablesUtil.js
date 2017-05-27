@@ -5,6 +5,7 @@ function showAddModal() {
 }
 
 
+
 function renderUpdateBtn(data, type, row) {
     return '<a class="btn btn-xs btn-primary update-btn">Update</a>';
 }
@@ -44,7 +45,7 @@ function showUpdateModal() {
 
     $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
 
-    // debugger;
+    // ;
 
     $('.form-control.modal-input').addClass('valid');
     $('.form-control.modal-input').removeClass('in-process');
@@ -96,6 +97,8 @@ function showUpdateUserModal(id, firstName, lastName, login, email, skills) {
 function updateTableByData(data) {
     datatableApi.clear().rows.add(data).draw();
 }
+
+
 
 function showAddFlightModal() {
     $('#modalTitle').html(i18n['common.addNew'] + entityName);

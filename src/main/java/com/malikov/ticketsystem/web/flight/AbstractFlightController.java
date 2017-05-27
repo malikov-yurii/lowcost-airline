@@ -65,7 +65,6 @@ public class AbstractFlightController {
         flight.setArrivalUtcDateTime(DateTimeUtil.zoneIdToUtc(flightTo.getArrivalLocalDateTime(), arrivalAirport.getCity().getZoneId()));
         flight.setInitialTicketBasePrice(flightTo.getInitialBaseTicketPrice());
         flight.setMaxTicketBasePrice(flightTo.getMaxBaseTicketPrice());
-        flight.setCanceled(flightTo.getCanceled());
 
         flightService.save(flight);
 

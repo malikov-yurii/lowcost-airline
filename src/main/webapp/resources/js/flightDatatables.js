@@ -4,13 +4,13 @@ var datatableApi;
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
         "processing": true,
-        "dom": "ft<'row'<'dataTables_length_wrap'l>><'row'<'col-md-6'i><'col-md-6'p>>",
+        "dom": "ft<'row'<'dataTables_length_wrap'l>><'row'<'col-md-6'p>>",
         "lengthMenu": [3, 5, 10],
         "serverSide": true,
         "ajax": {
             "url": ajaxUrl,
             "data": function (d) {
-                // debugger;
+                // ;
                 return {
                     draw: d.draw,
                     length: d.length,
@@ -24,8 +24,8 @@ $(document).ready(function () {
             // ,"dataSrc": ""
         },
         "searching": false,
-        // "pagingType": "full_numbers",
-        "pagingType": "simple",
+        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
+        "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
         "columns": [
@@ -58,10 +58,13 @@ $(document).ready(function () {
         , minDate: 0
     });
 
-    $('.input-airport').autocomplete({source: 'ajax/profile/airport/autocomplete-by-name'});
+    $('.input-airport').autocomplete({
+        source: 'ajax/profile/airport/autocomplete-by-name'
+    });
 
-    $('.input-aircraft').autocomplete({source: 'ajax/profile/aircraft/autocomplete-by-name'});
-
+    $('.input-aircraft').autocomplete({
+        source: 'ajax/profile/aircraft/autocomplete-by-name'
+    });
     $('.input-airport, .input-aircraft')
         .on("autocompleteselect",
             function (event, ui) {
@@ -85,7 +88,7 @@ $(document).ready(function () {
             }
             $this.removeClass('in-process');
         }
-    ).autocomplete("option", "minLength", 0);
+    ).autocomplete("option", "minLength", 2);
 
 
 });
@@ -135,7 +138,7 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
             departureAirportCondition.addClass('valid');
         }
 
-        // debugger;
+        // ;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
             message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
@@ -172,17 +175,14 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
                 confirmButtonText: "OK"
             });
         } else {
-            $.ajax({
-                type: "POST",
-                url: ajaxUrl + "filtered",
-                data: $("#filter").serialize(),
-                success: updateTableByData
-            });
+            forceDataTableReload();
         }
     }
 }
 
-
+function forceDataTableReload() {
+    datatableApi.ajax.reload();
+}
 
 function saveFlight() {
     var message = "";
@@ -245,7 +245,7 @@ function saveFlight() {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Initial price cannot be less than 5.00$';
     }
-    // debugger;
+    // ;
 
 
     if (message.length !== 0) {
@@ -258,17 +258,16 @@ function saveFlight() {
     } else {
         $('.modal-input.valid, .modal-input.in-process').removeClass('valid in-process');
         $('.in-process').removeClass('in-process');
-        debugger;
         $.ajax({
             type: "POST",
             url: ajaxUrl,
             data: $('#detailsForm').serialize(),
             success: function () {
-                // debugger;
+                // ;
                 $('#editRow').modal('hide');
                 updateTable(true, false);
                 successNoty('common.saved');
-                // debugger;
+                // ;
             }
         });
     }
