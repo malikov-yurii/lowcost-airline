@@ -1,11 +1,7 @@
 package com.malikov.ticketsystem.web.airport;
 
-import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.Airport;
-import com.malikov.ticketsystem.service.IAircraftService;
 import com.malikov.ticketsystem.service.IAirportService;
-import com.malikov.ticketsystem.to.FlightTo;
-import com.malikov.ticketsystem.util.FlightUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

@@ -1,27 +1,30 @@
 package com.malikov.ticketsystem.web.flight;
 
-import com.malikov.ticketsystem.to.FlightTo;
+import com.malikov.ticketsystem.to.FlightManageableDTO;
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import com.malikov.ticketsystem.util.FlightUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurii Malikov
  */
 @RestController
-@RequestMapping(value = "/ajax/profile/flight")
-public class FlightAjaxController extends AbstractFlightController {
+@RequestMapping(value = "/ajax/admin/flight")
+public class FlightAdminAjaxController extends AbstractFlightController {
 
     //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping
-    //public List<FlightTo> getFiltered(
-    public ModelMap getFiltered(
+    //public List<FlightManageableDTO> getFilteredPage(
+    public ModelMap getFilteredPage(
             @RequestParam(value = "fromDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
             @RequestParam(value = "toDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
             @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
@@ -30,44 +33,44 @@ public class FlightAjaxController extends AbstractFlightController {
             @RequestParam(value = "start") Integer startingFrom,
             @RequestParam(value = "length") Integer pageCapacity
             ) {
-        List<FlightTo> flightTos = super.getFilteredPageContent(departureAirportName, arrivalAirportName,
-                fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity);
+        List<FlightManageableDTO> flightManageableDTOS = super.getFilteredPageContent(departureAirportName, arrivalAirportName,
+                fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity)
+
+                .stream()
+                .map(FlightUtil::asManageableDTO)
+                .collect(Collectors.toList());
         //int totalFiltered = super.contFiltered();
         ModelMap model = new ModelMap();
         model.put("draw", draw);
-        model.put("recordsTotal", flightTos.size() + 1 + startingFrom);
-        model.put("recordsFiltered", flightTos.size() + 1 + startingFrom);
-        //model.put("recordsFiltered", flightTos.size() + 1);
-        //model.put("recordsFiltered", flightTos.size());
-        model.put("data", flightTos);
+        model.put("recordsTotal", flightManageableDTOS.size() + 1 + startingFrom);
+        model.put("recordsFiltered", flightManageableDTOS.size() + 1 + startingFrom);
+        //model.put("recordsFiltered", flightManageableDTOS.size() + 1);
+        //model.put("recordsFiltered", flightManageableDTOS.size());
+        model.put("data", flightManageableDTOS);
         return  model;
     }
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid FlightTo flightTo) {
-    //public ResponseEntity<String> createOrUpdate(FlightTo flightTo) {
-        if (flightTo.isNew()) {
-            return super.create(flightTo);
+    public ResponseEntity<String> createOrUpdate(@Valid FlightManageableDTO flightManageableDTO) {
+    //public ResponseEntity<String> createOrUpdate(FlightManageableDTO flightManageableDTO) {
+        if (flightManageableDTO.isNew()) {
+            return super.create(flightManageableDTO);
         } else {
-            return super.update(flightTo);
+            return super.update(flightManageableDTO);
         }
     }
 
     // todo Is it ok to  use body for this parameter or i should use pathvariable??
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/{id}/set-canceled")
     public ResponseEntity<String> setCanceled(@PathVariable("id") int id, @RequestParam("canceled") boolean canceled) {
         return super.setCanceled(id, canceled);
     }
 
-    //@PreAuthorize("hasRole('SUPER_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
+    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") int id){
         return super.delete(id);
     }
-
-
-
-
 
 
 /*// TODO: 5/22/2017 i don't need that

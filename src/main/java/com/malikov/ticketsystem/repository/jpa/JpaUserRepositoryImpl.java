@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
+@SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
 public class JpaUserRepositoryImpl implements IUserRepository {

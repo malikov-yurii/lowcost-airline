@@ -16,7 +16,7 @@ import java.util.List;
 public class AircraftAjaxController extends AbstractAircraftController {
 
     //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    //public List<FlightTo> getAll() {
+    //public List<FlightManageableDTO> getAll() {
     //    return super.getAll();
     //}
     //

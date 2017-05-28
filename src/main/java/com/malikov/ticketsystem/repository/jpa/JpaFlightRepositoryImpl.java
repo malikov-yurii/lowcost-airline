@@ -15,10 +15,12 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurii Malikov
  */
+@SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
 public class JpaFlightRepositoryImpl implements IFlightRepository {
@@ -141,6 +143,37 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         query.setMaxResults(limit);
 
         return query.getResultList();
+    }
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<Flight, Long> getFilteredFlightsTicketCountMap(Airport departureAirport, Airport arrivalAirport,
+                                                                 LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime,
+                                                                 Integer first, Integer limit) {
+        // TODO: 5/29/2017 exclude in query full flights count(t) >= flight.aircraft.aircraftModel.passengersSeatsQuantity
+        String queryString = "SELECT f, COUNT(t)"
+                + " FROM Flight f"
+                + " JOIN FETCH f.tickets AS t"
+                + " WHERE f.departureAirport=:departureAirport"
+                + " AND f.arrivalAirport=:arrivalAirport"
+                + " AND f.departureUtcDateTime>=:fromDepartureUtcDateTime"
+                + " AND f.departureUtcDateTime<=:toDepartureUtcDateTime"
+                + " GROUP BY t.flight"
+                + " ORDER BY f.id ASC";
+
+        Query query = em.createQuery(queryString);
+        query.setParameter("departureAirport", departureAirport);
+        query.setParameter("arrivalAirport", arrivalAirport);
+        query.setParameter("fromDepartureUtcDateTime", fromDepartureUtcDateTime);
+        query.setParameter("toDepartureUtcDateTime", toDepartureUtcDateTime);
+        query.setFirstResult(first);
+        query.setMaxResults(limit);
+
+        return (Map<Flight, Long>) query.getResultList()
+                .stream()
+                .collect(Collectors.toMap(resultElement -> (Flight) (((Object[]) resultElement)[0]),
+                        resultElement -> (Long) (((Object[]) resultElement)[1])));
     }
 }
 

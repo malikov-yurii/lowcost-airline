@@ -69,15 +69,15 @@ CREATE TABLE aircraft (
  * max_ticket_base_price indicates how much two growth factors (plane filling and time before departure) can impact the ticket price.
  */
 CREATE TABLE flights (
-  id                      BIGINT PRIMARY KEY AUTO_INCREMENT,
-  departure_airport_id    BIGINT        NOT NULL,
-  arrival_airport_id      BIGINT        NOT NULL,
-  aircraft_id             BIGINT        NOT NULL,
-  departure_utc_datetime DATETIME      NOT NULL,
-  arrival_utc_datetime   DATETIME      NOT NULL,
+  id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  departure_airport_id      BIGINT        NOT NULL,
+  arrival_airport_id        BIGINT        NOT NULL,
+  aircraft_id               BIGINT        NOT NULL,
+  departure_utc_datetime    DATETIME      NOT NULL,
+  arrival_utc_datetime      DATETIME      NOT NULL,
   initial_ticket_base_price DECIMAL(8, 2) NOT NULL,
-  max_ticket_base_price   DECIMAL(8, 2) NOT NULL,
-  canceled    SMALLINT DEFAULT 0,
+  max_ticket_base_price     DECIMAL(8, 2) NOT NULL,
+  canceled                  BOOLEAN       NOT NULL,
   FOREIGN KEY (departure_airport_id) REFERENCES airports (id),
   FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
   FOREIGN KEY (aircraft_id) REFERENCES aircraft (id)
@@ -103,7 +103,7 @@ CREATE TABLE flights (
  *  Total growth potential for time and plane filling factors:  200 EUR - 100 EUR      = 100 EUR
  *  Growth potential for time factor                         :  100 EUR * 40%          = 40  EUR
  *  Growth potential for plane filling factor                :  100 EUR * (100% - 40%) = 60  EUR
- *  Fixed baggage tariff for flight                          :  200 EUR + 2 EUR        = 202 EUR
+ *  Fixed baggage tariff for purchase                          :  200 EUR + 2 EUR        = 202 EUR
  *
  *  If departure day is on 10.04.2017 than price would start to grow on 1.03.2017 (40 days before departure).
  *  Each day price would grow by  40 EUR / 40 days = 1 EUR. (Thus on 14.03.2017 price would be 114 EUR)
@@ -117,27 +117,33 @@ CREATE TABLE flights (
  *  = 314 UER
  **/
 CREATE TABLE tariffs_details (
+  id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
   days_before_ticket_price_starts_to_grow             SMALLINT      NOT NULL,
   weight_of_time_growth_factor                        DECIMAL(4, 2) NOT NULL,
   baggage_surcharge_over_ticket_max_base_ticket_price DECIMAL(8, 2) NOT NULL,
-  priority_registration_tariff                        DECIMAL(8, 2) NOT NULL
+  priority_registration_tariff                        DECIMAL(8, 2) NOT NULL,
+  active               BOOLEAN       NOT NULL
 );
 
 
 CREATE TABLE tickets (
-  id                          BIGINT PRIMARY KEY AUTO_INCREMENT,
-  flight_id                   BIGINT        NOT NULL,
-  user_id                     BIGINT        NOT NULL,
-  price                       DECIMAL(8, 2) NOT NULL,
-  purchase_offsetdatetime     VARCHAR(22)   NOT NULL,
-  has_baggage                 BOOLEAN       NOT NULL,
-  has_priority_registration   BOOLEAN       NOT NULL,
-  passanger_full_name          VARCHAR(101)  NOT NULL,
-  departure_airport_full_name VARCHAR(255)  NOT NULL,
-  arrival_airport_full_name   VARCHAR(255)  NOT NULL,
-  departure_offsetdatetime     VARCHAR(22)      NOT NULL,
-  arrival_offsetdatetime       VARCHAR(22)      NOT NULL,
-  seat_number                 SMALLINT      NOT NULL
+  id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  flight_id                 BIGINT        NOT NULL,
+  user_id                   BIGINT        NOT NULL,
+  price                     DECIMAL(8, 2) NOT NULL,
+  purchase_offsetdatetime   VARCHAR(22)   NOT NULL,
+  with_baggage               BOOLEAN       NOT NULL,
+  with_priority_registration BOOLEAN       NOT NULL,
+  passenger_name         VARCHAR(50)  NOT NULL,
+  passenger_last_name    VARCHAR(50)  NOT NULL,
+  departure_airport_name    VARCHAR(255)  NOT NULL,
+  arrival_airport_name      VARCHAR(255)  NOT NULL,
+  departure_city_name       VARCHAR(70)   NOT NULL,
+  arrival_city_name         VARCHAR(70)   NOT NULL,
+  departure_utc_datetime    DATETIME      NOT NULL,
+  departure_time_zone                 VARCHAR(50)   NOT NULL,
+  arrival_offset_datetime    VARCHAR(22)   NOT NULL,
+  seat_number               SMALLINT      NOT NULL
 );
 
 

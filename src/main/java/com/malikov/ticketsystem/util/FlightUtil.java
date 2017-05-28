@@ -1,15 +1,31 @@
 package com.malikov.ticketsystem.util;
 
 import com.malikov.ticketsystem.model.Flight;
-import com.malikov.ticketsystem.to.FlightTo;
+import com.malikov.ticketsystem.to.FlightDTO;
+import com.malikov.ticketsystem.to.FlightManageableDTO;
+
+import java.math.BigDecimal;
 
 /**
  * @author Yurii Malikov
  */
 public class FlightUtil {
 
-    public  static FlightTo asTo(Flight flight){
-        return new FlightTo(flight.getId(),
+    public  static FlightDTO asDTO(Flight flight, BigDecimal ticketPrice){
+        return new FlightDTO(flight.getId(),
+                             flight.getDepartureAirport().getName(),
+                             flight.getArrivalAirport().getName(),
+                             DateTimeUtil.utcToZoneId(flight.getDepartureUtcDateTime(),
+                                     flight.getDepartureAirport().getCity().getZoneId()),
+                             DateTimeUtil.utcToZoneId(flight.getArrivalUtcDateTime(),
+                                     flight.getArrivalAirport().getCity().getZoneId()),
+                             ticketPrice
+                );
+    }
+
+
+    public  static FlightManageableDTO asManageableDTO(Flight flight){
+        return new FlightManageableDTO(flight.getId(),
                              flight.getDepartureAirport().getName(),
                              flight.getArrivalAirport().getName(),
                              DateTimeUtil.utcToZoneId(flight.getDepartureUtcDateTime(),

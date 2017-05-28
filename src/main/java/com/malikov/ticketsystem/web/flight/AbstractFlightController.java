@@ -5,7 +5,8 @@ import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.service.IAircraftService;
 import com.malikov.ticketsystem.service.IAirportService;
 import com.malikov.ticketsystem.service.IFlightService;
-import com.malikov.ticketsystem.to.FlightTo;
+import com.malikov.ticketsystem.to.FlightDTO;
+import com.malikov.ticketsystem.to.FlightManageableDTO;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.FlightUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,41 +31,41 @@ public class AbstractFlightController {
     @Autowired
     IAircraftService aircraftService;
 
-    public List<FlightTo> getAll() {
-        return flightService.getAll().stream().map(FlightUtil::asTo).collect(Collectors.toList());
+    public List<FlightManageableDTO> getAll() {
+        return flightService.getAll().stream().map(FlightUtil::asManageableDTO).collect(Collectors.toList());
     }
 
-    public ResponseEntity<String> create(FlightTo flightTo) {
-        Airport departureAirport = airportService.getByName(flightTo.getDepartureAirport()),
-                arrivalAirport = airportService.getByName(flightTo.getArrivalAirport());
+    public ResponseEntity<String> create(FlightManageableDTO flightManageableDTO) {
+        Airport departureAirport = airportService.getByName(flightManageableDTO.getDepartureAirport()),
+                arrivalAirport = airportService.getByName(flightManageableDTO.getArrivalAirport());
 
         flightService.save(
                 new Flight(
                         departureAirport,
                         arrivalAirport,
-                        aircraftService.getByName(flightTo.getAircraftName()),
-                        DateTimeUtil.zoneIdToUtc(flightTo.getDepartureLocalDateTime(), departureAirport.getCity().getZoneId()),
-                        DateTimeUtil.zoneIdToUtc(flightTo.getArrivalLocalDateTime(), arrivalAirport.getCity().getZoneId()),
-                        flightTo.getInitialBaseTicketPrice(),
-                        flightTo.getMaxBaseTicketPrice()
+                        aircraftService.getByName(flightManageableDTO.getAircraftName()),
+                        DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(), departureAirport.getCity().getZoneId()),
+                        DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(), arrivalAirport.getCity().getZoneId()),
+                        flightManageableDTO.getInitialBaseTicketPrice(),
+                        flightManageableDTO.getMaxBaseTicketPrice()
                 )
 
         );
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<String> update(FlightTo flightTo) {
-        Flight flight = flightService.get(flightTo.getId());
-        Airport departureAirport = airportService.getByName(flightTo.getDepartureAirport()),
-                arrivalAirport = airportService.getByName(flightTo.getArrivalAirport());
+    public ResponseEntity<String> update(FlightManageableDTO flightManageableDTO) {
+        Flight flight = flightService.get(flightManageableDTO.getId());
+        Airport departureAirport = airportService.getByName(flightManageableDTO.getDepartureAirport()),
+                arrivalAirport = airportService.getByName(flightManageableDTO.getArrivalAirport());
 
         flight.setDepartureAirport(departureAirport);
         flight.setArrivalAirport(arrivalAirport);
-        flight.setAircraft(aircraftService.getByName(flightTo.getAircraftName()));
-        flight.setDepartureUtcDateTime(DateTimeUtil.zoneIdToUtc(flightTo.getDepartureLocalDateTime(), departureAirport.getCity().getZoneId()));
-        flight.setArrivalUtcDateTime(DateTimeUtil.zoneIdToUtc(flightTo.getArrivalLocalDateTime(), arrivalAirport.getCity().getZoneId()));
-        flight.setInitialTicketBasePrice(flightTo.getInitialBaseTicketPrice());
-        flight.setMaxTicketBasePrice(flightTo.getMaxBaseTicketPrice());
+        flight.setAircraft(aircraftService.getByName(flightManageableDTO.getAircraftName()));
+        flight.setDepartureUtcDateTime(DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(), departureAirport.getCity().getZoneId()));
+        flight.setArrivalUtcDateTime(DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(), arrivalAirport.getCity().getZoneId()));
+        flight.setInitialTicketBasePrice(flightManageableDTO.getInitialBaseTicketPrice());
+        flight.setMaxTicketBasePrice(flightManageableDTO.getMaxBaseTicketPrice());
 
         flightService.save(flight);
 
@@ -84,18 +85,23 @@ public class AbstractFlightController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public List<FlightTo> getFilteredPageContent(String departureAirportName, String arrivalAirportName,
-                                                 LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
-                                                 Integer startingFrom, Integer pageCapacity) {
+    public List<Flight> getFilteredPageContent(String departureAirportName, String arrivalAirportName,
+                                               LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
+                                               Integer startingFrom, Integer pageCapacity) {
         return flightService.getAllFiltered(
-                                    departureAirportName,
-                                    arrivalAirportName,
-                                    fromDepartureDateTime,
-                                    toDepartureDateTime,
-                startingFrom,
-                pageCapacity)
+                departureAirportName, arrivalAirportName,
+                fromDepartureDateTime, toDepartureDateTime,
+                startingFrom, pageCapacity);
+    }
+
+
+    public List<FlightDTO> getFlightTicketPriceMap(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime, Integer startingFrom, Integer pageCapacity) {
+        return flightService.getFlightTicketPriceMap(departureAirportName,
+                arrivalAirportName, fromDepartureDateTime,
+                toDepartureDateTime, startingFrom,
+                pageCapacity).entrySet()
                                 .stream()
-                                .map(FlightUtil::asTo)
+                                .map(entry -> FlightUtil.asDTO(entry.getKey(), entry.getValue()))
                                 .collect(Collectors.toList());
     }
 }

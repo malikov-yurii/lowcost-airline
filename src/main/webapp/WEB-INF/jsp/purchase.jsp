@@ -17,8 +17,6 @@
     <div class="container">
         <div class="shadow">
             <h3 class="page-title"><fmt:message key="app.flights"/></h3>
-
-
             <div class="view-box">
                 <div class="row">
                     <div class="col-sm-7">
@@ -31,7 +29,7 @@
                                                 code="airport.departure"/>:</label>
                                         <div class="col-sm-3">
                                             <input class="input-filter form-control input-airport valid"
-                                                   name="departureAirportCondition" id="departureAirportCondition">
+                                                   name="departureAirportCondition" id="departureAirportCondition" value="Boryspil International Airport">
                                         </div>
 
                                         <label class="control-label col-sm-4"
@@ -40,7 +38,7 @@
 
                                         <div class="col-sm-2">
                                             <input class="input-filter form-control input-airport valid"
-                                                   name="arrivalAirportCondition" id="arrivalAirportCondition">
+                                                   name="arrivalAirportCondition" id="arrivalAirportCondition" value="Heathrow Airport">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -49,7 +47,7 @@
                                         <div class="col-sm-3">
                                             <input class="input-filter form-control input-datetime"
                                                    name="fromDepartureDateTimeCondition"
-                                                   id="fromDepartureDateTimeCondition">
+                                                   id="fromDepartureDateTimeCondition" value="2016-05-01 10:30">
                                         </div>
 
                                         <label class="control-label col-sm-4" for="toDepartureDateTimeCondition">
@@ -57,15 +55,12 @@
                                         <div class="col-sm-2">
                                             <input class="input-filter form-control input-datetime"
                                                    name="toDepartureDateTimeCondition"
-                                                   id="toDepartureDateTimeCondition">
+                                                   id="toDepartureDateTimeCondition" readonly="readonly" value="2017-08-23 10:30">
                                         </div>
                                     </div>
                                 </form:form>
                             </div>
                             <div class="panel-footer text-right">
-                                <a class="btn btn-danger" type="button" onclick="clearFilter()">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </a>
                                 <a class="btn btn-primary" type="button" onclick="updateTable(false, false)">
                                     <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
                                 </a>
@@ -75,11 +70,7 @@
                 </div>
             </div>
 
-
             <div class="view-box">
-                <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()"><fmt:message
-                        key="flight.addNewFlight"/></a>
-
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
@@ -88,11 +79,7 @@
                         <th><fmt:message key="airport.arrival"/></th>
                         <th><fmt:message key="flight.departureLocalDateTime"/></th>
                         <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
-                        <th><fmt:message key="aircraft.name"/></th>
-                        <th><fmt:message key="flight.initialTicketBasePrice"/></th>
-                        <th><fmt:message key="flight.maxTicketBasePrice"/></th>
-                        <th></th>
-                        <th></th>
+                        <th><fmt:message key="flight.ticketPrice"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -120,8 +107,7 @@
 
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control input-airport" id="departureAirport"
-                                   name="departureAirport"
-                                   placeholder="please choose arrival airport from drop down list">
+                                   name="departureAirport" readonly="readonly">
                         </div>
                     </div>
 
@@ -131,8 +117,7 @@
 
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control input-airport" id="arrivalAirport"
-                                   name="arrivalAirport"
-                                   placeholder="please choose arrival airport from drop down list">
+                                   name="arrivalAirport" readonly="readonly">
                         </div>
                     </div>
 
@@ -143,8 +128,7 @@
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control input-datetime"
                                    id="departureLocalDateTime"
-                                   name="departureLocalDateTime"
-                                   placeholder="please set arrival local date">
+                                   name="departureLocalDateTime" readonly="readonly">
                         </div>
                     </div>
 
@@ -154,45 +138,43 @@
 
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control input-datetime" id="arrivalLocalDateTime"
-                                   name="arrivalLocalDateTime"
-                                   placeholder="please set arrival local date">
+                                   name="arrivalLocalDateTime" readonly="readonly">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="aircraftName" class="control-label col-xs-3"><fmt:message
-                                key="aircraft.name"/></label>
+                        <label for="ticketPrice" class="control-label col-xs-3"><fmt:message
+                                key="flight.ticketPrice"/></label>
 
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control input-aircraft" id="aircraftName"
-                                   name="aircraftName"
-                                   placeholder="please choose aircraft from drop down list">
+                            <input type="text" class="modal-input form-control " id="ticketPrice"
+                                   name="ticketPrice" readonly="readonly">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="initialBaseTicketPrice" class="control-label col-xs-3"><fmt:message
-                                key="flight.initialTicketBasePrice"/></label>
+                        <label for="withBaggage" class="control-label col-xs-3"><fmt:message
+                                key="ticket.includeBaggage"/></label>
 
                         <div class="col-xs-9">
-                            <input type="number" class="modal-input form-control" id="initialBaseTicketPrice"
-                                   name="initialBaseTicketPrice" placeholder="10.00">
+                            <input type="checkbox" class="modal-input form-control" id="withBaggage"
+                                   name="withBaggage">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="maxBaseTicketPrice" class="control-label col-xs-3"><fmt:message
-                                key="flight.maxTicketBasePrice"/></label>
+                        <label for="withPriorityRegistration" class="control-label col-xs-3"><fmt:message
+                                key="ticket.includePriorityRegistration"/></label>
 
                         <div class="col-xs-9">
-                            <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
-                                   name="maxBaseTicketPrice" placeholder="20.00">
+                            <input type="checkbox" class="modal-input form-control" id="withPriorityRegistration"
+                                   name="withPriorityRegistration">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button class="btn btn-primary" type="button" onclick="saveFlight()"><fmt:message
+                            <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
                                     key="common.save"/></button>
                         </div>
                     </div>
@@ -206,6 +188,6 @@
 
 <jsp:include page="fragments/footer.jsp"/>
 
-<script type="text/javascript" src="resources/js/flightDatatables.js"></script>
+<script type="text/javascript" src="resources/js/purchaseDatatables.js"></script>
 
 </html>

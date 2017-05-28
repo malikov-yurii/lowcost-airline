@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * @author Yurii Malikov
  */
+@SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
 public class JpaTicketRepositoryImpl implements ITicketRepository {
@@ -69,5 +70,7 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+
 
 }

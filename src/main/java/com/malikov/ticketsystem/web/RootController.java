@@ -31,4 +31,9 @@ public class RootController {
     public String flights(){
         return "flights";
     }
+
+    @RequestMapping(value = "/purchase", method = RequestMethod.GET)
+    public String purchase(){
+        return "purchase";
+    }
 }

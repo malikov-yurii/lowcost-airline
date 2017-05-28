@@ -1,13 +1,16 @@
 package com.malikov.ticketsystem.model;
 
 import com.malikov.ticketsystem.util.converter.OffsetDateTimeConverter;
+import com.malikov.ticketsystem.util.converter.ZoneIdConverter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 /**
@@ -52,29 +55,43 @@ public class Ticket extends BaseEntity {
     @Convert(converter = OffsetDateTimeConverter.class)
     private OffsetDateTime purchaseOffsetDateTime;
 
-    @Column(name = "has_baggage")
+    @Column(name = "with_baggage")
+    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean hasBaggage;
+    private Boolean withBaggage;
 
-    @Column(name = "has_priority_registration")
+    @Column(name = "with_priority_registration")
+    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean hasPriorityRegistration;
+    private Boolean withPriorityRegistration;
 
     // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parseToLocalDateTime if I need to??? But in a such case I cannot easily add column with additional ticket information
-    @Column(name = "passanger_full_name")
-    private String passangerFullName;
+    @Column(name = "passenger_name")
+    private String passengerName;
 
-    @Column(name = "departure_airport_full_name")
-    private String departureAirportFullName;
+    @Column(name = "passenger_last_name")
+    private String passengerLastName;
 
-    @Column(name = "arrival_airport_full_name")
-    private String arrivalAirportFullName;
+    @Column(name = "departure_airport_name")
+    private String departureAirportName;
 
-    @Column(name = "departure_offsetdatetime")
-    @Convert(converter = OffsetDateTimeConverter.class)
-    private OffsetDateTime departureOffsetDateTime;
+    @Column(name = "arrival_airport_name")
+    private String arrivalAirportName;
 
-    @Column(name = "arrival_offsetdatetime")
+    @Column(name = "departure_city_name")
+    private String departureCityName;
+
+    @Column(name = "arrival_city_name")
+    private String arrivalCityName;
+
+    @Column(name = "departure_utc_datetime")
+    private LocalDateTime departureUtcDateTime;
+
+    @Column(name = "departure_time_zone")
+    @Convert(converter = ZoneIdConverter.class)
+    private ZoneId departureZoneId;
+
+    @Column(name = "arrival_offset_datetime")
     @Convert(converter = OffsetDateTimeConverter.class)
     private OffsetDateTime arrivalOffsetDateTime;
 
@@ -84,48 +101,38 @@ public class Ticket extends BaseEntity {
     public Ticket() {
     }
 
-    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration) {
+    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage, Boolean withPriorityRegistration) {
         this.flight = flight;
         this.user = user;
         this.price = price;
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
-        this.hasBaggage = hasBaggage;
-        this.hasPriorityRegistration = hasPriorityRegistration;
+        this.withBaggage = withBaggage;
+        this.withPriorityRegistration = withPriorityRegistration;
     }
 
-    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage, Boolean hasPriorityRegistration, Integer seatNumber) {
+    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber) {
         super(id);
         this.flight = flight;
         this.user = user;
         this.price = price;
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
-        this.hasBaggage = hasBaggage;
-        this.hasPriorityRegistration = hasPriorityRegistration;
-        passangerFullName = user.getName() + " " + user.getLastName();
-        departureAirportFullName = flight.getDepartureAirport().getName() + " (" + flight.getDepartureAirport().getCity().getName() + ")";
-        arrivalAirportFullName = flight.getArrivalAirport().getName() + " (" + flight.getArrivalAirport().getCity().getName() + ")";
-        departureOffsetDateTime = OffsetDateTime.ofInstant(flight.getDepartureUtcDateTime().toInstant(ZoneOffset.UTC),
-                flight.getDepartureAirport().getCity().getZoneId());
+        this.withBaggage = withBaggage;
+        this.withPriorityRegistration = withPriorityRegistration;
+        passengerName = user.getName();
+        passengerLastName = user.getLastName();
+        departureAirportName = flight.getDepartureAirport().getName();
+        arrivalAirportName = flight.getArrivalAirport().getName();
+        departureUtcDateTime = flight.getDepartureUtcDateTime();
+        departureZoneId = flight.getDepartureAirport().getCity().getZoneId();
+        departureCityName = flight.getDepartureAirport().getCity().getName();
+        arrivalCityName = flight.getArrivalAirport().getCity().getName();
         arrivalOffsetDateTime = OffsetDateTime.ofInstant(flight.getUtcLocalDateTime().toInstant(ZoneOffset.UTC),
                 flight.getArrivalAirport().getCity().getZoneId());
         this.seatNumber = seatNumber;
     }
 
     public Ticket(Ticket ticket) {
-        super(ticket.getId());
-        flight = ticket.getFlight();
-        user = ticket.getUser();
-        price = ticket.getPrice();
-        purchaseOffsetDateTime = ticket.getPurchaseOffsetDateTime();
-        hasBaggage = ticket.hasBaggage;
-        hasPriorityRegistration = ticket.hasPriorityRegistration;
-        passangerFullName = ticket.getPassangerFullName();
-        departureAirportFullName = ticket.getDepartureAirportFullName();
-        arrivalAirportFullName = ticket.getArrivalAirportFullName();
-        departureOffsetDateTime = ticket.getDepartureOffsetDateTime();
-        arrivalOffsetDateTime = ticket.getArrivalOffsetDateTime();
-        seatNumber = ticket.getSeatNumber();
-    }
+        this(ticket.getId(), ticket.getFlight(), ticket.getUser(), ticket.getPrice(), ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(), ticket.getWithPriorityRegistration(), ticket.getSeatNumber());    }
 
     public Flight getFlight() {
         return flight;
@@ -159,60 +166,84 @@ public class Ticket extends BaseEntity {
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
     }
 
-    public Boolean isHasBaggage() {
-        return hasBaggage;
+    public Boolean getWithBaggage() {
+        return withBaggage;
     }
 
-    public void setHasBaggage(Boolean hasBaggage) {
-        this.hasBaggage = hasBaggage;
+    public void setWithBaggage(Boolean withBaggage) {
+        this.withBaggage = withBaggage;
     }
 
-    public Boolean isHasPriorityRegistration() {
-        return hasPriorityRegistration;
+    public Boolean getWithPriorityRegistration() {
+        return withPriorityRegistration;
     }
 
-    public void setHasPriorityRegistration(Boolean hasPriorityRegistration) {
-        this.hasPriorityRegistration = hasPriorityRegistration;
+    public void setWithPriorityRegistration(Boolean withPriorityRegistration) {
+        this.withPriorityRegistration = withPriorityRegistration;
     }
 
-    public Boolean getHasBaggage() {
-        return hasBaggage;
+    public String getPassengerName() {
+        return passengerName;
     }
 
-    public Boolean getHasPriorityRegistration() {
-        return hasPriorityRegistration;
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
     }
 
-    public String getPassangerFullName() {
-        return passangerFullName;
+    public String getPassengerLastName() {
+        return passengerLastName;
     }
 
-    public void setPassangerFullName(String passangerFullName) {
-        this.passangerFullName = passangerFullName;
+    public void setPassengerLastName(String passengerLastName) {
+        this.passengerLastName = passengerLastName;
     }
 
-    public String getDepartureAirportFullName() {
-        return departureAirportFullName;
+    public String getDepartureAirportName() {
+        return departureAirportName;
     }
 
-    public void setDepartureAirportFullName(String departureAirportFullName) {
-        this.departureAirportFullName = departureAirportFullName;
+    public void setDepartureAirportName(String departureAirportName) {
+        this.departureAirportName = departureAirportName;
     }
 
-    public String getArrivalAirportFullName() {
-        return arrivalAirportFullName;
+    public String getArrivalAirportName() {
+        return arrivalAirportName;
     }
 
-    public void setArrivalAirportFullName(String arrivalAirportFullName) {
-        this.arrivalAirportFullName = arrivalAirportFullName;
+    public void setArrivalAirportName(String arrivalAirportName) {
+        this.arrivalAirportName = arrivalAirportName;
     }
 
-    public OffsetDateTime getDepartureOffsetDateTime() {
-        return departureOffsetDateTime;
+    public String getDepartureCityName() {
+        return departureCityName;
     }
 
-    public void setDepartureOffsetDateTime(OffsetDateTime departureOffsetDateTime) {
-        this.departureOffsetDateTime = departureOffsetDateTime;
+    public void setDepartureCityName(String departureCityName) {
+        this.departureCityName = departureCityName;
+    }
+
+    public String getArrivalCityName() {
+        return arrivalCityName;
+    }
+
+    public void setArrivalCityName(String arrivalCityName) {
+        this.arrivalCityName = arrivalCityName;
+    }
+
+    public LocalDateTime getDepartureUtcDateTime() {
+        return departureUtcDateTime;
+    }
+
+    public void setDepartureUtcDateTime(LocalDateTime departureUtcDateTime) {
+        this.departureUtcDateTime = departureUtcDateTime;
+    }
+
+    public ZoneId getDepartureZoneId() {
+        return departureZoneId;
+    }
+
+    public void setDepartureZoneId(ZoneId departureZoneId) {
+        this.departureZoneId = departureZoneId;
     }
 
     public OffsetDateTime getArrivalOffsetDateTime() {
@@ -242,32 +273,69 @@ public class Ticket extends BaseEntity {
         if (price != null ? !price.equals(ticket.price) : ticket.price != null) return false;
         if (purchaseOffsetDateTime != null ? !purchaseOffsetDateTime.equals(ticket.purchaseOffsetDateTime) : ticket.purchaseOffsetDateTime != null)
             return false;
-        if (hasBaggage != null ? !hasBaggage.equals(ticket.hasBaggage) : ticket.hasBaggage != null) return false;
-        return hasPriorityRegistration != null ? hasPriorityRegistration.equals(ticket.hasPriorityRegistration) : ticket.hasPriorityRegistration == null;
+        if (withBaggage != null ? !withBaggage.equals(ticket.withBaggage) : ticket.withBaggage != null) return false;
+        if (withPriorityRegistration != null ? !withPriorityRegistration.equals(ticket.withPriorityRegistration) : ticket.withPriorityRegistration != null)
+            return false;
+        if (passengerName != null ? !passengerName.equals(ticket.passengerName) : ticket.passengerName != null)
+            return false;
+        if (passengerLastName != null ? !passengerLastName.equals(ticket.passengerLastName) : ticket.passengerLastName != null)
+            return false;
+        if (departureAirportName != null ? !departureAirportName.equals(ticket.departureAirportName) : ticket.departureAirportName != null)
+            return false;
+        if (arrivalAirportName != null ? !arrivalAirportName.equals(ticket.arrivalAirportName) : ticket.arrivalAirportName != null)
+            return false;
+        if (departureCityName != null ? !departureCityName.equals(ticket.departureCityName) : ticket.departureCityName != null)
+            return false;
+        if (arrivalCityName != null ? !arrivalCityName.equals(ticket.arrivalCityName) : ticket.arrivalCityName != null)
+            return false;
+        if (departureUtcDateTime != null ? !departureUtcDateTime.equals(ticket.departureUtcDateTime) : ticket.departureUtcDateTime != null)
+            return false;
+        if (departureZoneId != null ? !departureZoneId.equals(ticket.departureZoneId) : ticket.departureZoneId != null)
+            return false;
+        if (arrivalOffsetDateTime != null ? !arrivalOffsetDateTime.equals(ticket.arrivalOffsetDateTime) : ticket.arrivalOffsetDateTime != null)
+            return false;
+        return seatNumber != null ? seatNumber.equals(ticket.seatNumber) : ticket.seatNumber == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (flight != null ? flight.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (purchaseOffsetDateTime != null ? purchaseOffsetDateTime.hashCode() : 0);
-        result = 31 * result + (hasBaggage ? 1 : 0);
-        result = 31 * result + (hasPriorityRegistration ? 1 : 0);
+        result = 31 * result + (withBaggage != null ? withBaggage.hashCode() : 0);
+        result = 31 * result + (withPriorityRegistration != null ? withPriorityRegistration.hashCode() : 0);
+        result = 31 * result + (passengerName != null ? passengerName.hashCode() : 0);
+        result = 31 * result + (passengerLastName != null ? passengerLastName.hashCode() : 0);
+        result = 31 * result + (departureAirportName != null ? departureAirportName.hashCode() : 0);
+        result = 31 * result + (arrivalAirportName != null ? arrivalAirportName.hashCode() : 0);
+        result = 31 * result + (departureCityName != null ? departureCityName.hashCode() : 0);
+        result = 31 * result + (arrivalCityName != null ? arrivalCityName.hashCode() : 0);
+        result = 31 * result + (departureUtcDateTime != null ? departureUtcDateTime.hashCode() : 0);
+        result = 31 * result + (departureZoneId != null ? departureZoneId.hashCode() : 0);
+        result = 31 * result + (arrivalOffsetDateTime != null ? arrivalOffsetDateTime.hashCode() : 0);
+        result = 31 * result + (seatNumber != null ? seatNumber.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Ticket{" +
-                "id=" + getId() +
+                "flightId=" + flight.getId() +
+                ", userId=" + user.getId() +
                 ", price=" + price +
                 ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
-                ", hasBaggage=" + hasBaggage +
-                ", hasPriorityRegistration=" + hasPriorityRegistration +
-                ", passangerFullName=" + passangerFullName +
-                ", departureAirportFullName=" + departureAirportFullName +
-                ", arrivalAirportFullName=" + arrivalAirportFullName +
-                ", departureOffsetDateTime=" + departureOffsetDateTime +
+                ", withBaggage=" + withBaggage +
+                ", withPriorityRegistration=" + withPriorityRegistration +
+                ", passengerName='" + passengerName + '\'' +
+                ", passengerLastName='" + passengerLastName + '\'' +
+                ", departureAirportName='" + departureAirportName + '\'' +
+                ", arrivalAirportName='" + arrivalAirportName + '\'' +
+                ", departureCityName='" + departureCityName + '\'' +
+                ", arrivalCityName='" + arrivalCityName + '\'' +
+                ", departureUtcDateTime=" + departureUtcDateTime +
+                ", departureZoneId=" + departureZoneId +
                 ", arrivalOffsetDateTime=" + arrivalOffsetDateTime +
                 ", seatNumber=" + seatNumber +
                 '}';

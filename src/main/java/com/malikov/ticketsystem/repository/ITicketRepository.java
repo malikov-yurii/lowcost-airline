@@ -20,4 +20,6 @@ public interface ITicketRepository {
 
     List<Ticket> getAll(long userId);
 
+
+
 }

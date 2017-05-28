@@ -19,12 +19,9 @@ public class UserTestData {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserTestData.class);
 
-    public static final Role ROLE_USER = new Role(1L, "USER");
+    public static final Role ROLE_USER = new Role(1L, "ROLE_USER");
 
-    public static final Role ROLE_ADMIN = new Role(2L, "ADMIN");
-
-    public static final Role ROLE_SUPER_ADMIN = new Role(3L, "SUPER_ADMIN");
-
+    public static final Role ROLE_ADMIN = new Role(2L, "ROLE_ADMIN");
 
     public static final User USER_1 = new User(1L, "Eduard", "Eduardov",
             "user@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380671234567", ROLE_USER);
@@ -44,14 +41,14 @@ public class UserTestData {
     public static final User USER_6 = new User(6L, "Robert", "Black",
             "black@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380941234567", ROLE_USER);
 
-    public static final User ADMIN_1 = new User(7L, "Hong", "Wang",
-            "admin@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380951234567", ROLE_USER, ROLE_ADMIN);
+    public static final User USER_7 = new User(7L, "Hong", "Wang",
+            "hong@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380951234567", ROLE_USER);
 
-    public static final User SUPER_ADMIN = new User(8L, "Vsevolod", "Vsevlastov",
-            "superadmin@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380961234567", ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN);
+    public static final User ADMIN = new User(8L, "Vsevolod", "Vsevlastov",
+            "admin@gmail.com", "$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm", "+380961234567", ROLE_USER, ROLE_ADMIN);
 
     public static final List USERS = Arrays.asList(USER_1, USER_2, USER_3, USER_4,
-            USER_5, USER_6, ADMIN_1, SUPER_ADMIN);
+            USER_5, USER_6, USER_7, ADMIN);
 
 
     public static final ModelMatcher<User> MATCHER = ModelMatcher.of(User.class,

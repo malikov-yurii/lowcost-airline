@@ -18,7 +18,7 @@ public class AbstractAircraftController {
     @Autowired
     IAircraftService aircraftService;
 
-    //public List<FlightTo> getAll() {
+    //public List<FlightManageableDTO> getAll() {
     //    return flightService.getAll().stream().map(FlightUtil::asTo).collect(Collectors.toList());
     //}
 

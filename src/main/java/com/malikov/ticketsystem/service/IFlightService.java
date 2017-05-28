@@ -1,10 +1,11 @@
 package com.malikov.ticketsystem.service;
 
-import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yurii Malikov
@@ -22,13 +23,15 @@ public interface IFlightService {
 
     List<Flight> getAll();
 
-    List<Flight> getAllFiltered(String departureAirportName, String arrivalAirportName,
+    List<Flight> getAllFiltered( String departureAirportName, String arrivalAirportName,
                                 LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
                                 Integer first, Integer pageSize);
 
     boolean delete(long id);
 
-    Long countAllFiltered(Airport departureAirport, Airport arrivalAirport,
-                                 LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime);
+
+    Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportName, String arrivalAirportName,
+                                                    LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
+                                                    Integer first, Integer pageSize);
 
 }

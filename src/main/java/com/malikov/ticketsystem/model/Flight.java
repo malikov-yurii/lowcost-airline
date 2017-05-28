@@ -63,6 +63,7 @@ public class Flight extends BaseEntity {
     private BigDecimal maxTicketBasePrice;
 
     @Column(name = "canceled")
+    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean canceled;
 
@@ -242,14 +243,16 @@ public class Flight extends BaseEntity {
     public String toString() {
         return "Flight{" +
                 "id=" + getId() +
-                ", departureUtcDateTime=" + departureUtcDateTime +
-                ", arrivalUtcDateTime=" + arrivalUtcDateTime +
                 ", departureAirport=" + departureAirport +
                 ", arrivalAirport=" + arrivalAirport +
+                ", arrivalAirport=" + arrivalAirport +
                 ", aircraft=" + aircraft +
+                ", departureUtcDateTime=" + departureUtcDateTime +
+                ", arrivalUtcDateTime=" + arrivalUtcDateTime +
                 ", initialTicketBasePrice=" + initialTicketBasePrice +
                 ", maxTicketBasePrice=" + maxTicketBasePrice +
                 ", canceled=" + canceled +
+                ", tickets=" + tickets +
                 '}';
     }
 }

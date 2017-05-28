@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.Flight;
+import com.malikov.ticketsystem.repository.IFlightRepository;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 
 import static com.malikov.ticketsystem.AircraftTestData.AIRCRAFT_1;
 import static com.malikov.ticketsystem.AirportTestData.*;
@@ -21,6 +23,20 @@ import static com.malikov.ticketsystem.TicketTestData.TICKET_8;
  * @author Yurii Malikov
  */
 public class FlightServiceImplTest extends AbstractServiceTest {
+
+
+    // TODO: 5/29/2017 Refactor
+    @Autowired
+    IFlightRepository repository;
+     //TODO: 5/28/2017 transform to repository integration test
+    @Test
+    public void getFlightTicketPriceMap() throws Exception {
+        Map<Flight, Long> result = repository.getFilteredFlightsTicketCountMap(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,
+          //      FLIGHT_2.getDepartureUtcDateTime().minusMinutes(1L), FLIGHT_2.getDepartureUtcDateTime().plusMinutes(1L)
+                DateTimeUtil.MIN, DateTimeUtil.MAX
+                , 0, 10);
+        System.out.println();
+    }
 
     @Autowired
     protected IFlightService service;
@@ -106,6 +122,9 @@ public class FlightServiceImplTest extends AbstractServiceTest {
                         null, null, 0, 20));
 
     }
+
+
+
 
     private Flight getNewDummyFlightWithNullId(Long id) {
         return new Flight(id, AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW, AIRCRAFT_1,

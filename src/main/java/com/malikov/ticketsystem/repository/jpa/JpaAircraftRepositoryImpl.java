@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
+@SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
 public class JpaAircraftRepositoryImpl implements IAircraftRepository {

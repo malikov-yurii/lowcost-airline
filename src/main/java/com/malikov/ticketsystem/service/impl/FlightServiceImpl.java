@@ -2,16 +2,26 @@ package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
+import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.IAirportRepository;
 import com.malikov.ticketsystem.repository.IFlightRepository;
+import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
+import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * @author Yurii Malikov
@@ -24,6 +34,12 @@ public class FlightServiceImpl implements IFlightService {
 
     @Autowired
     private IAirportRepository airportRepository;
+
+    @Autowired
+    private ITicketRepository ticketRepository;
+
+    @Autowired
+    private ITariffsDetailsRepository tariffsDetailsRepository;
 
     @Override
     public Flight save(Flight flight) {
@@ -56,51 +72,13 @@ public class FlightServiceImpl implements IFlightService {
         return flightRepository.getAll();
     }
 
-    //@Override
-    //public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
-    //    return flightRepository.countAllFiltered(
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //    );
-    //}
-    //
-    //public FlightPageDTO getFilteredPage
-
-
-    @Override
-    public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport, LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
-        return null;
-    }
 
     // TODO: 5/24/2017 does it need extra validation by userid or something?
     @Override
+    @Transactional
     public List<Flight> getAllFiltered(String departureAirportName, String arrivalAirportName,
                                        LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime
-                                        , Integer first, Integer pageSize) {
+            , Integer first, Integer pageSize) {
         Airport departureAirport, arrivalAirport;
 
         if (departureAirportName != null && departureAirportName.length() != 0) {
@@ -129,8 +107,69 @@ public class FlightServiceImpl implements IFlightService {
             toDepartureUtcDateTime = toDepartureDateTime;
         }
 
-        return flightRepository.getAllFiltered(departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime , first, pageSize);
+        return flightRepository.getAllFiltered(departureAirport, arrivalAirport,
+                fromDepartureUtcDateTime, toDepartureUtcDateTime, first, pageSize);
     }
+
+    @Override
+    //@Transactional  // no need only select?
+    public Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime, Integer first, Integer pageSize) {
+        Map<Flight, BigDecimal> flightTicketPriceMap = new HashMap<>();
+
+        Airport departureAirport = airportRepository.getByName(departureAirportName);
+        Airport arrivalAirport = airportRepository.getByName(arrivalAirportName);
+        Map<Flight, Long> filteredFlightsTicketCountMap = flightRepository.getFilteredFlightsTicketCountMap(
+                departureAirport, arrivalAirport, fromDepartureDateTime, toDepartureDateTime, first, pageSize);
+        TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
+
+        BigDecimal ticketPrice, totalGrowthPotential,
+                timeGrowthPotential,fillingGrowthPotential, perDayPriceGrowth, perTicketPriceGrowth;
+        Flight flight;
+        Long ticketsQuantity;
+        for (Map.Entry<Flight, Long> entry : filteredFlightsTicketCountMap.entrySet()) {
+            flight = entry.getKey();
+            ticketsQuantity = entry.getValue();
+
+            // TODO: 5/29/2017 try to do that in query
+            if (flight.getAircraft().getModel().getPassengersSeatsQuantity() > ticketsQuantity) {
+                ticketPrice = BigDecimal.ZERO;
+
+                totalGrowthPotential = flight.getMaxTicketBasePrice().subtract(flight.getInitialTicketBasePrice());
+                timeGrowthPotential = totalGrowthPotential.multiply(tariffsDetails.getWeightOfTimeGrowthFactor());
+                fillingGrowthPotential = totalGrowthPotential.subtract(timeGrowthPotential);
+                perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel().getPassengersSeatsQuantity()));
+                perDayPriceGrowth = timeGrowthPotential.divide(new BigDecimal(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow()));
+
+
+                LocalDateTime utcTimepointPriceStartsToGrow = flight.getDepartureUtcDateTime()
+                        .plusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
+                long daysBetweenGrowthStartAndNow = DAYS.between(utcTimepointPriceStartsToGrow,
+                        LocalDateTime.now(ZoneId.of("UTC")));
+
+                if (daysBetweenGrowthStartAndNow > 0) {
+                    ticketPrice = ticketPrice.add(perDayPriceGrowth.multiply(new BigDecimal(daysBetweenGrowthStartAndNow)));
+                }
+
+                if (ticketsQuantity > 0) {
+                    ticketPrice = ticketPrice.add(perTicketPriceGrowth.multiply(new BigDecimal(ticketsQuantity)));
+                }
+
+                flightTicketPriceMap.put(flight, ticketPrice);
+            }
+        }
+
+        return flightTicketPriceMap;
+    }
+
+
+    //@Override
+    //public Map<Flight, Long> getFlightTicketPriceMap(Airport departureAirport, Airport arrivalAirport,
+    //                                                 LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
+    //                                                 Integer first, Integer pageSize){
+    //    return flightRepository.getFilteredFlightsTicketCountMap(departureAirport, arrivalAirport,
+    //            fromDepartureDateTime, toDepartureDateTime,
+    //            first, pageSize);
+    //}
 
     @Override
     public boolean delete(long id) {

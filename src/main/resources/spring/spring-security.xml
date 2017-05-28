@@ -20,10 +20,14 @@
         <intercept-url pattern="/login" access="permitAll"/>
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
+
+
+        <!--TODO TWO STRINGS BELOW ARE EQUAL????????-->
         <!--<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
-        <form-login login-page="/login" default-target-url="/flights"
+
+        <form-login login-page="/login" default-target-url="/purchase"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>

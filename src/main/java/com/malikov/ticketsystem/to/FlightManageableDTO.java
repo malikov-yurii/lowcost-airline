@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 /**
  * @author Yurii Malikov
  */
-public class FlightTo extends BaseTo {
+public class FlightManageableDTO extends BaseTo {
 
     private String departureAirport;
 
@@ -31,7 +31,7 @@ public class FlightTo extends BaseTo {
     private Boolean canceled;
 
 
-    public FlightTo(
+    public FlightManageableDTO(
             Long id
             , String departureAirport
             , String arrivalAirport
@@ -55,7 +55,8 @@ public class FlightTo extends BaseTo {
         this.canceled = canceled;
     }
 
-    public FlightTo(){}
+    public FlightManageableDTO() {
+    }
 
     public String getDepartureAirport() {
         return departureAirport;

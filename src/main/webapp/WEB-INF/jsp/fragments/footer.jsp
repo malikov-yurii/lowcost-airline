@@ -33,7 +33,8 @@
     "common.saved",
     "common.enabled",
     "common.disabled",
-    "common.failed"}%>'>
+    "common.failed",
+    "flight.ticketPrice"}%>'>
     i18n['${key}'] = '<fmt:message key="${key}"/>';
     </c:forEach>
 </script>
