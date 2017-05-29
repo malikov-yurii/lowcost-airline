@@ -96,13 +96,13 @@ CREATE TABLE flights (
  *  total_seat_quantity                                  61 seats
  *  departure date                                       10.04.2017
  *  days_before_ticket_price_starts_to_grow              40
- *  weight_of_time_growth_factor                         40%
+ *  weight_of_time_growth_factor                         0.4
  *  baggage_surcharge_over_ticket_max_base_ticket_price  2 EUR
  *  priority_registration_tariff                         7 EUR
  *
  *  Total growth potential for time and plane filling factors:  200 EUR - 100 EUR      = 100 EUR
  *  Growth potential for time factor                         :  100 EUR * 40%          = 40  EUR
- *  Growth potential for plane filling factor                :  100 EUR * (100% - 40%) = 60  EUR
+ *  Growth potential for plane filling factor                :  100 EUR * (1 - 0.4) = 60  EUR
  *  Fixed baggage tariff for purchase                          :  200 EUR + 2 EUR        = 202 EUR
  *
  *  If departure day is on 10.04.2017 than price would start to grow on 1.03.2017 (40 days before departure).
@@ -119,7 +119,7 @@ CREATE TABLE flights (
 CREATE TABLE tariffs_details (
   id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
   days_before_ticket_price_starts_to_grow             SMALLINT      NOT NULL,
-  weight_of_time_growth_factor                        DECIMAL(4, 2) NOT NULL,
+  weight_of_time_growth_factor                        DECIMAL(4, 4) NOT NULL,
   baggage_surcharge_over_ticket_max_base_ticket_price DECIMAL(8, 2) NOT NULL,
   priority_registration_tariff                        DECIMAL(8, 2) NOT NULL,
   active               BOOLEAN       NOT NULL

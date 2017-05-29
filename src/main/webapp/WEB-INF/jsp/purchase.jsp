@@ -80,7 +80,7 @@
                         <th><fmt:message key="flight.departureLocalDateTime"/></th>
                         <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
                         <th><fmt:message key="flight.ticketPrice"/></th>
-                        <th></th>
+                        <th>Btn</th>
                     </tr>
                     </thead>
                 </table>

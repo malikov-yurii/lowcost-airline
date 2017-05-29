@@ -127,8 +127,8 @@ VALUES
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_ticket_max_base_ticket_price, priority_registration_tariff, active)
 VALUES
-  (10, 50, 2, 7, TRUE),
-  (30, 50, 1.11, 5.11, FALSE);
+  (10, 0.5, 2, 7, TRUE),
+  (30, 0.5, 1.11, 5.11, FALSE);
 
 INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime, with_baggage, with_priority_registration,
                      passenger_name, passenger_last_name,

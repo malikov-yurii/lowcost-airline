@@ -67,7 +67,7 @@ public class AbstractFlightController {
         flight.setInitialTicketBasePrice(flightManageableDTO.getInitialBaseTicketPrice());
         flight.setMaxTicketBasePrice(flightManageableDTO.getMaxBaseTicketPrice());
 
-        flightService.save(flight);
+        flightService.update(flight);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

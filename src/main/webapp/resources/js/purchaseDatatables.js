@@ -11,7 +11,6 @@ $(document).ready(function () {
         "ajax": {
             "url": 'ajax/user/flight/',
             "data": function (d) {
-                // ;
                 return {
                     draw: d.draw,
                     length: d.length,
@@ -25,7 +24,6 @@ $(document).ready(function () {
             // ,"dataSrc": ""
         },
         "searching": false,
-        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -36,7 +34,7 @@ $(document).ready(function () {
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "ticketPrice", "orderable": false},
-            {"orderable": false, "render purchase-btn": renderPurchaseBtn}
+            {"orderable": false, "render": renderPurchaseBtn}
         ],
         "initComplete": onTableReady,
         "order": [
@@ -91,6 +89,8 @@ $(document).ready(function () {
 });
 
 function renderPurchaseBtn(data, type, row) {
+    // return '<a>Buy ticket</a>';
+    // return '<a class="btn btn-xs btn-primary" onclick="showPurchaseModal()">Buy ticket</a>';
     return '<a class="btn btn-xs btn-primary purchase-btn">Buy ticket</a>';
 }
 

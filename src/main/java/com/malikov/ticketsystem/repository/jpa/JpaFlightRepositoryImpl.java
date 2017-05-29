@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class JpaFlightRepositoryImpl implements IFlightRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
@@ -147,6 +147,7 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
 
 
     @Override
+    @Transactional
     @SuppressWarnings("unchecked")
     public Map<Flight, Long> getFilteredFlightsTicketCountMap(Airport departureAirport, Airport arrivalAirport,
                                                                  LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime,
@@ -169,8 +170,9 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         query.setParameter("toDepartureUtcDateTime", toDepartureUtcDateTime);
         query.setFirstResult(first);
         query.setMaxResults(limit);
+        List<Object[]> list = query.getResultList();
 
-        return (Map<Flight, Long>) query.getResultList()
+        return (Map<Flight, Long>) list
                 .stream()
                 .collect(Collectors.toMap(resultElement -> (Flight) (((Object[]) resultElement)[0]),
                         resultElement -> (Long) (((Object[]) resultElement)[1])));

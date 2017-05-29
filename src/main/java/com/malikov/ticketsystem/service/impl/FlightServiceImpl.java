@@ -120,19 +120,21 @@ public class FlightServiceImpl implements IFlightService {
         Airport arrivalAirport = airportRepository.getByName(arrivalAirportName);
         Map<Flight, Long> filteredFlightsTicketCountMap = flightRepository.getFilteredFlightsTicketCountMap(
                 departureAirport, arrivalAirport, fromDepartureDateTime, toDepartureDateTime, first, pageSize);
+        //System.out.println();
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
 
         BigDecimal ticketPrice, totalGrowthPotential,
                 timeGrowthPotential,fillingGrowthPotential, perDayPriceGrowth, perTicketPriceGrowth;
         Flight flight;
         Long ticketsQuantity;
+        //System.out.println();
         for (Map.Entry<Flight, Long> entry : filteredFlightsTicketCountMap.entrySet()) {
             flight = entry.getKey();
             ticketsQuantity = entry.getValue();
 
             // TODO: 5/29/2017 try to do that in query
             if (flight.getAircraft().getModel().getPassengersSeatsQuantity() > ticketsQuantity) {
-                ticketPrice = BigDecimal.ZERO;
+                ticketPrice = flight.getInitialTicketBasePrice();
 
                 totalGrowthPotential = flight.getMaxTicketBasePrice().subtract(flight.getInitialTicketBasePrice());
                 timeGrowthPotential = totalGrowthPotential.multiply(tariffsDetails.getWeightOfTimeGrowthFactor());
@@ -142,7 +144,7 @@ public class FlightServiceImpl implements IFlightService {
 
 
                 LocalDateTime utcTimepointPriceStartsToGrow = flight.getDepartureUtcDateTime()
-                        .plusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
+                        .minusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
                 long daysBetweenGrowthStartAndNow = DAYS.between(utcTimepointPriceStartsToGrow,
                         LocalDateTime.now(ZoneId.of("UTC")));
 
