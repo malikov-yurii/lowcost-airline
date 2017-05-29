@@ -1,6 +1,6 @@
 var datatableApi;
-var entityName = 'purchase';
-// var ajaxUrl = 'ajax/user/purchase/';
+var entityName = 'flight';
+var ajaxUrl = 'ajax/admin/flight/';
 
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
@@ -9,8 +9,9 @@ $(document).ready(function () {
         "lengthMenu": [3, 5, 10],
         "serverSide": true,
         "ajax": {
-            "url": 'ajax/user/flight/',
+            "url": ajaxUrl,
             "data": function (d) {
+                // ;
                 return {
                     draw: d.draw,
                     length: d.length,
@@ -24,6 +25,7 @@ $(document).ready(function () {
             // ,"dataSrc": ""
         },
         "searching": false,
+        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -33,8 +35,12 @@ $(document).ready(function () {
             {"data": "arrivalAirport", "orderable": false},
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
-            {"data": "ticketPrice", "orderable": false},
-            {"orderable": false, "render": renderPurchaseBtn}
+            {"data": "aircraftName", "orderable": false},
+            {"data": "initialBaseTicketPrice", "orderable": false},
+            {"data": "maxBaseTicketPrice", "orderable": false},
+            {"orderable": false, "render": renderUpdateBtn},
+            {"orderable": false, "render": renderCancelDiscardCancellingBtn},
+            {"orderable": false, "render": renderDeleteBtn}
         ],
         "initComplete": onTableReady,
         "order": [
@@ -46,7 +52,7 @@ $(document).ready(function () {
         "autoWidth": false
     });
 
-    datatableApi.on('click', '.purchase-btn', showPurchaseModal);
+    datatableApi.on('click', '.update-btn', showUpdateModal);
 
     $('.input-datetime').datetimepicker({
         format: getDateTimePickerFormat()
@@ -88,25 +94,6 @@ $(document).ready(function () {
     // $(".show-add-new-modal").html('');
 });
 
-function renderPurchaseBtn(data, type, row) {
-    // return '<a>Buy ticket</a>';
-    // return '<a class="btn btn-xs btn-primary" onclick="showPurchaseModal()">Buy ticket</a>';
-    return '<a class="btn btn-xs btn-primary purchase-btn">Buy ticket</a>';
-}
-
-
-function showPurchaseModal() {
-    var rowData = datatableApi.row($(this).closest('tr')).data();
-
-    $('#modalTitle').html('Purchase ticket');
-
-
-    debugger;
-
-
-    $('#editRow').modal();
-}
-
 
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
@@ -116,7 +103,7 @@ function showAddModal() {
     var defaultDate = new Date();
     defaultDate.setHours(defaultDate.getHours() + 24); // same time next day
     $('#departureLocalDateTime').val(dateToString(defaultDate));
-    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour purchase
+    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour flight
     $('#arrivalLocalDateTime').val(dateToString(defaultDate));
     $('#initialBaseTicketPrice').val('10.00');
     $('#maxBaseTicketPrice').val('20.00');
@@ -125,7 +112,6 @@ function showAddModal() {
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get(ajaxUrl, updateTableByData);
 }
 
 function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
@@ -145,7 +131,6 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
             departureAirportCondition.addClass('valid');
         }
 
-        // ;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
             message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
@@ -184,11 +169,9 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
         } else {
             forceDataTableReload();
         }
+    } else {
+        forceDataTableReload();
     }
-}
-
-function forceDataTableReload() {
-    datatableApi.ajax.reload();
 }
 
 function saveFlight() {
@@ -252,8 +235,6 @@ function saveFlight() {
         message = addNextLineSymbolIfNotEmpty(message);
         message += 'Initial price cannot be less than 5.00$';
     }
-    // ;
-
 
     if (message.length !== 0) {
         swal({
@@ -281,6 +262,7 @@ function saveFlight() {
 
 }
 
+
 function moveFocusToNextFormElement(formElement) {
     formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
@@ -292,6 +274,7 @@ function addNextLineSymbolIfNotEmpty(message) {
     }
     return message;
 }
+
 
 
 

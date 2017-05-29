@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 
@@ -63,11 +64,15 @@
                                 </form:form>
                             </div>
                             <div class="panel-footer text-right">
-                                <a class="btn btn-danger" type="button" onclick="clearFilter()">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </a>
+                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                    <a class="btn btn-danger" type="button" onclick="clearFilter()">
+                                        <span aria-hidden="true">Clean Filter</span>
+                                    </a>
+                                </sec:authorize>
+
                                 <a class="btn btn-primary" type="button" onclick="updateTable(false, false)">
-                                    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                                    <%--<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>--%>
+                                    <span aria-hidden="true">Search</span>
                                 </a>
                             </div>
                         </div>
@@ -77,8 +82,12 @@
 
 
             <div class="view-box">
-                <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()"><fmt:message
-                        key="flight.addNewFlight"/></a>
+
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()">
+                        <fmt:message key="flight.addNewFlight"/></a>
+                </sec:authorize>
+
 
                 <table class="table table-striped display" id="datatable">
                     <thead>
@@ -88,11 +97,16 @@
                         <th><fmt:message key="airport.arrival"/></th>
                         <th><fmt:message key="flight.departureLocalDateTime"/></th>
                         <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
-                        <th><fmt:message key="aircraft.name"/></th>
-                        <th><fmt:message key="flight.initialTicketBasePrice"/></th>
-                        <th><fmt:message key="flight.maxTicketBasePrice"/></th>
-                        <th></th>
-                        <th></th>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <th><fmt:message key="aircraft.name"/></th>
+                            <th><fmt:message key="flight.initialTicketBasePrice"/></th>
+                            <th><fmt:message key="flight.maxTicketBasePrice"/></th>
+                            <th></th>
+                            <th></th>
+                        </sec:authorize>
+                        <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                            <th><fmt:message key="flight.ticketPrice"/></th>
+                        </sec:authorize>
                         <th></th>
                     </tr>
                     </thead>
@@ -122,6 +136,9 @@
                             <input type="text" class="modal-input form-control input-airport" id="departureAirport"
                                    name="departureAirport"
                                    placeholder="please choose arrival airport from drop down list">
+                            <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                                readonly="readonly"
+                            </sec:authorize>
                         </div>
                     </div>
 
@@ -159,43 +176,83 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="aircraftName" class="control-label col-xs-3"><fmt:message
-                                key="aircraft.name"/></label>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <div class="form-group">
+                            <label for="aircraftName" class="control-label col-xs-3"><fmt:message
+                                    key="aircraft.name"/></label>
 
-                        <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control input-aircraft" id="aircraftName"
-                                   name="aircraftName"
-                                   placeholder="please choose aircraft from drop down list">
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control input-aircraft" id="aircraftName"
+                                       name="aircraftName"
+                                       placeholder="please choose aircraft from drop down list">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="initialBaseTicketPrice" class="control-label col-xs-3"><fmt:message
-                                key="flight.initialTicketBasePrice"/></label>
+                        <div class="form-group">
+                            <label for="initialBaseTicketPrice" class="control-label col-xs-3"><fmt:message
+                                    key="flight.initialTicketBasePrice"/></label>
 
-                        <div class="col-xs-9">
-                            <input type="number" class="modal-input form-control" id="initialBaseTicketPrice"
-                                   name="initialBaseTicketPrice" placeholder="10.00">
+                            <div class="col-xs-9">
+                                <input type="number" class="modal-input form-control" id="initialBaseTicketPrice"
+                                       name="initialBaseTicketPrice" placeholder="10.00">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="maxBaseTicketPrice" class="control-label col-xs-3"><fmt:message
-                                key="flight.maxTicketBasePrice"/></label>
+                        <div class="form-group">
+                            <label for="maxBaseTicketPrice" class="control-label col-xs-3"><fmt:message
+                                    key="flight.maxTicketBasePrice"/></label>
 
-                        <div class="col-xs-9">
-                            <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
-                                   name="maxBaseTicketPrice" placeholder="20.00">
+                            <div class="col-xs-9">
+                                <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
+                                       name="maxBaseTicketPrice" placeholder="20.00">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-xs-offset-3 col-xs-9">
-                            <button class="btn btn-primary" type="button" onclick="saveFlight()"><fmt:message
-                                    key="common.save"/></button>
+                        <div class="form-group">
+                            <div class="col-xs-offset-3 col-xs-9">
+                                <button class="btn btn-primary" type="button" onclick="saveFlight()"><fmt:message
+                                        key="common.save"/></button>
+                            </div>
                         </div>
-                    </div>
+                    </sec:authorize>
+
+                    <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                        <div class="form-group">
+                            <label for="ticketPrice" class="control-label col-xs-3"><fmt:message
+                                    key="flight.ticketPrice"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control " id="ticketPrice"
+                                       name="ticketPrice" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withBaggage" class="control-label col-xs-3"><fmt:message
+                                    key="ticket.includeBaggage"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="checkbox" class="modal-input form-control" id="withBaggage"
+                                       name="withBaggage">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withPriorityRegistration" class="control-label col-xs-3"><fmt:message
+                                    key="ticket.includePriorityRegistration"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="checkbox" class="modal-input form-control" id="withPriorityRegistration"
+                                       name="withPriorityRegistration">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-offset-3 col-xs-9">
+                                <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
+                                        key="common.save"/></button>
+                            </div>
+                        </div>
+                    </sec:authorize>
                 </form:form>
             </div>
         </div>
@@ -203,9 +260,14 @@
 </div>
 </body>
 
-
 <jsp:include page="fragments/footer.jsp"/>
+<script type="text/javascript" src="resources/js/dataTablesUtil.js"></script>
 
-<script type="text/javascript" src="resources/js/flightDatatables.js"></script>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <script type="text/javascript" src="resources/js/flightDataTables.js"></script>
+</sec:authorize>
+<sec:authorize access="!hasRole('ROLE_ADMIN')">
+    <script type="text/javascript" src="resources/js/purchaseDataTables.js"></script>
+</sec:authorize>
 
 </html>

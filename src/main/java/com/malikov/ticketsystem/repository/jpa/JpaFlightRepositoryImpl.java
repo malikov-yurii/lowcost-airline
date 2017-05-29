@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
+@Transactional
 public class JpaFlightRepositoryImpl implements IFlightRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration

@@ -4,7 +4,9 @@ function showAddModal() {
     $('#editRow').modal();
 }
 
-
+function forceDataTableReload() {
+    datatableApi.ajax.reload();
+}
 
 function renderUpdateBtn(data, type, row) {
     return '<a class="btn btn-xs btn-primary update-btn">Update</a>';
@@ -57,41 +59,6 @@ function showUpdateModal() {
 
     $('#editRow').modal();
 }
-
-function renderUpdateUserBtn(data, type, row) {
-    var result = '<a class="btn btn-xs btn-primary" onclick="showUpdateUserModal(' +
-        row.id + ', \'' +
-        row.firstName + '\', \'' +
-        row.lastName + '\', \'' +
-        row.login + '\', \'' +
-        row.email +
-        '\', \'';
-
-    if (entityName === 'freelancer')
-        result += row.skills;
-    result += '\')">' + i18n['common.update'] + '</a>';
-
-    console.log(result);
-    return result;
-}
-
-function showUpdateUserModal(id, firstName, lastName, login, email, skills) {
-    $('#modalTitle').html(i18n['common.update'] + entityName);
-    $('#id').val(id);
-    $('#firstName').val(firstName);
-    $('#lastName').val(lastName);
-    $('#login').val(login);
-    $('#password').val('');
-    $('#email').val(email);
-    if (entityName === 'freelancer')
-        $('#skills').val(skills);
-    $('#editRow').modal();
-
-}
-
-// function updateTable(added, isTabPressed, orderId) {
-//     $.get(ajaxUrl, updateTableByData);
-// }
 
 
 function updateTableByData(data) {

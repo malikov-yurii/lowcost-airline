@@ -12,8 +12,8 @@
             <sec:authorize access="isAuthenticated()">
                 <a class="btn btn-info" role="button" href="purchase"><fmt:message key="app.purchaseTicket"/></a>
 
-                <sec:authorize access="hasRole('ADMIN')">
-                    <a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <%--<a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>--%>
                     <%--<a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>--%>
                     <%--<a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>--%>
                     <%--<a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>--%>

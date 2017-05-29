@@ -1,6 +1,6 @@
 var datatableApi;
-var entityName = 'flight';
-var ajaxUrl = 'ajax/admin/flight/';
+var entityName = 'purchase';
+// var ajaxUrl = 'ajax/user/purchase/';
 
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
@@ -9,9 +9,8 @@ $(document).ready(function () {
         "lengthMenu": [3, 5, 10],
         "serverSide": true,
         "ajax": {
-            "url": ajaxUrl,
+            "url": 'ajax/user/flight/',
             "data": function (d) {
-                // ;
                 return {
                     draw: d.draw,
                     length: d.length,
@@ -25,7 +24,6 @@ $(document).ready(function () {
             // ,"dataSrc": ""
         },
         "searching": false,
-        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -35,12 +33,8 @@ $(document).ready(function () {
             {"data": "arrivalAirport", "orderable": false},
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
-            {"data": "aircraftName", "orderable": false},
-            {"data": "initialBaseTicketPrice", "orderable": false},
-            {"data": "maxBaseTicketPrice", "orderable": false},
-            {"orderable": false, "render": renderUpdateBtn},
-            {"orderable": false, "render": renderCancelDiscardCancellingBtn},
-            {"orderable": false, "render": renderDeleteBtn}
+            {"data": "ticketPrice", "orderable": false},
+            {"orderable": false, "render": renderPurchaseBtn}
         ],
         "initComplete": onTableReady,
         "order": [
@@ -52,7 +46,7 @@ $(document).ready(function () {
         "autoWidth": false
     });
 
-    datatableApi.on('click', '.update-btn', showUpdateModal);
+    datatableApi.on('click', '.purchase-btn', showPurchaseModal);
 
     $('.input-datetime').datetimepicker({
         format: getDateTimePickerFormat()
@@ -94,6 +88,25 @@ $(document).ready(function () {
     // $(".show-add-new-modal").html('');
 });
 
+function renderPurchaseBtn(data, type, row) {
+    // return '<a>Buy ticket</a>';
+    // return '<a class="btn btn-xs btn-primary" onclick="showPurchaseModal()">Buy ticket</a>';
+    return '<a class="btn btn-xs btn-primary purchase-btn">Buy ticket</a>';
+}
+
+
+function showPurchaseModal() {
+    var rowData = datatableApi.row($(this).closest('tr')).data();
+
+    $('#modalTitle').html('Purchase ticket');
+
+
+    debugger;
+
+
+    $('#editRow').modal();
+}
+
 
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
@@ -103,17 +116,13 @@ function showAddModal() {
     var defaultDate = new Date();
     defaultDate.setHours(defaultDate.getHours() + 24); // same time next day
     $('#departureLocalDateTime').val(dateToString(defaultDate));
-    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour flight
+    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour purchase
     $('#arrivalLocalDateTime').val(dateToString(defaultDate));
     $('#initialBaseTicketPrice').val('10.00');
     $('#maxBaseTicketPrice').val('20.00');
     $('#editRow').modal();
 }
 
-function clearFilter() {
-    $("#filter")[0].reset();
-    $.get(ajaxUrl, updateTableByData);
-}
 
 function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
     var message = "";
@@ -174,9 +183,6 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
     }
 }
 
-function forceDataTableReload() {
-    datatableApi.ajax.reload();
-}
 
 function saveFlight() {
     var message = "";
@@ -268,10 +274,6 @@ function saveFlight() {
 
 }
 
-// function markNextFormElementOf(formElement) {
-//
-// }
-
 function moveFocusToNextFormElement(formElement) {
     formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
@@ -283,7 +285,6 @@ function addNextLineSymbolIfNotEmpty(message) {
     }
     return message;
 }
-
 
 
 

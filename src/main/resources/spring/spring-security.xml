@@ -27,7 +27,7 @@
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
 
-        <form-login login-page="/login" default-target-url="/purchase"
+        <form-login login-page="/login" default-target-url="/flights"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>

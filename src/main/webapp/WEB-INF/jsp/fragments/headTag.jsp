@@ -32,6 +32,4 @@
 <script type="text/javascript" src="webjars/noty/2.3.8/js/noty/packaged/jquery.noty.packaged.min.js" defer></script>
 <script type="text/javascript" src="webjars/datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js" defer></script>
 
-<script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
-
 <link rel="stylesheet" href="resources/css/style.css">

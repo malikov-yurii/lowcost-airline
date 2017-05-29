@@ -32,8 +32,8 @@ public class RootController {
         return "flights";
     }
 
-    @RequestMapping(value = "/purchase", method = RequestMethod.GET)
-    public String purchase(){
-        return "purchase";
-    }
+    //@RequestMapping(value = "/purchase", method = RequestMethod.GET)
+    //public String purchase(){
+    //    return "purchase";
+    //}
 }
