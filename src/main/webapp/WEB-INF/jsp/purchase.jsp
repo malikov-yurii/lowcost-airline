@@ -61,7 +61,7 @@
                                 </form:form>
                             </div>
                             <div class="panel-footer text-right">
-                                <a class="btn btn-primary" type="button" onclick="updateTable(false, false)">
+                                <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
                                     <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
                                 </a>
                             </div>

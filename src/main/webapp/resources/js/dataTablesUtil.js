@@ -34,7 +34,7 @@ function setCanceled(id, isCanceled) {
                     type: 'POST',
                     data: 'canceled=' + isCanceled,
                     success: function (data) {
-                        updateTable(true, false);
+                        showOrUpdateTable(true, false);
                         successNoty('common.saved');
                     }
                 });
@@ -99,7 +99,7 @@ function deleteEntity(id) {
                     url: ajaxUrl + id,
                     type: 'DELETE',
                     success: function (data) {
-                        updateTable(true, false);
+                        showOrUpdateTable(true, false);
                         successNoty('common.deleted');
                     }
                 })
@@ -114,7 +114,7 @@ function save() {
         data: $('#detailsForm').serialize(),
         success: function () {
             $('#editRow').modal('hide');
-            updateTable(false, false);
+            showOrUpdateTable(false, false);
             successNoty('common.saved');
         }
     });

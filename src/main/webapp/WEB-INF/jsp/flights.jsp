@@ -48,7 +48,7 @@
                                         <label class="control-label col-sm-3" for="fromDepartureDateTimeCondition">
                                             <spring:message code="flight.fromDepartureDateTime"/>:</label>
                                         <div class="col-sm-3">
-                                            <input class="input-filter form-control input-datetime"
+                                            <input class="input-filter form-control input-datetime active-input"
                                                    name="fromDepartureDateTimeCondition"
                                                    id="fromDepartureDateTimeCondition">
                                         </div>
@@ -56,7 +56,7 @@
                                         <label class="control-label col-sm-4" for="toDepartureDateTimeCondition">
                                             <spring:message code="flight.toDepartureDateTime"/>:</label>
                                         <div class="col-sm-2">
-                                            <input class="input-filter form-control input-datetime"
+                                            <input class="input-filter form-control input-datetime departure-datetime active-input"
                                                    name="toDepartureDateTimeCondition"
                                                    id="toDepartureDateTimeCondition">
                                         </div>
@@ -70,7 +70,7 @@
                                     </a>
                                 </sec:authorize>
 
-                                <a class="btn btn-primary" type="button" onclick="updateTable(false, false)">
+                                <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
                                     <%--<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>--%>
                                     <span aria-hidden="true">Search</span>
                                 </a>
@@ -81,7 +81,7 @@
             </div>
 
 
-            <div class="view-box">
+            <div class="view-box datatable" hidden="true">
 
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()">
@@ -158,7 +158,7 @@
                                 key="flight.departureLocalDateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control input-datetime"
+                            <input type="text" class="modal-input form-control input-datetime active-input"
                                    id="departureLocalDateTime"
                                    name="departureLocalDateTime"
                                    placeholder="please set arrival local date">
@@ -170,7 +170,7 @@
                                 key="flight.arrivalLocalDateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control input-datetime" id="arrivalLocalDateTime"
+                            <input type="text" class="modal-input form-control input-datetime active-input" id="arrivalLocalDateTime"
                                    name="arrivalLocalDateTime"
                                    placeholder="please set arrival local date">
                         </div>

@@ -1,7 +1,10 @@
 package com.malikov.ticketsystem.service;
 
+import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
+import com.malikov.ticketsystem.model.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -25,5 +28,8 @@ public interface ITicketService {
     Ticket getWithFlight(long id, long userId);
 
     Ticket getWithUserAndFlight(long id, long userId);
+
+    // TODO: 5/30/2017 add userid here
+    Ticket createNewBookedTicket(Flight flight, User user, BigDecimal price);
 
 }

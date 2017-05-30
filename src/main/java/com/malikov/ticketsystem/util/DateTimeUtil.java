@@ -21,6 +21,7 @@ public class DateTimeUtil {
 
     public static final LocalDateTime MIN = LocalDateTime.of(2000, 1,1,1,1);
     public static final LocalDateTime MAX = LocalDateTime.of(2030, 1,1,1,1);
+    public static final long ONE_MINUTE_IN_MILLIS = 60000;
 
     public static <T extends Comparable<? super T>> boolean isBetween(T value, T start, T end) {
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;

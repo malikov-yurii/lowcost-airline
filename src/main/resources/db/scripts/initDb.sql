@@ -13,23 +13,23 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE users (
   id           BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name         VARCHAR(50)  NOT NULL,
-  last_name    VARCHAR(50)  NOT NULL,
-  email        VARCHAR(255) NOT NULL UNIQUE,
-  password     VARCHAR(255) NOT NULL,
-  phone_number VARCHAR(15)  NOT NULL UNIQUE
+  name         VARCHAR(50)  ,
+  last_name    VARCHAR(50)  ,
+  email        VARCHAR(255)  UNIQUE,
+  password     VARCHAR(255) ,
+  phone_number VARCHAR(15)   UNIQUE
 );
 CREATE UNIQUE INDEX users_unique_email_idx
   ON users (email);
 
 CREATE TABLE roles (
   id   BIGINT PRIMARY KEY AUTO_INCREMENT,
-  role VARCHAR(255) NOT NULL
+  role VARCHAR(255)
 );
 
 CREATE TABLE user_roles (
-  user_id BIGINT NOT NULL,
-  role_id BIGINT NOT NULL,
+  user_id BIGINT ,
+  role_id BIGINT ,
   CONSTRAINT user_rolex_idx UNIQUE (user_id, role_id),
   FOREIGN KEY (user_id) REFERENCES users (id)
     ON DELETE CASCADE,
@@ -39,28 +39,28 @@ CREATE TABLE user_roles (
 
 CREATE TABLE cities (
   id        BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name      VARCHAR(70) NOT NULL,
-  time_zone VARCHAR(50) NOT NULL
+  name      VARCHAR(70) ,
+  time_zone VARCHAR(50)
 );
 
 CREATE TABLE airports (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name    VARCHAR(255) NOT NULL,
-  city_id BIGINT       NOT NULL
+  name    VARCHAR(255) ,
+  city_id BIGINT
   ,
   FOREIGN KEY (city_id) REFERENCES cities (id)
 );
 
 CREATE TABLE aircraft_models (
   id                       BIGINT PRIMARY KEY AUTO_INCREMENT,
-  model_name               VARCHAR(255) NOT NULL,
-  passenger_seats_quantity SMALLINT     NOT NULL
+  model_name               VARCHAR(255) ,
+  passenger_seats_quantity SMALLINT
 );
 
 CREATE TABLE aircraft (
   id       BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name     VARCHAR(255) NOT NULL,
-  model_id BIGINT       NOT NULL,
+  name     VARCHAR(255) ,
+  model_id BIGINT       ,
   FOREIGN KEY (model_id) REFERENCES aircraft_models (id)
 );
 
@@ -70,14 +70,14 @@ CREATE TABLE aircraft (
  */
 CREATE TABLE flights (
   id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
-  departure_airport_id      BIGINT        NOT NULL,
-  arrival_airport_id        BIGINT        NOT NULL,
-  aircraft_id               BIGINT        NOT NULL,
-  departure_utc_datetime    DATETIME      NOT NULL,
-  arrival_utc_datetime      DATETIME      NOT NULL,
-  initial_ticket_base_price DECIMAL(8, 2) NOT NULL,
-  max_ticket_base_price     DECIMAL(8, 2) NOT NULL,
-  canceled                  BOOLEAN       NOT NULL,
+  departure_airport_id      BIGINT        ,
+  arrival_airport_id        BIGINT        ,
+  aircraft_id               BIGINT        ,
+  departure_utc_datetime    DATETIME      ,
+  arrival_utc_datetime      DATETIME      ,
+  initial_ticket_base_price DECIMAL(8, 2) ,
+  max_ticket_base_price     DECIMAL(8, 2) ,
+  canceled                  BOOLEAN       ,
   FOREIGN KEY (departure_airport_id) REFERENCES airports (id),
   FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
   FOREIGN KEY (aircraft_id) REFERENCES aircraft (id)
@@ -118,32 +118,33 @@ CREATE TABLE flights (
  **/
 CREATE TABLE tariffs_details (
   id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
-  days_before_ticket_price_starts_to_grow             SMALLINT      NOT NULL,
-  weight_of_time_growth_factor                        DECIMAL(4, 4) NOT NULL,
-  baggage_surcharge_over_ticket_max_base_ticket_price DECIMAL(8, 2) NOT NULL,
-  priority_registration_tariff                        DECIMAL(8, 2) NOT NULL,
-  active               BOOLEAN       NOT NULL
+  days_before_ticket_price_starts_to_grow             SMALLINT      ,
+  weight_of_time_growth_factor                        DECIMAL(4, 4) ,
+  baggage_surcharge_over_ticket_max_base_ticket_price DECIMAL(8, 2) ,
+  priority_registration_tariff                        DECIMAL(8, 2) ,
+  active               BOOLEAN
 );
 
 
 CREATE TABLE tickets (
   id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
-  flight_id                 BIGINT        NOT NULL,
-  user_id                   BIGINT        NOT NULL,
-  price                     DECIMAL(8, 2) NOT NULL,
-  purchase_offsetdatetime   VARCHAR(22)   NOT NULL,
-  with_baggage               BOOLEAN       NOT NULL,
-  with_priority_registration BOOLEAN       NOT NULL,
-  passenger_name         VARCHAR(50)  NOT NULL,
-  passenger_last_name    VARCHAR(50)  NOT NULL,
-  departure_airport_name    VARCHAR(255)  NOT NULL,
-  arrival_airport_name      VARCHAR(255)  NOT NULL,
-  departure_city_name       VARCHAR(70)   NOT NULL,
-  arrival_city_name         VARCHAR(70)   NOT NULL,
-  departure_utc_datetime    DATETIME      NOT NULL,
-  departure_time_zone                 VARCHAR(50)   NOT NULL,
-  arrival_offset_datetime    VARCHAR(22)   NOT NULL,
-  seat_number               SMALLINT      NOT NULL
+  flight_id                 BIGINT        ,
+  user_id                   BIGINT        ,
+  price                     DECIMAL(8, 2) ,
+  purchase_offsetdatetime   VARCHAR(22)   ,
+  with_baggage               BOOLEAN       ,
+  with_priority_registration BOOLEAN       ,
+  passenger_name         VARCHAR(50)  ,
+  passenger_last_name    VARCHAR(50)  ,
+  departure_airport_name    VARCHAR(255)  ,
+  arrival_airport_name      VARCHAR(255)  ,
+  departure_city_name       VARCHAR(70)   ,
+  arrival_city_name         VARCHAR(70)   ,
+  departure_utc_datetime    DATETIME      ,
+  departure_time_zone                 VARCHAR(50)   ,
+  arrival_offset_datetime    VARCHAR(22)   ,
+  seat_number               SMALLINT ,
+  status            VARCHAR(10)
 );
 
 

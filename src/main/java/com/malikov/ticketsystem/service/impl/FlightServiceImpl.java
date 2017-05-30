@@ -41,6 +41,7 @@ public class FlightServiceImpl implements IFlightService {
     @Autowired
     private ITariffsDetailsRepository tariffsDetailsRepository;
 
+
     @Override
     public Flight save(Flight flight) {
         Assert.notNull(flight, "flight should not be null");

@@ -98,10 +98,16 @@ public class Ticket extends BaseEntity {
     @Column(name = "seat_number")
     private Integer seatNumber;
 
+    @Enumerated(EnumType.STRING)
+    //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Column(name = "status")
+    private TicketStatus status;
+
     public Ticket() {
     }
 
-    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage, Boolean withPriorityRegistration) {
+    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
+                  Boolean withBaggage, Boolean withPriorityRegistration) {
         this.flight = flight;
         this.user = user;
         this.price = price;
@@ -110,7 +116,8 @@ public class Ticket extends BaseEntity {
         this.withPriorityRegistration = withPriorityRegistration;
     }
 
-    public Ticket(Long id, Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber) {
+    public Ticket(Long id, Flight flight, User user, String passengerName, String passengerLastName, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
+                  Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
         super(id);
         this.flight = flight;
         this.user = user;
@@ -118,8 +125,8 @@ public class Ticket extends BaseEntity {
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
         this.withBaggage = withBaggage;
         this.withPriorityRegistration = withPriorityRegistration;
-        passengerName = user.getName();
-        passengerLastName = user.getLastName();
+        this.passengerName = passengerName;
+        this.passengerLastName = passengerLastName;
         departureAirportName = flight.getDepartureAirport().getName();
         arrivalAirportName = flight.getArrivalAirport().getName();
         departureUtcDateTime = flight.getDepartureUtcDateTime();
@@ -129,10 +136,15 @@ public class Ticket extends BaseEntity {
         arrivalOffsetDateTime = OffsetDateTime.ofInstant(flight.getUtcLocalDateTime().toInstant(ZoneOffset.UTC),
                 flight.getArrivalAirport().getCity().getZoneId());
         this.seatNumber = seatNumber;
+        this.status = status;
     }
 
     public Ticket(Ticket ticket) {
-        this(ticket.getId(), ticket.getFlight(), ticket.getUser(), ticket.getPrice(), ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(), ticket.getWithPriorityRegistration(), ticket.getSeatNumber());    }
+        this(ticket.getId(), ticket.getFlight(), ticket.getUser(),
+                ticket.getPassengerName(), ticket.getPassengerLastName(), ticket.getPrice(),
+                ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(),
+                ticket.getWithPriorityRegistration(), ticket.getSeatNumber(), ticket.getStatus());
+    }
 
     public Flight getFlight() {
         return flight;
@@ -260,6 +272,14 @@ public class Ticket extends BaseEntity {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 
     @Override

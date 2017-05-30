@@ -135,123 +135,123 @@ INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime, with_ba
                      departure_airport_name, departure_city_name,
                      arrival_airport_name, arrival_city_name,
                      departure_utc_datetime, departure_time_zone,
-                     arrival_offset_datetime, seat_number)
+                     arrival_offset_datetime, seat_number, status)
 VALUES
   (1, 1, 30, '2017-05-30T07:30+03:00', FALSE, FALSE, 'Eduard', 'Eduardov', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-30T07:30', 'Europe/Kiev', '2017-06-30T12:00+01:00', 1),
+      'Heathrow Airport', 'London', '2017-06-30T07:30', 'Europe/Kiev', '2017-06-30T12:00+01:00', 1, 'PAID'),
 
   (2, 2, 30, '2017-05-23T08:30+03:00', FALSE, FALSE, 'Ivan', 'Ivanov', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 1),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 1, 'PAID'),
 
   (2, 3, 83, '2017-05-23T09:30+03:00', TRUE, FALSE, 'Petr', 'Petrov', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 2),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 2, 'PAID'),
 
   (2, 4, 39, '2017-05-23T10:30+03:00', FALSE, TRUE, 'Ibragim', 'Ibragimov', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 3),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 3, 'PAID'),
 
   (2, 5, 92, '2017-05-23T11:30+03:00', TRUE, TRUE, 'Victor', 'Victorov', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 4),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 4, 'PAID'),
 
   (3, 2, 30, '2017-05-23T08:30+01:00', FALSE, FALSE, 'Ivan', 'Ivanov', 'Heathrow Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 1),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 1, 'PAID'),
 
   (4, 6, 40, '2017-05-22T08:30+03:00', FALSE, FALSE, 'Robert', 'Black', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 1),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 1, 'PAID'),
 
   (4, 7, 103, '2017-05-22T09:30+03:00', TRUE, FALSE, 'Hong', 'Wang', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 2),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 2, 'PAID'),
 
   (5, 6, 40, '2017-05-22T08:30+01:00', FALSE, FALSE, 'Robert', 'Black', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 1),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 1, 'PAID'),
 
   (6, 8, 40, '2017-05-20T08:30+02:00', FALSE, FALSE, 'Abu', 'Kumar', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 1),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 1, 'PAID'),
 
 
   (2, 9, 34, '2017-05-23T12:30+03:00', FALSE, FALSE, 'Viola', 'White', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 5),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 5, 'PAID'),
 
   (2, 10, 35, '2017-05-23T13:30+03:00', FALSE, FALSE, 'Roza', 'Rozenko', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 6),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 6, 'PAID'),
 
   (2, 15, 95, '2017-05-23T14:30+03:00', TRUE, TRUE, 'Emma', 'Watson', 'Boryspil International Airport', 'Kyiv',
-      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 7),
+      'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 7, 'PAID'),
 
   (3, 3, 83, '2017-05-23T09:30+01:00', TRUE, FALSE, 'Petr', 'Petrov', 'Heathrow Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 2),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 2, 'PAID'),
 
   (3, 4, 39, '2017-05-23T10:30+01:00', FALSE, TRUE, 'Ibragim', 'Ibragimov', 'Heathrow Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 3),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 3, 'PAID'),
 
   (3, 5, 92, '2017-05-23T11:30+01:00', TRUE, TRUE, 'Victor', 'Victorov', 'Heathrow Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 4),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 4, 'PAID'),
 
   (3, 9, 34, '2017-05-23T12:30+01:00', FALSE, FALSE, 'Viola', 'White', 'Heathrow Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 5),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T11:30', 'Europe/London', '2017-06-27T18:00+03:00', 5, 'PAID'),
 
   (4, 11, 49, '2017-05-22T10:30+03:00', FALSE, TRUE, 'Moisha', 'Moishev', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 3),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 3, 'PAID'),
 
   (4, 12, 112, '2017-05-22T11:30+03:00', TRUE, TRUE, 'Usama', 'Nalad', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 4),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 4, 'PAID'),
 
   (4, 13, 44, '2017-05-22T12:30+03:00', FALSE, FALSE, 'Muhammad', 'Ali', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 5),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 5, 'PAID'),
 
   (4, 14, 45, '2017-05-22T13:30+03:00', FALSE, FALSE, 'Kim', 'Basinger', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 6),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 6, 'PAID'),
 
   (4, 15, 115, '2017-05-22T14:30+03:00', TRUE, TRUE, 'Emma', 'Watson', 'Boryspil International Airport', 'Kyiv',
-      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 7),
+      'London Luton Airport', 'London', '2017-06-22T06:30', 'Europe/Kiev', '2017-06-22T09:00+01:00', 7, 'PAID'),
 
   (5, 7, 103, '2017-05-22T09:30+01:00', TRUE, FALSE, 'Hong', 'Wang', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 2),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 2, 'PAID'),
 
   (5, 11, 49, '2017-05-22T10:30+01:00', FALSE, TRUE, 'Moisha', 'Moishev', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 3),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 3, 'PAID'),
 
   (5, 12, 112, '2017-05-22T11:30+01:00', TRUE, TRUE, 'Usama', 'Naladan', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 4),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 4, 'PAID'),
 
   (5, 13, 44, '2017-05-22T12:30+01:00', FALSE, FALSE, 'Muhammad', 'Ali', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 5),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 5, 'PAID'),
 
   (5, 14, 45, '2017-05-22T13:30+01:00', FALSE, FALSE, 'Kim', 'Basinger', 'London Luton Airport', 'London',
-      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 6),
+      'Boryspil International Airport', 'Kyiv', '2017-06-26T12:00', 'Europe/London', '2017-06-26T18:30+03:00', 6, 'PAID'),
 
   (6, 16, 103, '2017-05-20T09:30+02:00', TRUE, FALSE, 'Ron', 'Ronov', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 2),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 2, 'PAID'),
 
   (6, 17, 49, '2017-05-20T10:30+02:00', FALSE, TRUE, 'Luke', 'Lukov', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 3),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 3, 'PAID'),
 
   (6, 18, 112, '2017-05-20T11:30+02:00', TRUE, TRUE, 'Zack', 'Zackov', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 4),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 4, 'PAID'),
 
   (6, 19, 44, '2017-05-20T12:30+02:00', FALSE, FALSE, 'Rock', 'Jonson', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 5),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 5, 'PAID'),
 
   (6, 20, 45, '2017-05-20T13:30+02:00', FALSE, FALSE, 'Lil', 'John', 'Leonardo da Vinci International Airport', 'Rome',
-      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 6),
+      'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 6, 'PAID'),
 
   (7, 8, 40, '2017-05-20T08:30+01:00', FALSE, FALSE, 'Abu', 'Kumar', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 1),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 1, 'PAID'),
 
   (7, 16, 103, '2017-05-20T09:30+03:00', TRUE, FALSE, 'Ron', 'Ronov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 2),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 2, 'PAID'),
 
   (7, 17, 49, '2017-05-20T10:30+03:00', FALSE, TRUE, 'Luke', 'Lukov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 3),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 3, 'PAID'),
 
   (7, 18, 112, '2017-05-20T11:30+03:00', TRUE, TRUE, 'Zack', 'Zackov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 4),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 4, 'PAID'),
 
   (7, 19, 44, '2017-05-20T12:30+03:00', FALSE, FALSE, 'Rock', 'Jonson', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 5),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 5, 'PAID'),
 
   (7, 20, 45, '2017-05-20T13:30+03:00', FALSE, FALSE, 'Lil', 'John', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 6),
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 6, 'PAID'),
 
   (7, 21, 115, '2017-05-20T14:30+03:00', TRUE, TRUE, 'Bruce', 'Brusov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 7);
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 7, 'PAID');
 

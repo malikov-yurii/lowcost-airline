@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Ticket;
+import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,24 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
     protected EntityManager em;
-    
+
+    @Override
+    public Integer countTickets(Long flightId) {
+        Query query = em.createQuery("SELECT count(t) FROM Ticket t WHERE t.flight.id=:flightId");
+        query.setParameter("flightId", flightId);
+        Long count = (Long)query.getSingleResult();
+        return count != null ? count.intValue() : null;
+    }
+
+    @Override
+    public boolean deleteIfNotPaid(long ticketId) {
+        Query query = em.createQuery("DELETE FROM Ticket t WHERE t.id=:ticketId AND t.status=:status");
+        query.setParameter("ticketId", ticketId);
+        query.setParameter("status", TicketStatus.BOOKED);
+        return query.executeUpdate() != 0;
+    }
+
+
     @Override
     public Ticket save(Ticket ticket, long userId) {
         if (!ticket.isNew() && get(ticket.getId(), userId) == null) {
@@ -31,7 +50,7 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
         }
 
         ticket.setUser(em.getReference(User.class, userId));
-        if (ticket.isNew()){
+        if (ticket.isNew()) {
             em.persist((ticket));
             return ticket;
         } else {
@@ -70,7 +89,6 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
-
 
 
 }

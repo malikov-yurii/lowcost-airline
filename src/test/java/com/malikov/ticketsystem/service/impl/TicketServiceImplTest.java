@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.Ticket;
+import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
 import com.malikov.ticketsystem.service.ITicketService;
@@ -32,7 +33,7 @@ public class TicketServiceImplTest extends AbstractServiceTest {
         Ticket created = service.save(newTicket, USER_2.getId());
         newTicket.setId(created.getId());
         MATCHER.assertCollectionEquals(
-                Arrays.asList(TICKET_2_BELONGS_USER_2, TICKET_6_BELONGS_USER_6, newTicket),
+                Arrays.asList(TICKET_2_BELONGS_USER_2, TICKET_6_BELONGS_USER_2, newTicket),
                 service.getAll(USER_2.getId()));
     }
 
@@ -70,13 +71,13 @@ public class TicketServiceImplTest extends AbstractServiceTest {
 
     @Test
     public void testGetAll() throws Exception {
-        MATCHER.assertCollectionEquals(Arrays.asList(TICKET_2_BELONGS_USER_2, TICKET_6_BELONGS_USER_6),
+        MATCHER.assertCollectionEquals(Arrays.asList(TICKET_2_BELONGS_USER_2, TICKET_6_BELONGS_USER_2),
                 service.getAll(USER_2.getId()));
     }
 
     public void testDelete() throws Exception {
         service.delete(TICKET_2_BELONGS_USER_2.getId(), USER_2.getId());
-        MATCHER.assertCollectionEquals(Collections.singleton(TICKET_6_BELONGS_USER_6), service.getAll(USER_2.getId()));
+        MATCHER.assertCollectionEquals(Collections.singleton(TICKET_6_BELONGS_USER_2), service.getAll(USER_2.getId()));
     }
 
     @Test
@@ -87,7 +88,9 @@ public class TicketServiceImplTest extends AbstractServiceTest {
     }
 
     private Ticket getNewDummyTicketForUser(User user) {
-        return new Ticket(null, FLIGHT_1, user, new BigDecimal("40.00"), OffsetDateTime.parse("2017-03-20T08:33+01:00"), true, true, 1);
+        return new Ticket(null, FLIGHT_1, user, user.getName(), user.getLastName(), new BigDecimal("40.00"),
+                OffsetDateTime.parse("2017-03-20T08:33+01:00"), true, true,
+                1, TicketStatus.PAID);
     }
 
 }

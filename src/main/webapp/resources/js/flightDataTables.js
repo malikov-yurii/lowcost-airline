@@ -54,6 +54,13 @@ $(document).ready(function () {
 
     datatableApi.on('click', '.update-btn', showUpdateModal);
 
+    $('#departureAirportCondition').val("Boryspil International Airport");
+    $('#arrivalAirportCondition').val("Heathrow Airport");
+    var date = new Date();
+    $('#fromDepartureDateTimeCondition').val(dateToString(date));
+    date.setHours(date.getHours() + 1440);
+    $('#toDepartureDateTimeCondition').val(dateToString(date));
+
     $('.input-datetime').datetimepicker({
         format: getDateTimePickerFormat()
         , minDate: 0
@@ -114,7 +121,8 @@ function clearFilter() {
     $("#filter")[0].reset();
 }
 
-function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
+function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
+    // debugger;
     var message = "";
     var departureAirportCondition = $('#departureAirportCondition');
     var arrivalAirportCondition = $('#arrivalAirportCondition');
@@ -166,10 +174,13 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
                 // type: "error",
                 confirmButtonText: "OK"
             });
+            $('.datatable').attr("hidden", true);
         } else {
+            $('.datatable').attr("hidden", false);
             forceDataTableReload();
         }
     } else {
+        $('.datatable').attr("hidden", false);
         forceDataTableReload();
     }
 }
@@ -253,7 +264,7 @@ function saveFlight() {
             success: function () {
                 // ;
                 $('#editRow').modal('hide');
-                updateTable(true, false);
+                showOrUpdateTable(true, false);
                 successNoty('common.saved');
                 // ;
             }

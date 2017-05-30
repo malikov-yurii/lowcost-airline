@@ -21,5 +21,8 @@ public interface ITicketRepository {
     List<Ticket> getAll(long userId);
 
 
+    boolean deleteIfNotPaid(long ticketId);
 
+    // TODO: 5/30/2017 make result int?????????
+    Integer countTickets(Long flightId);
 }

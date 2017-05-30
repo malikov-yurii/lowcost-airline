@@ -1,6 +1,6 @@
 var datatableApi;
 var entityName = 'purchase';
-// var ajaxUrl = 'ajax/user/purchase/';
+var ajaxUrl = 'ajax/user/purchase/';
 
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
@@ -48,7 +48,17 @@ $(document).ready(function () {
 
     datatableApi.on('click', '.purchase-btn', showPurchaseModal);
 
-    $('.input-datetime').datetimepicker({
+    $('#departureAirportCondition').val("Boryspil International Airport");
+    $('#arrivalAirportCondition').val("Heathrow Airport");
+    var date = new Date();
+    $('#fromDepartureDateTimeCondition').val(dateToString(date));
+    date.setHours(date.getHours() + 1440);
+    $('#toDepartureDateTimeCondition').val(dateToString(date));
+
+    $('.departure-datetime, .modal-input.input-datetime, .modal-input.input-airport').attr("readonly", "readonly");
+    $('.departure-datetime, .modal-input.input-datetime').removeClass("active-input");
+
+    $('.input-datetime.active-input').datetimepicker({
         format: getDateTimePickerFormat()
         , minDate: 0
     });
@@ -95,13 +105,30 @@ function renderPurchaseBtn(data, type, row) {
 }
 
 
+
 function showPurchaseModal() {
     var rowData = datatableApi.row($(this).closest('tr')).data();
 
+
+
     $('#modalTitle').html('Purchase ticket');
+    // debugger;
 
-
-    debugger;
+    $.ajax({
+        type: "POST",
+        url: 'ajax/user/ticket/',
+        data: {
+                'flightId': rowData.id,
+                'ticketPrice': rowData.ticketPrice
+            },
+        success: function () {
+            // ;
+            $('#editRow').modal('hide');
+            updateTable(true, false);
+            successNoty('common.saved');
+            // ;
+        }
+    });
 
 
     $('#editRow').modal();
@@ -124,7 +151,7 @@ function showAddModal() {
 }
 
 
-function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
+function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
     var message = "";
     var departureAirportCondition = $('#departureAirportCondition');
     var arrivalAirportCondition = $('#arrivalAirportCondition');
@@ -177,9 +204,14 @@ function updateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId
                 // type: "error",
                 confirmButtonText: "OK"
             });
+            $('.datatable').attr("hidden", true);
         } else {
+            $('.datatable').attr("hidden", false);
             forceDataTableReload();
         }
+    } else {
+        $('.datatable').attr("hidden", false);
+        forceDataTableReload();
     }
 }
 
