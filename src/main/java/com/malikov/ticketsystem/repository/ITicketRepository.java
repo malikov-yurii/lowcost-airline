@@ -24,5 +24,7 @@ public interface ITicketRepository {
     boolean deleteIfNotPaid(long ticketId);
 
     // TODO: 5/30/2017 make result int?????????
-    Integer countTickets(Long flightId);
+    Integer countForFlight(Long flightId);
+
+
 }

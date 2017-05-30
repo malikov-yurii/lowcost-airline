@@ -136,9 +136,6 @@
                             <input type="text" class="modal-input form-control input-airport" id="departureAirport"
                                    name="departureAirport"
                                    placeholder="please choose arrival airport from drop down list">
-                            <sec:authorize access="!hasRole('ROLE_ADMIN')">
-                                readonly="readonly"
-                            </sec:authorize>
                         </div>
                     </div>
 
@@ -152,6 +149,52 @@
                                    placeholder="please choose arrival airport from drop down list">
                         </div>
                     </div>
+
+
+                    <sec:authorize access="!hasRole('ROLE_ADMIN')">
+
+                        <div class="form-group">
+                            <label for="departureCity" class="control-label col-xs-3"><fmt:message
+                                    key="city.departure"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control input-city" id="departureCity"
+                                       name="departureCity" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="arrivalCity" class="control-label col-xs-3"><fmt:message
+                                    key="city.arrival"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control input-city" id="arrivalCity"
+                                       name="arrivalCity" readonly="readonly">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="price" class="control-label col-xs-3"><fmt:message
+                                    key="flight.ticketPrice"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control " id="price"
+                                       name="price" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="seatNumber" class="control-label col-xs-3"><fmt:message
+                                    key="ticket.seatNumber"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="modal-input form-control " id="seatNumber"
+                                       name="seatNumber" readonly="readonly">
+                            </div>
+                        </div>
+                    </sec:authorize>
+
 
                     <div class="form-group">
                         <label for="departureLocalDateTime" class="control-label col-xs-3"><fmt:message
@@ -170,7 +213,8 @@
                                 key="flight.arrivalLocalDateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control input-datetime active-input" id="arrivalLocalDateTime"
+                            <input type="text" class="modal-input form-control input-datetime active-input"
+                                   id="arrivalLocalDateTime"
                                    name="arrivalLocalDateTime"
                                    placeholder="please set arrival local date">
                         </div>
@@ -216,15 +260,6 @@
                     </sec:authorize>
 
                     <sec:authorize access="!hasRole('ROLE_ADMIN')">
-                        <div class="form-group">
-                            <label for="ticketPrice" class="control-label col-xs-3"><fmt:message
-                                    key="flight.ticketPrice"/></label>
-
-                            <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control " id="ticketPrice"
-                                       name="ticketPrice" readonly="readonly">
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="withBaggage" class="control-label col-xs-3"><fmt:message

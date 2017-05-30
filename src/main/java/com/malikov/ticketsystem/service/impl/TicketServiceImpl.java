@@ -52,10 +52,11 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     // TODO: 5/30/2017 make it transactional??
+    // TODO: 5/30/2017 consider splitting into several methods
     @Override
-    public Ticket createNewBookedTicket(Flight flight, User user, BigDecimal price) {
+    public Ticket createNewBookedAndScheduledTask(Flight flight, User user, BigDecimal price) {
 
-        Integer ticketQuantity = ticketRepository.countTickets(flight.getId());
+        Integer ticketQuantity = ticketRepository.countForFlight(flight.getId());
 
         if (ticketQuantity >= flight.getAircraft().getModel().getPassengersSeatsQuantity()) {
             // TODO: 5/30/2017 Implement this exception case
@@ -67,6 +68,20 @@ public class TicketServiceImpl implements ITicketService {
             ticketTaskMap.put(ticket.getId(), getDeleteInNotPaidTask(ticket.getId()));
         }
         return ticket;
+    }
+
+    // TODO: 5/30/2017 consider splitting into several methods
+    public Ticket updateSetPurchasedAndCancelScheduledTask(Ticket ticket) {
+
+        ticket.setStatus(TicketStatus.PAID);
+        // TODO: 5/30/2017 go by truly checking authorized user
+        Ticket updatedTicket = save(ticket, ticket.getUser().getId());
+
+        if (updatedTicket != null) {
+            ticketTaskMap.remove(ticket.getId());
+        }
+
+        return updatedTicket;
     }
 
     @Override

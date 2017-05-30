@@ -27,13 +27,14 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     protected EntityManager em;
 
     @Override
-    public Integer countTickets(Long flightId) {
+    public Integer countForFlight(Long flightId) {
         Query query = em.createQuery("SELECT count(t) FROM Ticket t WHERE t.flight.id=:flightId");
         query.setParameter("flightId", flightId);
         Long count = (Long)query.getSingleResult();
         return count != null ? count.intValue() : null;
     }
 
+    // TODO: 5/30/2017 consider deleting this method. we dont need checking status? unnecessary??
     @Override
     public boolean deleteIfNotPaid(long ticketId) {
         Query query = em.createQuery("DELETE FROM Ticket t WHERE t.id=:ticketId AND t.status=:status");

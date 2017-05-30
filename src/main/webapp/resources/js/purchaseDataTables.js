@@ -55,7 +55,7 @@ $(document).ready(function () {
     date.setHours(date.getHours() + 1440);
     $('#toDepartureDateTimeCondition').val(dateToString(date));
 
-    $('.departure-datetime, .modal-input.input-datetime, .modal-input.input-airport').attr("readonly", "readonly");
+    $('.departure-datetime, .modal-input.input-datetime, .modal-input.input-airport, .modal-input.input-city').attr("readonly", "readonly");
     $('.departure-datetime, .modal-input.input-datetime').removeClass("active-input");
 
     $('.input-datetime.active-input').datetimepicker({
@@ -121,33 +121,25 @@ function showPurchaseModal() {
                 'flightId': rowData.id,
                 'ticketPrice': rowData.ticketPrice
             },
-        success: function () {
-            // ;
-            $('#editRow').modal('hide');
-            updateTable(true, false);
-            successNoty('common.saved');
-            // ;
+        success: function (data) {
+            $('#departureAirport').val(data.newTicket.departureAirport);
+            $('#arrivalAirport').val(data.newTicket.arrivalAirport);
+            $('#departureCity').val(data.newTicket.arrivalCity);
+            $('#arrivalCity').val(data.newTicket.arrivalCity);
+            $('#departureLocalDateTime').val(data.newTicket.departureLocalDateTime);
+            $('#arrivalLocalDateTime').val(data.newTicket.arrivalLocalDateTime);
+            $('#withBaggage').prop("checked", false);
+            $('#withPriorityRegistration').prop("checked", false);
+            $('#seatNumber').val(data.newTicket.seatNumber);
+            $('#price').val(data.newTicket.price);
+
+            $('#editRow').modal();
         }
     });
 
 
-    $('#editRow').modal();
-}
+    // todo implement what if error??? (when last ticket just has been bought)
 
-
-function showAddModal() {
-    $('#modalTitle').html('Add new ' + entityName);
-    // $('.form-control').val('');
-
-    $('#departureAirport,#arrivalAirport,#aircraftName').val('');
-    var defaultDate = new Date();
-    defaultDate.setHours(defaultDate.getHours() + 24); // same time next day
-    $('#departureLocalDateTime').val(dateToString(defaultDate));
-    defaultDate.setHours(defaultDate.getHours() + 1); // 1 hour purchase
-    $('#arrivalLocalDateTime').val(dateToString(defaultDate));
-    $('#initialBaseTicketPrice').val('10.00');
-    $('#maxBaseTicketPrice').val('20.00');
-    $('#editRow').modal();
 }
 
 
@@ -297,7 +289,7 @@ function saveFlight() {
             success: function () {
                 // ;
                 $('#editRow').modal('hide');
-                updateTable(true, false);
+                showOrUpdateTable(true, false);
                 successNoty('common.saved');
                 // ;
             }

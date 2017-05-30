@@ -30,6 +30,11 @@ public interface ITicketService {
     Ticket getWithUserAndFlight(long id, long userId);
 
     // TODO: 5/30/2017 add userid here
-    Ticket createNewBookedTicket(Flight flight, User user, BigDecimal price);
+    Ticket createNewBookedAndScheduledTask(Flight flight, User user, BigDecimal price);
+
+    // TODO: 5/30/2017 add userid here
+    Ticket updateSetPurchasedAndCancelScheduledTask(Ticket ticket);
+
+
 
 }

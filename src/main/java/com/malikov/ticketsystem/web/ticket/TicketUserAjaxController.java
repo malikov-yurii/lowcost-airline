@@ -7,8 +7,9 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,24 +64,22 @@ public class TicketUserAjaxController {
     //http://localhost:7777/lowcost-airline/ajax/user/purchase/create-new-booked-ticket/
 
     @PostMapping
-    public ResponseEntity<String> createNewBookedTicket(@RequestParam(value = "flightId") Long flightId,
-                                                        @RequestParam(value = "ticketPrice") BigDecimal ticketPrice) {
+    public ModelMap createNewBookedTicket(@RequestParam(value = "flightId") Long flightId,
+                                          @RequestParam(value = "ticketPrice") BigDecimal ticketPrice) {
 
         Flight flight = flightService.get(flightId);
         User user = userService.get(AuthorizedUser.id());
 
-        Ticket ticket = ticketService.createNewBookedTicket(flight, user, ticketPrice);
+        Ticket newTicket = ticketService.createNewBookedAndScheduledTask(flight, user, ticketPrice);
 
-        return null;
-
-
-        /*
-        // /public ResponseEntity<String> createOrUpdate(FlightManageableDTO flightManageableDTO) {
-        if (flightManageableDTO.isNew()) {
-            return super.create(flightManageableDTO);
+        ModelMap modelMap = new ModelMap();
+        if(newTicket != null){
+            modelMap.addAttribute("newTicket", TicketUtil.asDTO(newTicket));
         } else {
-            return super.update(flightManageableDTO);
-        }*/
+            // TODO: 5/30/2017 find better way to send error
+            modelMap.addAttribute("error", "ticket can not be purchased");
+        }
+        return modelMap;
     }
 
    /* // todo Is it ok to  use body for this parameter or i should use pathvariable??
