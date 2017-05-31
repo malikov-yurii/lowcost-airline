@@ -5,28 +5,28 @@ package com.malikov.ticketsystem.to;
  */
 public class FreeSeatsDTO {
 
-    private Integer totalSeatsQuantity;
+    private Integer totalSeats;
 
-    private Integer[] seats;
+    private Integer[] freeSeats;
 
-    public FreeSeatsDTO(Integer totalSeatsQuantity, Integer[] seats) {
-        this.totalSeatsQuantity = totalSeatsQuantity;
-        this.seats = seats;
+    public FreeSeatsDTO(Integer totalSeats, Integer[] freeSeats) {
+        this.totalSeats = totalSeats;
+        this.freeSeats = freeSeats;
     }
 
-    public Integer getTotalSeatsQuantity() {
-        return totalSeatsQuantity;
+    public Integer getTotalSeats() {
+        return totalSeats;
     }
 
-    public void setTotalSeatsQuantity(Integer totalSeatsQuantity) {
-        this.totalSeatsQuantity = totalSeatsQuantity;
+    public void setTotalSeats(Integer totalSeats) {
+        this.totalSeats = totalSeats;
     }
 
-    public Integer[] getSeats() {
-        return seats;
+    public Integer[] getFreeSeats() {
+        return freeSeats;
     }
 
-    public void setSeats(Integer[] seats) {
-        this.seats = seats;
+    public void setFreeSeats(Integer[] freeSeats) {
+        this.freeSeats = freeSeats;
     }
 }

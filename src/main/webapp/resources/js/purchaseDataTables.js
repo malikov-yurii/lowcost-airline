@@ -153,8 +153,8 @@ function showFreeSeats() {
                 'flightId': rowData.id
             },
         success: function (data) {
-            console.log(data.seats);
-            console.log(data.totalSeatsQuantity);
+            console.log(data.freeSeats);
+            console.log(data.totalSeats);
         }
     });
 
