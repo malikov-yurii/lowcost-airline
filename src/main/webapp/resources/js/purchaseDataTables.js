@@ -46,7 +46,7 @@ $(document).ready(function () {
         "autoWidth": false
     });
 
-    datatableApi.on('click', '.purchase-btn', showPurchaseModal);
+    datatableApi.on('click', '.purchase-btn', showFreeSeats);
 
     $('#departureAirportCondition').val("Boryspil International Airport");
     $('#arrivalAirportCondition').val("Heathrow Airport");
@@ -109,8 +109,6 @@ function renderPurchaseBtn(data, type, row) {
 function showPurchaseModal() {
     var rowData = datatableApi.row($(this).closest('tr')).data();
 
-
-
     $('#modalTitle').html('Purchase ticket');
     // debugger;
 
@@ -134,6 +132,29 @@ function showPurchaseModal() {
             $('#price').val(data.newTicket.price);
 
             $('#editRow').modal();
+        }
+    });
+
+
+    // todo implement what if error??? (when last ticket just has been bought)
+
+}
+
+function showFreeSeats() {
+    var rowData = datatableApi.row($(this).closest('tr')).data();
+
+    // $('#modalTitle').html('Purchase ticket');
+    // debugger;
+
+    $.ajax({
+        type: "GET",
+        url: 'ajax/user/ticket/get-free-seats/',
+        data: {
+                'flightId': rowData.id
+            },
+        success: function (data) {
+            console.log(data.seats);
+            console.log(data.totalSeatsQuantity);
         }
     });
 

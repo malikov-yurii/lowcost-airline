@@ -7,13 +7,11 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.to.FreeSeatsDTO;
 import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -80,6 +78,28 @@ public class TicketUserAjaxController {
             modelMap.addAttribute("error", "ticket can not be purchased");
         }
         return modelMap;
+    }
+
+
+    @GetMapping(value = "/get-free-seats")
+    public FreeSeatsDTO getFreeSeats(@RequestParam(value = "flightId") Long flightId) {
+
+        Flight flight = flightService.get(flightId);
+        User user = userService.get(AuthorizedUser.id());
+
+        return ticketService.getFreeSeats(flight);
+/*
+        ModelMap modelMap = new ModelMap();
+        modelMap.put()
+        *//*
+        if(newTicket != null){
+            modelMap.addAttribute("newTicket", TicketUtil.asDTO(newTicket));
+        } else {
+            // TODO: 5/30/2017 find better way to send error
+            modelMap.addAttribute("error", "ticket can not be purchased");
+        }
+        *//*
+        return modelMap;*/
     }
 
    /* // todo Is it ok to  use body for this parameter or i should use pathvariable??

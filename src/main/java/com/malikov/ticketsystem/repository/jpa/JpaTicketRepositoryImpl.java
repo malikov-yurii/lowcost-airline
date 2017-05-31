@@ -27,6 +27,13 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     protected EntityManager em;
 
     @Override
+    public List<Integer> getNotFreeSeatsNumbers(Long flightId) {
+        Query query = em.createQuery("SELECT t.seatNumber FROM Ticket t WHERE t.flight.id=:flightId", Integer.class);
+        query.setParameter("flightId", flightId);
+        return query.getResultList();
+    }
+
+    @Override
     public Integer countForFlight(Long flightId) {
         Query query = em.createQuery("SELECT count(t) FROM Ticket t WHERE t.flight.id=:flightId");
         query.setParameter("flightId", flightId);

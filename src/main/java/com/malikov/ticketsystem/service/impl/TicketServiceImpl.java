@@ -6,6 +6,7 @@ import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.service.ITicketService;
+import com.malikov.ticketsystem.to.FreeSeatsDTO;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -40,6 +38,21 @@ public class TicketServiceImpl implements ITicketService {
     // TODO: 5/30/2017 Get rid of it in service!
     private static Map<Long, ScheduledFuture> ticketTaskMap = new HashMap<>();
 
+
+    // TODO: 5/31/2017 considerRefactoring
+    @Override
+    public FreeSeatsDTO getFreeSeats(Flight flight) {
+        List<Integer> notFreeSeatsNumbers= ticketRepository.getNotFreeSeatsNumbers(flight.getId());
+        List<Integer> freeSeats = new ArrayList<>();
+        Integer totalSeatsQuantity = flight.getAircraft().getModel().getPassengersSeatsQuantity();
+
+        for (int i = 1; i <= totalSeatsQuantity; i++) {
+            if (!notFreeSeatsNumbers.contains(i)){
+                freeSeats.add(i);
+            }
+        }
+        return new FreeSeatsDTO(totalSeatsQuantity, freeSeats.toArray(new Integer[0]));
+    }
 
     // TODO: 5/30/2017 remove annotation?
     @Async

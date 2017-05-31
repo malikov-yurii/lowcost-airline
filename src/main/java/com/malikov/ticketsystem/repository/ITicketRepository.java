@@ -27,4 +27,5 @@ public interface ITicketRepository {
     Integer countForFlight(Long flightId);
 
 
+    List<Integer> getNotFreeSeatsNumbers(Long flightId);
 }
