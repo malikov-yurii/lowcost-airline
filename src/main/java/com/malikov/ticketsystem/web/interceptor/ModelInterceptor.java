@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ModelInterceptor extends HandlerInterceptorAdapter {
 
+
+    // TODO: 6/1/2017 consider moving userFullName to session and access it in jsp using getSessionAttribute. It must be better
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && !modelAndView.isEmpty()) {

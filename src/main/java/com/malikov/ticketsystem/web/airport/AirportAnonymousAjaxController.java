@@ -12,8 +12,8 @@ import java.util.List;
  * @author Yurii Malikov
  */
 @RestController
-@RequestMapping(value = "/ajax/profile/airport")
-public class AirportAjaxController extends AbstractAirportController {
+@RequestMapping(value = "/ajax/anonymous/airport")
+public class AirportAnonymousAjaxController extends AbstractAirportController {
 
     //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     //public List<FlightManageableDTO> getAll() {

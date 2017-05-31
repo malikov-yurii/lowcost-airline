@@ -96,7 +96,7 @@ public class AbstractFlightController {
 
 
     public List<FlightDTO> getFlightTicketPriceMap(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime, Integer startingFrom, Integer pageCapacity) {
-        return flightService.getFlightTicketPriceMap(departureAirportName,
+        return flightService.getFlightTicketPriceMapFilteredBy(departureAirportName,
                 arrivalAirportName, fromDepartureDateTime,
                 toDepartureDateTime, startingFrom,
                 pageCapacity).entrySet()

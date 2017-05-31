@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 /**
  * @author Yurii Malikov
  */
+
+// TODO: 5/31/2017 I can change it for tickets table
 public class TicketDTO extends BaseTo{
 
     private String departureAirport;

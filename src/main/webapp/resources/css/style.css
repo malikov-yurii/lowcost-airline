@@ -382,3 +382,51 @@ th:nth-child(4) {
 .input-filter {
     width:150px;
 }
+
+.seat-picker__title {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+}
+.seat-picker {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    height: 130px;
+    width: 300px;
+    margin: 0 auto 21px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #f0f0f0;
+}
+
+.seat {
+    width: 32px;
+    line-height: 25px;
+    margin: 4px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+}
+
+.seat.disabled {
+    background: #ccc;
+    cursor: default;
+}
+
+.seat.enabled {
+    background: #2a86e4;
+    color: #fff;
+}
+
+.seat.enabled:hover {
+    background: #1a7de2;
+}
+.seat.enabled.active {
+    background: red;
+}

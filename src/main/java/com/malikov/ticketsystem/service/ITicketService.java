@@ -3,10 +3,10 @@ package com.malikov.ticketsystem.service;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.to.FreeSeatsDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Yurii Malikov
@@ -37,5 +37,5 @@ public interface ITicketService {
     Ticket updateSetPurchasedAndCancelScheduledTask(Ticket ticket);
 
 
-    FreeSeatsDTO getFreeSeats(Flight flight);
+    Set<Integer> getFreeSeats(Flight flight);
 }

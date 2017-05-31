@@ -73,6 +73,12 @@ public class FlightServiceImpl implements IFlightService {
         return flightRepository.getAll();
     }
 
+    @Override
+    public BigDecimal getTicketPrice(Flight flight) {
+        Integer bookedTicketsQuantity = ticketRepository.countForFlight(flight.getId());
+        TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
+        return calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
+    }
 
     // TODO: 5/24/2017 does it need extra validation by userid or something?
     @Override
@@ -114,7 +120,7 @@ public class FlightServiceImpl implements IFlightService {
 
     @Override
     //@Transactional  // no need only select?
-    public Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime, Integer first, Integer pageSize) {
+    public Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportName, String arrivalAirportName, LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime, Integer first, Integer pageSize) {
         Map<Flight, BigDecimal> flightTicketPriceMap = new HashMap<>();
 
         Airport departureAirport = airportRepository.getByName(departureAirportName);
@@ -135,38 +141,47 @@ public class FlightServiceImpl implements IFlightService {
 
             // TODO: 5/29/2017 try to do that in query
             if (flight.getAircraft().getModel().getPassengersSeatsQuantity() > ticketsQuantity) {
-                ticketPrice = flight.getInitialTicketBasePrice();
-
-                totalGrowthPotential = flight.getMaxTicketBasePrice().subtract(flight.getInitialTicketBasePrice());
-                timeGrowthPotential = totalGrowthPotential.multiply(tariffsDetails.getWeightOfTimeGrowthFactor());
-                fillingGrowthPotential = totalGrowthPotential.subtract(timeGrowthPotential);
-                perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel().getPassengersSeatsQuantity()));
-                perDayPriceGrowth = timeGrowthPotential.divide(new BigDecimal(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow()));
-
-
-                LocalDateTime utcTimepointPriceStartsToGrow = flight.getDepartureUtcDateTime()
-                        .minusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
-                long daysBetweenGrowthStartAndNow = DAYS.between(utcTimepointPriceStartsToGrow,
-                        LocalDateTime.now(ZoneId.of("UTC")));
-
-                if (daysBetweenGrowthStartAndNow > 0) {
-                    ticketPrice = ticketPrice.add(perDayPriceGrowth.multiply(new BigDecimal(daysBetweenGrowthStartAndNow)));
-                }
-
-                if (ticketsQuantity > 0) {
-                    ticketPrice = ticketPrice.add(perTicketPriceGrowth.multiply(new BigDecimal(ticketsQuantity)));
-                }
-
-                flightTicketPriceMap.put(flight, ticketPrice);
+                flightTicketPriceMap.put(flight, calculateTicketPrice(tariffsDetails, flight, ticketsQuantity));
             }
         }
 
         return flightTicketPriceMap;
     }
 
+    private BigDecimal calculateTicketPrice(TariffsDetails tariffsDetails, Flight flight, Long ticketsQuantity) {
+        BigDecimal ticketPrice;
+        BigDecimal totalGrowthPotential;
+        BigDecimal timeGrowthPotential;
+        BigDecimal fillingGrowthPotential;
+        BigDecimal perTicketPriceGrowth;
+        BigDecimal perDayPriceGrowth;
+        ticketPrice = flight.getInitialTicketBasePrice();
+
+        totalGrowthPotential = flight.getMaxTicketBasePrice().subtract(flight.getInitialTicketBasePrice());
+        timeGrowthPotential = totalGrowthPotential.multiply(tariffsDetails.getWeightOfTimeGrowthFactor());
+        fillingGrowthPotential = totalGrowthPotential.subtract(timeGrowthPotential);
+        perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel().getPassengersSeatsQuantity()));
+        perDayPriceGrowth = timeGrowthPotential.divide(new BigDecimal(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow()));
+
+
+        LocalDateTime utcTimepointPriceStartsToGrow = flight.getDepartureUtcDateTime()
+                .minusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
+        long daysBetweenGrowthStartAndNow = DAYS.between(utcTimepointPriceStartsToGrow,
+                LocalDateTime.now(ZoneId.of("UTC")));
+
+        if (daysBetweenGrowthStartAndNow > 0) {
+            ticketPrice = ticketPrice.add(perDayPriceGrowth.multiply(new BigDecimal(daysBetweenGrowthStartAndNow)));
+        }
+
+        if (ticketsQuantity > 0) {
+            ticketPrice = ticketPrice.add(perTicketPriceGrowth.multiply(new BigDecimal(ticketsQuantity)));
+        }
+        return ticketPrice;
+    }
+
 
     //@Override
-    //public Map<Flight, Long> getFlightTicketPriceMap(Airport departureAirport, Airport arrivalAirport,
+    //public Map<Flight, Long> getFlightTicketPriceMapFilteredBy(Airport departureAirport, Airport arrivalAirport,
     //                                                 LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
     //                                                 Integer first, Integer pageSize){
     //    return flightRepository.getFilteredFlightsTicketCountMap(departureAirport, arrivalAirport,

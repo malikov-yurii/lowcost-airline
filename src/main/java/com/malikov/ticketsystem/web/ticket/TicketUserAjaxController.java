@@ -7,12 +7,13 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.to.FreeSeatsDTO;
+import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
 /**
@@ -81,13 +82,41 @@ public class TicketUserAjaxController {
     }
 
 
-    @GetMapping(value = "/get-free-seats")
-    public FreeSeatsDTO getFreeSeats(@RequestParam(value = "flightId") Long flightId) {
+    @GetMapping(value = "/details-with-free-seats")
+    public ModelMap getFreeSeats(@RequestParam(value = "flightId") Long flightId, HttpSession session) {
 
         Flight flight = flightService.get(flightId);
         User user = userService.get(AuthorizedUser.id());
 
-        return ticketService.getFreeSeats(flight);
+        ModelMap model = new ModelMap();
+
+
+        /* We have to get all ticket data one more time
+        in case it was modified between rendering table and pressing purchase ticket button */
+
+        model.put("departureAirport", flight.getDepartureAirport().getName());
+        model.put("arrivalAirport", flight.getArrivalAirport().getName());
+
+        model.put("departureCity", flight.getDepartureAirport().getCity().getName());
+        model.put("arrivalCity", flight.getArrivalAirport().getCity().getName());
+
+        model.put("departureLocalDateTime", DateTimeUtil.utcToZoneId(flight.getDepartureUtcDateTime(),
+                flight.getDepartureAirport().getCity().getZoneId()));
+        model.put("arrivalLocalDateTime", DateTimeUtil.utcToZoneId(flight.getArrivalUtcDateTime(),
+                flight.getArrivalAirport().getCity().getZoneId()));
+
+        BigDecimal ticketPrice = flightService.getTicketPrice(flight);
+        session.setAttribute("price", ticketPrice);
+        model.put("price", ticketPrice);
+
+        // TODO: 6/1/2017 consider using it as a check
+        //session.setAttribute("flightId", flight.getId());
+
+        model.put("totalSeats", flight.getAircraft().getModel().getPassengersSeatsQuantity());
+        model.put("freeSeats", ticketService.getFreeSeats(flight).toArray(new Integer[0]));
+
+
+        return model;
 /*
         ModelMap modelMap = new ModelMap();
         modelMap.put()

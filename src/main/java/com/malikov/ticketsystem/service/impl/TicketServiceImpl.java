@@ -6,7 +6,6 @@ import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.service.ITicketService;
-import com.malikov.ticketsystem.to.FreeSeatsDTO;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -41,17 +40,17 @@ public class TicketServiceImpl implements ITicketService {
 
     // TODO: 5/31/2017 considerRefactoring
     @Override
-    public FreeSeatsDTO getFreeSeats(Flight flight) {
+    public Set<Integer> getFreeSeats(Flight flight) {
         List<Integer> notFreeSeatsNumbers= ticketRepository.getNotFreeSeatsNumbers(flight.getId());
-        List<Integer> freeSeats = new ArrayList<>();
-        Integer totalSeatsQuantity = flight.getAircraft().getModel().getPassengersSeatsQuantity();
+        Set<Integer> freeSeats = new HashSet<>();
 
-        for (int i = 1; i <= totalSeatsQuantity; i++) {
+        for (int i = 1; i <= flight.getAircraft().getModel().getPassengersSeatsQuantity(); i++) {
             if (!notFreeSeatsNumbers.contains(i)){
                 freeSeats.add(i);
             }
         }
-        return new FreeSeatsDTO(totalSeatsQuantity, freeSeats.toArray(new Integer[0]));
+
+        return freeSeats;
     }
 
     // TODO: 5/30/2017 remove annotation?
