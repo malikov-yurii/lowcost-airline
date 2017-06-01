@@ -23,6 +23,6 @@ public class OffsetDateTimeConverter implements
 
     @Override
     public OffsetDateTime convertToEntityAttribute(String databaseValue) {
-        return OffsetDateTime.parse(databaseValue);
+        return databaseValue != null ? OffsetDateTime.parse(databaseValue) : null;
     }
 }

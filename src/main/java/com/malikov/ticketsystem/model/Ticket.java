@@ -67,7 +67,7 @@ public class Ticket extends BaseEntity {
 
     // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parseToLocalDateTime if I need to??? But in a such case I cannot easily add column with additional ticket information
     @Column(name = "passenger_name")
-    private String passengerName;
+    private String passengerFirstName;
 
     @Column(name = "passenger_last_name")
     private String passengerLastName;
@@ -116,7 +116,7 @@ public class Ticket extends BaseEntity {
         this.withPriorityRegistration = withPriorityRegistration;
     }
 
-    public Ticket(Long id, Flight flight, User user, String passengerName, String passengerLastName, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
+    public Ticket(Long id, Flight flight, User user, String passengerFirstName, String passengerLastName, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
                   Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
         super(id);
         this.flight = flight;
@@ -125,7 +125,7 @@ public class Ticket extends BaseEntity {
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
         this.withBaggage = withBaggage;
         this.withPriorityRegistration = withPriorityRegistration;
-        this.passengerName = passengerName;
+        this.passengerFirstName = passengerFirstName;
         this.passengerLastName = passengerLastName;
         departureAirportName = flight.getDepartureAirport().getName();
         arrivalAirportName = flight.getArrivalAirport().getName();
@@ -141,7 +141,7 @@ public class Ticket extends BaseEntity {
 
     public Ticket(Ticket ticket) {
         this(ticket.getId(), ticket.getFlight(), ticket.getUser(),
-                ticket.getPassengerName(), ticket.getPassengerLastName(), ticket.getPrice(),
+                ticket.getPassengerFirstName(), ticket.getPassengerLastName(), ticket.getPrice(),
                 ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(),
                 ticket.getWithPriorityRegistration(), ticket.getSeatNumber(), ticket.getStatus());
     }
@@ -194,12 +194,12 @@ public class Ticket extends BaseEntity {
         this.withPriorityRegistration = withPriorityRegistration;
     }
 
-    public String getPassengerName() {
-        return passengerName;
+    public String getPassengerFirstName() {
+        return passengerFirstName;
     }
 
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
+    public void setPassengerFirstName(String passengerFirstName) {
+        this.passengerFirstName = passengerFirstName;
     }
 
     public String getPassengerLastName() {
@@ -296,7 +296,7 @@ public class Ticket extends BaseEntity {
         if (withBaggage != null ? !withBaggage.equals(ticket.withBaggage) : ticket.withBaggage != null) return false;
         if (withPriorityRegistration != null ? !withPriorityRegistration.equals(ticket.withPriorityRegistration) : ticket.withPriorityRegistration != null)
             return false;
-        if (passengerName != null ? !passengerName.equals(ticket.passengerName) : ticket.passengerName != null)
+        if (passengerFirstName != null ? !passengerFirstName.equals(ticket.passengerFirstName) : ticket.passengerFirstName != null)
             return false;
         if (passengerLastName != null ? !passengerLastName.equals(ticket.passengerLastName) : ticket.passengerLastName != null)
             return false;
@@ -326,7 +326,7 @@ public class Ticket extends BaseEntity {
         result = 31 * result + (purchaseOffsetDateTime != null ? purchaseOffsetDateTime.hashCode() : 0);
         result = 31 * result + (withBaggage != null ? withBaggage.hashCode() : 0);
         result = 31 * result + (withPriorityRegistration != null ? withPriorityRegistration.hashCode() : 0);
-        result = 31 * result + (passengerName != null ? passengerName.hashCode() : 0);
+        result = 31 * result + (passengerFirstName != null ? passengerFirstName.hashCode() : 0);
         result = 31 * result + (passengerLastName != null ? passengerLastName.hashCode() : 0);
         result = 31 * result + (departureAirportName != null ? departureAirportName.hashCode() : 0);
         result = 31 * result + (arrivalAirportName != null ? arrivalAirportName.hashCode() : 0);
@@ -348,7 +348,7 @@ public class Ticket extends BaseEntity {
                 ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
                 ", withBaggage=" + withBaggage +
                 ", withPriorityRegistration=" + withPriorityRegistration +
-                ", passengerName='" + passengerName + '\'' +
+                ", passengerFirstName='" + passengerFirstName + '\'' +
                 ", passengerLastName='" + passengerLastName + '\'' +
                 ", departureAirportName='" + departureAirportName + '\'' +
                 ", arrivalAirportName='" + arrivalAirportName + '\'' +

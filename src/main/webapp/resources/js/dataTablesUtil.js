@@ -139,6 +139,20 @@ function closeNoty() {
     }
 }
 
+function failNoty(event, jqXHR, options, jsExc) {
+    closeNoty();
+    var errorInfo = $.parseJSON(jqXHR.responseText);
+
+    // http://tomcat.apache.org/tomcat-8.5-doc/changelog.html
+    // RFC 7230 states that clients should ignore reason phrases in HTTP/1.1 response messages.
+    // Since the reason phrase is optional, Tomcat no longer sends it (statusText).
+    failedNote = noty({
+        text: i18n['common.status'] + ': ' + jqXHR.status + "<br>"+ errorInfo.cause + "<br>" + errorInfo.details.join("<br>"),
+        type: 'error',
+        layout: 'bottomRight'
+    });
+}
+
 function getDateTimePickerFormat() {
     return "Y-m-d H:i";
 }
@@ -147,8 +161,26 @@ function dateToString(date) {
     return date.toJSON().slice(0, 16).replace('T', ' ');
 }
 
+function dateToOffsetString(date) {
+    date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
+    var totalOffsetMinutes = date.getTimezoneOffset()*(-1);
+    var offsetHours = totalOffsetMinutes / 60;
+    var offsetMinutes = totalOffsetMinutes % 60;
+
+    debugger;
+    return date.toJSON().slice(0, 16) + "+" +
+        (offsetHours / 10 == 0 ? "0" + offsetHours : offsetHours) +
+         ":" + (offsetMinutes / 10 == 0 ? "0" + offsetMinutes : offsetMinutes);
+}
+
+
 
 function onTableReady() {
+    // expected to handle all ajax errors
+    $(document).ajaxError(function (event, jqXHR, options, jsExc) {
+        failNoty(event, jqXHR, options, jsExc);
+    });
+
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     $(document).ajaxSend(function (e, xhr, options) {

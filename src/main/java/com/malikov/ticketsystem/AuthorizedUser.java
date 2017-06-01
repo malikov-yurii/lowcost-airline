@@ -16,6 +16,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     private String fullName;
 
+    // TODO: 6/1/2017 do i really need field id?
     private Long id;
 
     public AuthorizedUser(User user) {

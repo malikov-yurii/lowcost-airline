@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 // TODO: 5/31/2017 I can change it for tickets table
 public class TicketDTO extends BaseTo{
 
+    private String passengerFirstName;
+
+    private String passengerLastName;
+
     private String departureAirport;
 
     private String arrivalAirport;
@@ -35,9 +39,17 @@ public class TicketDTO extends BaseTo{
 
     private Integer seatNumber;
 
-    public TicketDTO(Long id, String departureAirportName, String arrivalAirportName, String departureCityName, String arrivalCityName, LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal price, Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber) {
+    public TicketDTO(){}
+
+    public TicketDTO(Long id, String passengerFirstName, String passengerLastName,
+                     String departureAirportName, String arrivalAirportName,
+                     String departureCityName, String arrivalCityName,
+                     LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime,
+                     BigDecimal price, Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber) {
         super(id);
         // TODO: 5/30/2017 Should i remove unnecessary this.
+        this.passengerFirstName = passengerFirstName;
+        this.passengerLastName = passengerLastName;
         this.departureAirport = departureAirportName;
         this.arrivalAirport = arrivalAirportName;
         this.departureCity = departureCityName;
@@ -48,6 +60,23 @@ public class TicketDTO extends BaseTo{
         this.withBaggage = withBaggage == null ? false : withBaggage;
         this.withPriorityRegistration = withPriorityRegistration == null ? false : withPriorityRegistration;
         this.seatNumber = seatNumber;
+    }
+
+
+    public String getPassengerFirstName() {
+        return passengerFirstName;
+    }
+
+    public void setPassengerFirstName(String passengerFirstName) {
+        this.passengerFirstName = passengerFirstName;
+    }
+
+    public String getPassengerLastName() {
+        return passengerLastName;
+    }
+
+    public void setPassengerLastName(String passengerLastName) {
+        this.passengerLastName = passengerLastName;
     }
 
     public String getDepartureAirport() {
@@ -129,5 +158,7 @@ public class TicketDTO extends BaseTo{
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
     }
+
+
 
 }

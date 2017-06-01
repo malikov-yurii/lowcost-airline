@@ -252,7 +252,6 @@ public class Flight extends BaseEntity {
                 ", initialTicketBasePrice=" + initialTicketBasePrice +
                 ", maxTicketBasePrice=" + maxTicketBasePrice +
                 ", canceled=" + canceled +
-                ", tickets=" + tickets +
                 '}';
     }
 }

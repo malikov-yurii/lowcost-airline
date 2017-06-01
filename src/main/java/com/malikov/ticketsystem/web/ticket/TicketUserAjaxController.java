@@ -7,9 +7,12 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.to.TicketDTO;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,60 +35,84 @@ public class TicketUserAjaxController {
     @Autowired
     IUserService userService;
 
-   /* @GetMapping
-    //public List<FlightManageableDTO> getFilteredPage(
-    public ModelMap getFilteredPage(
-            @RequestParam(value = "fromDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
-            @RequestParam(value = "toDepartureDateTimeCondition", required = false) @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
-            @RequestParam(value = "departureAirportCondition", required = false) String departureAirportName,
-            @RequestParam(value = "arrivalAirportCondition", required = false) String arrivalAirportName,
-            @RequestParam(value = "draw") Integer draw,
-            @RequestParam(value = "start") Integer startingFrom,
-            @RequestParam(value = "length") Integer pageCapacity
-    ) {
-        List<FlightManageableDTO> flightManageableDTOS = super.getFilteredPageContent(departureAirportName, arrivalAirportName,
-                fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity)
-
-                .stream()
-                .map(FlightUtil::asManageableDTO)
-                .collect(Collectors.toList());
-        //int totalFiltered = super.contFiltered();
-        ModelMap model = new ModelMap();
-        model.put("draw", draw);
-        model.put("recordsTotal", flightManageableDTOS.size() + 1 + startingFrom);
-        model.put("recordsFiltered", flightManageableDTOS.size() + 1 + startingFrom);
-        //model.put("recordsFiltered", flightManageableDTOS.size() + 1);
-        //model.put("recordsFiltered", flightManageableDTOS.size());
-        model.put("data", flightManageableDTOS);
-        return model;
-    }*/
-
-    //http://localhost:7777/lowcost-airline/ajax/user/purchase/create-new-booked-ticket/
 
     @PostMapping
-    public ModelMap createNewBookedTicket(@RequestParam(value = "flightId") Long flightId,
-                                          @RequestParam(value = "ticketPrice") BigDecimal ticketPrice) {
+    // TODO: 6/1/2017 validate dto?
+    public ResponseEntity createNewBookedTicket(TicketDTO ticketDTO, HttpSession session) {
+
+        Long flightId = (Long) session.getAttribute("flightId");
+
+        Ticket newTicket = new Ticket();
 
         Flight flight = flightService.get(flightId);
+        newTicket.setFlight(flight);
+        newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
+
         User user = userService.get(AuthorizedUser.id());
+        newTicket.setUser(user);
 
-        Ticket newTicket = ticketService.createNewBookedAndScheduledTask(flight, user, ticketPrice);
-
-        ModelMap modelMap = new ModelMap();
-        if(newTicket != null){
-            modelMap.addAttribute("newTicket", TicketUtil.asDTO(newTicket));
-        } else {
-            // TODO: 5/30/2017 find better way to send error
-            modelMap.addAttribute("error", "ticket can not be purchased");
+        BigDecimal sessionTicketPrice = (BigDecimal) session.getAttribute("ticketPrice");
+        if (!sessionTicketPrice.equals(ticketDTO.getPrice())) {
+            // TODO: 6/1/2017 Send email to admin about fraud attempt (id of user, flight, price fraud)
+            ticketDTO.setPrice(sessionTicketPrice);
         }
-        return modelMap;
+
+        TicketUtil.updateFromDTO(newTicket, ticketDTO);
+
+        Ticket bookedTicket = ticketService.createNewBookedTicketAndScheduledTask(newTicket);
+
+        ModelMap model = new ModelMap();
+
+        if (bookedTicket == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("That seat has been purchased already.");
+        }
+
+        session.setAttribute("bookedTicketId", bookedTicket.getId());
+
+        return ResponseEntity.ok(bookedTicket.getId());
+
+    }
+
+    @PutMapping(value = "/{id}/confirm-payment")
+    // TODO: 6/1/2017 validate dto?
+    public ResponseEntity confirmPayment(@PathVariable("id") Long requestTicketId,
+                                         @RequestParam(value = "purchaseOffsetDateTime") String  purchaseOffsetDateTime, HttpSession session) {
+
+
+        //in cancel-booking there is code duplication
+        Long sessionTicketId = (Long) session.getAttribute("bookedTicketId");
+        if (requestTicketId == null || sessionTicketId == null || !sessionTicketId.equals(requestTicketId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing proper ticket id in session or request parameters");
+        }
+
+
+        // TODO: 6/1/2017 is it ok when service returns Response Entity (need that for transaction)
+        return ticketService.processPayment(sessionTicketId);
+    }
+
+    @PutMapping(value = "/{id}/cancel-booking")
+    // TODO: 6/1/2017 validate dto?
+    public ResponseEntity cancelBooking(@PathVariable("id") Long requestTicketId, HttpSession session) {
+
+
+        Long sessionTicketId = (Long) session.getAttribute("bookedTicketId");
+        if (requestTicketId == null || sessionTicketId == null || !sessionTicketId.equals(requestTicketId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing proper ticket id in session or request parameters");
+        }
+
+        if (!ticketService.cancelBooking(sessionTicketId, AuthorizedUser.id())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed cancelling booking for ticket with provided id.");
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/details-with-free-seats")
-    public ModelMap getFreeSeats(@RequestParam(value = "flightId") Long flightId, HttpSession session) {
+    public ModelMap getDetailsWithFreeSeats(@RequestParam(value = "flightId") Long flightId, HttpSession session) {
 
         Flight flight = flightService.get(flightId);
+        session.setAttribute("flightId", flight.getId());
+
         User user = userService.get(AuthorizedUser.id());
 
         ModelMap model = new ModelMap();
@@ -106,8 +133,10 @@ public class TicketUserAjaxController {
                 flight.getArrivalAirport().getCity().getZoneId()));
 
         BigDecimal ticketPrice = flightService.getTicketPrice(flight);
-        session.setAttribute("price", ticketPrice);
+        session.setAttribute("ticketPrice", ticketPrice);
+
         model.put("price", ticketPrice);
+        model.put("flightId", flight.getId());
 
         // TODO: 6/1/2017 consider using it as a check
         //session.setAttribute("flightId", flight.getId());
@@ -115,47 +144,7 @@ public class TicketUserAjaxController {
         model.put("totalSeats", flight.getAircraft().getModel().getPassengersSeatsQuantity());
         model.put("freeSeats", ticketService.getFreeSeats(flight).toArray(new Integer[0]));
 
-
         return model;
-/*
-        ModelMap modelMap = new ModelMap();
-        modelMap.put()
-        *//*
-        if(newTicket != null){
-            modelMap.addAttribute("newTicket", TicketUtil.asDTO(newTicket));
-        } else {
-            // TODO: 5/30/2017 find better way to send error
-            modelMap.addAttribute("error", "ticket can not be purchased");
-        }
-        *//*
-        return modelMap;*/
     }
-
-   /* // todo Is it ok to  use body for this parameter or i should use pathvariable??
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping(value = "/{id}/set-canceled")
-    public ResponseEntity<String> setCanceled(@PathVariable("id") int id, @RequestParam("canceled") boolean canceled) {
-        return super.setCanceled(id, canceled);
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") int id) {
-        return super.delete(id);
-    }
-*/
-
-/*// TODO: 5/22/2017 i don't need that
-    @InitBinder
-    private void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_PATTERN);//edit for the    format you need
-        dateTimeFormat.setLenient(false);
-        binder.registerCustomEditor(LocalDateTime.class, new CustomDateEditor(dateTimeFormat, true));
-    }
-
-
-*/
-
 
 }
-

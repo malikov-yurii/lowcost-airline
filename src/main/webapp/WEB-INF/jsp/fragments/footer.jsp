@@ -34,8 +34,12 @@
     "common.enabled",
     "common.disabled",
     "common.failed",
+    "ticket.paymentProcessing",
+    "ticket.yourTicketIsFor",
+    "ticket.paymentWindowTitle",
+    "ticket.confirMoneyWithdrawalFromYouCreditCard",
     "flight.ticketPrice"}%>'>
-    i18n['${key}'] = '<fmt:message key="${key}"/>';
+        i18n['${key}'] = '<fmt:message key="${key}"/>';
     </c:forEach>
 </script>
 

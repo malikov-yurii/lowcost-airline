@@ -2,9 +2,8 @@ package com.malikov.ticketsystem.service;
 
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
-import com.malikov.ticketsystem.model.User;
+import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -31,11 +30,17 @@ public interface ITicketService {
     Ticket getWithUserAndFlight(long id, long userId);
 
     // TODO: 5/30/2017 add userid here
-    Ticket createNewBookedAndScheduledTask(Flight flight, User user, BigDecimal price);
+
+    /**
+     * @param newTicket
+     * @return persisted ticket or null if seat is now free
+     */
+    Ticket createNewBookedTicketAndScheduledTask(Ticket newTicket);
 
     // TODO: 5/30/2017 add userid here
-    Ticket updateSetPurchasedAndCancelScheduledTask(Ticket ticket);
-
+    ResponseEntity processPayment(Long ticketId);
 
     Set<Integer> getFreeSeats(Flight flight);
+
+    boolean cancelBooking(Long ticketId, long userId);
 }

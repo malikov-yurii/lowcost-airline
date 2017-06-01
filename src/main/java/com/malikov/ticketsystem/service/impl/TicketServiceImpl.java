@@ -1,20 +1,21 @@
 package com.malikov.ticketsystem.service.impl;
 
+import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.TicketStatus;
-import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,6 +29,8 @@ import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
 @Service("ticketService")
 public class TicketServiceImpl implements ITicketService {
 
+    private static final long BOOKING_DELAY_MILLIS = DateTimeUtil.ONE_MINUTE_IN_MILLIS;
+
     @Autowired
     private ITicketRepository ticketRepository;
 
@@ -36,6 +39,47 @@ public class TicketServiceImpl implements ITicketService {
 
     // TODO: 5/30/2017 Get rid of it in service!
     private static Map<Long, ScheduledFuture> ticketTaskMap = new HashMap<>();
+
+
+    @Override
+    public boolean cancelBooking(Long ticketId, long userId) {
+        Ticket ticket = ticketRepository.get(ticketId, AuthorizedUser.id());
+
+        if (ticket == null || !ticket.getStatus().equals(TicketStatus.BOOKED)){
+            return false;
+        }
+
+        return ticketRepository.delete(ticketId, userId);
+    }
+
+    @Override
+    // TODO: 6/1/2017 It should be transactional
+    public ResponseEntity processPayment(Long ticketId) {
+        Ticket ticket = ticketRepository.get(ticketId, AuthorizedUser.id());
+
+        if (ticket == null){
+            // TODO: 6/1/2017 Consider using custom Error for Httpresponse as in topjava
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested booked ticket has not been found");
+        }
+
+
+        if (!getWithdrawalStatus(AuthorizedUser.id())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment failed. Rejected by user's bank");
+        }
+
+        ticket.setStatus(TicketStatus.PAID);
+        //ticket.setPurchaseOffsetDateTime(Off);
+
+        if (ticketRepository.save(ticket, AuthorizedUser.id()) == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed while saving PAID status.");
+        }
+
+        ticketTaskMap.remove(ticket.getId());
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 
 
     // TODO: 5/31/2017 considerRefactoring
@@ -54,46 +98,36 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     // TODO: 5/30/2017 remove annotation?
+    // TODO: 6/1/2017 Should i delete unnecessary ifNotPaid checking?
     @Async
     public ScheduledFuture getDeleteInNotPaidTask(long ticketId) {
         ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
         scheduler = new ConcurrentTaskScheduler(localExecutor);
 
         return scheduler.schedule(() -> ticketRepository.deleteIfNotPaid(ticketId),
-                new Date(System.currentTimeMillis() + DateTimeUtil.ONE_MINUTE_IN_MILLIS / 3));
+                new Date(System.currentTimeMillis() + BOOKING_DELAY_MILLIS));
     }
 
     // TODO: 5/30/2017 make it transactional??
     // TODO: 5/30/2017 consider splitting into several methods
     @Override
-    public Ticket createNewBookedAndScheduledTask(Flight flight, User user, BigDecimal price) {
+    public Ticket createNewBookedTicketAndScheduledTask(Ticket newTicket) {
 
-        Integer ticketQuantity = ticketRepository.countForFlight(flight.getId());
+        Integer ticketQuantity = ticketRepository.countForFlight(newTicket.getFlight().getId());
 
-        if (ticketQuantity >= flight.getAircraft().getModel().getPassengersSeatsQuantity()) {
-            // TODO: 5/30/2017 Implement this exception case
+        Ticket bookedTicket;
+
+        if (ticketQuantity >= newTicket.getFlight().getAircraft().getModel().getPassengersSeatsQuantity()) {
+            bookedTicket = null;
+        }else{
+            newTicket.setStatus(TicketStatus.BOOKED);
+            bookedTicket = save(newTicket, AuthorizedUser.id());
         }
 
-        Ticket ticket = save(new Ticket(null, flight, user, null, null, price, null,
-                null, null, ticketQuantity + 1, TicketStatus.BOOKED), user.getId());
-        if (ticket != null){
-            ticketTaskMap.put(ticket.getId(), getDeleteInNotPaidTask(ticket.getId()));
+        if (bookedTicket != null){
+            ticketTaskMap.put(bookedTicket.getId(), getDeleteInNotPaidTask(bookedTicket.getId()));
         }
-        return ticket;
-    }
-
-    // TODO: 5/30/2017 consider splitting into several methods
-    public Ticket updateSetPurchasedAndCancelScheduledTask(Ticket ticket) {
-
-        ticket.setStatus(TicketStatus.PAID);
-        // TODO: 5/30/2017 go by truly checking authorized user
-        Ticket updatedTicket = save(ticket, ticket.getUser().getId());
-
-        if (updatedTicket != null) {
-            ticketTaskMap.remove(ticket.getId());
-        }
-
-        return updatedTicket;
+        return bookedTicket;
     }
 
     @Override
@@ -137,6 +171,15 @@ public class TicketServiceImpl implements ITicketService {
     @Override
     public List<Ticket> getAll(long userId) {
         return ticketRepository.getAll(userId);
+    }
+
+    /**
+     * Method imitates withdrawal processing using bank API
+     * @param userId
+     * @return true if payment was successful, true if bank returned fail status
+     */
+    private boolean getWithdrawalStatus(long userId) {
+        return true;
     }
 
 }
