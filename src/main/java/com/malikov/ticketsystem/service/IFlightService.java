@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.service;
 
+import com.malikov.ticketsystem.TicketPriceDetails;
 import com.malikov.ticketsystem.model.Flight;
 
 import java.math.BigDecimal;
@@ -35,6 +36,6 @@ public interface IFlightService {
                                                               LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
                                                               Integer first, Integer pageSize);
 
-    BigDecimal getTicketPrice(Flight flight);
+    TicketPriceDetails getTicketPriceDetails(Flight flight);
 
 }

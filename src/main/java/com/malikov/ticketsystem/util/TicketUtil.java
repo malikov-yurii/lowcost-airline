@@ -41,8 +41,10 @@ public class TicketUtil {
 
         newTicket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
         newTicket.setPassengerLastName(ticketDTO.getPassengerLastName());
-        newTicket.setWithBaggage(ticketDTO.getWithBaggage());
-        newTicket.setWithPriorityRegistration(ticketDTO.getWithPriorityRegistration());
+        newTicket.setWithBaggage(ticketDTO.getWithBaggage() != null ? ticketDTO.getWithBaggage() : false);
+        newTicket.setWithPriorityRegistration(ticketDTO.getWithPriorityRegistration() != null
+                                              ? ticketDTO.getWithPriorityRegistration()
+                                              :false);
         newTicket.setPrice(ticketDTO.getPrice());
         newTicket.setSeatNumber(ticketDTO.getSeatNumber());
     }

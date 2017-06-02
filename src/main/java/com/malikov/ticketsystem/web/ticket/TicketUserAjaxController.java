@@ -1,6 +1,7 @@
 package com.malikov.ticketsystem.web.ticket;
 
 import com.malikov.ticketsystem.AuthorizedUser;
+import com.malikov.ticketsystem.TicketPriceDetails;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.User;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 /**
  * @author Yurii Malikov
@@ -51,33 +53,43 @@ public class TicketUserAjaxController {
         User user = userService.get(AuthorizedUser.id());
         newTicket.setUser(user);
 
-        BigDecimal sessionTicketPrice = (BigDecimal) session.getAttribute("ticketPrice");
-        if (!sessionTicketPrice.equals(ticketDTO.getPrice())) {
+        TicketPriceDetails sessionTicketPriceDetails = (TicketPriceDetails) session.getAttribute("ticketPriceDetails");
+        BigDecimal ticketPrice = sessionTicketPriceDetails.getBaseTicketPrice();
+        if (ticketDTO.getWithBaggage() != null && ticketDTO.getWithBaggage()) {
+            ticketPrice = ticketPrice.add(sessionTicketPriceDetails.getBaggagePrice());
+        }
+        if (ticketDTO.getWithPriorityRegistration() != null && ticketDTO.getWithPriorityRegistration()) {
+            ticketPrice = ticketPrice.add(sessionTicketPriceDetails.getPriorityRegistrationPrice());
+        }
+        if (!ticketPrice.equals(ticketDTO.getPrice())) {
             // TODO: 6/1/2017 Send email to admin about fraud attempt (id of user, flight, price fraud)
-            ticketDTO.setPrice(sessionTicketPrice);
+            ticketDTO.setPrice(ticketPrice);
         }
 
         TicketUtil.updateFromDTO(newTicket, ticketDTO);
 
         Ticket bookedTicket = ticketService.createNewBookedTicketAndScheduledTask(newTicket);
 
-        ModelMap model = new ModelMap();
-
         if (bookedTicket == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("That seat has been purchased already.");
         }
 
         session.setAttribute("bookedTicketId", bookedTicket.getId());
+        //session.setAttribute("bookedTicketTotalPrice", bookedTicket.getPrice());
 
-        return ResponseEntity.ok(bookedTicket.getId());
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("bookedTicketId", bookedTicket.getId());
+        modelMap.put("bookedTicketTotalPrice", bookedTicket.getPrice());
+
+        return ResponseEntity.ok(modelMap);
 
     }
 
     @PutMapping(value = "/{id}/confirm-payment")
     // TODO: 6/1/2017 validate dto?
     public ResponseEntity confirmPayment(@PathVariable("id") Long requestTicketId,
-                                         @RequestParam(value = "purchaseOffsetDateTime") String  purchaseOffsetDateTime, HttpSession session) {
-
+                                         @RequestParam(value = "purchaseOffsetDateTime") /* todo not working OffsetDateTime*/ String purchaseOffsetDateTime,
+                                         HttpSession session) {
 
         //in cancel-booking there is code duplication
         Long sessionTicketId = (Long) session.getAttribute("bookedTicketId");
@@ -87,7 +99,7 @@ public class TicketUserAjaxController {
 
 
         // TODO: 6/1/2017 is it ok when service returns Response Entity (need that for transaction)
-        return ticketService.processPayment(sessionTicketId);
+        return ticketService.processPayment(sessionTicketId, OffsetDateTime.parse(purchaseOffsetDateTime));
     }
 
     @PutMapping(value = "/{id}/cancel-booking")
@@ -108,8 +120,8 @@ public class TicketUserAjaxController {
 
 
     @GetMapping(value = "/details-with-free-seats")
-    public ModelMap getDetailsWithFreeSeats(@RequestParam(value = "flightId") Long flightId, HttpSession session) {
-
+    public ModelMap getTicketDetailsWithFreeSeats(@RequestParam(value = "flightId") Long flightId,
+                                                  HttpSession session) {
         Flight flight = flightService.get(flightId);
         session.setAttribute("flightId", flight.getId());
 
@@ -132,10 +144,10 @@ public class TicketUserAjaxController {
         model.put("arrivalLocalDateTime", DateTimeUtil.utcToZoneId(flight.getArrivalUtcDateTime(),
                 flight.getArrivalAirport().getCity().getZoneId()));
 
-        BigDecimal ticketPrice = flightService.getTicketPrice(flight);
-        session.setAttribute("ticketPrice", ticketPrice);
+        TicketPriceDetails ticketPriceDetails = flightService.getTicketPriceDetails(flight);
+        session.setAttribute("ticketPriceDetails", ticketPriceDetails);
 
-        model.put("price", ticketPrice);
+        model.put("ticketPriceDetails", ticketPriceDetails);
         model.put("flightId", flight.getId());
 
         // TODO: 6/1/2017 consider using it as a check

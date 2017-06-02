@@ -20,7 +20,7 @@ public class TariffsDetails extends BaseEntity{
     @Column(name = "weight_of_time_growth_factor")
     private BigDecimal weightOfTimeGrowthFactor;
 
-    @Column(name = "baggage_surcharge_over_ticket_max_base_ticket_price")
+    @Column(name = "baggage_surcharge_over_max_base_ticket_price")
     private BigDecimal baggageSurchargeOverMaxBaseTicketPrice;
 
     @Column(name = "priority_registration_tariff")

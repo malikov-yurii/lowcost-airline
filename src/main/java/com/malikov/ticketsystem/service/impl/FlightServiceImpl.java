@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.service.impl;
 
+import com.malikov.ticketsystem.TicketPriceDetails;
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.TariffsDetails;
@@ -74,10 +75,13 @@ public class FlightServiceImpl implements IFlightService {
     }
 
     @Override
-    public BigDecimal getTicketPrice(Flight flight) {
+    public TicketPriceDetails getTicketPriceDetails(Flight flight) {
         Integer bookedTicketsQuantity = ticketRepository.countForFlight(flight.getId());
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
-        return calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
+        BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
+        BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
+                .add(flight.getMaxTicketBasePrice());
+        return new TicketPriceDetails(ticketPrice, baggagePrice, tariffsDetails.getPriorityRegistrationTariff());
     }
 
     // TODO: 5/24/2017 does it need extra validation by userid or something?
@@ -127,14 +131,12 @@ public class FlightServiceImpl implements IFlightService {
         Airport arrivalAirport = airportRepository.getByName(arrivalAirportName);
         Map<Flight, Long> filteredFlightsTicketCountMap = flightRepository.getFilteredFlightsTicketCountMap(
                 departureAirport, arrivalAirport, fromDepartureDateTime, toDepartureDateTime, first, pageSize);
-        //System.out.println();
+
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
 
-        BigDecimal ticketPrice, totalGrowthPotential,
-                timeGrowthPotential,fillingGrowthPotential, perDayPriceGrowth, perTicketPriceGrowth;
         Flight flight;
         Long ticketsQuantity;
-        //System.out.println();
+
         for (Map.Entry<Flight, Long> entry : filteredFlightsTicketCountMap.entrySet()) {
             flight = entry.getKey();
             ticketsQuantity = entry.getValue();
@@ -176,6 +178,7 @@ public class FlightServiceImpl implements IFlightService {
         if (ticketsQuantity > 0) {
             ticketPrice = ticketPrice.add(perTicketPriceGrowth.multiply(new BigDecimal(ticketsQuantity)));
         }
+
         return ticketPrice;
     }
 

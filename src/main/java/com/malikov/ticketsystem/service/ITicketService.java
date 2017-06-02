@@ -4,6 +4,7 @@ import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import org.springframework.http.ResponseEntity;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -38,9 +39,11 @@ public interface ITicketService {
     Ticket createNewBookedTicketAndScheduledTask(Ticket newTicket);
 
     // TODO: 5/30/2017 add userid here
-    ResponseEntity processPayment(Long ticketId);
+    ResponseEntity processPayment(Long ticketId, OffsetDateTime purchaseOffsetDateTime);
 
     Set<Integer> getFreeSeats(Flight flight);
 
     boolean cancelBooking(Long ticketId, long userId);
+
+
 }

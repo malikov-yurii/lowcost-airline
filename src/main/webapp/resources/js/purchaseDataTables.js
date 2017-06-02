@@ -1,3 +1,4 @@
+var freeSeats;
 var datatableApi;
 var entityName = 'purchase';
 var ajaxUrl = 'ajax/user/purchase/';
@@ -105,9 +106,27 @@ function renderPurchaseBtn(data, type, row) {
 
 function showSetTicketDetailsModal() {
     var rowData = datatableApi.row($(this).closest('tr')).data();
+    var $price = $("#price");
+    var $withBaggage = $("#withBaggage");
+    var $withPriorityRegistration = $("#withPriorityRegistration");
+    var $baggagePrice = $("#baggagePrice");
+    var $priorityRegistrationPrice = $("#priorityRegistrationPrice");
 
-    // $('#modalTitle').html('Purchase ticket');
-    // debugger;
+    $withBaggage.on('change',  function(){
+        if( $(this).is(':checked') ){
+            $price.val(parseInt($price.val()) + parseInt($baggagePrice.val()))
+        }else {
+            $price.val(parseInt($price.val()) - parseInt($baggagePrice.val()))
+        }
+    });
+
+    $withPriorityRegistration.on('change', function(){
+        if( $(this).is(':checked') ){
+            $price.val(parseInt($price.val()) + parseInt($priorityRegistrationPrice.val()))
+        }else {
+            $price.val(parseInt($price.val()) - parseInt($priorityRegistrationPrice.val()))
+        }
+    });
 
     $.ajax({
         type: "GET",
@@ -117,18 +136,21 @@ function showSetTicketDetailsModal() {
         },
         success: function (data) {
             renderSeatPicker(data);
-
+            freeSeats = data.freeSeats;
             $('#departureAirport').val(data.departureAirport);
             $('#arrivalAirport').val(data.arrivalAirport);
             $('#departureCity').val(data.departureCity);
             $('#arrivalCity').val(data.arrivalCity);
             $('#departureLocalDateTime').val(data.departureLocalDateTime);
             $('#arrivalLocalDateTime').val(data.arrivalLocalDateTime);
-            $('#withBaggage').prop("checked", false);
-            $('#withPriorityRegistration').prop("checked", false);
-            $('#price').val(data.price);
+            $withBaggage.prop("checked", false);
+            $withPriorityRegistration.prop("checked", false);
+            $('#price').val(data.ticketPriceDetails.baseTicketPrice);
+            $baggagePrice.val(data.ticketPriceDetails.baggagePrice);
+            $priorityRegistrationPrice.val(data.ticketPriceDetails.priorityRegistrationPrice);
             $('#passengerFirstName').val('');
             $('#passengerLastName').val('');
+            $('#seatNumber').val(0);
 
             $('#editRow').modal();
         }
@@ -140,61 +162,105 @@ function showSetTicketDetailsModal() {
 }
 
 function save() {
-    $('#editRow').modal('hide');
-    $.ajax({
-        url: 'ajax/user/ticket/',
-        type: 'POST',
-        data: $('#detailsForm').serialize(),
-        success: function (data) {
-            // debugger;
-            $('#id').val(data);
 
-            swal({
-                    title: i18n['ticket.paymentWindowTitle'],
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: '#DD6B55',
-                    confirmButtonText: 'Yes, confirm payment',
-                    cancelButtonText: "No, cancel it"
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
+    var message = "";
+    var passengerFirstName = $('#passengerFirstName').val();
+    var passengerLastName = $('#passengerLastName').val();
+    var seatNumber = parseInt($('#seatNumber').val());
 
-                        // debugger;
-                        dateToOffsetString(new Date());
-                        $.ajax({
-                            url: 'ajax/user/ticket/' + $('#id').val() + '/confirm-payment',
-                            type: 'PUT',
-                            data: {'purchaseOffsetDateTime':dateToOffsetString(new Date())},
-                            success: function () {
-                                swal({
-                                    title: "Payment success",
-                                    text: "Ticket has been successfully purchased. You can access it in your profile",
-                                    confirmButtonText: "OK"
-                                });
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: 'ajax/user/ticket/' + $('#id').val() + '/cancel-booking',
-                            type: 'PUT',
-                            success: function () {
-                                swal({
-                                    title: "Cancel",
-                                    text: "Ticket booking has been canceled",
-                                    confirmButtonText: "OK"
-                                });
+    if (passengerFirstName.length === 0) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Please input first name.';
+    }
 
-                            }
-                        });
+    if (passengerLastName.length === 0) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Please input last name.';
+    }
 
-                    }
-                });
-        }
+    if (seatNumber === 0) {
+        message = addNextLineSymbolIfNotEmpty(message);
+        message += 'Please pick your seat.';
+    } else {
+            var isFreeSeat = false;
+            for (var i = 0; i < freeSeats.length; i++) {
+                if (seatNumber === freeSeats[i]) {
+                    isFreeSeat = true;
+                    break;
+                }
+            }
+            if (!isFreeSeat) {
+                message = addNextLineSymbolIfNotEmpty(message);
+                message += 'Please pick your seat using picker. Fraud is illegal action';
+            }
+    }
 
-    });
+    if (message.length !== 0) {
+        swal({
+            title: "Validation of entered ticket data failed.",
+            text: message,
+            // type: "error",
+            confirmButtonText: "OK"
+        });
 
+    } else {
 
+        $.ajax({
+            url: 'ajax/user/ticket/',
+            type: 'POST',
+            data: $('#detailsForm').serialize(),
+            success: function (data) {
+
+                debugger;
+                $('#id').val(data.bookedTicketId);
+
+                swal({
+                        title: i18n['ticket.paymentWindowTitle'] + ' ' + data.bookedTicketTotalPrice + '$',
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: '#DD6B55',
+                        confirmButtonText: 'Yes, confirm payment',
+                        cancelButtonText: "No, cancel it"
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+
+                            // debugger;
+                            dateToOffsetString(new Date());
+                            $.ajax({
+                                url: 'ajax/user/ticket/' + $('#id').val() + '/confirm-payment',
+                                type: 'PUT',
+                                data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
+                                success: function () {
+                                    swal({
+                                        title: "Payment success",
+                                        text: "Ticket has been successfully purchased. You can access it in your profile",
+                                        confirmButtonText: "OK"
+                                    });
+                                }
+                            });
+                        } else {
+                            $.ajax({
+                                url: 'ajax/user/ticket/' + $('#id').val() + '/cancel-booking',
+                                type: 'PUT',
+                                success: function () {
+                                    // debugger;
+                                    swal({
+                                        title: "Cancel",
+                                        text: "Ticket booking has been canceled",
+                                        confirmButtonText: "OK"
+                                    });
+
+                                }
+                            });
+
+                        }
+                        forceDataTableReload();
+                    });
+            }
+        });
+        $('#editRow').modal('hide');
+    }
 }
 
 
@@ -291,6 +357,7 @@ function renderSeatPicker(data) {
 
 
 }
+
 
 function selectSeat(e) {
     var seat = $(e.target).data('seat');

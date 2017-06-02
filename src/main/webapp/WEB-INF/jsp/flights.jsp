@@ -198,7 +198,7 @@
                                     key="ticket.seatNumber"/></label>
 
                             <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control " id="seatNumber"
+                                <input type="number" class="modal-input form-control " id="seatNumber"
                                        name="seatNumber" readonly="readonly">
                             </div>
                         </div>
@@ -312,14 +312,41 @@
                             </div>
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="baggagePrice" class="control-label col-xs-3"><fmt:message
+                                    key="ticket.baggagePrice"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="number" class="modal-input form-control" id="baggagePrice"
+                                       name="baggagePrice" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priorityRegistrationPrice" class="control-label col-xs-3"><fmt:message
+                                    key="ticket.priorityRegistrationPrice"/></label>
+
+                            <div class="col-xs-9">
+                                <input type="number" class="modal-input form-control" id="priorityRegistrationPrice"
+                                       name="priorityRegistrationPrice" readonly="readonly">
+                            </div>
+                        </div>
+
+                    </sec:authorize>
+
+                    <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
                         <div class="form-group">
                             <div class="col-xs-offset-3 col-xs-9">
                                 <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
                                         key="common.save"/></button>
                             </div>
                         </div>
-                    </sec:authorize>
-                </form:form>
+
+
+                    </sec:authorize></form:form>
+
+                <%--<todo> make general hasrole user on all form</todo>--%>
             </div>
         </div>
     </div>

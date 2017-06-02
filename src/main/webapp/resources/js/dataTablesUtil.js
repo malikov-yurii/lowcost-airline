@@ -167,10 +167,10 @@ function dateToOffsetString(date) {
     var offsetHours = totalOffsetMinutes / 60;
     var offsetMinutes = totalOffsetMinutes % 60;
 
-    debugger;
+    // debugger;
     return date.toJSON().slice(0, 16) + "+" +
-        (offsetHours / 10 == 0 ? "0" + offsetHours : offsetHours) +
-         ":" + (offsetMinutes / 10 == 0 ? "0" + offsetMinutes : offsetMinutes);
+        (Math.floor(offsetHours / 10) === 0 ? "0" + offsetHours : offsetHours) +
+         ":" + (Math.floor(offsetMinutes / 10) === 0 ? "0" + offsetMinutes : offsetMinutes);
 }
 
 

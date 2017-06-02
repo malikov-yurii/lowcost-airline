@@ -120,7 +120,7 @@ CREATE TABLE tariffs_details (
   id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
   days_before_ticket_price_starts_to_grow             SMALLINT      ,
   weight_of_time_growth_factor                        DECIMAL(4, 4) ,
-  baggage_surcharge_over_ticket_max_base_ticket_price DECIMAL(8, 2) ,
+  baggage_surcharge_over_max_base_ticket_price DECIMAL(8, 2) ,
   priority_registration_tariff                        DECIMAL(8, 2) ,
   active               BOOLEAN
 );
@@ -132,8 +132,8 @@ CREATE TABLE tickets (
   user_id                   BIGINT        ,
   price                     DECIMAL(8, 2) ,
   purchase_offsetdatetime   VARCHAR(22)   ,
-  with_baggage               BOOLEAN       ,
-  with_priority_registration BOOLEAN       ,
+  with_baggage               BOOLEAN DEFAULT FALSE,
+  with_priority_registration BOOLEAN DEFAULT FALSE,
   passenger_name         VARCHAR(50)  ,
   passenger_last_name    VARCHAR(50)  ,
   departure_airport_name    VARCHAR(255)  ,

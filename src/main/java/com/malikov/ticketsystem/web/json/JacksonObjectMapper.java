@@ -30,9 +30,13 @@ public class JacksonObjectMapper extends ObjectMapper {
 
 
         SimpleModule module = new SimpleModule();
-        //module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer()); // TODO: 5/23/2017 why i don't need deserializer but need serializer???????
+        //module.addDeserializer(LocalDateTime.class, new OffsetDateTimeDeserializer()); // TODO: 5/23/2017 why i don't need deserializer but need serializer???????
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        //module.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
         registerModule(module);
+
+        //registerModule(new JavaTimeModule());
+        //findAndRegisterModules();
 
 
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);

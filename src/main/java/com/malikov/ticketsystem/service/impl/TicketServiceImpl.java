@@ -16,6 +16,8 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,7 +56,7 @@ public class TicketServiceImpl implements ITicketService {
 
     @Override
     // TODO: 6/1/2017 It should be transactional
-    public ResponseEntity processPayment(Long ticketId) {
+    public ResponseEntity processPayment(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
         Ticket ticket = ticketRepository.get(ticketId, AuthorizedUser.id());
 
         if (ticket == null){
@@ -63,12 +65,12 @@ public class TicketServiceImpl implements ITicketService {
         }
 
 
-        if (!getWithdrawalStatus(AuthorizedUser.id())) {
+        if (!getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment failed. Rejected by user's bank");
         }
 
         ticket.setStatus(TicketStatus.PAID);
-        //ticket.setPurchaseOffsetDateTime(Off);
+        ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
 
         if (ticketRepository.save(ticket, AuthorizedUser.id()) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed while saving PAID status.");
@@ -178,7 +180,7 @@ public class TicketServiceImpl implements ITicketService {
      * @param userId
      * @return true if payment was successful, true if bank returned fail status
      */
-    private boolean getWithdrawalStatus(long userId) {
+    private boolean getWithdrawalStatus(long userId, BigDecimal price) {
         return true;
     }
 
