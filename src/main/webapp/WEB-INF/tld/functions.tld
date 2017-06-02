@@ -6,11 +6,11 @@
 
     <tlib-version>1.0</tlib-version>
     <short-name>functions</short-name>
-    <uri>http://topjava.javawebinar.ru/functions</uri>
+    <uri>http://malikov.com</uri>
 
     <function>
         <name>formatDateTime</name>
-        <function-class>ru.javawebinar.topjava.util.TimeUtil</function-class>
+        <function-class>com.malikov.ticketsystem.util.DateTimeUtil</function-class>
         <function-signature>java.lang.String toString(java.time.LocalDateTime)</function-signature>
     </function>
 </taglib>

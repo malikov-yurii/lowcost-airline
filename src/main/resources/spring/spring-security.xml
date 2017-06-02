@@ -9,6 +9,7 @@
     <http pattern="/resources/**" security="none"/>
     <http pattern="/webjars/**" security="none"/>
     <http pattern="/**/anonymous/**" security="none"/>
+    <!--<http pattern="/register" security="none"/>-->
 
     <!--<http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">-->
     <!--<http-basic/>-->
@@ -18,10 +19,11 @@
     <!--</http>-->
 
     <http>
+        <intercept-url pattern="/register" access="isAnonymous()"/>
+
         <intercept-url pattern="/flights    " access="permitAll"/>
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
-
 
         <!--TODO TWO STRINGS BELOW ARE EQUAL????????-->
         <!--<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
@@ -34,17 +36,6 @@
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
         <logout logout-success-url="/login"/>
-
-
-
-        <!--<intercept-url pattern="/**/anonymous/**" access="permitAll"/>-->
-        <!--<intercept-url pattern="/**/anonymous/**" access="isAnonymous()"/>-->
-
-
-        <!--bad idea disable. not working-->
-        <!--<csrf disabled="true"/>-->
-
-
 
     </http>
 

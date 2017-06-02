@@ -38,6 +38,7 @@ public class ValidationUtil {
 
     public static void checkIdConsistent(IHasId bean, long id) {
         if (bean.isNew()) {
+            // TODO: 6/2/2017 Why I need this part??
             bean.setId(id);
         } else if (bean.getId() != id) {
             throw new IllegalArgumentException(bean + " should be with id=" + id);

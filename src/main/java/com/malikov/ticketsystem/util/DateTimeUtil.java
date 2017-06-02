@@ -13,30 +13,32 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeUtil {
 
-    private DateTimeUtil() {
-    }
-
     public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
+
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
     public static final LocalDateTime MIN = LocalDateTime.of(2000, 1,1,1,1);
+
     public static final LocalDateTime MAX = LocalDateTime.of(2030, 1,1,1,1);
+
     public static final long ONE_MINUTE_IN_MILLIS = 60000;
+
+    private DateTimeUtil() {}
 
     public static <T extends Comparable<? super T>> boolean isBetween(T value, T start, T end) {
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
 
-    public static String toString(LocalDateTime ldt) {
-        return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
+    public static String toString(LocalDateTime localDateTime) {
+        return localDateTime == null ? "" : localDateTime.format(DATE_TIME_FORMATTER);
     }
 
-    public static LocalDate parseLocalDate(String str) {
-        return StringUtils.isEmpty(str) ? null : LocalDate.parse(str);
+    public static LocalDate parseLocalDate(String string) {
+        return StringUtils.isEmpty(string) ? null : LocalDate.parse(string);
     }
 
-    public static LocalTime parseLocalTime(String str) {
-        return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
+    public static LocalTime parseLocalTime(String string) {
+        return StringUtils.isEmpty(string) ? null : LocalTime.parse(string);
     }
 
     public static LocalDateTime parseToLocalDateTime(String str) {

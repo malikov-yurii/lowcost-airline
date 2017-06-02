@@ -4,7 +4,7 @@ import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.util.UserUtil;
+import com.malikov.ticketsystem.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +13,8 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.malikov.ticketsystem.util.UserUtil.prepareToSave;
+import static com.malikov.ticketsystem.util.UserUtil.updateFromTo;
 import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
 import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
 
@@ -28,15 +30,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Override
     public User save(User user) {
         Assert.notNull(user, "user should not be null");
-        return repository.save(UserUtil.prepareToSave(user));
+        return repository.save(prepareToSave(user));
     }
 
     @Override
-    public void update(User user) {
-        // TODO: 5/5/2017 get rid of message  duplicating
-        Assert.notNull(user, "user should not be null");
-        repository.save(UserUtil.prepareToSave(user));
-
+    public void update(UserTo userTo) {
+        User user = updateFromTo(get(userTo.getId()), userTo);
+        repository.save(prepareToSave(user));
     }
 
     @Override

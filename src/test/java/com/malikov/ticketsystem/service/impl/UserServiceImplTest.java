@@ -27,14 +27,14 @@ public class UserServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(getTestDataUsersWith(newUser), service.getAll());
     }
 
-    @Test
-    public void update() throws Exception {
-        User updated = new User(USER_1);
-        updated.setName("NewName");
-        updated.setLastName("NewLastName");
-        service.update(updated);
-        MATCHER.assertEquals(updated, service.get(updated.getId()));
-    }
+    //@Test
+    //public void update() throws Exception {
+    //    User updated = new User(USER_1);
+    //    updated.setName("NewName");
+    //    updated.setLastName("NewLastName");
+    //    service.update(updated);
+    //    MATCHER.assertEquals(updated, service.get(updated.getId()));
+    //}
 
     @Test
     public void get() throws Exception {
