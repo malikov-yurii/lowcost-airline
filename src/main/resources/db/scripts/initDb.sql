@@ -24,7 +24,7 @@ CREATE UNIQUE INDEX users_unique_email_idx
 
 CREATE TABLE roles (
   id   BIGINT PRIMARY KEY AUTO_INCREMENT,
-  role VARCHAR(255)
+  role VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE user_roles (

@@ -21,12 +21,12 @@ public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepositor
     protected EntityManager em;
 
     @Override
-    public TariffsDetails save(TariffsDetails city) {
-        if (city.isNew()){
-            em.persist((city));
-            return city;
+    public TariffsDetails save(TariffsDetails tariffsDetails) {
+        if (tariffsDetails.isNew()){
+            em.persist((tariffsDetails));
+            return tariffsDetails;
         } else {
-            return em.merge(city);
+            return em.merge(tariffsDetails);
         }
     }
 

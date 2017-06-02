@@ -62,7 +62,7 @@ public class AirportServiceImplTest extends AbstractServiceTest {
     @Test
     public void getByNameMask() throws Exception {
         List<Airport> airportsByMask = service.getByNameMask("Bor");
-        MATCHER.assertCollectionEquals(Collections.singletonList(AIRPORT_1_BORISPOL), airportsByMask);
+        MATCHER.assertCollectionEquals(Collections.singleton(AIRPORT_1_BORISPOL), airportsByMask);
     }
 
     @Test

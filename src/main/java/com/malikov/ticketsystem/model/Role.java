@@ -2,17 +2,16 @@ package com.malikov.ticketsystem.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Yurii Malikov
  */
 @Entity
-@Table(name = "roles")
+// TODO: 6/3/2017 Unique constraint??
+@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"role"}, name = "unique_role_constraint")})
 @AttributeOverride(name = "name", column = @Column(name = "role"))
+
 public class Role extends NamedEntity implements GrantedAuthority{
 
     // TODO: 5/8/2017 write tests for role dao

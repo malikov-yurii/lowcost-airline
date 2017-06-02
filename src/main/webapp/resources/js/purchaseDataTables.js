@@ -24,6 +24,7 @@ $(document).ready(function () {
             }
             // ,"dataSrc": ""
         },
+        "iDeferLoading": 0,
         "searching": false,
         "pagingType": "simple_numbers",
         "paging": true,

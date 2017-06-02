@@ -1,6 +1,5 @@
 package com.malikov.ticketsystem.util;
 
-import com.malikov.ticketsystem.model.Role;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.to.UserTo;
 
@@ -12,7 +11,7 @@ public class UserUtil {
     public static User createNewFromTo(UserTo newUser) {
 
         // TODO: 5/14/2017 Get rid of new Role(USER) !!!!!!!!!!
-        return new User(null, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail().toLowerCase(), newUser.getPassword(), newUser.getPhoneNumber(), new Role("USER"));
+        return new User(null, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail().toLowerCase(), newUser.getPassword(), newUser.getPhoneNumber());
     }
 
     // TODO: 5/14/2017 Is it ok to pass "" as password ??????????????

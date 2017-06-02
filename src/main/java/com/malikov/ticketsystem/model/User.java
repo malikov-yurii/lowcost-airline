@@ -62,6 +62,14 @@ public class User extends NamedEntity {
 
     public User() {}
 
+    public User(Long id, String name, String lastName, String email, String password, String phoneNumber) {
+        super(id, name);
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+
     public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         this.lastName = lastName;
         this.email = email;

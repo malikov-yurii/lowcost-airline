@@ -24,6 +24,7 @@ $(document).ready(function () {
             }
             // ,"dataSrc": ""
         },
+        "iDeferLoading": 0,
         "searching": false,
         // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",

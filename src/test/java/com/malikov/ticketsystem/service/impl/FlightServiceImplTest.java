@@ -108,7 +108,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
 
     @Test
     public void testGetAllBetween() throws Exception {
-        FLIGHT_MATCHER.assertCollectionEquals(Collections.singletonList(FLIGHT_1),
+        FLIGHT_MATCHER.assertCollectionEquals(Collections.singleton(FLIGHT_1),
                 service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
                         FLIGHT_2.getDepartureUtcDateTime().plusDays(1), null, 0, 20));
     }
@@ -117,7 +117,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
     public void delete() throws Exception {
         service.delete(FLIGHT_2.getId());
         FLIGHT_MATCHER.assertCollectionEquals(
-                Collections.singletonList(FLIGHT_1),
+                Collections.singleton(FLIGHT_1),
                 service.getAllFiltered(AIRPORT_1_BORISPOL.getName(), AIRPORT_2_HEATHROW.getName(),
                         null, null, 0, 20));
 

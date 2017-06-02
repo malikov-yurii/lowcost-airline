@@ -29,11 +29,12 @@
             <a class="btn btn-info" role="button" href="register"><fmt:message key="app.register"/></a>
         </sec:authorize>
 
+        <a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>
 
         <sec:authorize access="isAuthenticated()">
             <form:form class="navbar-form navbar-right" action="logout" method="post">
 
-                <a class="btn btn-info" role="button" href="purchase"><fmt:message key="app.purchaseTicket"/></a>
+
 
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                     <%--<a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>--%>
