@@ -81,7 +81,7 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
-        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
+        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
 
     public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
@@ -93,10 +93,10 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
-        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
+        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
 
-    // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
+    // TODO: 5/15/2017 How dto add tickets??? refactor dto do it by copying??
     public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice, List<Ticket> tickets) {
         super(id);
         this.departureAirport = departureAirport;
@@ -106,7 +106,7 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
-        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
+        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
 
         this.tickets = tickets;
     }
@@ -120,7 +120,7 @@ public class Flight extends BaseEntity {
         arrivalUtcDateTime = flight.getUtcLocalDateTime();
         initialTicketBasePrice = flight.getInitialTicketBasePrice();
         maxTicketBasePrice = flight.getMaxTicketBasePrice();
-        canceled = false; // TODO: 5/23/2017 Do I need to do it explicitly??
+        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
 
     public LocalDateTime getDepartureUtcDateTime() {
@@ -199,7 +199,7 @@ public class Flight extends BaseEntity {
         return tickets;
     }
 
-    // TODO: 5/15/2017 How to add tickets??? refactor to do it by copying??
+    // TODO: 5/15/2017 How dto add tickets??? refactor dto do it by copying??
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }

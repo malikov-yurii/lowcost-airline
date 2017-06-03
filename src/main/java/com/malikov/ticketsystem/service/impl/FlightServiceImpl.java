@@ -46,13 +46,13 @@ public class FlightServiceImpl implements IFlightService {
     @Override
     public Flight save(Flight flight) {
         Assert.notNull(flight, "flight should not be null");
-        // TODO: 5/5/2017 prepare flight to save
+        // TODO: 5/5/2017 prepare flight dto save
         return flightRepository.save(flight);
     }
 
     @Override
     public void update(Flight flight) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save flight
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save flight
         Assert.notNull(flight, "flight should not be null");
         flightRepository.save(flight);
     }
@@ -81,7 +81,7 @@ public class FlightServiceImpl implements IFlightService {
         BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
         BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
                 .add(flight.getMaxTicketBasePrice());
-        return new TicketPriceDetails(ticketPrice, baggagePrice, tariffsDetails.getPriorityRegistrationTariff());
+        return new TicketPriceDetails(ticketPrice, baggagePrice, tariffsDetails.getPriorityRegistrationAndBoardingTariff());
     }
 
     // TODO: 5/24/2017 does it need extra validation by userid or something?
@@ -141,7 +141,7 @@ public class FlightServiceImpl implements IFlightService {
             flight = entry.getKey();
             ticketsQuantity = entry.getValue();
 
-            // TODO: 5/29/2017 try to do that in query
+            // TODO: 5/29/2017 try dto do that in query
             if (flight.getAircraft().getModel().getPassengersSeatsQuantity() > ticketsQuantity) {
                 flightTicketPriceMap.put(flight, calculateTicketPrice(tariffsDetails, flight, ticketsQuantity));
             }

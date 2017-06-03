@@ -21,13 +21,13 @@ public class AirportServiceImpl implements IAirportService {
     @Override
     public Airport save(Airport airport) {
         Assert.notNull(airport, "airport should not be null");
-        // TODO: 5/5/2017 prepare airport to save
+        // TODO: 5/5/2017 prepare airport dto save
         return repository.save(airport);
     }
 
     @Override
     public void update(Airport airport) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save airport
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save airport
         Assert.notNull(airport, "airport should not be null");
         repository.save(airport);
     }

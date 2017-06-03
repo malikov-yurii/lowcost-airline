@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,20 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     protected EntityManager em;
 
     @Override
+    public List<Ticket> getActiveByUserId(long userId, Integer start, Integer limit) {
+        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.id=:userId AND t.departureUtcDateTime>=:now ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+                .setParameter("userId", userId)
+                .setParameter("now", LocalDateTime.now())
+                .setFirstResult(start)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    @Override
     public List<Integer> getNotFreeSeatsNumbers(Long flightId) {
-        Query query = em.createQuery("SELECT t.seatNumber FROM Ticket t WHERE t.flight.id=:flightId", Integer.class);
-        query.setParameter("flightId", flightId);
-        return query.getResultList();
+        return em.createQuery("SELECT t.seatNumber FROM Ticket t WHERE t.flight.id=:flightId", Integer.class)
+                .setParameter("flightId", flightId)
+                .getResultList();
     }
 
     @Override
@@ -52,12 +63,12 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
 
 
     @Override
-    public Ticket save(Ticket ticket, long userId) {
-        if (!ticket.isNew() && get(ticket.getId(), userId) == null) {
+    public Ticket save(Ticket ticket) {
+        if (!ticket.isNew() && get(ticket.getId()) == null) {
             return null;
         }
 
-        ticket.setUser(em.getReference(User.class, userId));
+        ticket.setUser(em.getReference(User.class, ticket.getUser().getId()));
         if (ticket.isNew()) {
             em.persist((ticket));
             return ticket;
@@ -67,15 +78,14 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public boolean delete(long id, long userId) {
+    public boolean delete(long id) {
         return em.createNamedQuery(Ticket.DELETE)
                 .setParameter("id", id)
-                .setParameter("userId", userId)
                 .executeUpdate() != 0;
     }
 
     @Override
-    public Ticket get(long id, long userId, String... hintNames) {
+    public Ticket get(long id, String... hintNames) {
         Map<String, Object> hintMap;
         Ticket ticket;
         // TODO: 5/8/2017 is it correct comparision??
@@ -88,7 +98,7 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
         } else {
             ticket = em.find(Ticket.class, id);
         }
-        return ticket != null && ticket.getUser().getId() == userId ? ticket : null;
+        return ticket;
     }
 
     @Override
@@ -98,5 +108,12 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
                 .getResultList();
     }
 
-
+    @Override
+    public List<Ticket> getByEmail(String email, Integer start, Integer limit) {
+        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.email=:email ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+                .setParameter("email", email)
+                .setFirstResult(start)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

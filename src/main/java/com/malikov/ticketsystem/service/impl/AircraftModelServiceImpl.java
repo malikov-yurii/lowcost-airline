@@ -21,13 +21,13 @@ public class AircraftModelServiceImpl implements IAircraftModelService {
     @Override
     public AircraftModel save(AircraftModel aircraftModel) {
         Assert.notNull(aircraftModel, "aircraftModel should not be null");
-        // TODO: 5/5/2017 prepare aircraftModel to save
+        // TODO: 5/5/2017 prepare aircraftModel dto save
         return repository.save(aircraftModel);
     }
 
     @Override
     public void update(AircraftModel aircraftModel) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save aircraftModel
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save aircraftModel
         Assert.notNull(aircraftModel, "aircraftModel should not be null");
         repository.save(aircraftModel);
     }

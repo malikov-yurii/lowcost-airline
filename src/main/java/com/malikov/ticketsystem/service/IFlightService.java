@@ -31,7 +31,7 @@ public interface IFlightService {
     boolean delete(long id);
 
 
-    // TODO: 5/31/2017 Move two below to ticketService???
+    // TODO: 5/31/2017 Move two below dto ticketService???
     Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportName, String arrivalAirportName,
                                                               LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
                                                               Integer first, Integer pageSize);

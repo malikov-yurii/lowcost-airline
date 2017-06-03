@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 public @interface PhoneNumber {
 
     String message() default "Please provide a valid phone number.";
-    // TODO: 5/5/2017 change it to String message() default "{Phone}" #Custom validation annotation Phone=Invalid format, valid formats are 1234567890, 123-456-7890 x1234;
+    // TODO: 5/5/2017 change it dto String message() default "{Phone}" #Custom validation annotation Phone=Invalid format, valid formats are 1234567890, 123-456-7890 x1234;
 
     Class<?>[] groups() default {};
 

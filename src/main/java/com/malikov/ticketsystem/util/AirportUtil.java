@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.util;
 
 import com.malikov.ticketsystem.model.Airport;
-import com.malikov.ticketsystem.to.AirportTo;
+import com.malikov.ticketsystem.dto.AirportTo;
 
 /**
  * @author Yurii Malikov

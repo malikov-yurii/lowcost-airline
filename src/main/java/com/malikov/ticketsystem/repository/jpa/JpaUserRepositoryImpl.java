@@ -58,4 +58,12 @@ public class JpaUserRepositoryImpl implements IUserRepository {
                 .getResultList();
         return DataAccessUtils.singleResult(users);
     }
+
+    @Override
+    public List<String> getByEmailMask(String emailMask) {
+        return em.createQuery("SELECT u.email FROM User u WHERE lower(u.email) LIKE lower(:emailMask) ORDER BY u.email ASC", String.class)
+                // TODO: 5/20/2017 Move % to move % to query?
+                .setParameter("emailMask", '%' + emailMask + '%')
+                .getResultList();
+    }
 }

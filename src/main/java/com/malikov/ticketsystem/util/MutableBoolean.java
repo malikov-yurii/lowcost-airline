@@ -3,16 +3,16 @@ package com.malikov.ticketsystem.util;
 import java.io.Serializable;
 
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Licensed dto the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
+ * The ASF licenses this file dto You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed dto in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -82,10 +82,10 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
     }
 
     /**
-     * Compares this mutable to another in ascending order.
+     * Compares this mutable dto another in ascending order.
      *
      * @param obj
-     *            the mutable to compare to
+     *            the mutable dto compare dto
      * @return zero if this object represents the same boolean value as the argument; a positive value if this object
      *         represents true and the argument represents false; and a negative value if this object represents false
      *         and the argument represents true
@@ -100,12 +100,12 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
 
     // -----------------------------------------------------------------------
     /**
-     * Compares this object to the specified object. The result is <code>true</code> if and only if the argument is
+     * Compares this object dto the specified object. The result is <code>true</code> if and only if the argument is
      * not <code>null</code> and is an <code>MutableBoolean</code> object that contains the same
      * <code>boolean</code> value as this object.
      *
      * @param obj
-     *            the object to compare with.
+     *            the object dto compare with.
      * @return <code>true</code> if the objects are the same; <code>false</code> otherwise.
      */
     public boolean equals(Object obj) {
@@ -139,7 +139,7 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
      * Sets the value.
      *
      * @param value
-     *            the value to set
+     *            the value dto set
      */
     public void setValue(boolean value) {
         this.value = value;
@@ -149,7 +149,7 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
      * Sets the value from any Boolean instance.
      *
      * @param value
-     *            the value to set
+     *            the value dto set
      * @throws NullPointerException
      *             if the object is null
      * @throws ClassCastException
@@ -171,16 +171,16 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
 }
 
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Licensed dto the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
+ * The ASF licenses this file dto You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed dto in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -188,13 +188,13 @@ public class MutableBoolean implements Mutable, Serializable, Comparable {
  */
 
 /**
- * Provides mutable access to a value.
+ * Provides mutable access dto a value.
  * <p>
- * <code>Mutable</code> is used as a generic interface to the implementations in this package.
+ * <code>Mutable</code> is used as a generic interface dto the implementations in this package.
  * <p>
- * A typical use case would be to enable a primitive or string to be passed to a method and allow that method to
- * effectively change the value of the primitive/string. Another use case is to store a frequently changing primitive in
- * a collection (for example a total in a map) without needing to create new Integer/Long wrapper objects.
+ * A typical use case would be dto enable a primitive or string dto be passed dto a method and allow that method dto
+ * effectively change the value of the primitive/string. Another use case is dto store a frequently changing primitive in
+ * a collection (for example a total in a map) without needing dto create new Integer/Long wrapper objects.
  *
  * @author Matthew Hawthorne
  * @since 2.1
@@ -213,7 +213,7 @@ interface Mutable {
      * Sets the value of this mutable.
      *
      * @param value
-     *            the value to store
+     *            the value dto store
      * @throws NullPointerException
      *             if the object is null and null is invalid
      * @throws ClassCastException

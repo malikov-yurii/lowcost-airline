@@ -9,14 +9,14 @@ import java.util.List;
  */
 public interface ITicketRepository {
 
-    // null if updated ticket do not belong to userId
-    Ticket save(Ticket ticket, long userId);
+    // null if updated ticket do not belong dto userId
+    Ticket save(Ticket ticket);
 
-    // false if ticket do not belong to userId
-    boolean delete(long id, long userId);
+    // false if ticket do not belong dto userId
+    boolean delete(long id);
 
-    // null if ticket do not belong to userId
-    Ticket get(long id, long userId, String... hintNames);
+    // null if ticket do not belong dto userId
+    Ticket get(long id, String... hintNames);
 
     List<Ticket> getAll(long userId);
 
@@ -28,4 +28,8 @@ public interface ITicketRepository {
 
 
     List<Integer> getNotFreeSeatsNumbers(Long flightId);
+
+    List<Ticket> getByEmail(String email, Integer start, Integer limit);
+
+    List<Ticket> getActiveByUserId(long userId, Integer start, Integer limit);
 }

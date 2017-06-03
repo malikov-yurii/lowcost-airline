@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.service;
 
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.to.UserTo;
+import com.malikov.ticketsystem.dto.UserTo;
 
 import java.util.List;
 
@@ -22,4 +22,5 @@ public interface IUserService{
     // TODO: 5/14/2017  throws NotFoundException?
     User getByEmail(String email);
 
+    List<String> getEmailsByEmailMask(String emailMask);
 }

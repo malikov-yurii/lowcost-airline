@@ -21,13 +21,13 @@ public class AircraftServiceImpl implements IAircraftService {
     @Override
     public Aircraft save(Aircraft aircraft) {
         Assert.notNull(aircraft, "aircraft should not be null");
-        // TODO: 5/5/2017 prepare aircraft to save
+        // TODO: 5/5/2017 prepare aircraft dto save
         return repository.save(aircraft);
     }
 
     @Override
     public void update(Aircraft aircraft) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save aircraft
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save aircraft
         Assert.notNull(aircraft, "aircraft should not be null");
         repository.save(aircraft);
     }

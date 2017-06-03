@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.util;
 
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.to.UserTo;
+import com.malikov.ticketsystem.dto.UserTo;
 
 /**
  * @author Yurii Malikov
@@ -14,7 +14,7 @@ public class UserUtil {
         return new User(null, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail().toLowerCase(), newUser.getPassword(), newUser.getPhoneNumber());
     }
 
-    // TODO: 5/14/2017 Is it ok to pass "" as password ??????????????
+    // TODO: 5/14/2017 Is it ok dto pass "" as password ??????????????
     public static UserTo asTo(User user) {
         return new UserTo(user.getId(), user.getName(), user.getLastName(), user.getEmail(), "", user.getPhoneNumber());
     }

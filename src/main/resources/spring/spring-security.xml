@@ -27,7 +27,7 @@
 
         <!--TODO TWO STRINGS BELOW ARE EQUAL????????-->
         <!--<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
-        <!--todo why not working without below string (redirect to login.jsp)-->
+        <!--todo why not working without below string (redirdtot to login.jsp)-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
 

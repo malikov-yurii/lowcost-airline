@@ -32,17 +32,15 @@
         <a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>
 
         <sec:authorize access="isAuthenticated()">
+            <a class="btn btn-info" role="button" href="tickets"><fmt:message key="app.tickets"/></a>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <%--<a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>--%>
+                <%--<a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>--%>
+                <%--<a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>--%>
+                <%--<a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>--%>
+            </sec:authorize>
             <form:form class="navbar-form navbar-right" action="logout" method="post">
-
-
-
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <%--<a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>--%>
-                </sec:authorize>
-                <a class="btn btn-info" role="button" href="profile">${userFullName}
+                    <a class="btn btn-info" role="button" href="profile">${userFullName}
                     <fmt:message key="app.profile"/></a>
                 <input type="submit" class="btn btn-primary" value="<fmt:message key="app.logout"/>">
             </form:form>

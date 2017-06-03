@@ -47,7 +47,7 @@ public class FlightTestData {
 
     public static final List<Flight> FLIGHTS = Arrays.asList(FLIGHT_1, FLIGHT_2, FLIGHT_3, FLIGHT_4, FLIGHT_5, FLIGHT_6);
 
-    // TODO: 5/15/2017 Use patterng to get rid of dublicating??????????????
+    // TODO: 5/15/2017 Use patterng dto get rid of dublicating??????????????
     public static final ModelMatcher<Flight> FLIGHT_MATCHER = ModelMatcher.of(Flight.class,
             (expected, actual) -> expected == actual || (
                     Objects.equals(expected.getId(), actual.getId())

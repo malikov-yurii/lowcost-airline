@@ -78,6 +78,41 @@ function showAddFlightModal() {
 
     $('#editRow').modal();
 }
+function cancelBooking(id) {
+    $.ajax({
+        url: 'ajax/user/ticket/' + id + '/cancel-booking',
+        type: 'PUT',
+        success: function () {
+            // debugger;
+            swal({
+                title: "Cancel",
+                text: "Ticket booking has been canceled",
+                confirmButtonText: "OK"
+            });
+
+        }
+    });
+}
+
+function payTicket(id) {
+    dateToOffsetString(new Date());
+    $.ajax({
+        url: 'ajax/user/ticket/' + id + '/confirm-payment',
+        type: 'PUT',
+        data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
+        success: function () {
+            alert("Ticket has been successfully purchased. You can access it in your profile");
+            // this swal hides too fast on flights page it should work
+            // swal({
+            //     title: "Payment success",
+            //     text: "Ticket has been successfully purchased. You can access it in your profile",
+            //     type: "info",
+            //     closeOnConfirm: false,
+            //     confirmButtonText: "OK"
+            // });
+        }
+    });
+}
 
 function renderDeleteBtn(data, type, row) {
     return '<a class="btn btn-xs btn-danger" onclick="deleteEntity(' + row.id + ');">' + i18n['common.delete'] + '</a>';
@@ -86,7 +121,7 @@ function renderDeleteBtn(data, type, row) {
 function deleteEntity(id) {
     swal({
             title: i18n['common.areYouSureWantToDelete'],
-            text: "This is final delete. No way to restore data after confirmation",
+            text: "This is final delete. No way dto restore data after confirmation",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -176,7 +211,7 @@ function dateToOffsetString(date) {
 
 
 function onTableReady() {
-    // expected to handle all ajax errors
+    // expected dto handle all ajax errors
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });

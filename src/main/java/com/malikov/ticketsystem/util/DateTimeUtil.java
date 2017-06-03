@@ -23,6 +23,8 @@ public class DateTimeUtil {
 
     public static final long ONE_MINUTE_IN_MILLIS = 60000;
 
+    public static final long BOOKING_DURATION_MILLIS = DateTimeUtil.ONE_MINUTE_IN_MILLIS * 3;
+
     private DateTimeUtil() {}
 
     public static <T extends Comparable<? super T>> boolean isBetween(T value, T start, T end) {

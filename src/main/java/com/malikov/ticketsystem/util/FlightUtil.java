@@ -1,8 +1,8 @@
 package com.malikov.ticketsystem.util;
 
 import com.malikov.ticketsystem.model.Flight;
-import com.malikov.ticketsystem.to.FlightDTO;
-import com.malikov.ticketsystem.to.FlightManageableDTO;
+import com.malikov.ticketsystem.dto.FlightDTO;
+import com.malikov.ticketsystem.dto.FlightManageableDTO;
 
 import java.math.BigDecimal;
 

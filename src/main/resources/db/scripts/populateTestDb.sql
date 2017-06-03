@@ -93,7 +93,8 @@ VALUES
   (4, 1, 3, '2017-06-27 12:00', '2017-06-27 13:00', 20, 40, FALSE);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
-                             baggage_surcharge_over_max_base_ticket_price, priority_registration_tariff, active)
+                             baggage_surcharge_over_max_base_ticket_price,
+                             priority_registration_and_boarding_tariff, active)
 VALUES
   (10, 0.5, 2, 7, TRUE),
   (30, 0.5, 1.11, 5.11, FALSE);

@@ -18,7 +18,7 @@ import java.time.ZoneOffset;
  */
 @SuppressWarnings("JpaQlInspection")
 @NamedQueries({
-        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id AND t.user.id=:userId"),
+        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
         @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC")
 })
 @Entity
@@ -65,7 +65,7 @@ public class Ticket extends BaseEntity {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean withPriorityRegistration;
 
-    // TODO: 5/8/2017 Maybe I need to store ticket information in a single column and parseToLocalDateTime if I need to??? But in a such case I cannot easily add column with additional ticket information
+    // TODO: 5/8/2017 Maybe I need dto store ticket information in a single column and parseToLocalDateTime if I need dto??? But in a such case I cannot easily add column with additional ticket information
     @Column(name = "passenger_name")
     private String passengerFirstName;
 

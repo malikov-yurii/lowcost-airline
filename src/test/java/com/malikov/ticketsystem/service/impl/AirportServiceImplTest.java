@@ -52,7 +52,7 @@ public class AirportServiceImplTest extends AbstractServiceTest {
         MATCHER.assertCollectionEquals(AIRPORTS, service.getAll());
     }
 
-    // TODO: 5/6/2017 How to test delete despite constraints? At first I sould delete planes? perhaps
+    // TODO: 5/6/2017 How dto test delete despite constraints? At first I sould delete planes? perhaps
     @Test(expected = PersistenceException.class)
     public void delete() throws Exception {
         service.delete(AIRPORT_4_DA_VINCI.getId());

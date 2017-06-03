@@ -122,10 +122,13 @@ VALUES
   (4, 1, 3, '2017-06-27 12:00', '2017-06-27 13:00', 20, 40, FALSE),
 
   (1, 4, 3, '2017-06-21 08:00', '2017-06-21 11:00', 20, 40, FALSE),
-  (1, 3, 3, '2017-06-22 08:00', '2017-06-21 11:11', 20, 40, TRUE);
+  (1, 3, 3, '2017-06-22 08:00', '2017-06-21 11:11', 20, 40, TRUE),
+  (1, 3, 3, '2017-04-22 08:00', '2017-06-21 11:11', 20, 40, FALSE )
+;
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
-                             baggage_surcharge_over_max_base_ticket_price, priority_registration_tariff, active)
+                             baggage_surcharge_over_max_base_ticket_price,
+                             priority_registration_and_boarding_tariff, active)
 VALUES
   (10, 0.5, 2, 7, TRUE),
   (30, 0.5, 1.11, 5.11, FALSE);
@@ -253,5 +256,16 @@ VALUES
       'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 6, 'PAID'),
 
   (7, 21, 115, '2017-05-20T14:30+03:00', TRUE, TRUE, 'Bruce', 'Brusov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 7, 'PAID');
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 7, 'PAID'),
+
+  (7, 1, 115, '2017-05-20T14:30+03:00', TRUE, TRUE, 'Viola', 'Eduardova', 'Boryspil International Airport', 'Kyiv',
+      'Leonardo da Vinci International Airport', 'Rome', '2017-06-21T08:00', 'Europe/Kiev', '2017-06-21T13:00+02:00', 8, 'PAID'),
+
+  (8, 1, 115, '2017-03-20T14:30+03:00', TRUE, TRUE, 'Viola', 'Eduardova', 'Boryspil International Airport', 'Kyiv',
+      'Leonardo da Vinci International Airport', 'Rome', '2017-05-21T08:00', 'Europe/Kiev', '2017-05-21T13:00+02:00', 1, 'PAID'),
+
+  (8, 1, 115, '2017-03-20T14:30+03:00', TRUE, TRUE, 'Eduard', 'Eduardov', 'Boryspil International Airport', 'Kyiv',
+      'Leonardo da Vinci International Airport', 'Rome', '2017-05-21T08:00', 'Europe/Kiev', '2017-05-21T13:00+02:00', 1, 'PAID')
+
+;
 

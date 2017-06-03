@@ -85,9 +85,9 @@ CREATE TABLE flights (
 
 /*
  * That is general airline pricing policy.
- * -days_before_ticket_price_starts_to_grows show us how soon before departure ticket price starts to grow (days quantity).
+ * -days_before_ticket_price_starts_to_grows show us how soon before departure ticket price starts dto grow (days quantity).
  * -weight_of_time_growth_factor shows weight rate of time growth factor (0-100%).
- * -baggage_surcharge_over_ticket_max_base_ticket_price should be added to max_ticket_base_price to get baggage tariff (EUR)
+ * -baggage_surcharge_over_ticket_max_base_ticket_price should be added dto max_ticket_base_price dto get baggage tariff (EUR)
  * -priority_registration_tariff is fee for priority registration(EUR)
  *
  *  Example:
@@ -105,14 +105,14 @@ CREATE TABLE flights (
  *  Growth potential for plane filling factor                :  100 EUR * (1 - 0.4) = 60  EUR
  *  Fixed baggage tariff for purchase                          :  200 EUR + 2 EUR        = 202 EUR
  *
- *  If departure day is on 10.04.2017 than price would start to grow on 1.03.2017 (40 days before departure).
+ *  If departure day is on 10.04.2017 than price would start dto grow on 1.03.2017 (40 days before departure).
  *  Each day price would grow by  40 EUR / 40 days = 1 EUR. (Thus on 14.03.2017 price would be 114 EUR)
  *  With each single ticket purchased price would grow by 60EUR / (61 seats-1 seat) seats = 1 EUR (Ninth ticket price 108 EUR).
  *
  *  Thus ninth ticket price with baggage and priority registration on 14.03.2017 would be:
  *  + 100 EUR (start_ticket_base_price)
  *  + 8   EUR (because eight ticket already have bought)
- *  + 14  EUR (since 1.03.2017  to 14.03.2017 price has been growing by 1 EUR each day)
+ *  + 14  EUR (since 1.03.2017  dto 14.03.2017 price has been growing by 1 EUR each day)
  *  + 202 EUR (fixed baggage tariff
  *  = 314 UER
  **/
@@ -121,7 +121,7 @@ CREATE TABLE tariffs_details (
   days_before_ticket_price_starts_to_grow             SMALLINT      ,
   weight_of_time_growth_factor                        DECIMAL(4, 4) ,
   baggage_surcharge_over_max_base_ticket_price DECIMAL(8, 2) ,
-  priority_registration_tariff                        DECIMAL(8, 2) ,
+  priority_registration_and_boarding_tariff                        DECIMAL(8, 2) ,
   active               BOOLEAN
 );
 

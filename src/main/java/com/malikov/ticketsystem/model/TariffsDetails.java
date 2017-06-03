@@ -23,8 +23,8 @@ public class TariffsDetails extends BaseEntity{
     @Column(name = "baggage_surcharge_over_max_base_ticket_price")
     private BigDecimal baggageSurchargeOverMaxBaseTicketPrice;
 
-    @Column(name = "priority_registration_tariff")
-    private BigDecimal priorityRegistrationTariff;
+    @Column(name = "priority_registration_and_boarding_tariff")
+    private BigDecimal priorityRegistrationAndBoardingTariff;
 
     @Column(name = "active")
     // TODO: 5/28/2017 Do I need annotation below
@@ -55,12 +55,12 @@ public class TariffsDetails extends BaseEntity{
         this.baggageSurchargeOverMaxBaseTicketPrice = baggageSurchargeOverMaxBaseTicketPrice;
     }
 
-    public BigDecimal getPriorityRegistrationTariff() {
-        return priorityRegistrationTariff;
+    public BigDecimal getPriorityRegistrationAndBoardingTariff() {
+        return priorityRegistrationAndBoardingTariff;
     }
 
-    public void setPriorityRegistrationTariff(BigDecimal priorityRegistrationTariff) {
-        this.priorityRegistrationTariff = priorityRegistrationTariff;
+    public void setPriorityRegistrationAndBoardingTariff(BigDecimal priorityRegistrationAndBoardingTariff) {
+        this.priorityRegistrationAndBoardingTariff = priorityRegistrationAndBoardingTariff;
     }
 
     public Boolean getActive() {

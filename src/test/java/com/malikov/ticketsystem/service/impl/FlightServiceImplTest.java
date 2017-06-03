@@ -28,7 +28,7 @@ public class FlightServiceImplTest extends AbstractServiceTest {
     // TODO: 5/29/2017 Refactor
     @Autowired
     IFlightRepository repository;
-     //TODO: 5/28/2017 transform to repository integration test
+     //TODO: 5/28/2017 transform dto repository integration test
     @Test
     public void getFlightTicketPriceMap() throws Exception {
         Map<Flight, Long> result = repository.getFilteredFlightsTicketCountMap(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW,

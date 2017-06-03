@@ -1,15 +1,12 @@
 package com.malikov.ticketsystem;
 
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.to.UserTo;
+import com.malikov.ticketsystem.dto.UserTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * @author Yurii Malikov
- */
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 
     private static final long serialVersionUID = 1L;
@@ -31,12 +28,13 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
             return null;
         }
         Object principal = auth.getPrincipal();
+        // TODO: 6/3/2017 Why principal is instanceof AuthorizedUser???
         return (principal instanceof AuthorizedUser) ? (AuthorizedUser) principal : null;
     }
 
     public static AuthorizedUser get() {
         AuthorizedUser user = safeGet();
-        requireNonNull(user, "No authorized user found");
+        requireNonNull(user, "Not authorized user found");
         return user;
     }
 

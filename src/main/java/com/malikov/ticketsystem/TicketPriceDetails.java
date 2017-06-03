@@ -11,12 +11,12 @@ public class TicketPriceDetails {
 
     private BigDecimal baggagePrice;
 
-    private BigDecimal priorityRegistrationPrice;
+    private BigDecimal priorityRegistrationAndBoardingPrice;
 
-    public TicketPriceDetails(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationPrice) {
+    public TicketPriceDetails(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationAndBoardingPrice) {
         this.baseTicketPrice = baseTicketPrice;
         this.baggagePrice = baggagePrice;
-        this.priorityRegistrationPrice = priorityRegistrationPrice;
+        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice;
     }
 
     public BigDecimal getBaseTicketPrice() {
@@ -35,11 +35,11 @@ public class TicketPriceDetails {
         this.baggagePrice = baggagePrice;
     }
 
-    public BigDecimal getPriorityRegistrationPrice() {
-        return priorityRegistrationPrice;
+    public BigDecimal getPriorityRegistrationAndBoardingPrice() {
+        return priorityRegistrationAndBoardingPrice;
     }
 
-    public void setPriorityRegistrationPrice(BigDecimal priorityRegistrationPrice) {
-        this.priorityRegistrationPrice = priorityRegistrationPrice;
+    public void setPriorityRegistrationAndBoardingPrice(BigDecimal priorityRegistrationAndBoardingPrice) {
+        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice;
     }
 }

@@ -21,13 +21,13 @@ public class CityServiceImpl implements ICityService {
     @Override
     public City save(City city) {
         Assert.notNull(city, "city should not be null");
-        // TODO: 5/5/2017 prepare city to save
+        // TODO: 5/5/2017 prepare city dto save
         return repository.save(city);
     }
 
     @Override
     public void update(City city) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare to save city
+        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save city
         Assert.notNull(city, "city should not be null");
         repository.save(city);
     }

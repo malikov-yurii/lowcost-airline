@@ -5,7 +5,7 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.IRoleRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.to.UserTo;
+import com.malikov.ticketsystem.dto.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Override
     public User save(User user) {
         Assert.notNull(user, "user should not be null");
-        // TODO: 6/3/2017 get rid of hardcoded + how to pass reference to role by name?
+        // TODO: 6/3/2017 get rid of hardcoded + how dto pass reference dto role by name?
         user.setRoles(Collections.singleton(roleRepository.getByName("ROLE_USER")));
         return userRepository.save(prepareToSave(user));
     }
@@ -78,4 +78,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         return new AuthorizedUser(u);
     }
 
+    @Override
+    public List<String> getEmailsByEmailMask(String emailMask) {
+        return userRepository.getByEmailMask(emailMask);
+    }
 }

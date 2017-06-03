@@ -50,11 +50,11 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
     @Override
     public List<Airport> getByNameMask(String nameMask) {
         return em.createNamedQuery(Airport.BY_NAME_MASK, Airport.class)
-                // TODO: 5/20/2017 Move % to NamedQuery
+                // TODO: 5/20/2017 Move % dto NamedQuery
                 .setParameter("nameMask", '%' + nameMask + '%').getResultList();
     }
 
-    // TODO: 5/22/2017 is it ok to make name of airport unique but airport has id ????
+    // TODO: 5/22/2017 is it ok dto make name of airport unique but airport has id ????
     @Override
     public Airport getByName(String name) {
         List<Airport> airports =  em.createNamedQuery(Airport.BY_NAME, Airport.class)
