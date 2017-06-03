@@ -62,12 +62,12 @@ $(document).ready(function () {
 
 function renderDiscardBookingBtn(data, type, row) {
     return row.status === 'BOOKED'
-        ? '<a class="btn btn-xs btn-danger" onclick="confirmBooking(' + row.id + ');">' + /*i18n['common.delete']*/ 'discard booking' + '</a>'
+        ? '<a class="btn btn-xs btn-danger" onclick="confirmBookingCancelling(' + row.id + ');">' + /*i18n['common.delete']*/ 'discard booking' + '</a>'
         :'';
 
 }
 
-function confirmBooking(id) {
+function confirmBookingCancelling(id) {
     swal({
             title: /*i18n['ticket.paymentWindowTitle']*/ 'Are you sure to cancel booking?',
             type: "warning",
@@ -79,7 +79,6 @@ function confirmBooking(id) {
         function (isConfirm) {
             if (isConfirm) {
                 cancelBooking(id);
-                forceDataTableReload();
             }
 
         });
@@ -103,8 +102,7 @@ function confirmPayment(id) {
         },
         function (isConfirm) {
             if (isConfirm) {
-                payTicket(id);
-                forceDataTableReload();
+                payForTicket(id);
             }
 
         });

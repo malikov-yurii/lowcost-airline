@@ -147,11 +147,11 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             });
             $('.datatable').attr("hidden", true);
         } else {
-            $('.datatable').attr("hidden", false);
             forceDataTableReload();
+            // $('.datatable').attr("hidden", false);
         }
     } else {
-        $('.datatable').attr("hidden", false);
         forceDataTableReload();
+        // $('.datatable').attr("hidden", false);
     }
 }

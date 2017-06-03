@@ -5,7 +5,9 @@ function showAddModal() {
 }
 
 function forceDataTableReload() {
-    datatableApi.ajax.reload();
+    datatableApi.ajax.reload(function () {
+        $('.datatable').attr("hidden", false);
+    });
 }
 
 function renderUpdateBtn(data, type, row) {
@@ -89,12 +91,13 @@ function cancelBooking(id) {
                 text: "Ticket booking has been canceled",
                 confirmButtonText: "OK"
             });
+            forceDataTableReload();
 
         }
     });
 }
 
-function payTicket(id) {
+function payForTicket(id) {
     dateToOffsetString(new Date());
     $.ajax({
         url: 'ajax/user/ticket/' + id + '/confirm-payment',
@@ -102,6 +105,7 @@ function payTicket(id) {
         data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
         success: function () {
             alert("Ticket has been successfully purchased. You can access it in your profile");
+            forceDataTableReload();
             // this swal hides too fast on flights page it should work
             // swal({
             //     title: "Payment success",

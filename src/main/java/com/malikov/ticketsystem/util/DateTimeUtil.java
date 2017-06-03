@@ -23,7 +23,7 @@ public class DateTimeUtil {
 
     public static final long ONE_MINUTE_IN_MILLIS = 60000;
 
-    public static final long BOOKING_DURATION_MILLIS = DateTimeUtil.ONE_MINUTE_IN_MILLIS * 3;
+    public static final long BOOKING_DURATION_MILLIS = DateTimeUtil.ONE_MINUTE_IN_MILLIS * 2;
 
     private DateTimeUtil() {}
 

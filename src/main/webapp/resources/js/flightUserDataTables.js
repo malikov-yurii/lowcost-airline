@@ -224,7 +224,7 @@ function save() {
                     },
                     function (isConfirm) {
                         if (isConfirm) {
-                            payTicket(data.bookedTicketId);
+                            payForTicket(data.bookedTicketId);
                         } else {
                             alert("You can pay for ticket or discard booking on page tickets.");
                             // swal hide to fast here it should work
@@ -304,12 +304,12 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             });
             $('.datatable').attr("hidden", true);
         } else {
-            $('.datatable').attr("hidden", false);
             forceDataTableReload();
+            // $('.datatable').attr("hidden", false);
         }
     } else {
-        $('.datatable').attr("hidden", false);
         forceDataTableReload();
+        // $('.datatable').attr("hidden", false);
     }
 }
 
