@@ -2,7 +2,6 @@ package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.dto.AirportDTO;
 import com.malikov.ticketsystem.model.Airport;
-import com.malikov.ticketsystem.model.City;
 import com.malikov.ticketsystem.repository.IAirportRepository;
 import com.malikov.ticketsystem.repository.ICityRepository;
 import com.malikov.ticketsystem.service.IAirportService;
@@ -43,9 +42,9 @@ public class AirportServiceImpl implements IAirportService {
     }
 
     @Override
-    public Airport get(long id, String... hintNames) {
+    public Airport get(long id) {
         // TODO: 5/5/2017 check not found with id
-        return airportRepository.get(id, hintNames);
+        return airportRepository.get(id);
     }
 
     @Override

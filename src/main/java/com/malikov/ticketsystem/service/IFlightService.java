@@ -20,7 +20,7 @@ public interface IFlightService {
     // TODO: 5/8/2017 Should name them properties or hints
     Flight get(long id);
 
-    Flight getWithTickets(long id);
+    //Flight getWithTickets(long id);
 
     List<Flight> getAll();
 

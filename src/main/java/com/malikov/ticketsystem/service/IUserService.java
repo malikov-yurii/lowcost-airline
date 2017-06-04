@@ -14,7 +14,7 @@ public interface IUserService{
 
     User update(UserDTO userDTO);
 
-    User get(long id, String... hintNames);
+    User get(long id);
 
     List<User> getAll();
 

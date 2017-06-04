@@ -12,7 +12,7 @@ public interface IService<T> {
     void update(T t);
 
     // TODO: 5/8/2017 Should name them properties or hints
-    T get(long id, String... hintNames);
+    T get(long id);
 
     List<T> getAll();
 

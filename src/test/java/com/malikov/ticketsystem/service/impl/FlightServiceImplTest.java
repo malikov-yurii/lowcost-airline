@@ -16,8 +16,6 @@ import java.util.Map;
 import static com.malikov.ticketsystem.AircraftTestData.AIRCRAFT_1;
 import static com.malikov.ticketsystem.AirportTestData.*;
 import static com.malikov.ticketsystem.FlightTestData.*;
-import static com.malikov.ticketsystem.TicketTestData.TICKET_7;
-import static com.malikov.ticketsystem.TicketTestData.TICKET_8;
 
 /**
  * @author Yurii Malikov
@@ -66,16 +64,16 @@ public class FlightServiceImplTest extends AbstractServiceTest {
         FLIGHT_MATCHER.assertEquals(FLIGHT_3, flight);
     }
 
-    @Test
-    public void getWithTickets() throws Exception {
-        Flight expectedFlightWithTickets = new Flight(FLIGHT_4);
-        expectedFlightWithTickets.setTickets(Arrays.asList(TICKET_7, TICKET_8));
-
-        Flight actualFlightWithTickets = service.getWithTickets(FLIGHT_4.getId());
-
-        FLIGHT_WITH_TICKETS_MATCHER.assertEquals(expectedFlightWithTickets, actualFlightWithTickets);
-
-    }
+    //@Test
+    //public void getWithTickets() throws Exception {
+    //    Flight expectedFlightWithTickets = new Flight(FLIGHT_4);
+    //    expectedFlightWithTickets.setTickets(Arrays.asList(TICKET_7, TICKET_8));
+    //
+    //    Flight actualFlightWithTickets = service.getWithTickets(FLIGHT_4.getId());
+    //
+    //    FLIGHT_WITH_TICKETS_MATCHER.assertEquals(expectedFlightWithTickets, actualFlightWithTickets);
+    //
+    //}
 
     @Test
     public void getAll() throws Exception {

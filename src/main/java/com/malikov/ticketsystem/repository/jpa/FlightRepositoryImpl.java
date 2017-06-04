@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Repository
 //@Transactional(readOnly = true)
 @Transactional
-public class JpaFlightRepositoryImpl implements IFlightRepository {
+public class FlightRepositoryImpl implements IFlightRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
@@ -48,16 +48,7 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public Flight get(long id, String... hintNames) {
-        Map<String, Object> hintsMap;
-        // TODO: 5/8/2017 is it correct comparision??
-        if (hintNames != null && hintNames.length != 0) {
-            hintsMap = new HashMap<String, Object>();
-            for (String hintName : hintNames) {
-                hintsMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
-            }
-            return em.find(Flight.class, id, hintsMap);
-        }
+    public Flight get(long id) {
         return em.find(Flight.class, id);
     }
 
@@ -66,90 +57,6 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
         return em.createQuery("SELECT f FROM Flight f ORDER BY f.id ASC", Flight.class)
                 .getResultList();
     }
-
-    //@Override
-    //public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport,
-    //                             LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
-    //    CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-    //    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-    //    Root<Flight> root = criteriaQuery.from(Flight.class);
-    //
-    //    List<Predicate> filterPredicates = buildPredicatesList(criteriaBuilder, root, departureAirport, arrivalAirport,
-    //            fromDepartureUtcDateTime, toDepartureUtcDateTime);
-    //    if (filterPredicates.size() != 0) {
-    //        criteriaQuery.where(criteriaBuilder.and(filterPredicates.toArray(new Predicate[filterPredicates.size()])));
-    //    }
-    //
-    //    //criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Flight.class)));
-    //    criteriaQuery.select(criteriaBuilder.countDistinct(root));
-    //
-    //    return em.createQuery(criteriaQuery).getSingleResult();
-    //}
-
-
-    private String  getClauseKeyWord(MutableBoolean alreadyHasWhereClause) {
-        if (alreadyHasWhereClause.booleanValue()) {
-            return " AND";
-        } else {
-            alreadyHasWhereClause.setValue(true);
-            return " WHERE";
-        }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Flight> getAllFiltered(Airport departureAirport, Airport arrivalAirport,
-                                       LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime,
-                                       Integer first, Integer limit) {
-        StringBuilder builder = new StringBuilder("SELECT f FROM Flight f");
-        Map<String, Object> params = null;
-
-        if (departureAirport != null || arrivalAirport != null ||
-                toDepartureUtcDateTime != null || fromDepartureUtcDateTime != null) {
-            params = new HashMap<>();
-            MutableBoolean alreadyHasWhereClause = new MutableBoolean(false);
-
-            if (departureAirport != null) {
-                builder.append(getClauseKeyWord(alreadyHasWhereClause))
-                        .append(" f.departureAirport=:departureAirport");
-                params.put("departureAirport", departureAirport);
-            }
-
-            if (arrivalAirport != null) {
-                builder.append(getClauseKeyWord(alreadyHasWhereClause))
-                        .append(" f.arrivalAirport=:arrivalAirport");
-                params.put("arrivalAirport", arrivalAirport);
-            }
-
-            if (fromDepartureUtcDateTime != null) {
-                builder.append(getClauseKeyWord(alreadyHasWhereClause))
-                        .append(" f.departureUtcDateTime>=:fromDepartureUtcDateTime");
-                params.put("fromDepartureUtcDateTime", fromDepartureUtcDateTime);
-            }
-
-            if (toDepartureUtcDateTime != null) {
-                builder.append(getClauseKeyWord(alreadyHasWhereClause))
-                        .append(" f.departureUtcDateTime<=:toDepartureUtcDateTime");
-                params.put("toDepartureUtcDateTime", toDepartureUtcDateTime);
-            }
-        }
-
-
-        builder.append("  ORDER BY f.id ASC");
-        Query query = em.createQuery(builder.toString());
-
-        if(params != null) {
-            for (Parameter parameter : query.getParameters()) {
-                query.setParameter(parameter, params.get(parameter.getName()));
-            }
-        }
-        query.setFirstResult(first);
-        query.setMaxResults(limit);
-
-        return query.getResultList();
-    }
-
-
 
     @Override
     @Transactional
@@ -182,7 +89,92 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
                 .collect(Collectors.toMap(resultElement -> (Flight) (((Object[]) resultElement)[0]),
                         resultElement -> (Long) (((Object[]) resultElement)[1])));
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Flight> getAllFiltered(Airport departureAirport, Airport arrivalAirport,
+                                       LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime,
+                                       Integer first, Integer limit) {
+        StringBuilder builder = new StringBuilder("SELECT f FROM Flight f");
+        Map<String, Object> params = null;
+
+        if (departureAirport != null || arrivalAirport != null ||
+                toDepartureUtcDateTime != null || fromDepartureUtcDateTime != null) {
+            params = new HashMap<>();
+            MutableBoolean alreadyHasWhereClause = new MutableBoolean(false);
+
+            if (departureAirport != null) {
+                builder.append(getClauseKeyword(alreadyHasWhereClause))
+                        .append(" f.departureAirport=:departureAirport");
+                params.put("departureAirport", departureAirport);
+            }
+
+            if (arrivalAirport != null) {
+                builder.append(getClauseKeyword(alreadyHasWhereClause))
+                        .append(" f.arrivalAirport=:arrivalAirport");
+                params.put("arrivalAirport", arrivalAirport);
+            }
+
+            if (fromDepartureUtcDateTime != null) {
+                builder.append(getClauseKeyword(alreadyHasWhereClause))
+                        .append(" f.departureUtcDateTime>=:fromDepartureUtcDateTime");
+                params.put("fromDepartureUtcDateTime", fromDepartureUtcDateTime);
+            }
+
+            if (toDepartureUtcDateTime != null) {
+                builder.append(getClauseKeyword(alreadyHasWhereClause))
+                        .append(" f.departureUtcDateTime<=:toDepartureUtcDateTime");
+                params.put("toDepartureUtcDateTime", toDepartureUtcDateTime);
+            }
+        }
+
+
+        builder.append("  ORDER BY f.id ASC");
+        Query query = em.createQuery(builder.toString());
+
+        if(params != null) {
+            for (Parameter parameter : query.getParameters()) {
+                query.setParameter(parameter, params.get(parameter.getName()));
+            }
+        }
+        query.setFirstResult(first);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
+
+    private String getClauseKeyword(MutableBoolean alreadyHasWhereClause) {
+        if (alreadyHasWhereClause.booleanValue()) {
+            return " AND";
+        } else {
+            alreadyHasWhereClause.setValue(true);
+            return " WHERE";
+        }
+    }
 }
+
+
+//@Override
+//public Long countAllFiltered(Airport departureAirport, Airport arrivalAirport,
+//                             LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime) {
+//    CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+//    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+//    Root<Flight> root = criteriaQuery.from(Flight.class);
+//
+//    List<Predicate> filterPredicates = buildPredicatesList(criteriaBuilder, root, departureAirport, arrivalAirport,
+//            fromDepartureUtcDateTime, toDepartureUtcDateTime);
+//    if (filterPredicates.size() != 0) {
+//        criteriaQuery.where(criteriaBuilder.and(filterPredicates.toArray(new Predicate[filterPredicates.size()])));
+//    }
+//
+//    //criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Flight.class)));
+//    criteriaQuery.select(criteriaBuilder.countDistinct(root));
+//
+//    return em.createQuery(criteriaQuery).getSingleResult();
+//}
+
+
+
 
 /*
     @Override

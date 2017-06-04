@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaCityRepositoryImpl implements ICityRepository {
+public class CityRepositoryImpl implements ICityRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
@@ -39,12 +39,12 @@ public class JpaCityRepositoryImpl implements ICityRepository {
     }
 
     @Override
-    public City get(long id, String... hintNames) {
+    public City get(long id) {
         return em.find(City.class, id);
     }
 
     @Override
     public List<City> getAll() {
-        return em.createQuery("SELECT c FROM City c ORDER BY c.id", City.class).getResultList();
+        return em.createQuery("SELECT c FROM City c ORDER BY c.id ASC", City.class).getResultList();
     }
 }

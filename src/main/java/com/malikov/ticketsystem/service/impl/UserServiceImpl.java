@@ -54,8 +54,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User get(long id, String... hintNames) {
-        return checkNotFoundWithId(userRepository.get(id, hintNames), id);
+    public User get(long id) {
+        return checkNotFoundWithId(userRepository.get(id), id);
     }
 
     @Override

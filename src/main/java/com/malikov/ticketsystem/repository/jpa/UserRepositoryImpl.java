@@ -17,7 +17,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaUserRepositoryImpl implements IUserRepository {
+public class UserRepositoryImpl implements IUserRepository {
 
     @PersistenceContext
     protected EntityManager em;
@@ -41,7 +41,7 @@ public class JpaUserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public User get(long id, String... hintNames) {
+    public User get(long id) {
         return em.find(User.class, id);
     }
 

@@ -10,18 +10,7 @@ import java.util.Map;
 /**
  * @author Yurii Malikov
  */
-public interface IFlightRepository {
-
-    Flight save(Flight t);
-
-    // false if not found
-    boolean delete(long id);
-
-    // TODO: 5/8/2017 Should name them properties or hints
-    // null if not found
-    Flight get(long id, String... hintNames);
-
-    List<Flight> getAll();
+public interface IFlightRepository extends IGenericRepository<Flight>{
 
     List<Flight> getAllFiltered(Airport departureAirport, Airport arrivalAirport,
                                 LocalDateTime fromDepartureUtcDateTime, LocalDateTime toDepartureUtcDateTime,

@@ -197,20 +197,20 @@ public class TicketServiceImpl implements ITicketService {
         return checkNotFoundWithId(ticketRepository.get(id), id);
     }
 
-    @Override
-    public Ticket getWithUser(long id, long userId) {
-        return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER), id);
-    }
-
-    @Override
-    public Ticket getWithFlight(long id, long userId) {
-        return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_FLIGHT), id);
-    }
-
-    @Override
-    public Ticket getWithUserAndFlight(long id, long userId) {
-        return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER_AND_FLIGHT), id);
-    }
+    //@Override
+    //public Ticket getWithUser(long id, long userId) {
+    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER), id);
+    //}
+    //
+    //@Override
+    //public Ticket getWithFlight(long id, long userId) {
+    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_FLIGHT), id);
+    //}
+    //
+    //@Override
+    //public Ticket getWithUserAndFlight(long id, long userId) {
+    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER_AND_FLIGHT), id);
+    //}
 
     @Override
     public boolean delete(long ticketId) {
@@ -224,7 +224,7 @@ public class TicketServiceImpl implements ITicketService {
 
     @Override
     public List<Ticket> getAll(long userId) {
-        return ticketRepository.getAll(userId);
+        return ticketRepository.getAllByUserId(userId);
     }
 
     /**

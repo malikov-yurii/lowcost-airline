@@ -14,7 +14,7 @@ public interface IAirportService {
 
     Airport update(AirportDTO airportDTO);
 
-    Airport get(long id, String... hintNames);
+    Airport get(long id);
 
     boolean delete(long id);
 

@@ -16,7 +16,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaAircraftRepositoryImpl implements IAircraftRepository {
+public class AircraftRepositoryImpl implements IAircraftRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
@@ -40,7 +40,7 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
     }
 
     @Override
-    public Aircraft get(long id, String... hintNames) {
+    public Aircraft get(long id) {
         return em.find(Aircraft.class, id);
     }
 

@@ -37,7 +37,7 @@ public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepositor
     }
 
     @Override
-    public TariffsDetails get(long id, String... hintNames) {
+    public TariffsDetails get(long id) {
         return em.find(TariffsDetails.class, id);
     }
 

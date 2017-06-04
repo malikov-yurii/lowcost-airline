@@ -16,7 +16,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaRoleRepositoryImpl implements IRoleRepository {
+public class RoleRepositoryImpl implements IRoleRepository {
 
     @PersistenceContext
     protected EntityManager em;
@@ -38,7 +38,7 @@ public class JpaRoleRepositoryImpl implements IRoleRepository {
     }
 
     @Override
-    public Role get(long id, String... hintNames) {
+    public Role get(long id) {
         return em.find(Role.class, id);
     }
 

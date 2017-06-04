@@ -33,9 +33,9 @@ public class AircraftModelServiceImpl implements IAircraftModelService {
     }
 
     @Override
-    public AircraftModel get(long id, String... hintNames) {
+    public AircraftModel get(long id) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id, hintNames);
+        return repository.get(id);
     }
 
     @Override

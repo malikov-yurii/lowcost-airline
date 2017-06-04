@@ -50,23 +50,23 @@ public class TicketServiceImplTest extends AbstractServiceTest {
         MATCHER.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
     }
 
-    @Test
-    public void testGetWithUser() throws Exception {
-        Ticket ticket = service.getWithUser(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
-        MATCHER_WITH_USER.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
-    }
-
-    @Test
-    public void testGetWithFlight() throws Exception {
-        Ticket ticket = service.getWithFlight(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
-        MATCHER_WITH_FLIGHT.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
-    }
-
-    @Test
-    public void testGetWithUserAndFlight() throws Exception {
-        Ticket ticket = service.getWithUserAndFlight(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
-        MATCHER_WITH_USER_AND_FLIGHT.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
-    }
+    //@Test
+    //public void testGetWithUser() throws Exception {
+    //    Ticket ticket = service.getWithUser(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
+    //    MATCHER_WITH_USER.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
+    //}
+    //
+    //@Test
+    //public void testGetWithFlight() throws Exception {
+    //    Ticket ticket = service.getWithFlight(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
+    //    MATCHER_WITH_FLIGHT.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
+    //}
+    //
+    //@Test
+    //public void testGetWithUserAndFlight() throws Exception {
+    //    Ticket ticket = service.getWithUserAndFlight(TICKET_3_BELONGS_USER_3.getId(), USER_3.getId());
+    //    MATCHER_WITH_USER_AND_FLIGHT.assertEquals(TICKET_3_BELONGS_USER_3, ticket);
+    //}
 
     @Test
     public void testGetAll() throws Exception {

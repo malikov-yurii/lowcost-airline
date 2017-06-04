@@ -33,9 +33,9 @@ public class CityServiceImpl implements ICityService {
     }
 
     @Override
-    public City get(long id, String... hintNames) {
+    public City get(long id) {
         // TODO: 5/5/2017 check not found with id
-        return repository.get(id, hintNames);
+        return repository.get(id);
     }
 
     @Override

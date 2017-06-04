@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaAircraftModelRepositoryImpl implements IAircraftModelRepository {
+public class AircraftModelRepositoryImpl implements IAircraftModelRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
@@ -39,7 +39,7 @@ public class JpaAircraftModelRepositoryImpl implements IAircraftModelRepository 
     }
 
     @Override
-    public AircraftModel get(long id, String... hintNames) {
+    public AircraftModel get(long id) {
         return em.find(AircraftModel.class, id);
     }
 
@@ -48,5 +48,4 @@ public class JpaAircraftModelRepositoryImpl implements IAircraftModelRepository 
         return em.createQuery("SELECT am FROM AircraftModel am ORDER BY am.id ASC", AircraftModel.class)
                 .getResultList();
     }
-
 }

@@ -63,11 +63,11 @@ public class FlightServiceImpl implements IFlightService {
         return flightRepository.get(id);
     }
 
-    @Override
-    public Flight getWithTickets(long id) {
-        // TODO: 5/5/2017 check not found with id
-        return flightRepository.get(id, Flight.WITH_TICKETS);
-    }
+    //@Override
+    //public Flight getWithTickets(long id) {
+    //     TODO: 5/5/2017 check not found with id
+        //return flightRepository.get(id, Flight.WITH_TICKETS);
+    //}
 
     @Override
     public List<Flight> getAll() {

@@ -26,11 +26,11 @@ public interface ITicketService {
 
     boolean delete(long id);
 
-    Ticket getWithUser(long id, long userId);
-
-    Ticket getWithFlight(long id, long userId);
-
-    Ticket getWithUserAndFlight(long id, long userId);
+    //Ticket getWithUser(long id, long userId);
+    //
+    //Ticket getWithFlight(long id, long userId);
+    //
+    //Ticket getWithUserAndFlight(long id, long userId);
 
     // TODO: 5/30/2017 add userid here
 

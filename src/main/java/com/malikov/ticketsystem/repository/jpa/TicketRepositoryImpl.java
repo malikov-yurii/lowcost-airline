@@ -11,9 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Yurii Malikov
@@ -21,7 +19,7 @@ import java.util.Map;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional
-public class JpaTicketRepositoryImpl implements ITicketRepository {
+public class TicketRepositoryImpl implements ITicketRepository {
 
     // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
@@ -95,24 +93,18 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public Ticket get(long id, String... hintNames) {
-        Map<String, Object> hintMap;
-        Ticket ticket;
-        // TODO: 5/8/2017 is it correct comparision??
-        if (hintNames != null && hintNames.length != 0) {
-            hintMap = new HashMap<>();
-            for (String hintName : hintNames) {
-                hintMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
-            }
-            ticket = em.find(Ticket.class, id, hintMap);
-        } else {
-            ticket = em.find(Ticket.class, id);
-        }
-        return ticket;
+    public Ticket get(long id) {
+        return em.find(Ticket.class, id);
     }
 
     @Override
-    public List<Ticket> getAll(long userId) {
+    public List<Ticket> getAll() {
+        return em.createQuery("SELECT t FROM Ticket t ORDER BY t.id ASC", Ticket.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Ticket> getAllByUserId(long userId) {
         return em.createQuery("SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC",
                 Ticket.class)
                 .setParameter("userId", userId)
