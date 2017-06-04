@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 /**
  * @author Yurii Malikov
  */
-public class UserTo extends BaseTo{
+public class UserDTO extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,10 +34,10 @@ public class UserTo extends BaseTo{
     private String phoneNumber;
 
 
-    public UserTo() {
+    public UserDTO() {
     }
 
-    public UserTo(Long id, String firstName, String lastName, String email, String password, String phoneNumber) {
+    public UserDTO(Long id, String firstName, String lastName, String email, String password, String phoneNumber) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,7 +94,7 @@ public class UserTo extends BaseTo{
 
     @Override
     public String toString() {
-        return "UserTo{" +
+        return "UserDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.service;
 
+import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.dto.UserTo;
 
 import java.util.List;
 
@@ -12,15 +12,19 @@ public interface IUserService{
 
     User save(User user);
 
-    void update(UserTo userTo);
+    User update(UserDTO userDTO);
 
     User get(long id, String... hintNames);
 
     List<User> getAll();
 
-    void delete(long id);
+    boolean delete(long id);
     // TODO: 5/14/2017  throws NotFoundException?
     User getByEmail(String email);
 
-    List<String> getEmailsByEmailMask(String emailMask);
+    List<String> getEmailsBy(String emailMask);
+
+    List<User> getByLastName(String lastName);
+
+    List<String> getLastNamesBy(String lastNameMask);
 }

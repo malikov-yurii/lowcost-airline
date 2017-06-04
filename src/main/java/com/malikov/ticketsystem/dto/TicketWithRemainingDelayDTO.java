@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 
 // TODO: 5/31/2017 I can change it for tickets table
 @JsonInclude(ALWAYS)
-public class TicketWithRemainingDelayDTO extends BaseTo{
+public class TicketWithRemainingDelayDTO extends BaseDTO {
 
     private String passengerFirstName;
 

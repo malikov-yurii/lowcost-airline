@@ -17,7 +17,7 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="app.tickets"/></h3>
+            <h3 class="page-title"><fmt:message key="ticket.active"/></h3>
 
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div class="view-box">
@@ -50,14 +50,14 @@
                 </div>
             </sec:authorize>
 
+            <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                <a class="btn btn-sm btn-info show-archived" onclick="showArchivedTickets()">
+                    <fmt:message key="ticket.showArchived"/></a>
+                <a class="btn btn-sm btn-info show-active" style="display: none" onclick="showActiveTickets()">
+                    <fmt:message key="ticket.showActive"/></a>
+            </sec:authorize>
 
             <div class="view-box datatable" hidden="true">
-
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()">
-                        <fmt:message key="flight.addNewFlight"/></a>
-                </sec:authorize>
-
 
                 <table class="table table-striped display" id="datatable">
                     <thead>

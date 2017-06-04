@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 
 // TODO: 5/31/2017 I can change it for tickets table
-public class TicketDTO extends BaseTo{
+public class TicketDTO extends BaseDTO {
 
     private String passengerFirstName;
 

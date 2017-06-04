@@ -38,6 +38,16 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
+    public List<Ticket> getArchivedByUserId(Long userId, Integer start, Integer limit) {
+        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.id=:userId AND t.departureUtcDateTime<:now ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+                .setParameter("userId", userId)
+                .setParameter("now", LocalDateTime.now())
+                .setFirstResult(start)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    @Override
     public List<Integer> getNotFreeSeatsNumbers(Long flightId) {
         return em.createQuery("SELECT t.seatNumber FROM Ticket t WHERE t.flight.id=:flightId", Integer.class)
                 .setParameter("flightId", flightId)

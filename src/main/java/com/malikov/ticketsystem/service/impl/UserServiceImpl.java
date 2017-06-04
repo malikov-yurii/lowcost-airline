@@ -5,7 +5,7 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.IRoleRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.dto.UserTo;
+import com.malikov.ticketsystem.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,9 +43,14 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void update(UserTo userTo) {
-        User user = updateFromTo(get(userTo.getId()), userTo);
-        userRepository.save(prepareToSave(user));
+    public User update(UserDTO userDTO) {
+        User user = updateFromTo(get(userDTO.getId()), userDTO);
+        return userRepository.save(prepareToSave(user));
+    }
+
+    @Override
+    public List<User> getByLastName(String lastName) {
+        return userRepository.getByLastName(lastName);
     }
 
     @Override
@@ -59,8 +64,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void delete(long id) {
-        checkNotFoundWithId(userRepository.delete(id), id);
+    public boolean delete(long id) {
+        return userRepository.delete(id);
     }
 
     @Override
@@ -79,7 +84,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public List<String> getEmailsByEmailMask(String emailMask) {
+    public List<String> getEmailsBy(String emailMask) {
         return userRepository.getByEmailMask(emailMask);
+    }
+
+    @Override
+    public List<String> getLastNamesBy(String lastNameMask) {
+        return userRepository.getLastNamesBy(lastNameMask);
     }
 }

@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem;
 
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.dto.UserTo;
+import com.malikov.ticketsystem.dto.UserDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -42,7 +42,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         return get().id;
     }
 
-    public void update(UserTo newTo) {
+    public void update(UserDTO newTo) {
         fullName = newTo.getFirstName() + ' ' + newTo.getLastName();
     }
 

@@ -60,5 +60,7 @@ public interface ITicketService {
      *          with remaining delays in millis before tickets will be automatically removed
      *          if ticket has status BOOKED (or null if ticket status is not BOOKED)
      */
-    List<TicketWithRemainingDelayDTO> getTicketsDelaysByUserId(long userId, Integer start, Integer limit);
+    List<TicketWithRemainingDelayDTO> getActiveTicketsDelaysByUserId(long userId, Integer start, Integer limit);
+
+    List<TicketDTO> getArchivedTickets(Long userId, Integer startingFrom, Integer limit);
 }

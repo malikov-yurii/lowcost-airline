@@ -5,14 +5,14 @@ import com.malikov.ticketsystem.IHasId;
 /**
  * @author Yurii Malikov
  */
-public abstract class BaseTo implements IHasId{
+public abstract class BaseDTO implements IHasId{
 
     protected Long id;
 
-    public BaseTo() {
+    public BaseDTO() {
     }
 
-    public BaseTo(Long id) {
+    public BaseDTO(Long id) {
         this.id = id;
     }
 

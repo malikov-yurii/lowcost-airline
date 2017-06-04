@@ -32,4 +32,6 @@ public interface ITicketRepository {
     List<Ticket> getByEmail(String email, Integer start, Integer limit);
 
     List<Ticket> getActiveByUserId(long userId, Integer start, Integer limit);
+
+    List<Ticket> getArchivedByUserId(Long userId, Integer start, Integer limit);
 }

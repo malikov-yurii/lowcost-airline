@@ -15,4 +15,8 @@ public interface IUserRepository extends IGenericRepository<User> {
     User getByEmail(String email);
 
     List<String> getByEmailMask(String emailMask);
+
+    List<User> getByLastName(String lastName);
+
+    List<String> getLastNamesBy(String lastNameMask);
 }

@@ -6,7 +6,7 @@ $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
         "processing": true,
         "dom": "ft<'row'<'dataTables_length_wrap'l>><'row'<'col-md-6'p>>",
-        "lengthMenu": [3, 5, 10],
+        "lengthMenu": [5, 10, 25],
         "serverSide": true,
         "ajax": {
             "url": ajaxUrl,
@@ -59,6 +59,22 @@ $(document).ready(function () {
 
     $('.datatable').attr('hidden', false);
 });
+
+function showArchivedTickets(){
+    $(".page-title").html('Archived tickets');
+    $(".show-active").show();
+    $(".show-archived").hide();
+    datatableApi.ajax.url( 'ajax/user/ticket/archived/' ).load();
+    // forceDataTableReload();
+}
+
+function showActiveTickets(){
+    $(".page-title").html('Active tickets');
+    $(".show-active").hide();
+    $(".show-archived").show();
+    datatableApi.ajax.url( 'ajax/user/ticket/' ).load();
+    // forceDataTableReload();
+}
 
 function renderDiscardBookingBtn(data, type, row) {
     return row.status === 'BOOKED'

@@ -51,7 +51,7 @@ public class TicketServiceImpl implements ITicketService {
 
 
     @Override
-    public List<TicketWithRemainingDelayDTO> getTicketsDelaysByUserId(long userId, Integer start, Integer limit) {
+    public List<TicketWithRemainingDelayDTO> getActiveTicketsDelaysByUserId(long userId, Integer start, Integer limit) {
         return ticketRepository
                 .getActiveByUserId(userId, start, limit)
                 .stream()
@@ -62,6 +62,14 @@ public class TicketServiceImpl implements ITicketService {
                                     ? ticketRemovalTask.getDelay(TimeUnit.MILLISECONDS)
                                     : null);
                 })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TicketDTO> getArchivedTickets(Long userId, Integer start, Integer limit) {
+        return ticketRepository.getArchivedByUserId(userId, start, limit)
+                .stream()
+                .map(TicketUtil::asDTO)
                 .collect(Collectors.toList());
     }
 

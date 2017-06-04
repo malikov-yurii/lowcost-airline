@@ -47,7 +47,7 @@ public class TicketUserAjaxController {
                                                                 @RequestParam(value = "start") Integer startingFrom,
                                                                 @RequestParam(value = "length") Integer pageCapacity) {
         List<TicketWithRemainingDelayDTO> ticketWithRemainingDelayDTOs =
-                ticketService.getTicketsDelaysByUserId(AuthorizedUser.id(),startingFrom, pageCapacity);
+                ticketService.getActiveTicketsDelaysByUserId(AuthorizedUser.id(),startingFrom, pageCapacity);
         ModelMap model = new ModelMap();
         int dataTableHasNextPageIndicator = startingFrom + ticketWithRemainingDelayDTOs.size() + 1;
 
@@ -59,6 +59,28 @@ public class TicketUserAjaxController {
         model.put("recordsTotal", dataTableHasNextPageIndicator);
         model.put("recordsFiltered", dataTableHasNextPageIndicator);
         model.put("data", ticketWithRemainingDelayDTOs);
+
+        return model;
+    }
+
+    @GetMapping(value = "/archived", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelMap getArchivedUserTickets(@RequestParam(value = "draw") Integer draw,
+                                                                @RequestParam(value = "start") Integer startingFrom,
+                                                                @RequestParam(value = "length") Integer pageCapacity) {
+        List<TicketDTO> ticketDTOs =
+                ticketService.getArchivedTickets(AuthorizedUser.id(),startingFrom, pageCapacity);
+        ModelMap model = new ModelMap();
+
+        int dataTableHasNextPageIndicator = startingFrom + ticketDTOs.size() + 1;
+
+        if (ticketDTOs.size() > pageCapacity) {
+            ticketDTOs.remove(ticketDTOs.size() - 1);
+        }
+
+        model.put("draw", draw);
+        model.put("recordsTotal", dataTableHasNextPageIndicator);
+        model.put("recordsFiltered", dataTableHasNextPageIndicator);
+        model.put("data", ticketDTOs);
 
         return model;
     }

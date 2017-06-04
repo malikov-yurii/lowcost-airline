@@ -37,10 +37,10 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h2>${userTo.firstName} <spring:message code="${register ? 'app.register' : 'app.profile'}"/></h2>
+            <h2>${userDTO.firstName} <spring:message code="${register ? 'app.register' : 'app.profile'}"/></h2>
 
             <div class="view-box">
-                <form:form modelAttribute="userTo" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
+                <form:form modelAttribute="userDTO" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
                            charset="utf-8" accept-charset="UTF-8">
 
                     <spring:message code="users.firstName" var="firstName"/>

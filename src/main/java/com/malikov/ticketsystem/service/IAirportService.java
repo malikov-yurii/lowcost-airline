@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.service;
 
+import com.malikov.ticketsystem.dto.AirportDTO;
 import com.malikov.ticketsystem.model.Airport;
 
 import java.util.List;
@@ -7,7 +8,15 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IAirportService extends IService<Airport> {
+public interface IAirportService {
+
+    Airport save(Airport airport);
+
+    Airport update(AirportDTO airportDTO);
+
+    Airport get(long id, String... hintNames);
+
+    boolean delete(long id);
 
     List<Airport> getByNameMask(String nameMask);
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 /**
  * @author Yurii Malikov
  */
-public class FlightDTO extends BaseTo {
+public class FlightDTO extends BaseDTO {
 
     private String departureAirport;
 

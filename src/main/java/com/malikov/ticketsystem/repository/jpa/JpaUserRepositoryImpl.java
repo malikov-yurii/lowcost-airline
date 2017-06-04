@@ -52,6 +52,13 @@ public class JpaUserRepositoryImpl implements IUserRepository {
     }
 
     @Override
+    public List<User> getByLastName(String lastName) {
+        return em.createQuery("SELECT u FROM User u WHERE u.lastName=:lastName ORDER BY u.id", User.class)
+                .setParameter("lastName", lastName)
+                .getResultList();
+    }
+
+    @Override
     public User getByEmail(String email) {
         List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
                 .setParameter("email", email)
@@ -64,6 +71,14 @@ public class JpaUserRepositoryImpl implements IUserRepository {
         return em.createQuery("SELECT u.email FROM User u WHERE lower(u.email) LIKE lower(:emailMask) ORDER BY u.email ASC", String.class)
                 // TODO: 5/20/2017 Move % to move % to query?
                 .setParameter("emailMask", '%' + emailMask + '%')
+                .getResultList();
+    }
+
+    @Override
+    public List<String> getLastNamesBy(String lastNameMask) {
+        return em.createQuery("SELECT u.lastName FROM User u WHERE lower(u.lastName) LIKE lower(:lastNameMask) ORDER BY u.lastName ASC", String.class)
+                // TODO: 5/20/2017 Move % to move % to query?
+                .setParameter("lastNameMask", '%' + lastNameMask + '%')
                 .getResultList();
     }
 }

@@ -1,9 +1,10 @@
 package com.malikov.ticketsystem.controller;
 
 import com.malikov.ticketsystem.AuthorizedUser;
+import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.User;
+import com.malikov.ticketsystem.service.ITariffsDetailsService;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.dto.UserTo;
 import com.malikov.ticketsystem.util.UserUtil;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class RootController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    private ITariffsDetailsService tariffsDetailsService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap model,
@@ -54,25 +58,47 @@ public class RootController {
         return "tickets";
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String users(){
+        return "users";
+    }
+
+    @RequestMapping(value = "/airports", method = RequestMethod.GET)
+    public String airports(){
+        return "airports";
+    }
+
     @GetMapping("/register")
     public String register(ModelMap model) {
-        model.addAttribute("userTo", new UserTo());
+        model.addAttribute("userDTO", new UserDTO());
         model.addAttribute("register", true);
         return "profile";
     }
 
+    @GetMapping("/tariffs")
+    public String tariffs(ModelMap model) {
+        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
+        return "tariffs";
+    }
+
+    @PutMapping("/tariffs")
+    public String saveTariffs(@Valid UserDTO userDTO, ModelMap model) {
+        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
+        return "tariffs";
+    }
+
     @PostMapping("/register")
-    public String saveRegister(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
+    public String saveRegister(@Valid UserDTO userDTO, BindingResult result, SessionStatus status, ModelMap model) {
         if (!result.hasErrors()) {
             try {
-                ValidationUtil.checkNew(userTo);
-                User newUser = UserUtil.createNewFromTo(userTo);
+                ValidationUtil.checkNew(userDTO);
+                User newUser = UserUtil.createNewFromTo(userDTO);
                 newUser =  userService.save(newUser);
                 LOG.info(newUser + " has been created");
 
                 status.setComplete();
 
-                return "redirect:login?message=app.registered&username=" + userTo.getEmail();
+                return "redirect:login?message=app.registered&username=" + userDTO.getEmail();
             } catch (DataIntegrityViolationException ex) {
                 result.rejectValue("email", "exception.users.duplicate_email");
             }
@@ -83,19 +109,19 @@ public class RootController {
 
     @GetMapping("/profile")
     public String profile(ModelMap modelMap) {
-        modelMap.put("userTo", UserUtil.asTo(userService.get(AuthorizedUser.id())));
+        modelMap.put("userDTO", UserUtil.asTo(userService.get(AuthorizedUser.id())));
         return "profile";
     }
 
     @PostMapping("/profile")
-    public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
+    public String updateProfile(@Valid UserDTO userDTO, BindingResult result, SessionStatus status) {
         if (!result.hasErrors()) {
             try {
 
-                LOG.info("update " + userTo);
-                ValidationUtil.checkIdConsistent(userTo, AuthorizedUser.id());
+                LOG.info("update " + userDTO);
+                ValidationUtil.checkIdConsistent(userDTO, AuthorizedUser.id());
 
-                userService.update(userTo);
+                userService.update(userDTO);
                 status.setComplete();
                 return "redirect:meals";
             } catch (DataIntegrityViolationException ex) {
