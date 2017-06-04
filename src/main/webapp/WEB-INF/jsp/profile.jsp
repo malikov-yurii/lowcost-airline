@@ -13,7 +13,7 @@
     <div class="container">
         <a href="#" class="navbar-brand"><fmt:message key="app.title"/></a>
 
-        <a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>
+        <a class="btn btn-info" role="button" href="flights"><fmt:message key="common.flights"/></a>
 
         <sec:authorize access="isAuthenticated()">
             <form:form class="navbar-form navbar-right" action="logout" method="post">
@@ -43,19 +43,19 @@
                 <form:form modelAttribute="userDTO" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
                            charset="utf-8" accept-charset="UTF-8">
 
-                    <spring:message code="users.firstName" var="firstName"/>
+                    <spring:message code="user.firstName" var="firstName"/>
                     <lowcost:inputField label='${firstName}' name="firstName"/>
 
-                    <spring:message code="users.LastName" var="LastName"/>
+                    <spring:message code="user.lastName" var="LastName"/>
                     <lowcost:inputField label='${LastName}' name="LastName"/>
 
-                    <spring:message code="users.email" var="userEmail"/>
+                    <spring:message code="user.email" var="userEmail"/>
                     <lowcost:inputField label='${userEmail}' name="email"/>
 
-                    <spring:message code="users.password" var="userPassword"/>
+                    <spring:message code="user.password" var="userPassword"/>
                     <lowcost:inputField label='${userPassword}' name="password" inputType="password"/>
 
-                    <spring:message code="users.phoneNumber" var="phoneNumber"/>
+                    <spring:message code="user.phoneNumber" var="phoneNumber"/>
                     <lowcost:inputField label='${phoneNumber}' name="phoneNumber"/>
 
                     <div class="form-group">

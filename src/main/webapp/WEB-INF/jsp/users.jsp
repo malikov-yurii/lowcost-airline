@@ -17,7 +17,7 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="app.users"/></h3>
+            <h3 class="page-title"><fmt:message key="common.users"/></h3>
 
             <div class="view-box">
                 <div class="row">
@@ -51,11 +51,11 @@
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="app.id"/></th>
+                        <th><fmt:message key="common.id"/></th>
                         <th><fmt:message key="app.firstName"/></th>
                         <th><fmt:message key="app.lastName"/></th>
                         <th><fmt:message key="app.email"/></th>
-                        <th><fmt:message key="users.phoneNumber"/></th>
+                        <th><fmt:message key="user.phoneNumber"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -112,7 +112,7 @@
 
                     <div class="form-group">
                         <label for="phoneNumber" class="control-label col-xs-3"><fmt:message
-                                key="users.phoneNumber"/></label>
+                                key="user.phoneNumber"/></label>
 
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control" id="phoneNumber"

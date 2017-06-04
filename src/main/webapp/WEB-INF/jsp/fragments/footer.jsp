@@ -4,7 +4,7 @@
 
 <div class="footer">
     <div class="container">
-        <fmt:message key="app.footer"/>
+
     </div>
 </div>
 
@@ -37,7 +37,7 @@
     "ticket.paymentProcessing",
     "ticket.yourTicketIsFor",
     "ticket.paymentWindowTitle",
-    "ticket.confirMoneyWithdrawalFromYouCreditCard",
+    "ticket.confirmMoneyWithdrawalFromYouCreditCard",
     "flight.ticketPrice"}%>'>
         i18n['${key}'] = '<fmt:message key="${key}"/>';
     </c:forEach>

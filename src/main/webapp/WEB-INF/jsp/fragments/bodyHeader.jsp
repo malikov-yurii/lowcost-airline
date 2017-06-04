@@ -5,6 +5,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+<fmt:setBundle basename="messages.app"/>
+
 <div class="nav-block" role="navigation">
     <div class="container">
         <a href="#" class="navbar-brand"><fmt:message key="app.title"/></a>
@@ -22,6 +24,7 @@
                         <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                     </button>
                 </form:form>
+
             </li>
         </sec:authorize>
 
@@ -29,14 +32,14 @@
             <a class="btn btn-info" role="button" href="register"><fmt:message key="app.register"/></a>
         </sec:authorize>
 
-        <a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>
+        <a class="btn btn-info" role="button" href="flights"><fmt:message key="common.flights"/></a>
 
         <sec:authorize access="isAuthenticated()">
-            <a class="btn btn-info" role="button" href="tickets"><fmt:message key="app.tickets"/></a>
+            <a class="btn btn-info" role="button" href="tickets"><fmt:message key="common.tickets"/></a>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <a class="btn btn-info" role="button" href="users"><fmt:message key="app.users"/></a>
-                <a class="btn btn-info" role="button" href="airports"><fmt:message key="app.airports"/></a>
-                <a class="btn btn-info" role="button" href="tariffs"><fmt:message key="app.tariffs"/></a>
+                <a class="btn btn-info" role="button" href="users"><fmt:message key="common.users"/></a>
+                <a class="btn btn-info" role="button" href="airports"><fmt:message key="common.airports"/></a>
+                <a class="btn btn-info" role="button" href="tariffs"><fmt:message key="common.tariffs"/></a>
                 <%--<a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>--%>
                 <%--<a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>--%>
                 <%--<a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>--%>
@@ -47,6 +50,8 @@
                 <input type="submit" class="btn btn-primary" value="<fmt:message key="app.logout"/>">
             </form:form>
         </sec:authorize>
+
+        <jsp:include page="lang.jsp"/>
 
     </div>
 </div>

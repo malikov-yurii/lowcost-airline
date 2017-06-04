@@ -62,7 +62,7 @@
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="app.id"/></th>
+                        <th><fmt:message key="common.id"/></th>
                         <th><fmt:message key="airport.departure"/></th>
                         <th><fmt:message key="city.departure"/></th>
                         <th><fmt:message key="airport.arrival"/></th>
@@ -75,7 +75,7 @@
                         <th><fmt:message key="ticket.baggage"/></th>
                         <th><fmt:message key="ticket.seatNumber"/></th>
                         <th><fmt:message key="ticket.totalPrice"/></th>
-                        <th><fmt:message key="app.status"/></th>
+                        <th><fmt:message key="common.status"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -222,7 +222,7 @@
 
                         <div class="form-group">
                             <label for="status" class="control-label col-xs-3"><fmt:message
-                                    key="app.status"/></label>
+                                    key="common.status"/></label>
 
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control " id="status"

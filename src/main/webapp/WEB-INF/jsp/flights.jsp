@@ -17,7 +17,7 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="app.flights"/></h3>
+            <h3 class="page-title"><fmt:message key="common.flights"/></h3>
 
 
             <div class="view-box">
@@ -92,7 +92,7 @@
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="app.id"/></th>
+                        <th><fmt:message key="common.id"/></th>
                         <th><fmt:message key="airport.departure"/></th>
                         <th><fmt:message key="airport.arrival"/></th>
                         <th><fmt:message key="flight.departureLocalDateTime"/></th>

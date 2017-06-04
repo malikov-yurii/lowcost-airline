@@ -17,7 +17,7 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="app.airports"/></h3>
+            <h3 class="page-title"><fmt:message key="common.airports"/></h3>
 
             <div class="view-box">
                 <div class="row">
@@ -52,9 +52,9 @@
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="app.id"/></th>
+                        <th><fmt:message key="common.id"/></th>
                         <th><fmt:message key="airport.name"/></th>
-                        <th><fmt:message key="app.city"/></th>
+                        <th><fmt:message key="common.city"/></th>
                         <th></th>
                         <th></th>
                     </tr>

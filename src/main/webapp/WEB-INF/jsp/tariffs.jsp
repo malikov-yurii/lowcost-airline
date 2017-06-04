@@ -19,31 +19,31 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h2><spring:message code="app.tariffs"/></h2>
+            <h2><spring:message code="common.tariffs"/></h2>
 
             <div class="view-box">
                 <form:form modelAttribute="tariffsDetails" class="form-horizontal" method="PUT"
                            charset="utf-8" accept-charset="UTF-8">
 
-                    <spring:message code="tariffs.daysCountBeforeTicketPriceStartsToGrow"
+                    <spring:message code="tariff.daysCountBeforeTicketPriceStartsToGrow"
                                     var="daysCountBeforeTicketPriceStartsToGrow"/>
                     <lowcost:inputField label='${daysCountBeforeTicketPriceStartsToGrow}'
                                         name="daysCountBeforeTicketPriceStartsToGrow"/>
 
-                    <spring:message code="tariffs.weightOfTimeGrowthFactor" var="weightOfTimeGrowthFactor"/>
+                    <spring:message code="tariff.weightOfTimeGrowthFactor" var="weightOfTimeGrowthFactor"/>
                     <lowcost:inputField label='${weightOfTimeGrowthFactor}' name="weightOfTimeGrowthFactor"/>
 
-                    <spring:message code="tariffs.baggageSurchargeOverMaxBaseTicketPrice"
+                    <spring:message code="tariff.baggageSurchargeOverMaxBaseTicketPrice"
                                     var="baggageSurchargeOverMaxBaseTicketPrice"/>
                     <lowcost:inputField label='${baggageSurchargeOverMaxBaseTicketPrice}'
                                         name="baggageSurchargeOverMaxBaseTicketPrice"/>
 
-                    <spring:message code="tariffs.priorityRegistrationAndBoardingTariff"
+                    <spring:message code="tariff.priorityRegistrationAndBoardingTariff"
                                     var="priorityRegistrationAndBoardingTariff"/>
                     <lowcost:inputField label='${priorityRegistrationAndBoardingTariff}'
                                         name="priorityRegistrationAndBoardingTariff"/>
 
-                    <spring:message code="app.active" var="active"/>
+                    <spring:message code="common.active" var="active"/>
                     <lowcost:inputField label='${active}' name="active"/>
 
                     <div class="form-group">
