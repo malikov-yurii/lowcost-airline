@@ -1,10 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="footer">
     <div class="container">
-
     </div>
 </div>
 
@@ -19,16 +19,6 @@
     "common.areYouSureWantToDelete",
     "common.areYouSureWantToChangeCancellingStatus",
     "common.submit",
-    "common.addComment",
-    "common.updateComment",
-    "common.deleteComment",
-    "common.approveFreelancerForProject",
-    "common.areYouSureYouWantApproveThisFreelancer",
-    "common.applyForProject",
-    "common.discardApplication",
-    "common.lackOfSkills",
-    "common.portfolio",
-
     "common.deleted",
     "common.saved",
     "common.enabled",
@@ -39,8 +29,6 @@
     "ticket.paymentWindowTitle",
     "ticket.confirmMoneyWithdrawalFromYouCreditCard",
     "flight.ticketPrice"}%>'>
-        i18n['${key}'] = '<fmt:message key="${key}"/>';
+        i18n['${key}'] = '<spring:message code="${key}"/>';
     </c:forEach>
 </script>
-
-<%--<script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js" integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w=" crossorigin="anonymous"></script>--%>

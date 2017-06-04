@@ -7,24 +7,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
-
 <head>
     <jsp:include page="fragments/headTag.jsp"/>
 </head>
-
 <body class="flights">
 <jsp:include page="fragments/bodyHeader.jsp"/>
-
-
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
             <h2><spring:message code="common.tariffs"/></h2>
-
             <div class="view-box">
                 <form:form modelAttribute="tariffsDetails" class="form-horizontal" method="PUT"
                            charset="utf-8" accept-charset="UTF-8">
-
                     <spring:message code="tariff.daysCountBeforeTicketPriceStartsToGrow"
                                     var="daysCountBeforeTicketPriceStartsToGrow"/>
                     <lowcost:inputField label='${daysCountBeforeTicketPriceStartsToGrow}'
@@ -58,7 +52,7 @@
         </div>
     </div>
 </div>
-
+<spring:message code="tariff.description"/>
 <jsp:include page="fragments/footer.jsp"/>
 <script type="text/javascript" src="resources/js/profile.js"></script>
 </body>

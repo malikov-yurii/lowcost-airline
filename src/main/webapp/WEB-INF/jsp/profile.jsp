@@ -8,37 +8,23 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
-
 <div class="nav-block" role="navigation">
     <div class="container">
         <a href="#" class="navbar-brand"><fmt:message key="app.title"/></a>
-
-        <a class="btn btn-info" role="button" href="flights"><fmt:message key="common.flights"/></a>
-
+        <a class="btn btn-info" role="button" href="flights"><spring:message code="common.flights"/></a>
         <sec:authorize access="isAuthenticated()">
             <form:form class="navbar-form navbar-right" action="logout" method="post">
-
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <%--<a class="btn btn-info" role="button" href="flights"><fmt:message key="app.flights"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="freelancers"><fmt:message key="app.freelancers"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="admins"><fmt:message key="app.admins"/></a>--%>
-                    <%--<a class="btn btn-info" role="button" href="skills"><fmt:message key="app.skills"/></a>--%>
-                </sec:authorize>
                 <a class="btn btn-info" role="button" href="profile">${userFullName}
                     <fmt:message key="app.profile"/></a>
                 <input type="submit" class="btn btn-primary" value="<fmt:message key="app.logout"/>">
             </form:form>
         </sec:authorize>
-
     </div>
 </div>
-
-
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
             <h2>${userDTO.firstName} <spring:message code="${register ? 'app.register' : 'app.profile'}"/></h2>
-
             <div class="view-box">
                 <form:form modelAttribute="userDTO" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
                            charset="utf-8" accept-charset="UTF-8">
@@ -70,7 +56,6 @@
         </div>
     </div>
 </div>
-
 <jsp:include page="fragments/footer.jsp"/>
 <script type="text/javascript" src="resources/js/profile.js"></script>
 </body>

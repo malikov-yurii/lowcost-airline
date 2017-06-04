@@ -6,19 +6,15 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
-
 <head>
     <jsp:include page="fragments/headTag.jsp"/>
 </head>
-
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="common.airports"/></h3>
-
+            <h3 class="page-title"><spring:message code="common.airports"/></h3>
             <div class="view-box">
                 <div class="row">
                     <div class="col-sm-7">
@@ -27,8 +23,7 @@
                                 <form:form class="form-horizontal" id="filter">
                                     <div class="form-group">
                                         <label class="control-label col-sm-3"
-                                               for="nameCondition"><spring:message
-                                                code="airport.name"/>:</label>
+                                               for="nameCondition"><spring:message code="airport.name"/>:</label>
                                         <div class="col-sm-3">
                                             <input class="input-filter form-control valid"
                                                    name="nameCondition" id="nameCondition"
@@ -47,14 +42,13 @@
                     </div>
                 </div>
             </div>
-
             <div class="view-box datatable" hidden="true">
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="common.id"/></th>
-                        <th><fmt:message key="airport.name"/></th>
-                        <th><fmt:message key="common.city"/></th>
+                        <th><spring:message code="common.id"/></th>
+                        <th><spring:message code="airport.name"/></th>
+                        <th><spring:message code="common.city"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -64,45 +58,36 @@
         </div>
     </div>
 </div>
-
-
 <div class="modal fade" id="editRow">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <%--todo class and id???--%>
                 <h2 class="modal-title" id="modalTitle"></h2>
             </div>
             <div class="modal-body">
                 <form:form class="form-horizontal" method="post" id="detailsForm">
                     <input type="text" hidden="hidden" id="id" name="id">
-
-
                     <div class="form-group">
-                        <label for="name" class="control-label col-xs-3"><fmt:message
-                                key="airport.name"/></label>
-
+                        <label for="name" class="control-label col-xs-3">
+                            <spring:message code="airport.name"/></label>
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control" id="name"
                                    name="name">
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="cityName" class="control-label col-xs-3"><fmt:message
-                                key="city.name"/></label>
-
+                        <label for="cityName" class="control-label col-xs-3">
+                            <spring:message code="city.name"/></label>
                         <div class="col-xs-9">
                             <input type="text" class="modal-input form-control" id="cityName"
                                    name="cityName" readonly="readonly">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
-                                    key="common.save"/></button>
+                            <button class="btn btn-primary" type="button" onclick="save()">
+                                <spring:message code="common.save"/></button>
                         </div>
                     </div>
                 </form:form>
@@ -111,11 +96,7 @@
     </div>
 </div>
 </body>
-
 <jsp:include page="fragments/footer.jsp"/>
-
 <script type="text/javascript" src="resources/js/dataTablesUtil.js"></script>
 <script type="text/javascript" src="resources/js/airports.js"></script>
-
-
 </html>

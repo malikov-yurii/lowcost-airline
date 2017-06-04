@@ -6,19 +6,15 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
-
 <head>
     <jsp:include page="fragments/headTag.jsp"/>
 </head>
-
 <body class="flights">
 <jsp:include page="fragments/bodyHeader.jsp"/>
-
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><fmt:message key="ticket.active"/></h3>
-
+            <h3 class="page-title"><spring:message code="common.active"/></h3>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <div class="view-box">
                     <div class="row">
@@ -28,8 +24,8 @@
                                     <form:form class="form-horizontal" id="filter">
                                         <div class="form-group">
                                             <label class="control-label col-sm-3"
-                                                   for="userEmailCondition"><spring:message
-                                                    code="filter.email"/>:</label>
+                                                   for="userEmailCondition"><spring:message code="filter.email"/>:
+                                            </label>
                                             <div class="col-sm-3">
                                                 <input class="input-filter form-control"
                                                        name="userEmailCondition" id="userEmailCondition"
@@ -40,8 +36,7 @@
                                 </div>
                                 <div class="panel-footer text-right">
                                     <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
-                                            <%--<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>--%>
-                                        <span aria-hidden="true">Search</span>
+                                        <span aria-hidden="true"><spring:message code="common.search"/></span>
                                     </a>
                                 </div>
                             </div>
@@ -49,33 +44,30 @@
                     </div>
                 </div>
             </sec:authorize>
-
             <sec:authorize access="!hasRole('ROLE_ADMIN')">
                 <a class="btn btn-sm btn-info show-archived" onclick="showArchivedTickets()">
-                    <fmt:message key="ticket.showArchived"/></a>
+                    <spring:message code="ticket.showArchived"/></a>
                 <a class="btn btn-sm btn-info show-active" style="display: none" onclick="showActiveTickets()">
-                    <fmt:message key="ticket.showActive"/></a>
+                    <spring:message code="ticket.showActive"/></a>
             </sec:authorize>
-
             <div class="view-box datatable" hidden="true">
-
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
-                        <th><fmt:message key="common.id"/></th>
-                        <th><fmt:message key="airport.departure"/></th>
-                        <th><fmt:message key="city.departure"/></th>
-                        <th><fmt:message key="airport.arrival"/></th>
-                        <th><fmt:message key="city.arrival"/></th>
-                        <th><fmt:message key="flight.departureLocalDateTime"/></th>
-                        <th><fmt:message key="flight.arrivalLocalDateTime"/></th>
-                        <th><fmt:message key="ticket.passengerFirstName"/></th>
-                        <th><fmt:message key="ticket.passengerLastName"/></th>
-                        <th><fmt:message key="ticket.priorityRegistrationAndBoarding"/></th>
-                        <th><fmt:message key="ticket.baggage"/></th>
-                        <th><fmt:message key="ticket.seatNumber"/></th>
-                        <th><fmt:message key="ticket.totalPrice"/></th>
-                        <th><fmt:message key="common.status"/></th>
+                        <th><spring:message code="common.id"/></th>
+                        <th><spring:message code="airport.departure"/></th>
+                        <th><spring:message code="city.departure"/></th>
+                        <th><spring:message code="airport.arrival"/></th>
+                        <th><spring:message code="city.arrival"/></th>
+                        <th><spring:message code="flight.departureLocalDateTime"/></th>
+                        <th><spring:message code="flight.arrivalLocalDateTime"/></th>
+                        <th><spring:message code="ticket.passengerFirstName"/></th>
+                        <th><spring:message code="ticket.passengerLastName"/></th>
+                        <th><spring:message code="ticket.priorityRegistrationAndBoarding"/></th>
+                        <th><spring:message code="ticket.baggage"/></th>
+                        <th><spring:message code="ticket.seatNumber"/></th>
+                        <th><spring:message code="ticket.totalPrice"/></th>
+                        <th><spring:message code="common.status"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -85,9 +77,7 @@
         </div>
     </div>
 </div>
-
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-
     <div class="modal fade" id="editRow">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -101,8 +91,8 @@
                         <input type="text" hidden="hidden" id="id" name="id">
 
                         <div class="form-group">
-                            <label for="departureAirport" class="control-label col-xs-3"><fmt:message
-                                    key="airport.departure"/></label>
+                            <label for="departureAirport" class="control-label col-xs-3">
+                                <spring:message code="airport.departure"/></label>
 
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-airport" id="departureAirport"
@@ -110,10 +100,9 @@
                                        readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="arrivalAirport" class="control-label col-xs-3"><fmt:message
-                                    key="airport.arrival"/></label>
+                            <label for="arrivalAirport" class="control-label col-xs-3">
+                                <spring:message code="airport.arrival"/></label>
 
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-airport" id="arrivalAirport"
@@ -121,32 +110,25 @@
                                        readonly="readonly">
                             </div>
                         </div>
-
-
                         <div class="form-group">
-                            <label for="departureCity" class="control-label col-xs-3"><fmt:message
-                                    key="city.departure"/></label>
-
+                            <label for="departureCity" class="control-label col-xs-3">
+                                <spring:message code="city.departure"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-city" id="departureCity"
                                        name="departureCity" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="arrivalCity" class="control-label col-xs-3"><fmt:message
-                                    key="city.arrival"/></label>
-
+                            <label for="arrivalCity" class="control-label col-xs-3">
+                                <spring:message code="city.arrival"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-city" id="arrivalCity"
                                        name="arrivalCity" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="departureLocalDateTime" class="control-label col-xs-3"><fmt:message
-                                    key="flight.departureLocalDateTime"/></label>
-
+                            <label for="departureLocalDateTime" class="control-label col-xs-3">
+                                <spring:message code="flight.departureLocalDateTime"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-datetime active-input"
                                        id="departureLocalDateTime"
@@ -154,11 +136,9 @@
                                        readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="arrivalLocalDateTime" class="control-label col-xs-3"><fmt:message
-                                    key="flight.arrivalLocalDateTime"/></label>
-
+                            <label for="arrivalLocalDateTime" class="control-label col-xs-3">
+                                <spring:message code="flight.arrivalLocalDateTime"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control input-datetime active-input"
                                        id="arrivalLocalDateTime"
@@ -166,84 +146,69 @@
                                        readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="passengerFirstName" class="control-label col-xs-3"><fmt:message
-                                    key="ticket.passengerFirstName"/></label>
-
+                            <label for="passengerFirstName" class="control-label col-xs-3">
+                                <spring:message code="ticket.passengerFirstName"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control" id="passengerFirstName"
                                        name="passengerFirstName"
                                        placeholder="Ivan">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="passengerLastName" class="control-label col-xs-3"><fmt:message
-                                    key="ticket.passengerLastName"/></label>
-
+                            <label for="passengerLastName" class="control-label col-xs-3">
+                                <spring:message code="ticket.passengerLastName"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control" id="passengerLastName"
                                        name="passengerLastName"
                                        placeholder="Ivan">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="withBaggage" class="control-label col-xs-3"><fmt:message
-                                    key="ticket.includeBaggage"/></label>
-
+                            <label for="withBaggage" class="control-label col-xs-3">
+                                <spring:message code="ticket.includeBaggage"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control" id="withBaggage"
                                        name="withBaggage" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="withPriorityRegistrationAndBoarding" class="control-label col-xs-3"><fmt:message
-                                    key="ticket.includePriorityRegistration"/></label>
-
+                            <label for="withPriorityRegistrationAndBoarding" class="control-label col-xs-3">
+                                <spring:message code="ticket.includePriorityRegistration"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control"
                                        id="withPriorityRegistrationAndBoarding"
                                        name="withPriorityRegistrationAndBoarding" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="price" class="control-label col-xs-3"><fmt:message
-                                    key="flight.ticketPrice"/></label>
-
+                            <label for="price" class="control-label col-xs-3">
+                                <spring:message code="flight.ticketPrice"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control " id="price"
                                        name="price" value="<%=session.getAttribute("price")%>">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="status" class="control-label col-xs-3"><fmt:message
-                                    key="common.status"/></label>
-
+                            <label for="status" class="control-label col-xs-3">
+                                <spring:message code="common.status"/></label>
                             <div class="col-xs-9">
                                 <input type="text" class="modal-input form-control " id="status"
                                        name="status" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="seatNumber" class="control-label col-xs-3"><fmt:message
-                                    key="ticket.seatNumber"/></label>
-
+                            <label for="seatNumber" class="control-label col-xs-3">
+                                <spring:message code="ticket.seatNumber"/></label>
                             <div class="col-xs-9">
                                 <input type="number" class="modal-input form-control " id="seatNumber"
                                        name="seatNumber" readonly="readonly">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-xs-offset-3 col-xs-9">
-                                <button class="btn btn-primary" type="button" onclick="save()"><fmt:message
-                                        key="common.save"/></button>
+                                <button class="btn btn-primary" type="button" onclick="save()">
+                                    <spring:message code="common.save"/></button>
                             </div>
                         </div>
                     </form:form>
@@ -253,30 +218,12 @@
     </div>
 </sec:authorize>
 </body>
-
 <jsp:include page="fragments/footer.jsp"/>
-
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <script type="text/javascript" src="resources/js/ticketAdminDataTables.js"></script>
 </sec:authorize>
-
 <sec:authorize access="!hasRole('ROLE_ADMIN')">
     <script type="text/javascript" src="resources/js/ticketUserDataTables.js"></script>
 </sec:authorize>
-
 <script type="text/javascript" src="resources/js/dataTablesUtil.js"></script>
-<%--TODO CONSIDER REFACTORING--%>
-
-<%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
-<%--<script type="text/javascript" src="resources/js/ticketAdminDataTables.js"></script>--%>
-<%--</sec:authorize>--%>
-
-<%--<sec:authorize access="!hasRole('ROLE_ADMIN') && hasRole('ROLE_USER')">--%>
-<%--<script type="text/javascript" src="resources/js/flightUserDataTables.js"></script>--%>
-<%--</sec:authorize>--%>
-
-<%--<sec:authorize access="!hasRole('ROLE_USER')">--%>
-<%--<script type="text/javascript" src="resources/js/flightAnonymousDataTables.js"></script>--%>
-<%--</sec:authorize>--%>
-
 </html>

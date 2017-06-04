@@ -29,7 +29,7 @@ public class RootController {
 
     @Autowired
     private ITariffsDetailsService tariffsDetailsService;
-
+/*
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap model,
                         @RequestParam(value = "error", required = false) boolean error,
@@ -46,7 +46,7 @@ public class RootController {
         model.put("error", error);
         model.put("message", message);
         return "login";
-    }
+    }*/
 
     @RequestMapping(value = "/flights", method = RequestMethod.GET)
     public String flights(){
