@@ -31,6 +31,9 @@ public class TariffsDetails extends BaseEntity{
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
 
+    public TariffsDetails() {
+    }
+
     public Integer getDaysCountBeforeTicketPriceStartsToGrow() {
         return daysCountBeforeTicketPriceStartsToGrow;
     }

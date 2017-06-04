@@ -42,7 +42,9 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(Flight.DELETE).setParameter("id", id).executeUpdate() != 0;
+        return em.createQuery("DELETE FROM Flight f WHERE f.id = :id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -61,7 +63,8 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
 
     @Override
     public List<Flight> getAll() {
-        return em.createNamedQuery(Flight.ALL_SORTED, Flight.class).getResultList();
+        return em.createQuery("SELECT f FROM Flight f ORDER BY f.id ASC", Flight.class)
+                .getResultList();
     }
 
     //@Override
@@ -145,6 +148,7 @@ public class JpaFlightRepositoryImpl implements IFlightRepository {
 
         return query.getResultList();
     }
+
 
 
     @Override

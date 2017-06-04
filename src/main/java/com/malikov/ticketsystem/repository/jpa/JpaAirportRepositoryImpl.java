@@ -34,7 +34,9 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(Airport.DELETE).setParameter("id", id).executeUpdate() != 0;
+        return em.createQuery("DELETE FROM Airport a WHERE a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -44,20 +46,23 @@ public class JpaAirportRepositoryImpl implements IAirportRepository {
 
     @Override
     public List<Airport> getAll() {
-        return em.createNamedQuery(Airport.ALL_SORTED, Airport.class).getResultList();
+        return em.createQuery("SELECT a FROM Airport a ORDER BY a.id ASC", Airport.class)
+                .getResultList();
     }
 
     @Override
     public List<Airport> getByNameMask(String nameMask) {
-        return em.createNamedQuery(Airport.BY_NAME_MASK, Airport.class)
-                // TODO: 5/20/2017 Move % dto NamedQuery
-                .setParameter("nameMask", '%' + nameMask + '%').getResultList();
+        return em.createQuery("SELECT a FROM Airport a WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC",
+                Airport.class)
+                .setParameter("nameMask", '%' + nameMask + '%')
+                .getResultList();
     }
 
     // TODO: 5/22/2017 is it ok dto make name of airport unique but airport has id ????
     @Override
     public Airport getByName(String name) {
-        List<Airport> airports =  em.createNamedQuery(Airport.BY_NAME, Airport.class)
+        List<Airport> airports =  em.createQuery("SELECT a FROM Airport a WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC",
+                Airport.class)
                 .setParameter("name", name).getResultList();
         return DataAccessUtils.singleResult(airports);
     }

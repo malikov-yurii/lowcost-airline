@@ -16,11 +16,6 @@ import java.time.ZoneOffset;
 /**
  * @author Yurii Malikov
  */
-@SuppressWarnings("JpaQlInspection")
-@NamedQueries({
-        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
-        @NamedQuery(name = Ticket.ALL_SORTED, query = "SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC")
-})
 @Entity
 @NamedEntityGraphs({
         @NamedEntityGraph(name = Ticket.WITH_USER, attributeNodes = {@NamedAttributeNode("user")}),
@@ -34,9 +29,6 @@ public class Ticket extends BaseEntity {
     public static final String WITH_USER = "Ticket.graphWithUser";
     public static final String WITH_FLIGHT = "Ticket.graphWithFlight";
     public static final String WITH_USER_AND_FLIGHT = "Ticket.graphWithUserAndFlight";
-
-    public static final String DELETE = "Ticket.delete";
-    public static final String ALL_SORTED = "Ticket.allSorted";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)
@@ -106,15 +98,15 @@ public class Ticket extends BaseEntity {
     public Ticket() {
     }
 
-    public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
-                  Boolean withBaggage, Boolean withPriorityRegistration) {
-        this.flight = flight;
-        this.user = user;
-        this.price = price;
-        this.purchaseOffsetDateTime = purchaseOffsetDateTime;
-        this.withBaggage = withBaggage;
-        this.withPriorityRegistration = withPriorityRegistration;
-    }
+    //public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
+    //              Boolean withBaggage, Boolean withPriorityRegistration) {
+    //    this.flight = flight;
+    //    this.user = user;
+    //    this.price = price;
+    //    this.purchaseOffsetDateTime = purchaseOffsetDateTime;
+    //    this.withBaggage = withBaggage;
+    //    this.withPriorityRegistration = withPriorityRegistration;
+    //}
 
     public Ticket(Long id, Flight flight, User user, String passengerFirstName, String passengerLastName, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
                   Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
@@ -139,12 +131,12 @@ public class Ticket extends BaseEntity {
         this.status = status;
     }
 
-    public Ticket(Ticket ticket) {
-        this(ticket.getId(), ticket.getFlight(), ticket.getUser(),
-                ticket.getPassengerFirstName(), ticket.getPassengerLastName(), ticket.getPrice(),
-                ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(),
-                ticket.getWithPriorityRegistration(), ticket.getSeatNumber(), ticket.getStatus());
-    }
+    //public Ticket(Ticket ticket) {
+    //    this(ticket.getId(), ticket.getFlight(), ticket.getUser(),
+    //            ticket.getPassengerFirstName(), ticket.getPassengerLastName(), ticket.getPrice(),
+    //            ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(),
+    //            ticket.getWithPriorityRegistration(), ticket.getSeatNumber(), ticket.getStatus());
+    //}
 
     public Flight getFlight() {
         return flight;

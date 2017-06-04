@@ -15,18 +15,9 @@ import java.util.Set;
  * @author Yurii Malikov
  */
 @SuppressWarnings("JpaQlInspection")
-@NamedQueries({
-        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.id ASC"),
-        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u WHERE u.email=:email")
-})
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
 public class User extends NamedEntity {
-
-    public static final String DELETE = "User.delete";
-    public static final String ALL_SORTED = "User.allSorted";
-    public static final String BY_EMAIL = "User.byEmail";
 
     @NotBlank
     @Column(name = "last_name", nullable = false)
@@ -70,13 +61,13 @@ public class User extends NamedEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.roles = roles;
-    }
+    //public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
+    //    this.lastName = lastName;
+    //    this.email = email;
+    //    this.password = password;
+    //    this.phoneNumber = phoneNumber;
+    //    this.roles = roles;
+    //}
 
     public User(String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         super(name);
@@ -96,23 +87,23 @@ public class User extends NamedEntity {
         this.roles = new HashSet<>(Arrays.asList(roles));
     }
 
-    public User(Long id, String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
-        super(id, name);
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.roles = roles;
-    }
+    //public User(Long id, String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
+    //    super(id, name);
+    //    this.lastName = lastName;
+    //    this.email = email;
+    //    this.password = password;
+    //    this.phoneNumber = phoneNumber;
+    //    this.roles = roles;
+    //}
 
-    public User(User user) {
-        super(user.getId(), user.getName());
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.phoneNumber = user.getPhoneNumber();
-        this.roles = user.getRoles();
-    }
+    //public User(User user) {
+    //    super(user.getId(), user.getName());
+    //    this.lastName = user.getLastName();
+    //    this.email = user.getEmail();
+    //    this.password = user.getPassword();
+    //    this.phoneNumber = user.getPhoneNumber();
+    //    this.roles = user.getRoles();
+    //}
 
     public String getLastName() {
         return lastName;
@@ -192,5 +183,4 @@ public class User extends NamedEntity {
                 ", roles=" + roles +
                 '}';
     }
-
 }

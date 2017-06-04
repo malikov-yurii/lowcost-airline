@@ -8,18 +8,9 @@ import java.time.ZoneId;
 /**
   * @author Yurii Malikov
  */
-@SuppressWarnings("JpaQlInspection")
-@NamedQueries({
-        @NamedQuery(name = City.DELETE, query = "DELETE FROM City c WHERE c.id=:id"),
-        @NamedQuery(name = City.ALL_SORTED, query = "SELECT c FROM City c ORDER BY c.id ASC")
-})
 @Entity
 @Table(name = "cities")
 public class City extends NamedEntity {
-
-    public static final String DELETE = "City.delete";
-    public static final String ALL_SORTED = "City.allSorted";
-
 
     @Column(name = "time_zone")
     @Convert(converter = ZoneIdConverter.class)
@@ -32,14 +23,14 @@ public class City extends NamedEntity {
         this.zoneId = zoneId;
     }
 
-    public City(String name, ZoneId zoneId) {
-        super(name);
-        this.zoneId = zoneId;
-    }
+    //public City(String name, ZoneId zoneId) {
+    //    super(name);
+    //    this.zoneId = zoneId;
+    //}
 
-    public City(ZoneId zoneId) {
-        this.zoneId = zoneId;
-    }
+    //public City(ZoneId zoneId) {
+    //    this.zoneId = zoneId;
+    //}
 
     public City(City city) {
         super(city.getId(), city.getName());

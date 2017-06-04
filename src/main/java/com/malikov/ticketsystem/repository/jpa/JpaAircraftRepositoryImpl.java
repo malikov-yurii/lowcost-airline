@@ -34,7 +34,9 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(Aircraft.DELETE).setParameter("id", id).executeUpdate() != 0;
+        return em.createQuery("DELETE FROM Aircraft a WHERE a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -44,19 +46,22 @@ public class JpaAircraftRepositoryImpl implements IAircraftRepository {
 
     @Override
     public List<Aircraft> getAll() {
-        return em.createNamedQuery(Aircraft.ALL_SORTED, Aircraft.class).getResultList();
+        return em.createQuery("SELECT a FROM Aircraft a ORDER BY a.id ASC", Aircraft.class)
+                .getResultList();
     }
 
     @Override
     public List<Aircraft> getByNameMask(String nameMask) {
-        return em.createNamedQuery(Aircraft.BY_NAME_MASK, Aircraft.class)
-                // TODO: 5/20/2017 Move % dto NamedQuery
-                .setParameter("nameMask", '%' + nameMask + '%').getResultList();
+        return em.createQuery("SELECT a FROM Aircraft a WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC",
+                Aircraft.class)
+                .setParameter("nameMask", '%' + nameMask + '%')
+                .getResultList();
     }
 
     @Override
     public Aircraft getByName(String name) {
-        List<Aircraft> airports =  em.createNamedQuery(Aircraft.BY_NAME, Aircraft.class)
+        List<Aircraft> airports =  em.createQuery("SELECT a FROM Aircraft a WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC",
+                Aircraft.class)
                 .setParameter("name", name).getResultList();
         return DataAccessUtils.singleResult(airports);
     }

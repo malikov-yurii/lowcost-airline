@@ -89,7 +89,7 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(Ticket.DELETE)
+        return em.createQuery("DELETE FROM Ticket t WHERE t.id=:id")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
     }
@@ -100,7 +100,7 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
         Ticket ticket;
         // TODO: 5/8/2017 is it correct comparision??
         if (hintNames != null && hintNames.length != 0) {
-            hintMap = new HashMap<String, Object>();
+            hintMap = new HashMap<>();
             for (String hintName : hintNames) {
                 hintMap.put("javax.persistence.fetchgraph", em.getEntityGraph(hintName));
             }
@@ -113,7 +113,8 @@ public class JpaTicketRepositoryImpl implements ITicketRepository {
 
     @Override
     public List<Ticket> getAll(long userId) {
-        return em.createNamedQuery(Ticket.ALL_SORTED, Ticket.class)
+        return em.createQuery("SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC",
+                Ticket.class)
                 .setParameter("userId", userId)
                 .getResultList();
     }

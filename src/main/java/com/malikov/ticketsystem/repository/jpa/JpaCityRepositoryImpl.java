@@ -33,7 +33,9 @@ public class JpaCityRepositoryImpl implements ICityRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(City.DELETE).setParameter("id", id).executeUpdate() != 0;
+        return em.createQuery("DELETE FROM City c WHERE c.id=:id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -43,7 +45,6 @@ public class JpaCityRepositoryImpl implements ICityRepository {
 
     @Override
     public List<City> getAll() {
-        return em.createNamedQuery(City.ALL_SORTED, City.class).getResultList();
+        return em.createQuery("SELECT c FROM City c ORDER BY c.id", City.class).getResultList();
     }
-
 }

@@ -35,7 +35,7 @@ public class JpaUserRepositoryImpl implements IUserRepository {
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(User.DELETE)
+        return em.createQuery("DELETE FROM User u WHERE u.id=:id")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
     }
@@ -47,7 +47,7 @@ public class JpaUserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> getAll() {
-        return em.createNamedQuery(User.ALL_SORTED, User.class)
+        return em.createQuery("SELECT u FROM User u ORDER BY u.id ASC", User.class)
                 .getResultList();
     }
 
@@ -60,7 +60,7 @@ public class JpaUserRepositoryImpl implements IUserRepository {
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
+        List<User> users = em.createQuery("SELECT u FROM User u WHERE u.email=:email", User.class)
                 .setParameter("email", email)
                 .getResultList();
         return DataAccessUtils.singleResult(users);

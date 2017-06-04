@@ -33,7 +33,9 @@ public class JpaAircraftModelRepositoryImpl implements IAircraftModelRepository 
 
     @Override
     public boolean delete(long id) {
-        return em.createNamedQuery(AircraftModel.DELETE).setParameter("id", id).executeUpdate() != 0;
+        return em.createQuery("DELETE FROM AircraftModel am WHERE am.id=:id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -43,7 +45,8 @@ public class JpaAircraftModelRepositoryImpl implements IAircraftModelRepository 
 
     @Override
     public List<AircraftModel> getAll() {
-        return em.createNamedQuery(AircraftModel.ALL_SORTED, AircraftModel.class).getResultList();
+        return em.createQuery("SELECT am FROM AircraftModel am ORDER BY am.id ASC", AircraftModel.class)
+                .getResultList();
     }
 
 }
