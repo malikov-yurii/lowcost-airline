@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.json;
+package com.malikov.ticketsystem.web.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

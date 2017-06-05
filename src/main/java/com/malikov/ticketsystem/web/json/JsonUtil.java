@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.json;
+package com.malikov.ticketsystem.web.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.IOException;
 import java.util.List;
 
-import static com.malikov.ticketsystem.controller.json.JacksonObjectMapper.getMapper;
+import static com.malikov.ticketsystem.web.json.JacksonObjectMapper.getMapper;
 
 /**
  * @author Yurii Malikov

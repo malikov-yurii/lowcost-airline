@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.interceptor;
+package com.malikov.ticketsystem.web.interceptor;
 
 import com.malikov.ticketsystem.AuthorizedUser;
 import org.springframework.web.servlet.ModelAndView;

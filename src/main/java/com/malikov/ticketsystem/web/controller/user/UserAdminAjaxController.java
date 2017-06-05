@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.user;
+package com.malikov.ticketsystem.web.controller.user;
 
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.service.IUserService;

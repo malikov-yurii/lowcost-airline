@@ -32,7 +32,7 @@ public class ValidationUtil {
 
     public static void checkNew(IHasId bean) {
         if (!bean.isNew()) {
-            throw new IllegalArgumentException(bean + " should be new (id=null)");
+            throw new IllegalArgumentException(bean + " should be new (id==null or id=0)");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller;
+package com.malikov.ticketsystem.web.controller;
 
 import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.dto.UserDTO;
@@ -29,24 +29,6 @@ public class RootController {
 
     @Autowired
     private ITariffsDetailsService tariffsDetailsService;
-/*
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(ModelMap model,
-                        @RequestParam(value = "error", required = false) boolean error,
-                        @RequestParam(value = "message", required = false) String message) {
-        model.put("error", error);
-        model.put("message", message);
-        return "login";
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String root(ModelMap model,
-                       @RequestParam(value = "error", required = false) boolean error,
-                       @RequestParam(value = "message", required = false) String message) {
-        model.put("error", error);
-        model.put("message", message);
-        return "login";
-    }*/
 
     @RequestMapping(value = "/flights", method = RequestMethod.GET)
     public String flights(){
@@ -73,18 +55,6 @@ public class RootController {
         model.addAttribute("userDTO", new UserDTO());
         model.addAttribute("register", true);
         return "profile";
-    }
-
-    @GetMapping("/tariffs")
-    public String tariffs(ModelMap model) {
-        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
-        return "tariffs";
-    }
-
-    @PutMapping("/tariffs")
-    public String saveTariffs(@Valid UserDTO userDTO, ModelMap model) {
-        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
-        return "tariffs";
     }
 
     @PostMapping("/register")
@@ -129,5 +99,17 @@ public class RootController {
             }
         }
         return "profile";
+    }
+
+    @GetMapping("/tariffs")
+    public String tariffs(ModelMap model) {
+        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
+        return "tariffs";
+    }
+
+    @PutMapping("/tariffs")
+    public String saveTariffs(@Valid UserDTO userDTO, ModelMap model) {
+        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
+        return "tariffs";
     }
 }

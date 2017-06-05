@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.aircraft;
+package com.malikov.ticketsystem.web.controller.aircraft;
 
 import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.service.IAircraftService;

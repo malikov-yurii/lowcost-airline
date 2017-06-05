@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.flight;
+package com.malikov.ticketsystem.web.controller.flight;
 
 import com.malikov.ticketsystem.dto.FlightDTO;
 import com.malikov.ticketsystem.service.IFlightService;

@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.ticket;
+package com.malikov.ticketsystem.web.controller.ticket;
 
 import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.TicketPriceDetails;

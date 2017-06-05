@@ -1,4 +1,4 @@
-package com.malikov.ticketsystem.controller.airport;
+package com.malikov.ticketsystem.web.controller.airport;
 
 import com.malikov.ticketsystem.dto.AirportDTO;
 import com.malikov.ticketsystem.service.IAirportService;
