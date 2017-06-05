@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,9 +24,11 @@ public class AirportAdminAjaxController{
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     // TODO: dublicatins restriction in security xml and here???
     //@PreAuthorize()
-    public AirportDTO getByName(
+    public ModelMap getByName(
             @RequestParam(value = "nameCondition") String nameCondition) {
-        return AirportUtil.asTo(airportService.getByName(nameCondition));
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("data", AirportUtil.asTo(airportService.getByName(nameCondition)));
+        return modelMap;
     }
 
     @PutMapping
