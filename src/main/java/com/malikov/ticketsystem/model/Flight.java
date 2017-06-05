@@ -27,7 +27,7 @@ public class Flight extends BaseEntity {
     @JoinColumn(name = "arrival_airport_id")
     private Airport arrivalAirport;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 

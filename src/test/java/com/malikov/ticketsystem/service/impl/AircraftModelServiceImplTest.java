@@ -33,7 +33,7 @@ public class AircraftModelServiceImplTest extends AbstractServiceTest {
     public void update() throws Exception {
         AircraftModel updated = new AircraftModel(BOEING_737);
         updated.setName("NewModelName");
-        updated.setPassengersSeatsQuantity(222);
+        updated.setPassengerSeatsQuantity(222);
         service.update(updated);
         MATCHER.assertEquals(updated, service.get(updated.getId()));
     }

@@ -1,7 +1,6 @@
 var freeSeats;
 var datatableApi;
 var entityName = 'flight';
-var ajaxUrl = 'ajax/user/flight/';
 
 $(document).ready(function () {
     datatableApi = $('#datatable').DataTable({
@@ -10,7 +9,7 @@ $(document).ready(function () {
         "lengthMenu": [3, 5, 10],
         "serverSide": true,
         "ajax": {
-            "url": 'ajax/user/flight/',
+            "url": 'ajax/anonymous/flight/',
             "data": function (d) {
                 return {
                     draw: d.draw,

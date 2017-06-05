@@ -188,7 +188,7 @@ public class TicketUserAjaxController {
         // TODO: 6/1/2017 consider using it as a check
         //session.setAttribute("flightId", flight.getId());
 
-        model.put("totalSeats", flight.getAircraft().getModel().getPassengersSeatsQuantity());
+        model.put("totalSeats", flight.getAircraft().getModel().getPassengerSeatsQuantity());
         model.put("freeSeats", ticketService.getFreeSeats(flight).toArray(new Integer[0]));
 
         return model;

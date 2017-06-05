@@ -22,6 +22,6 @@ public class AircraftModelTestData {
             (expected, actual) -> expected == actual || (
                     Objects.equals(expected.getId(), actual.getId())
                             && Objects.equals(expected.getName(), actual.getName())
-                            && Objects.equals(expected.getPassengersSeatsQuantity(), actual.getPassengersSeatsQuantity())));
+                            && Objects.equals(expected.getPassengerSeatsQuantity(), actual.getPassengerSeatsQuantity())));
 
 }

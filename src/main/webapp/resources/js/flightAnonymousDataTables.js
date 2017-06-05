@@ -65,7 +65,7 @@ $(document).ready(function () {
     });
 
     $('.input-aircraft').autocomplete({
-        source: 'ajax/profile/aircraft/autocomplete-by-name'
+        source: 'ajax/admin/aircraft/autocomplete-by-name'
     });
     $('.input-airport, .input-aircraft')
         .on("autocompleteselect",

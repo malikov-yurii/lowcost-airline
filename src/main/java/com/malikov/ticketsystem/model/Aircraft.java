@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "aircraft")
 public class Aircraft extends NamedEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
     private AircraftModel model;
 

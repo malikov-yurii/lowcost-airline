@@ -74,7 +74,7 @@ $(document).ready(function () {
 
     // todo move controller dto admin controller
     $('.input-aircraft').autocomplete({
-        source: 'ajax/profile/aircraft/autocomplete-by-name'
+        source: 'ajax/admin/aircraft/autocomplete-by-name'
     });
     $('.input-airport, .input-aircraft')
         .on("autocompleteselect",
@@ -107,6 +107,7 @@ $(document).ready(function () {
 
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
+    $('#id').val('0');
     // $('.form-control').val('');
 
     $('#departureAirport,#arrivalAirport,#aircraftName').val('');
@@ -188,7 +189,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
     }
 }
 
-function saveFlight() {
+function save() {
     var message = "";
 
     if (!$('#aircraftName').hasClass('valid')) {
@@ -261,7 +262,7 @@ function saveFlight() {
         $('.modal-input.valid, .modal-input.in-process').removeClass('valid in-process');
         $('.in-process').removeClass('in-process');
         $.ajax({
-            type: "POST",
+            type: $('#id').val() === "0" ? "POST" : "PUT",
             url: ajaxUrl,
             data: $('#detailsForm').serialize(),
             success: function () {

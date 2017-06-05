@@ -142,7 +142,7 @@ public class FlightServiceImpl implements IFlightService {
             ticketsQuantity = entry.getValue();
 
             // TODO: 5/29/2017 try dto do that in query
-            if (flight.getAircraft().getModel().getPassengersSeatsQuantity() > ticketsQuantity) {
+            if (flight.getAircraft().getModel().getPassengerSeatsQuantity() > ticketsQuantity) {
                 flightTicketPriceMap.put(flight, calculateTicketPrice(tariffsDetails, flight, ticketsQuantity));
             }
         }
@@ -162,7 +162,7 @@ public class FlightServiceImpl implements IFlightService {
         totalGrowthPotential = flight.getMaxTicketBasePrice().subtract(flight.getInitialTicketBasePrice());
         timeGrowthPotential = totalGrowthPotential.multiply(tariffsDetails.getWeightOfTimeGrowthFactor());
         fillingGrowthPotential = totalGrowthPotential.subtract(timeGrowthPotential);
-        perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel().getPassengersSeatsQuantity()));
+        perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel().getPassengerSeatsQuantity()));
         perDayPriceGrowth = timeGrowthPotential.divide(new BigDecimal(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow()));
 
 

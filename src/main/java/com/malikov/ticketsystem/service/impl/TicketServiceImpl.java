@@ -132,7 +132,7 @@ public class TicketServiceImpl implements ITicketService {
         List<Integer> notFreeSeatsNumbers = ticketRepository.getNotFreeSeatsNumbers(flight.getId());
         Set<Integer> freeSeats = new HashSet<>();
 
-        for (int i = 1; i <= flight.getAircraft().getModel().getPassengersSeatsQuantity(); i++) {
+        for (int i = 1; i <= flight.getAircraft().getModel().getPassengerSeatsQuantity(); i++) {
             if (!notFreeSeatsNumbers.contains(i)) {
                 freeSeats.add(i);
             }
@@ -165,7 +165,7 @@ public class TicketServiceImpl implements ITicketService {
 
         Ticket bookedTicket;
 
-        if (ticketQuantity >= newTicket.getFlight().getAircraft().getModel().getPassengersSeatsQuantity()) {
+        if (ticketQuantity >= newTicket.getFlight().getAircraft().getModel().getPassengerSeatsQuantity()) {
             bookedTicket = null;
         } else {
             newTicket.setStatus(TicketStatus.BOOKED);

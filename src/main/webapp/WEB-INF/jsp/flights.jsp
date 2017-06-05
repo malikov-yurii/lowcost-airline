@@ -69,11 +69,11 @@
                     </div>
                 </div>
             </div>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()">
+                    <spring:message code="flight.addNewFlight"/></a>
+            </sec:authorize>
             <div class="view-box datatable" hidden="true">
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <a class="btn btn-sm btn-info show-add-new-modal" onclick="showAddModal()">
-                        <spring:message code="flight.addNewFlight"/></a>
-                </sec:authorize>
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
@@ -116,7 +116,7 @@
                             <spring:message code="ticket.pleaseSelectYourSeat"/>
                         </div>
                         <div class="seat-picker"></div>
-                        <input type="text" hidden="hidden" id="id" name="id">
+                        <input type="text" hidden="hidden" id="id" name="id"  value="0">
                         <div class="form-group">
                             <label for="departureAirport" class="control-label col-xs-3">
                                 <spring:message code="airport.departure"/></label>
@@ -278,12 +278,6 @@
                                 <div class="col-xs-9">
                                     <input type="number" class="modal-input form-control" id="maxBaseTicketPrice"
                                            name="maxBaseTicketPrice" placeholder="20.00">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-xs-offset-3 col-xs-9">
-                                    <button class="btn btn-primary" type="button" onclick="saveFlight()">
-                                        <spring:message code="common.save"/></button>
                                 </div>
                             </div>
                         </sec:authorize>

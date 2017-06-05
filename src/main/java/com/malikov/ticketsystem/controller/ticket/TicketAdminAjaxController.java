@@ -2,9 +2,7 @@ package com.malikov.ticketsystem.controller.ticket;
 
 import com.malikov.ticketsystem.dto.TicketDTO;
 import com.malikov.ticketsystem.model.Ticket;
-import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.service.ITicketService;
-import com.malikov.ticketsystem.service.IUserService;
 import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,30 +23,6 @@ public class TicketAdminAjaxController {
 
     @Autowired
     ITicketService ticketService;
-
-    @Autowired
-    IFlightService flightService;
-
-    @Autowired
-    IUserService userService;
-
-    @PutMapping
-    // TODO: 6/1/2017 validate dto?
-    public ResponseEntity updateTicket(TicketDTO ticketDTO) {
-        return ticketService.update(ticketDTO) != null
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
-
-    }
-
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id){
-        return ticketService.delete(id)
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
-    }
 
     @GetMapping
     // TODO: 5/31/2017 not need preauthorize (in xml permit all?
@@ -71,6 +45,24 @@ public class TicketAdminAjaxController {
         model.put("recordsFiltered", dataTableHasNextPageIndicator);
         model.put("data", tickets.stream().map(TicketUtil::asDTO).collect(Collectors.toList()));
         return model;
+    }
+
+
+    @PutMapping
+    // TODO: 6/1/2017 validate dto?
+    public ResponseEntity updateTicket(TicketDTO ticketDTO) {
+        return ticketService.update(ticketDTO) != null
+                ? new ResponseEntity(HttpStatus.OK)
+                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
+
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable("id") int id){
+        return ticketService.delete(id)
+                ? new ResponseEntity(HttpStatus.OK)
+                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
     }
 
 }

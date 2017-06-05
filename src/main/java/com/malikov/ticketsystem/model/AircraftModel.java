@@ -14,35 +14,35 @@ public class AircraftModel extends NamedEntity {
 
     @Column(name = "passenger_seats_quantity")
     @Range(min = 0, max = 450)
-    private int passengersSeatsQuantity;
+    private Integer passengerSeatsQuantity;
 
     public AircraftModel(){}
 
-    public AircraftModel(Long id, String name, Integer passengersSeatsQuantity) {
+    public AircraftModel(Long id, String name, Integer passengerSeatsQuantity) {
         super(id, name);
-        this.passengersSeatsQuantity = passengersSeatsQuantity;
+        this.passengerSeatsQuantity = passengerSeatsQuantity;
     }
 
-    //public AircraftModel(String name, Integer passengersSeatsQuantity) {
+    //public AircraftModel(String name, Integer passengerSeatsQuantity) {
     //    super(name);
-    //    this.passengersSeatsQuantity = passengersSeatsQuantity;
+    //    this.passengerSeatsQuantity = passengerSeatsQuantity;
     //}
     //
-    //public AircraftModel(int passengersSeatsQuantity) {
-    //    this.passengersSeatsQuantity = passengersSeatsQuantity;
+    //public AircraftModel(int passengerSeatsQuantity) {
+    //    this.passengerSeatsQuantity = passengerSeatsQuantity;
     //}
 
     public AircraftModel(AircraftModel aircraftModel) {
         super(aircraftModel.getId(), aircraftModel.getName());
-        this.passengersSeatsQuantity = aircraftModel.getPassengersSeatsQuantity();
+        this.passengerSeatsQuantity = aircraftModel.getPassengerSeatsQuantity();
     }
 
-    public int getPassengersSeatsQuantity() {
-        return passengersSeatsQuantity;
+    public Integer getPassengerSeatsQuantity() {
+        return passengerSeatsQuantity;
     }
 
-    public void setPassengersSeatsQuantity(int passengersSeatsQuantity) {
-        this.passengersSeatsQuantity = passengersSeatsQuantity;
+    public void setPassengerSeatsQuantity(Integer passengerSeatsQuantity) {
+        this.passengerSeatsQuantity = passengerSeatsQuantity;
     }
 
     @Override
@@ -53,13 +53,13 @@ public class AircraftModel extends NamedEntity {
 
         AircraftModel that = (AircraftModel) o;
 
-        return passengersSeatsQuantity == that.passengersSeatsQuantity;
+        return passengerSeatsQuantity == that.passengerSeatsQuantity;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + passengersSeatsQuantity;
+        result = 31 * result + passengerSeatsQuantity;
         return result;
     }
 
@@ -68,7 +68,7 @@ public class AircraftModel extends NamedEntity {
         return "AircraftModel{" +
                 "id=" + getId() +
                 ", name=" + getName() +
-                ", passengersSeatsQuantity=" + passengersSeatsQuantity +
+                ", passengerSeatsQuantity=" + passengerSeatsQuantity +
                 '}';
     }
 }

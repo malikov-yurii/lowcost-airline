@@ -68,11 +68,14 @@ public class FlightRepositoryImpl implements IFlightRepository {
         String queryString = "SELECT f, COUNT(t)"
                 + " FROM Flight f"
                 + " JOIN FETCH f.tickets AS t"
+                //+ " JOIN f.aircraft"
+                //+ " JOIN f.aircraft.model"
                 + " WHERE f.departureAirport=:departureAirport"
                 + " AND f.arrivalAirport=:arrivalAirport"
                 + " AND f.departureUtcDateTime>=:fromDepartureUtcDateTime"
                 + " AND f.departureUtcDateTime<=:toDepartureUtcDateTime"
                 + " GROUP BY t.flight"
+                //+ " HAVING COUNT(t) < f.aircraft.model.passengerSeatsQuantity"
                 + " ORDER BY f.id ASC";
 
         Query query = em.createQuery(queryString);
@@ -80,6 +83,7 @@ public class FlightRepositoryImpl implements IFlightRepository {
         query.setParameter("arrivalAirport", arrivalAirport);
         query.setParameter("fromDepartureUtcDateTime", fromDepartureUtcDateTime);
         query.setParameter("toDepartureUtcDateTime", toDepartureUtcDateTime);
+        // TODO: 6/5/2017 below done in memory! Should i first query id and than query only them using setFirst setMax?
         query.setFirstResult(first);
         query.setMaxResults(limit);
         List<Object[]> list = query.getResultList();

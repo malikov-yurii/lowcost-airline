@@ -1,7 +1,10 @@
 package com.malikov.ticketsystem.controller.flight;
 
 import com.malikov.ticketsystem.dto.FlightDTO;
+import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import com.malikov.ticketsystem.util.FlightUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurii Malikov
@@ -18,7 +22,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/ajax/anonymous/flight")
-public class FlightAnonymousAjaxController extends AbstractFlightController {
+public class FlightAnonymousAjaxController {
+
+    @Autowired
+    IFlightService flightService;
 
     //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping
@@ -32,8 +39,13 @@ public class FlightAnonymousAjaxController extends AbstractFlightController {
             @RequestParam(value = "draw") Integer draw,
             @RequestParam(value = "start") Integer startingFrom,
             @RequestParam(value = "length") Integer pageCapacity) {
-        List<FlightDTO> flightDTOs = super.getFlightTicketPriceMap(departureAirportName, arrivalAirportName,
-                fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity + 1);
+        List<FlightDTO> flightDTOs = flightService.getFlightTicketPriceMapFilteredBy(departureAirportName,
+                arrivalAirportName, fromDepartureDateTime,
+                toDepartureDateTime, startingFrom,
+                pageCapacity).entrySet()
+                .stream()
+                .map(entry -> FlightUtil.asDTO(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
         if (flightDTOs.size() > pageCapacity) {
             flightDTOs.remove(flightDTOs.size() - 1);
         }
@@ -46,18 +58,6 @@ public class FlightAnonymousAjaxController extends AbstractFlightController {
         model.put("data", flightDTOs);
         return model;
     }
-
-
-/*// TODO: 5/22/2017 i don't need that
-    @InitBinder
-    private void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(DateTimeUtil.DATE_TIME_PATTERN);//edit for the    format you need
-        dateTimeFormat.setLenient(false);
-        binder.registerCustomEditor(LocalDateTime.class, new CustomDateEditor(dateTimeFormat, true));
-    }
-
-
-*/
 
 
 }
