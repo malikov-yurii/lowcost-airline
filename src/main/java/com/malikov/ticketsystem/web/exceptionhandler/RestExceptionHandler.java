@@ -35,6 +35,7 @@ public class RestExceptionHandler {
             //put("email", "exception.users.duplicate_email");
             // TODO: 6/5/2017 should user resource bundle instead!!
             put("email", "Sorry, inputted email is not free. Choose another.");
+            put("seat", "Sorry, picked seat just has been booked by another user.");
         }
     };
 

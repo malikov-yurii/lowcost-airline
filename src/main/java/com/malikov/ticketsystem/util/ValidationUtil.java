@@ -12,21 +12,27 @@ public class ValidationUtil {
     }
 
     public static void checkNotFoundWithId(boolean found, long id) {
-        checkNotFound(found, "id=" + id);
+        checkSuccess(found, "id=" + id);
     }
 
     public static <T> T checkNotFoundWithId(T object, long id) {
-        return checkNotFound(object, "id=" + id);
+        return checkSuccess(object, "id=" + id);
     }
 
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
+    public static <T> T checkSuccess(T object, String msg) {
+        checkSuccess(object != null, msg);
         return object;
     }
 
-    public static void checkNotFound(boolean found, String msg) {
+    public static void checkSuccess(boolean found, String message) {
         if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
+            throw new NotFoundException(message);
+        }
+    }
+
+    public static void checkNotNew(IHasId bean) {
+        if (bean.isNew()) {
+            throw new IllegalArgumentException(bean + " should be not new (id!=null && id!=0)");
         }
     }
 
@@ -35,15 +41,15 @@ public class ValidationUtil {
             throw new IllegalArgumentException(bean + " should be new (id==null or id=0)");
         }
     }
-
-    public static void checkIdConsistent(IHasId bean, long id) {
-        if (bean.isNew()) {
-            // TODO: 6/2/2017 Why I need this part??
-            bean.setId(id);
-        } else if (bean.getId() != id) {
-            throw new IllegalArgumentException(bean + " should be with id=" + id);
-        }
-    }
+    //
+    //public static void checkIdConsistent(IHasId bean, long id) {
+    //    if (bean.isNew()) {
+    //        // TODO: 6/2/2017 Why I need this part??
+    //        bean.setId(id);
+    //    } else if (bean.getId() != id) {
+    //        throw new IllegalArgumentException(bean + " should be with id=" + id);
+    //    }
+    //}
 
     public static Throwable getRootCause(Throwable t) {
         Throwable result = t;

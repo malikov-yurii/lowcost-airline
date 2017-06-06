@@ -1,30 +1,20 @@
 package com.malikov.ticketsystem.service.impl;
 
-import com.malikov.ticketsystem.model.AircraftModel;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
-import com.malikov.ticketsystem.service.IAircraftModelService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static com.malikov.ticketsystem.AircraftModelTestData.*;
 
 /**
  * @author Yurii Malikov
  */
 public class AircraftModelServiceImplTest extends AbstractServiceTest {
+/*
 
     @Autowired
     protected IAircraftModelService service;
 
     @Test
-    public void save() throws Exception {
+    public void create() throws Exception {
         AircraftModel newAircraftModel = getNewDummyAircraftModelWithNullId(null);
-        AircraftModel created = service.save(newAircraftModel);
+        AircraftModel created = service.create(newAircraftModel);
         newAircraftModel.setId(created.getId());
         MATCHER.assertCollectionEquals(getTestDataAircraftModelsWith(newAircraftModel), service.getAll());
     }
@@ -65,5 +55,6 @@ public class AircraftModelServiceImplTest extends AbstractServiceTest {
         aircraftModelsWithNewAircraftModel.add(newAircraftModel);
         return aircraftModelsWithNewAircraftModel;
     }
+*/
 
 }

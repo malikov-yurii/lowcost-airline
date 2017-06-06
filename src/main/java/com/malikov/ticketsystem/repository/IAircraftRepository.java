@@ -9,7 +9,13 @@ import java.util.List;
  */
 public interface IAircraftRepository extends IGenericRepository<Aircraft> {
 
-    List<Aircraft> getByNameMask(String nameMask);
-
+    /**
+     * @return entity found by name or null if entity with such name does not exists
+     */
     Aircraft getByName(String name);
+
+    /**
+     * @return all entities which name matches nameMask
+     */
+    List<Aircraft> getByNameMask(String nameMask);
 }

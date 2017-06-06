@@ -9,27 +9,18 @@ import javax.persistence.*;
 @Table(name = "aircraft")
 public class Aircraft extends NamedEntity {
 
+    // TODO: 6/5/2017 Consider changing it to LAZY
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
     private AircraftModel model;
 
-    public Aircraft() {
-    }
+    public Aircraft() {}
 
     public Aircraft(Long id, String name, AircraftModel model) {
         super(id, name);
         this.model = model;
     }
 
-    //public Aircraft(String name, AircraftModel model) {
-    //    super(name);
-    //    this.model = model;
-    //}
-    //
-    //public Aircraft(AircraftModel model) {
-    //    this.model = model;
-    //}
-    //
     public Aircraft(Aircraft aircraft) {
         super(aircraft.getId(), aircraft.getName());
         model = aircraft.getModel();

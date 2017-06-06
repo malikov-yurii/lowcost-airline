@@ -33,7 +33,7 @@ function setCanceled(id, isCanceled) {
             if (isConfirm) {
                 $.ajax({
                     url: ajaxUrl + id + '/set-canceled',
-                    type: 'POST',
+                    type: 'PUT',
                     data: 'canceled=' + isCanceled,
                     success: function (data) {
                         showOrUpdateTable(true, false);

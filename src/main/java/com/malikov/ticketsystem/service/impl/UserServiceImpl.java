@@ -1,17 +1,18 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.AuthorizedUser;
+import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.IRoleRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.dto.UserDTO;
+import com.malikov.ticketsystem.util.UserUtil;
+import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,7 @@ import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
 /**
  * @author Yurii Malikov
  */
-@Service("userService")
+@Service
 @Transactional
 public class UserServiceImpl implements IUserService, UserDetailsService {
 
@@ -35,17 +36,23 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     private IRoleRepository roleRepository;
 
     @Override
-    public User save(User user) {
-        Assert.notNull(user, "user should not be null");
-        // TODO: 6/3/2017 get rid of hardcoded + how dto pass reference dto role by name?
+    public User get(long userId) {
+        return checkNotFoundWithId(userRepository.get(userId), userId);
+    }
+
+    @Override
+    public User create(UserDTO userDTO) {
+        ValidationUtil.checkNew(userDTO);
+        User user = UserUtil.createNewFromDTO(userDTO);
         user.setRoles(Collections.singleton(roleRepository.getByName("ROLE_USER")));
         return userRepository.save(prepareToSave(user));
     }
 
     @Override
-    public User update(UserDTO userDTO) {
+    public void update(UserDTO userDTO) {
+        ValidationUtil.checkNotNew(userDTO);
         User user = updateFromTo(get(userDTO.getId()), userDTO);
-        return userRepository.save(prepareToSave(user));
+        userRepository.save(prepareToSave(user));
     }
 
     @Override
@@ -54,24 +61,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User get(long id) {
-        return checkNotFoundWithId(userRepository.get(id), id);
-    }
-
-    @Override
-    public List<User> getAll() {
-        return userRepository.getAll();
-    }
-
-    @Override
-    public boolean delete(long id) {
-        return userRepository.delete(id);
+    public void delete(long userId) {
+        ValidationUtil.checkSuccess(userRepository.delete(userId), "not found user with id" + userId);
     }
 
     @Override
     public User getByEmail(String email) {
-        Assert.notNull(email, "email must not be null");
-        return checkNotFound(userRepository.getByEmail(email), "email=" + email);
+        return ValidationUtil.checkSuccess(userRepository.getByEmail(email), "email=" + email);
     }
 
     @Override
@@ -84,12 +80,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public List<String> getEmailsBy(String emailMask) {
+    public List<String> getEmailsByMask(String emailMask) {
         return userRepository.getByEmailMask(emailMask);
     }
 
     @Override
-    public List<String> getLastNamesBy(String lastNameMask) {
+    public List<String> getLastNamesByMask(String lastNameMask) {
         return userRepository.getLastNamesBy(lastNameMask);
     }
 }

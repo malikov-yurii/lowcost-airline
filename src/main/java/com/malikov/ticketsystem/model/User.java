@@ -16,7 +16,9 @@ import java.util.Set;
  */
 @SuppressWarnings("JpaQlInspection")
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"))
+// TODO: 6/6/2017 why do i need constraint description here
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email",
+                                                              name = "users_unique_email_idx"))
 public class User extends NamedEntity {
 
     @NotBlank

@@ -1,8 +1,12 @@
 package com.malikov.ticketsystem.dto;
 
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,23 +15,36 @@ import java.time.LocalDateTime;
  */
 public class FlightManageableDTO extends BaseDTO {
 
+    @SafeHtml
+    @NotBlank
+    @Size(min = 2)
     private String departureAirport;
 
+    @SafeHtml
+    @NotBlank
+    @Size(min = 2)
     private String arrivalAirport;
 
-    // TODO: 5/20/2017 How can I replace it with spring formatter??????
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalLocalDateTime;
 
+    @SafeHtml
+    @NotBlank
+    @Size(min = 2)
     private String aircraftName;
 
+    @NotNull
     private BigDecimal initialBaseTicketPrice;
 
+    @NotNull
     private BigDecimal maxBaseTicketPrice;
 
+    @NotNull
     private Boolean canceled;
 
 
@@ -45,9 +62,7 @@ public class FlightManageableDTO extends BaseDTO {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
         this.arrivalAirport = arrivalAirport != null ? arrivalAirport : "";
-        //this.departureLocalDateTime = departureLocalDateTime != null ? departureLocalDateTime : "";
         this.departureLocalDateTime = departureLocalDateTime;
-        //this.arrivalLocalDateTime = arrivalLocalDateTime != null ? arrivalLocalDateTime : "";
         this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.aircraftName = aircraftName != null ? aircraftName : "";
         this.initialBaseTicketPrice = initialBaseTicketPrice != null ? initialBaseTicketPrice : new BigDecimal(0);

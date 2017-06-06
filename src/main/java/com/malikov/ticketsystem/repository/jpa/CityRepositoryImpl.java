@@ -14,24 +14,24 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class CityRepositoryImpl implements ICityRepository {
 
-    // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
     protected EntityManager em;
     
     @Override
+    @Transactional
     public City save(City city) {
-        if (city.isNew()){
-            em.persist((city));
+        if (city.isNew()) {
+            em.persist(city);
             return city;
-        } else {
-            return em.merge(city);
         }
+        return get(city.getId()) != null ? em.merge(city) : null;
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         return em.createQuery("DELETE FROM City c WHERE c.id=:id")
                 .setParameter("id", id)

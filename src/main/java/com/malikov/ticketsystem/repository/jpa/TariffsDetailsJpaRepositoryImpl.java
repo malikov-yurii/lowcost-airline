@@ -14,7 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepository{
 
     @PersistenceContext
@@ -22,15 +22,15 @@ public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepositor
 
     @Override
     public TariffsDetails save(TariffsDetails tariffsDetails) {
-        if (tariffsDetails.isNew()){
-            em.persist((tariffsDetails));
+        if (tariffsDetails.isNew()) {
+            em.persist(tariffsDetails);
             return tariffsDetails;
-        } else {
-            return em.merge(tariffsDetails);
         }
+        return get(tariffsDetails.getId()) != null ? em.merge(tariffsDetails) : null;
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         return em.createQuery("DELETE FROM TariffsDetails td WHERE td.id = :id")
                 .setParameter("id", id).executeUpdate() != 0;

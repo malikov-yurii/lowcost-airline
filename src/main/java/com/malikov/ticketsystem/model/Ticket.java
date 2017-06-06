@@ -17,18 +17,10 @@ import java.time.ZoneOffset;
  * @author Yurii Malikov
  */
 @Entity
-@NamedEntityGraphs({
-        @NamedEntityGraph(name = Ticket.WITH_USER, attributeNodes = {@NamedAttributeNode("user")}),
-        @NamedEntityGraph(name = Ticket.WITH_FLIGHT, attributeNodes = {@NamedAttributeNode("flight")}),
-        @NamedEntityGraph(name = Ticket.WITH_USER_AND_FLIGHT, attributeNodes = {@NamedAttributeNode("user"),
-                @NamedAttributeNode("flight")})
-})
-@Table(name = "tickets")
+// TODO: 6/6/2017 why do i need constraint description here
+@Table(name = "tickets", uniqueConstraints = @UniqueConstraint(columnNames = {"flight_id", "seat_number"},
+                                                                name = "flight_seat_unique_constraint"))
 public class Ticket extends BaseEntity {
-
-    public static final String WITH_USER = "Ticket.graphWithUser";
-    public static final String WITH_FLIGHT = "Ticket.graphWithFlight";
-    public static final String WITH_USER_AND_FLIGHT = "Ticket.graphWithUserAndFlight";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)

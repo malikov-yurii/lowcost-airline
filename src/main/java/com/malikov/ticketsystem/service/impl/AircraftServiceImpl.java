@@ -5,56 +5,28 @@ import com.malikov.ticketsystem.repository.IAircraftRepository;
 import com.malikov.ticketsystem.service.IAircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yurii Malikov
  */
-@Service("aircraftService")
+@Service
 public class AircraftServiceImpl implements IAircraftService {
 
     @Autowired
     private IAircraftRepository repository;
 
     @Override
-    public Aircraft save(Aircraft aircraft) {
-        Assert.notNull(aircraft, "aircraft should not be null");
-        // TODO: 5/5/2017 prepare aircraft dto save
-        return repository.save(aircraft);
-    }
-
-    @Override
-    public void update(Aircraft aircraft) {
-        // TODO: 5/5/2017 get rid of message  duplicating and prepare dto save aircraft
-        Assert.notNull(aircraft, "aircraft should not be null");
-        repository.save(aircraft);
-    }
-
-    @Override
-    public Aircraft get(long id) {
-        // TODO: 5/5/2017 check not found with id
-        return repository.get(id);
-    }
-
-    @Override
-    public List<Aircraft> getAll() {
-        return repository.getAll();
-    }
-
-    @Override
-    public void delete(long id) {
-        repository.delete(id);
-    }
-
-    @Override
-    public List<Aircraft> getByNameMask(String nameMask) {
-        return repository.getByNameMask(nameMask);
-    }
-
-    @Override
     public Aircraft getByName(String name) {
         return repository.getByName(name);
+    }
+
+    @Override
+    public List<String> getNamesByNameMask(String nameMask) {
+        return repository.getByNameMask(nameMask).stream()
+                .map(Aircraft::getName)
+                .collect(Collectors.toList());
     }
 }

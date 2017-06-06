@@ -6,7 +6,6 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
 import com.malikov.ticketsystem.service.IUserService;
 import com.malikov.ticketsystem.util.UserUtil;
-import com.malikov.ticketsystem.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class RootController {
     private static final Logger LOG = LoggerFactory.getLogger(RootController.class);
 
     @Autowired
-    IUserService userService;
+    private IUserService userService;
 
     @Autowired
     private ITariffsDetailsService tariffsDetailsService;
@@ -61,9 +60,7 @@ public class RootController {
     public String saveRegister(@Valid UserDTO userDTO, BindingResult result, SessionStatus status, ModelMap model) {
         if (!result.hasErrors()) {
             try {
-                ValidationUtil.checkNew(userDTO);
-                User newUser = UserUtil.createNewFromTo(userDTO);
-                newUser =  userService.save(newUser);
+                User newUser =  userService.create(userDTO);
                 LOG.info(newUser + " has been created");
 
                 status.setComplete();
@@ -87,10 +84,7 @@ public class RootController {
     public String updateProfile(@Valid UserDTO userDTO, BindingResult result, SessionStatus status) {
         if (!result.hasErrors()) {
             try {
-
                 LOG.info("update " + userDTO);
-                ValidationUtil.checkIdConsistent(userDTO, AuthorizedUser.id());
-
                 userService.update(userDTO);
                 status.setComplete();
                 return "redirect:meals";

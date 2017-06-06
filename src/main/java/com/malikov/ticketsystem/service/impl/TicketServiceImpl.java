@@ -2,19 +2,22 @@ package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.dto.TicketDTO;
+import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.dto.TicketWithRemainingDelayDTO;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.TicketStatus;
+import com.malikov.ticketsystem.repository.IFlightRepository;
 import com.malikov.ticketsystem.repository.ITicketRepository;
+import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.TicketUtil;
+import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -29,18 +32,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
 
 /**
  * @author Yurii Malikov
  */
-@Service("ticketService")
+@Service
 @Transactional
 public class TicketServiceImpl implements ITicketService {
 
 
     @Autowired
     private ITicketRepository ticketRepository;
+
+    @Autowired
+    private IFlightRepository flightRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
 
     //@Autowired
     // TODO: 6/3/2017
@@ -51,7 +59,7 @@ public class TicketServiceImpl implements ITicketService {
 
 
     @Override
-    public List<TicketWithRemainingDelayDTO> getActiveTicketsDelaysByUserId(long userId, Integer start, Integer limit) {
+    public List<TicketWithRemainingDelayDTO> getActiveTicketsDelays(long userId, Integer start, Integer limit) {
         return ticketRepository
                 .getActiveByUserId(userId, start, limit)
                 .stream()
@@ -74,83 +82,59 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     @Override
-    public boolean cancelBooking(Long ticketId) {
+    public void cancelBooking(Long ticketId) {
         Ticket ticket = ticketRepository.get(ticketId);
+        ValidationUtil.checkSuccess(ticket, "not found ticket with id=" + ticketId);
 
-        if (ticket == null || !ticket.getStatus().equals(TicketStatus.BOOKED) || ticket.getUser().getId() != AuthorizedUser.id()) {
-            return false;
-        }
-
-        if (!ticketRepository.delete(ticketId)) {
-            return false;
-        }
-
-        // TODO: 6/3/2017 move that to private method?
-        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
-        ticketIdRemovalTaskMap.remove(ticketId);
-
-        return true;
+        ValidationUtil.checkSuccess(ticket != null
+                        && ticket.getStatus().equals(TicketStatus.BOOKED)
+                        && ticket.getUser().getId() != AuthorizedUser.id(),
+                "not found booked ticket with id=" + ticketId + "for authorized user.");
+        delete(ticketId);
     }
 
     @Override
     // TODO: 6/1/2017 It should be transactional
-    public ResponseEntity processPayment(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
+    @Transactional
+    public void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
         Ticket ticket = ticketRepository.get(ticketId);
-
-        // TODO: 6/3/2017 to many returns, ha?
-
-        if (ticket == null) {
-            // TODO: 6/1/2017 Consider using custom Error for Httpresponse as in topjava
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requested booked ticket has not been found");
-        }
+        ValidationUtil.checkSuccess(ticket, "Requested booked ticket has not been found.");
 
         if (!ticket.getUser().getId().equals(AuthorizedUser.id())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User can pay only for tickets booked by him");
+            throw new AccessDeniedException("Access denied to ticket with id=" + ticketId);
         }
 
-
-        if (!getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment failed. Rejected by user's bank");
+        if (!ticket.getStatus().equals(TicketStatus.BOOKED)) {
+            throw new IllegalArgumentException("Only ticket booked ticket can by processed.");
         }
+
+        ValidationUtil.checkSuccess(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),
+                "Bank rejected purchase operation.");
 
         ticket.setStatus(TicketStatus.PAID);
         ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
 
-        if (ticketRepository.save(ticket) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed while saving PAID status.");
-        }
-
-        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
-        ticketIdRemovalTaskMap.remove(ticket.getId());
-
-        return new ResponseEntity(HttpStatus.OK);
+        // TODO: 6/6/2017 ValidationUtil.checkSuccess??
+        ticketRepository.save(ticket);
+        terminateAutomaticalRemovalTask(ticketId);
     }
 
-    // TODO: 5/31/2017 considerRefactoring
-    @Override
-    public Set<Integer> getFreeSeats(Flight flight) {
-        List<Integer> notFreeSeatsNumbers = ticketRepository.getNotFreeSeatsNumbers(flight.getId());
-        Set<Integer> freeSeats = new HashSet<>();
-
-        for (int i = 1; i <= flight.getAircraft().getModel().getPassengerSeatsQuantity(); i++) {
-            if (!notFreeSeatsNumbers.contains(i)) {
-                freeSeats.add(i);
-            }
-        }
-
-        return freeSeats;
+    private void terminateAutomaticalRemovalTask(Long ticketId) {
+        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
+        ticketIdRemovalTaskMap.remove(ticketId);
     }
 
 
     // TODO: 5/30/2017 remove annotation?
     // TODO: 6/1/2017 Should i delete unnecessary ifNotPaid checking?
     @Async
-    public ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
+    private ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
         ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
         scheduler = new ConcurrentTaskScheduler(localExecutor);
 
         return scheduler.schedule(() -> {
-                    ticketRepository.deleteIfNotPaid(ticketId);
+                    ValidationUtil.checkSuccess(ticketRepository.deleteIfNotPaid(ticketId),
+                            "removal of booked ticket failed");
                     ticketIdRemovalTaskMap.remove(ticketId);
                 },
                 new Date(System.currentTimeMillis() + BOOKING_DURATION_MILLIS));
@@ -159,72 +143,56 @@ public class TicketServiceImpl implements ITicketService {
     // TODO: 5/30/2017 make it transactional??
     // TODO: 5/30/2017 consider splitting into several methods
     @Override
-    public Ticket createNewBookedTicketAndScheduledTask(Ticket newTicket) {
+    @Transactional
+    public Ticket createNewBookedTicketAndScheduledTask(TicketDTO ticketDTO, long flightId,
+                                                        TicketPriceDetailsDTO ticketPriceDetailsDTO) {
+        Ticket newTicket = new Ticket();
+        BigDecimal ticketPrice;
+        Flight flight = flightRepository.get(flightId);
+        ValidationUtil.checkSuccess(flight, "not found flight by id=" + flightId);
 
-        Integer ticketQuantity = ticketRepository.countForFlight(newTicket.getFlight().getId());
+        ticketPrice = ticketPriceDetailsDTO.getBaseTicketPrice();
 
-        Ticket bookedTicket;
-
-        if (ticketQuantity >= newTicket.getFlight().getAircraft().getModel().getPassengerSeatsQuantity()) {
-            bookedTicket = null;
-        } else {
-            newTicket.setStatus(TicketStatus.BOOKED);
-            bookedTicket = save(newTicket, AuthorizedUser.id());
+        if (ticketDTO.getWithBaggage() != null && ticketDTO.getWithBaggage()) {
+            ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getBaggagePrice());
         }
 
-        if (bookedTicket != null) {
-            ticketIdRemovalTaskMap.put(bookedTicket.getId(), getDeleteIfNotPaidTask(bookedTicket.getId()));
+        if (ticketDTO.getWithPriorityRegistrationAndBoarding() != null
+                && ticketDTO.getWithPriorityRegistrationAndBoarding()) {
+            ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getPriorityRegistrationAndBoardingPrice());
         }
+
+        if (!ticketPrice.equals(ticketDTO.getPrice())) {
+            // TODO: 6/1/2017 Send email to admin about fraud attempt (id of user, flight, pricefraud)
+            ticketDTO.setPrice(ticketPrice);
+        }
+
+        newTicket.setFlight(flight);
+        newTicket = TicketUtil.updateFromDTO(newTicket, ticketDTO);
+        newTicket.setUser(userRepository.get(AuthorizedUser.id()));
+        newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
+        newTicket.setStatus(TicketStatus.BOOKED);
+
+        Ticket bookedTicket = ticketRepository.save(newTicket);
+        ticketIdRemovalTaskMap.put(bookedTicket.getId(), getDeleteIfNotPaidTask(bookedTicket.getId()));
+
         return bookedTicket;
     }
 
     @Override
-    public Ticket save(Ticket ticket, long userId) {
-        Assert.notNull(ticket, "ticket should not be null");
-        return ticketRepository.save(ticket);
-    }
-
-    @Override
-    public Ticket update(TicketDTO ticketDTO) {
-        // TODO: 5/5/2017 get rid of message  duplicating
+    public void update(TicketDTO ticketDTO) {
+        // TODO: 5/5/2017 get rid of message  duplicating ??? how??
         Assert.notNull(ticketDTO, "ticket should not be null");
         Ticket ticket = ticketRepository.get(ticketDTO.getId());
-        return ticketRepository.save(TicketUtil.updateFromDTO(ticket, ticketDTO));
+        ValidationUtil.checkSuccess(ticketRepository.save(TicketUtil.updateFromDTO(ticket, ticketDTO)),
+                                "ticket update failed");
     }
 
     @Override
-    public Ticket get(long id, long userId) {
-        return checkNotFoundWithId(ticketRepository.get(id), id);
-    }
-
-    //@Override
-    //public Ticket getWithUser(long id, long userId) {
-    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER), id);
-    //}
-    //
-    //@Override
-    //public Ticket getWithFlight(long id, long userId) {
-    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_FLIGHT), id);
-    //}
-    //
-    //@Override
-    //public Ticket getWithUserAndFlight(long id, long userId) {
-    //    return checkNotFoundWithId(ticketRepository.get(id, Ticket.WITH_USER_AND_FLIGHT), id);
-    //}
-
-    @Override
-    public boolean delete(long ticketId) {
-        if (!ticketRepository.delete(ticketId)) {
-            return false;
-        }
-        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
-        ticketIdRemovalTaskMap.remove(ticketId);
-        return true;
-    }
-
-    @Override
-    public List<Ticket> getAll(long userId) {
-        return ticketRepository.getAllByUserId(userId);
+    public void delete(long ticketId) {
+        ValidationUtil.checkSuccess(ticketRepository.delete(ticketId),
+                "not found ticket with id=" + ticketId);
+        terminateAutomaticalRemovalTask(ticketId);
     }
 
     /**
@@ -238,9 +206,7 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     @Override
-    public List<Ticket> getByUserEmail(String email, Integer startingFrom, Integer limit) {
-        return ticketRepository.getByEmail(email, startingFrom, limit);
+    public List<Ticket> getByUserEmail(String email, Integer start, Integer limit) {
+        return ticketRepository.getByEmail(email, start, limit);
     }
-
-
 }

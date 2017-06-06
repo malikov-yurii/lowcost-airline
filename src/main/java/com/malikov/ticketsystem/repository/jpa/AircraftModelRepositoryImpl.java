@@ -14,24 +14,24 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class AircraftModelRepositoryImpl implements IAircraftModelRepository {
 
-    // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
+    @Transactional
     public AircraftModel save(AircraftModel aircraftModel) {
-        if (aircraftModel.isNew()){
-            em.persist((aircraftModel));
+        if (aircraftModel.isNew()) {
+            em.persist(aircraftModel);
             return aircraftModel;
-        } else {
-            return em.merge(aircraftModel);
         }
+        return get(aircraftModel.getId()) != null ? em.merge(aircraftModel) : null;
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         return em.createQuery("DELETE FROM AircraftModel am WHERE am.id=:id")
                 .setParameter("id", id)

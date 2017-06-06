@@ -8,7 +8,7 @@ import com.malikov.ticketsystem.model.User;
  */
 public class UserUtil {
 
-    public static User createNewFromTo(UserDTO newUser) {
+    public static User createNewFromDTO(UserDTO newUser) {
 
         // TODO: 5/14/2017 Get rid of new Role(USER) !!!!!!!!!!
         return new User(null, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail().toLowerCase(), newUser.getPassword(), newUser.getPhoneNumber());

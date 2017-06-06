@@ -5,9 +5,6 @@ import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +19,7 @@ import java.util.stream.Collectors;
 public class TicketAdminAjaxController {
 
     @Autowired
-    ITicketService ticketService;
+    private ITicketService ticketService;
 
     @GetMapping
     // TODO: 5/31/2017 not need preauthorize (in xml permit all?
@@ -50,19 +47,12 @@ public class TicketAdminAjaxController {
 
     @PutMapping
     // TODO: 6/1/2017 validate dto?
-    public ResponseEntity updateTicket(TicketDTO ticketDTO) {
-        return ticketService.update(ticketDTO) != null
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
-
+    public void updateTicket(TicketDTO ticketDTO) {
+        ticketService.update(ticketDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Why not working preauthorize??
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id){
-        return ticketService.delete(id)
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
+    public void delete(@PathVariable("id") int id){
+        ticketService.delete(id);
     }
-
 }

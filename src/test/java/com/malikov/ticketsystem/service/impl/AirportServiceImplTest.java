@@ -1,30 +1,20 @@
 package com.malikov.ticketsystem.service.impl;
 
-import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
-import com.malikov.ticketsystem.service.IAirportService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static com.malikov.ticketsystem.AirportTestData.*;
-import static com.malikov.ticketsystem.CityTestData.ROME;
 
 /**
  * @author Yurii Malikov
  */
 public class AirportServiceImplTest extends AbstractServiceTest {
+/*
 
     @Autowired
     protected IAirportService service;
 
     //@Test
-    //public void save() throws Exception {
+    //public void create() throws Exception {
     //    Airport newAirport = getNewDummyAirportWithNullId(null);
-    //    Airport created = service.save(newAirport);
+    //    Airport created = service.create(newAirport);
     //    newAirport.setId(created.getId());
     //    MATCHER.assertCollectionEquals(
     //            getTestDataAirportsWith(newAirport),
@@ -39,11 +29,11 @@ public class AirportServiceImplTest extends AbstractServiceTest {
     //    MATCHER.assertEquals(updated, service.get(updated.getId()));
     //}
 
-    @Test
-    public void get() throws Exception {
-        Airport airport = service.get(AIRPORT_1_BORISPOL.getId());
-        MATCHER.assertEquals(AIRPORT_1_BORISPOL, airport);
-    }
+    //@Test
+    //public void get() throws Exception {
+    //    Airport airport = service.get(AIRPORT_1_BORISPOL.getId());
+    //    MATCHER.assertEquals(AIRPORT_1_BORISPOL, airport);
+    //}
 
     //@Test
     //public void getAll() throws Exception {
@@ -57,11 +47,11 @@ public class AirportServiceImplTest extends AbstractServiceTest {
     //    MATCHER.assertCollectionEquals(Arrays.asList(AIRPORT_1_BORISPOL, AIRPORT_2_HEATHROW, AIRPORT_3_LUTON), service.getAll());
     //}
 
-    @Test
-    public void getByNameMask() throws Exception {
-        List<Airport> airportsByMask = service.getByNameMask("Bor");
-        MATCHER.assertCollectionEquals(Collections.singleton(AIRPORT_1_BORISPOL), airportsByMask);
-    }
+    //@Test
+    //public void getNamesByNameMask() throws Exception {
+    //    List<Airport> airportsByMask = service.getNamesByNameMask("Bor");
+    //    MATCHER.assertCollectionEquals(Collections.singleton(AIRPORT_1_BORISPOL), airportsByMask);
+    //}
 
     @Test
     public void getByName() throws Exception {
@@ -78,5 +68,6 @@ public class AirportServiceImplTest extends AbstractServiceTest {
         airportssWithNewUser.add(newAirport);
         return airportssWithNewUser;
     }
+*/
 
 }

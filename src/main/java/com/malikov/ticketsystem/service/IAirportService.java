@@ -1,6 +1,5 @@
 package com.malikov.ticketsystem.service;
 
-import com.malikov.ticketsystem.dto.AirportDTO;
 import com.malikov.ticketsystem.model.Airport;
 
 import java.util.List;
@@ -10,15 +9,13 @@ import java.util.List;
  */
 public interface IAirportService {
 
-    Airport save(Airport airport);
-
-    Airport update(AirportDTO airportDTO);
-
-    Airport get(long id);
-
-    boolean delete(long id);
-
-    List<Airport> getByNameMask(String nameMask);
-
+    /**
+     * @return airport which full name exactly matches parameter or null if not found
+     */
     Airport getByName(String name);
+
+    /**
+     * @return list of airport names which matches nameMask or empty list if not found any
+     */
+    List<String> getNamesByNameMask(String nameMask);
 }

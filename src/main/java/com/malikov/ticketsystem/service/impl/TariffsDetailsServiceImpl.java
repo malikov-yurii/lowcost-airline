@@ -3,6 +3,7 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
+import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,9 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService{
     }
 
     @Override
-    public TariffsDetails update(TariffsDetails tariffsDetails) {
-        return repository.save(tariffsDetails);
+    public void update(TariffsDetails tariffsDetails)
+    {
+        ValidationUtil.checkSuccess(repository.save(tariffsDetails),
+                "not found tariffs details with id=" + tariffsDetails.getId());
     }
 }

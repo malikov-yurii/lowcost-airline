@@ -18,16 +18,18 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class TicketRepositoryImpl implements ITicketRepository {
 
-    // TODO: 5/6/2017 should I create? JpaAbstractRepository and put there EnitityManager declaration
     @PersistenceContext
     protected EntityManager em;
 
     @Override
     public List<Ticket> getActiveByUserId(long userId, Integer start, Integer limit) {
-        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.id=:userId AND t.departureUtcDateTime>=:now ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u " +
+                                        "WHERE u.id=:userId AND t.departureUtcDateTime>=:now " +
+                                        "ORDER BY t.departureUtcDateTime " +
+                                        "DESC", Ticket.class)
                 .setParameter("userId", userId)
                 .setParameter("now", LocalDateTime.now())
                 .setFirstResult(start)
@@ -37,7 +39,10 @@ public class TicketRepositoryImpl implements ITicketRepository {
 
     @Override
     public List<Ticket> getArchivedByUserId(Long userId, Integer start, Integer limit) {
-        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.id=:userId AND t.departureUtcDateTime<:now ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+        return em.createQuery("SELECT t FROM Ticket t " +
+                                        "JOIN t.user AS u " +
+                                        "WHERE u.id=:userId AND t.departureUtcDateTime<:now " +
+                                        "ORDER BY t.departureUtcDateTime DESC", Ticket.class)
                 .setParameter("userId", userId)
                 .setParameter("now", LocalDateTime.now())
                 .setFirstResult(start)
@@ -46,22 +51,23 @@ public class TicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public List<Integer> getNotFreeSeatsNumbers(Long flightId) {
-        return em.createQuery("SELECT t.seatNumber FROM Ticket t WHERE t.flight.id=:flightId", Integer.class)
+    public List<Integer> getOccupiedSeatsNumbers(Long flightId) {
+        return em.createQuery("SELECT t.seatNumber FROM Ticket t " +
+                                        "WHERE t.flight.id=:flightId", Integer.class)
                 .setParameter("flightId", flightId)
                 .getResultList();
     }
 
     @Override
-    public Integer countForFlight(Long flightId) {
+    public Integer countTickets(Long flightId) {
         Query query = em.createQuery("SELECT count(t) FROM Ticket t WHERE t.flight.id=:flightId");
         query.setParameter("flightId", flightId);
         Long count = (Long)query.getSingleResult();
         return count != null ? count.intValue() : null;
     }
 
-    // TODO: 5/30/2017 consider deleting this method. we dont need checking status? unnecessary??
     @Override
+    @Transactional
     public boolean deleteIfNotPaid(long ticketId) {
         Query query = em.createQuery("DELETE FROM Ticket t WHERE t.id=:ticketId AND t.status=:status");
         query.setParameter("ticketId", ticketId);
@@ -69,20 +75,15 @@ public class TicketRepositoryImpl implements ITicketRepository {
         return query.executeUpdate() != 0;
     }
 
-
     @Override
+    @Transactional
     public Ticket save(Ticket ticket) {
-        if (!ticket.isNew() && get(ticket.getId()) == null) {
-            return null;
-        }
-
         ticket.setUser(em.getReference(User.class, ticket.getUser().getId()));
-        if (ticket.isNew()) {
-            em.persist((ticket));
+        if (ticket.isNew()){
+            em.persist(ticket);
             return ticket;
-        } else {
-            return em.merge(ticket);
         }
+        return get(ticket.getId()) != null ? em.merge(ticket) : null;
     }
 
     @Override
@@ -104,17 +105,11 @@ public class TicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public List<Ticket> getAllByUserId(long userId) {
-        return em.createQuery("SELECT t FROM Ticket t WHERE t.user.id=:userId ORDER BY t.id ASC",
-                Ticket.class)
-                .setParameter("userId", userId)
-                .getResultList();
-    }
-
-    @Override
-    public List<Ticket> getByEmail(String email, Integer start, Integer limit) {
-        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u WHERE u.email=:email ORDER BY t.departureUtcDateTime DESC", Ticket.class)
-                .setParameter("email", email)
+    public List<Ticket> getByEmail(String userEmail, Integer start, Integer limit) {
+        return em.createQuery("SELECT t FROM Ticket t JOIN t.user AS u " +
+                                        "WHERE u.email=:email " +
+                                        "ORDER BY t.departureUtcDateTime DESC", Ticket.class)
+                .setParameter("email", userEmail)
                 .setFirstResult(start)
                 .setMaxResults(limit)
                 .getResultList();

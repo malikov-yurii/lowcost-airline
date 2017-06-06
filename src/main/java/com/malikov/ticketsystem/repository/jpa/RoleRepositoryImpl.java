@@ -15,13 +15,14 @@ import java.util.List;
  */
 @SuppressWarnings("JpaQlInspection")
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 public class RoleRepositoryImpl implements IRoleRepository {
 
     @PersistenceContext
     protected EntityManager em;
 
     @Override
+    @Transactional
     public Role save(Role role) {
         if (role.isNew()) {
             em.persist((role));
@@ -32,6 +33,7 @@ public class RoleRepositoryImpl implements IRoleRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         return em.createQuery("DELETE FROM Role r WHERE r.id = :id")
                 .setParameter("id", id).executeUpdate() != 0;

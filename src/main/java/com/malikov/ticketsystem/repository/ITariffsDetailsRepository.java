@@ -7,6 +7,8 @@ import com.malikov.ticketsystem.model.TariffsDetails;
  */
 public interface ITariffsDetailsRepository extends IGenericRepository<TariffsDetails> {
 
+    /**
+     * @return active tariff details
+     */
     TariffsDetails getActiveTariffsDetails();
-
 }

@@ -13,12 +13,10 @@ import java.util.List;
  * @author Yurii Malikov
  */
 @Entity
-@NamedEntityGraph(name = Flight.WITH_TICKETS, attributeNodes = {@NamedAttributeNode("tickets")})
 @Table(name = "flights")
 public class Flight extends BaseEntity {
 
-    public static final String WITH_TICKETS = "Flight.withTickets";
-
+    // TODO: 6/5/2017 EAGER LAZY FOR ALL DONT FORGET
     @OneToOne
     @JoinColumn(name = "departure_airport_id")
     private Airport departureAirport;
@@ -46,7 +44,6 @@ public class Flight extends BaseEntity {
     private BigDecimal maxTicketBasePrice;
 
     @Column(name = "canceled")
-    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean canceled;
 
@@ -79,20 +76,7 @@ public class Flight extends BaseEntity {
         canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
 
-    // TODO: 5/15/2017 How dto add tickets??? refactor dto do it by copying??
-    //public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice, List<Ticket> tickets) {
-    //    super(id);
-    //    this.departureAirport = departureAirport;
-    //    this.arrivalAirport = arrivalAirport;
-    //    this.aircraft = aircraft;
-    //    this.departureUtcDateTime = departureUtcDateTime;
-    //    this.arrivalUtcDateTime = arrivalUtcDateTime;
-    //    this.initialTicketBasePrice = initialTicketBasePrice;
-    //    this.maxTicketBasePrice = maxTicketBasePrice;
-    //    canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
-    //
-    //    this.tickets = tickets;
-    //}
+
 
     public Flight(Flight flight) {
         super(flight.getId());

@@ -1,29 +1,19 @@
 package com.malikov.ticketsystem.service.impl;
 
-import com.malikov.ticketsystem.model.City;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
-import com.malikov.ticketsystem.service.ICityService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.PersistenceException;
-import java.time.ZoneId;
-import java.util.Arrays;
-
-import static com.malikov.ticketsystem.CityTestData.*;
 
 /**
  * @author Yurii Malikov
  */
 public class CityServiceImplTest extends AbstractServiceTest {
-
+/*
     @Autowired
     protected ICityService service;
 
     @Test
-    public void save() throws Exception {
+    public void create() throws Exception {
         City newCity = getNewDummyCityWithNullId(null);
-        City created = service.save(newCity);
+        City created = service.create(newCity);
         newCity.setId(created.getId());
         MATCHER.assertCollectionEquals(
                 Arrays.asList(KYIV, LONDON, ROME, newCity),
@@ -58,6 +48,6 @@ public class CityServiceImplTest extends AbstractServiceTest {
 
     private City getNewDummyCityWithNullId(Long id) {
         return new City(id, "newCityName", ZoneId.of("Europe/Isle_of_Man"));
-    }
+    }*/
 
 }

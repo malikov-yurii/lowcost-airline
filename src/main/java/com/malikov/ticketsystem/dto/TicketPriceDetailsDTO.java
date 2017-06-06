@@ -1,11 +1,11 @@
-package com.malikov.ticketsystem;
+package com.malikov.ticketsystem.dto;
 
 import java.math.BigDecimal;
 
 /**
  * @author Yurii Malikov
  */
-public class TicketPriceDetails {
+public class TicketPriceDetailsDTO {
 
     private BigDecimal baseTicketPrice;
 
@@ -13,7 +13,7 @@ public class TicketPriceDetails {
 
     private BigDecimal priorityRegistrationAndBoardingPrice;
 
-    public TicketPriceDetails(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationAndBoardingPrice) {
+    public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationAndBoardingPrice) {
         this.baseTicketPrice = baseTicketPrice;
         this.baggagePrice = baggagePrice;
         this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice;

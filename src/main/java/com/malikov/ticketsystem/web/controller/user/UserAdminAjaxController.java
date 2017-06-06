@@ -3,13 +3,16 @@ package com.malikov.ticketsystem.web.controller.user;
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.service.IUserService;
 import com.malikov.ticketsystem.util.UserUtil;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,52 +21,42 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping(value = "/ajax/admin/user")
-public class UserAdminAjaxController{
+public class UserAdminAjaxController {
 
     @Autowired
     IUserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    // TODO: dublicatins restriction in security xml and here???
-    //@PreAuthorize()
     public List<UserDTO> getByLastName(
-            @RequestParam(value = "lastNameCondition") String lastNameCondition) {
+            @RequestParam(value = "lastNameCondition") @SafeHtml @Size(min = 2) @NotBlank String lastNameCondition) {
         return userService.getByLastName(lastNameCondition)
                 .stream()
                 .map(UserUtil::asTo)
                 .collect(Collectors.toList());
     }
 
-
     @GetMapping(value = "/autocomplete-by-email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> autocompleteByEmail(@RequestParam("term") String emailMask) {
-        return userService.getEmailsBy(emailMask);
+    public List<String> autocompleteByEmail(@RequestParam("term") @SafeHtml @Size(min = 2)
+                                            @NotBlank String emailMask) {
+        return userService.getEmailsByMask(emailMask);
     }
 
     @GetMapping(value = "/autocomplete-by-last-name", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> autocompleteByLastName(@RequestParam("term") String lastNameMask) {
-        return userService.getLastNamesBy(lastNameMask);
+    public List<String> autocompleteByLastName(@RequestParam("term") @SafeHtml @Size(min = 2)
+                                               @NotBlank String lastNameMask) {
+        return userService.getLastNamesByMask(lastNameMask);
     }
-
 
     @PutMapping
-    // TODO: 6/1/2017 validate dto?
-    public ResponseEntity updateUser(UserDTO userDTO) {
-        return userService.update(userDTO) != null
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
-
+    public ResponseEntity updateUser(@Valid UserDTO userDTO) {
+        userService.update(userDTO);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')") // TODO: 5/23/2017 Duplicating??
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id){
-        return userService.delete(id)
-                ? new ResponseEntity(HttpStatus.OK)
-                : new ResponseEntity(HttpStatus.BAD_REQUEST); // TODO: 6/3/2017 check status bad request??
+    public ResponseEntity delete(@PathVariable("id") long userId) {
+        userService.delete(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
-
-
 }
 

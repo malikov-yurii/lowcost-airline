@@ -1,41 +1,92 @@
 package com.malikov.ticketsystem.service;
 
-import com.malikov.ticketsystem.TicketPriceDetails;
+import com.malikov.ticketsystem.dto.FlightManageableDTO;
+import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.model.Flight;
+import com.malikov.ticketsystem.util.exception.NotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Yurii Malikov
  */
 public interface IFlightService {
 
-    Flight save(Flight flight);
+    /**
+     * @return flight found by flightId
+     * @throws NotFoundException if not found by flightId
+     */
+    Flight get(long flightId) throws NotFoundException;
 
-    void update(Flight flight);
+    /**
+     * @param flightManageableDTO has all information about new flight
+     * @return created flight
+     */
+    Flight create(FlightManageableDTO flightManageableDTO);
 
-    // TODO: 5/8/2017 Should name them properties or hints
-    Flight get(long id);
+    /**
+     * @param flightManageableDTO has all information about new flight
+     * @throws NotFoundException if updated flight not found
+     */
+    void update(FlightManageableDTO flightManageableDTO) throws NotFoundException;
 
-    //Flight getWithTickets(long id);
+    /**
+     * @throws NotFoundException if not found by flightId
+     */
+    void delete(long flightId) throws NotFoundException;
 
-    List<Flight> getAll();
+    /**
+     * Updates flight with flightId setting cancelStatus
+     * @throws NotFoundException if not found by flightId
+     */
+    void setCanceledStatus(long flightId, boolean cancelStatus) throws NotFoundException;
 
-    List<Flight> getAllFiltered( String departureAirportName, String arrivalAirportName,
-                                LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
-                                Integer first, Integer pageSize);
+    /**
+     * @return object which has information about pricing policy for flight tickets
+     */
+    TicketPriceDetailsDTO getTicketPriceDetails(Long flightId);
 
-    boolean delete(long id);
+    /**
+     * @return set of free seats numbers of flight
+     */
+    Set<Integer> getFreeSeats(Long flightId);
 
+    /**
+     * Any condition may be null.
+     * @param departureAirportNameCondition filter flights by departure airport name
+     * @param arrivalAirportNameCondition filter flights by arrival airport name
+     * @param fromDepartureDateTimeCondition filter flights excluding previous flights
+     *                                          (using departure local datetime)
+     * @param toDepartureDateTimeCondition filter flights excluding next to that param flights
+     *                                        (using departure local datetime)
+     * @param first excludes from result list first flights
+     * @param limit excludes from result list flights next to flights[start + limit]
+     * @return filtered, limited by conditions and ordered by departure datetime desc flights
+     *              Or returns empty list if not found any.
+     */
+    List<Flight> getAllFiltered( String departureAirportNameCondition, String arrivalAirportNameCondition,
+                                 LocalDateTime fromDepartureDateTimeCondition,
+                                 LocalDateTime toDepartureDateTimeCondition,
+                                 Integer first, Integer limit);
 
-    // TODO: 5/31/2017 Move two below dto ticketService???
-    Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportName, String arrivalAirportName,
-                                                              LocalDateTime fromDepartureDateTime, LocalDateTime toDepartureDateTime,
-                                                              Integer first, Integer pageSize);
-
-    TicketPriceDetails getTicketPriceDetails(Flight flight);
-
+    /**
+     * All parameters should be not null.
+     * @param departureAirportNameCondition filter flights by departure airport name
+     * @param arrivalAirportNameCondition filter flights by arrival airport name
+     * @param fromDepartureDateTimeCondition filter flights excluding previous flights
+     *                                          (using departure local datetime)
+     * @param toDepartureDateTimeCondition filter flights excluding next to that param flights
+     *                                        (using departure local datetime)
+     * @param first excludes from result list first flights
+     * @param limit excludes from result list flights next to flights[start + limit]
+     * @return filtered, limited by conditions and ordered by departure datetime desc flights
+     *          with current ticket price. Or returns empty map if not found any.
+     */
+    Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportNameCondition,
+            String arrivalAirportNameCondition, LocalDateTime fromDepartureDateTimeCondition,
+            LocalDateTime toDepartureDateTimeCondition,Integer first, Integer limit);
 }

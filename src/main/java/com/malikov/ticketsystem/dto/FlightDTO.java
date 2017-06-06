@@ -1,8 +1,11 @@
 package com.malikov.ticketsystem.dto;
 
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,8 +14,14 @@ import java.time.LocalDateTime;
  */
 public class FlightDTO extends BaseDTO {
 
+    @SafeHtml
+    @NotBlank
+    @Size(min = 2)
     private String departureAirport;
 
+    @SafeHtml
+    @NotBlank
+    @Size(min = 2)
     private String arrivalAirport;
 
     // TODO: 5/20/2017 How can I replace it with spring formatter??????

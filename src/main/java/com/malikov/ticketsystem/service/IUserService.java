@@ -2,6 +2,7 @@ package com.malikov.ticketsystem.service;
 
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.User;
+import com.malikov.ticketsystem.util.exception.NotFoundException;
 
 import java.util.List;
 
@@ -10,21 +11,47 @@ import java.util.List;
  */
 public interface IUserService{
 
-    User save(User user);
+    /**
+     * @return new saved user with role USER_ROLE
+     */
+    User create(UserDTO userDTO);
 
-    User update(UserDTO userDTO);
+    /**
+     * Updates user by userDTO
+     * @throws NotFoundException if not found with id
+     */
+    void update(UserDTO userDTO) throws NotFoundException;
 
-    User get(long id);
+    /**
+     * @return user found by userId
+     * @throws NotFoundException if not found with id
+     */
+    User get(long userId) throws NotFoundException;
 
-    List<User> getAll();
+    /**
+     * Remove user by userId
+     * @throws NotFoundException if not found with id
+     */
+    void delete(long userId) throws NotFoundException;
 
-    boolean delete(long id);
-    // TODO: 5/14/2017  throws NotFoundException?
-    User getByEmail(String email);
+    /**
+     * @return user found by email
+     * @throws NotFoundException in not found with email
+     */
+    User getByEmail(String email) throws NotFoundException;
 
-    List<String> getEmailsBy(String emailMask);
+    /**
+     * @return user emails found by emailMask
+     */
+    List<String> getEmailsByMask(String emailMask);
 
+    /**
+     * @return list of users found by last name
+     */
     List<User> getByLastName(String lastName);
 
-    List<String> getLastNamesBy(String lastNameMask);
+    /**
+     * @return list of user last names found by lastNameMask
+     */
+    List<String> getLastNamesByMask(String lastNameMask);
 }

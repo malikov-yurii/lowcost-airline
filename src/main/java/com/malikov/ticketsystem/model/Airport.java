@@ -6,10 +6,11 @@ import javax.persistence.*;
  * @author Yurii Malikov
  */
 @Entity
-@Table(name = "airports")
+@Table(name = "airports", uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "airports_unique_name_idx"))
 public class Airport extends NamedEntity {
 
-    @OneToOne
+    // TODO: 6/5/2017 Consider changing it to LAZY
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private City city;
 
@@ -19,20 +20,6 @@ public class Airport extends NamedEntity {
         super(id, name);
         this.city = city;
     }
-
-    //public Airport(String name, City city) {
-    //    super(name);
-    //    this.city = city;
-    //}
-
-    //public Airport(City city) {
-    //    this.city = city;
-    //}
-
-    //public Airport(Airport airport) {
-    //    super(airport.getId(), airport.getName());
-    //    city = airport.getCity();
-    //}
 
     public City getCity() {
         return city;
@@ -68,5 +55,4 @@ public class Airport extends NamedEntity {
                 ", city=" + city +
                 '}';
     }
-
 }

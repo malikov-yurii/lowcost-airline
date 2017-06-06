@@ -23,15 +23,6 @@ public class AircraftModel extends NamedEntity {
         this.passengerSeatsQuantity = passengerSeatsQuantity;
     }
 
-    //public AircraftModel(String name, Integer passengerSeatsQuantity) {
-    //    super(name);
-    //    this.passengerSeatsQuantity = passengerSeatsQuantity;
-    //}
-    //
-    //public AircraftModel(int passengerSeatsQuantity) {
-    //    this.passengerSeatsQuantity = passengerSeatsQuantity;
-    //}
-
     public AircraftModel(AircraftModel aircraftModel) {
         super(aircraftModel.getId(), aircraftModel.getName());
         this.passengerSeatsQuantity = aircraftModel.getPassengerSeatsQuantity();

@@ -46,10 +46,11 @@ CREATE TABLE cities (
 CREATE TABLE airports (
   id      BIGINT PRIMARY KEY AUTO_INCREMENT,
   name    VARCHAR(255) ,
-  city_id BIGINT
-  ,
+  city_id BIGINT,
   FOREIGN KEY (city_id) REFERENCES cities (id)
 );
+CREATE UNIQUE INDEX airports_unique_name_idx
+  ON airports (name);
 
 CREATE TABLE aircraft_models (
   id                       BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -144,7 +145,8 @@ CREATE TABLE tickets (
   departure_time_zone                 VARCHAR(50)   ,
   arrival_offset_datetime    VARCHAR(22)   ,
   seat_number               SMALLINT ,
-  status            VARCHAR(10)
+  status            VARCHAR(10),
+  CONSTRAINT flight_seat_unique_constraint UNIQUE (flight_id, seat_number)
 );
 
 

@@ -23,15 +23,6 @@ public class City extends NamedEntity {
         this.zoneId = zoneId;
     }
 
-    //public City(String name, ZoneId zoneId) {
-    //    super(name);
-    //    this.zoneId = zoneId;
-    //}
-
-    //public City(ZoneId zoneId) {
-    //    this.zoneId = zoneId;
-    //}
-
     public City(City city) {
         super(city.getId(), city.getName());
         zoneId = city.getZoneId();

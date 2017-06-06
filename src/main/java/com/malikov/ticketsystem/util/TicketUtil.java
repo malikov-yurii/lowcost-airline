@@ -49,7 +49,6 @@ public class TicketUtil {
                                               :false);
         ticket.setPrice(ticketDTO.getPrice());
         ticket.setSeatNumber(ticketDTO.getSeatNumber());
-        ticket.setStatus(ticketDTO.getStatus());
         return ticket;
     }
 

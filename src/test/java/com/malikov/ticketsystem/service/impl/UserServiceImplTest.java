@@ -1,28 +1,20 @@
 package com.malikov.ticketsystem.service.impl;
 
-import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.AbstractServiceTest;
-import com.malikov.ticketsystem.service.IUserService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.malikov.ticketsystem.UserTestData.*;
 
 /**
  * @author Yurii Malikov
  */
 public class UserServiceImplTest extends AbstractServiceTest {
+/*
 
     @Autowired
     protected IUserService service;
 
     @Test
-    public void save() throws Exception {
+    public void create() throws Exception {
         User newUser = getNewDummyUserWithNullId(null);
-        User created = service.save(newUser);
+        User created = service.create(newUser);
         newUser.setId(created.getId());
         MATCHER.assertCollectionEquals(getTestDataUsersWith(newUser), service.getAll());
     }
@@ -69,5 +61,6 @@ public class UserServiceImplTest extends AbstractServiceTest {
         User userByEmail = service.getByEmail(USER_7.getEmail());
         MATCHER.assertEquals(USER_7, userByEmail);
     }
+*/
 
 }

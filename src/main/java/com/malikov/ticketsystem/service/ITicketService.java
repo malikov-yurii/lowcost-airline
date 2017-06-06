@@ -1,54 +1,59 @@
 package com.malikov.ticketsystem.service;
 
 import com.malikov.ticketsystem.dto.TicketDTO;
+import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.dto.TicketWithRemainingDelayDTO;
-import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
-import org.springframework.http.ResponseEntity;
+import com.malikov.ticketsystem.util.exception.NotFoundException;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Yurii Malikov
  */
 public interface ITicketService {
 
-    Ticket save(Ticket ticket, long userId);
-
-    Ticket update(TicketDTO ticketDTO);
-
-    // TODO: 5/8/2017 Should name them properties or hints
-    Ticket get(long id, long userId);
-
-    List<Ticket> getAll(long userId);
-
-    boolean delete(long id);
-
-    //Ticket getWithUser(long id, long userId);
-    //
-    //Ticket getWithFlight(long id, long userId);
-    //
-    //Ticket getWithUserAndFlight(long id, long userId);
-
-    // TODO: 5/30/2017 add userid here
+    /**
+     * Updates ticket using data from ticketDTO
+     * @throws NotFoundException it not found
+     */
+    void update(TicketDTO ticketDTO) throws NotFoundException;
 
     /**
-     * @param newTicket
-     * @return persisted ticket or null if seat is now free
+     * Removes ticket with provided id
+     * @throws NotFoundException if not found with id
      */
-    Ticket createNewBookedTicketAndScheduledTask(Ticket newTicket);
+    void delete(long ticketId) throws NotFoundException;
 
-    // TODO: 5/30/2017 add userid here
-    ResponseEntity processPayment(Long ticketId, OffsetDateTime purchaseOffsetDateTime);
+    /**
+     * @return persisted ticket or null if seat is now free already
+     */
+    Ticket createNewBookedTicketAndScheduledTask(TicketDTO ticketDTO, long flightId,
+                                                 TicketPriceDetailsDTO ticketPriceDetailsDTO);
 
-    Set<Integer> getFreeSeats(Flight flight);
+    /**
+     * @param purchaseOffsetDateTime has information about local datetime and offset from place
+     *                               where ticket has been purchased
+     * @throws NotFoundException if not found ticket with id
+     */
+    void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) throws NotFoundException;
 
-    boolean cancelBooking(Long ticketId);
 
+    /**
+     * Cancel booking of ticket with provided id
+     */
+    void cancelBooking(Long ticketId);
 
-    List<Ticket> getByUserEmail(String email, Integer startingFrom, Integer limit);
+    /**
+     * @param email method searches for ticket of User with email
+     * @param start enforce query ignore particular quantity of first results in list.
+     *              (first element is resultList[start])
+     * @param limit indicates how many objects from result list required
+     *             (last element is resultList[start + limit]
+     * @return filtered and limited list of tickets for user with provided email
+     */
+    List<Ticket> getByUserEmail(String email, Integer start, Integer limit);
 
     /**
      * @param userId method searches for ticket of User with userId
@@ -60,7 +65,15 @@ public interface ITicketService {
      *          with remaining delays in millis before tickets will be automatically removed
      *          if ticket has status BOOKED (or null if ticket status is not BOOKED)
      */
-    List<TicketWithRemainingDelayDTO> getActiveTicketsDelaysByUserId(long userId, Integer start, Integer limit);
+    List<TicketWithRemainingDelayDTO> getActiveTicketsDelays(long userId, Integer start, Integer limit);
 
-    List<TicketDTO> getArchivedTickets(Long userId, Integer startingFrom, Integer limit);
+    /**
+     * @param userId method searches for ticket of User with userId
+     * @param start enforce query ignore particular quantity of first results in list.
+     *              (first element is resultList[start])
+     * @param limit indicates how many objects from result list required
+     *             (last element is resultList[start + limit]
+     * @return active tickets (which departure datetime is <b>before</b> current moment)
+     */
+    List<TicketDTO> getArchivedTickets(Long userId, Integer start, Integer limit);
 }
