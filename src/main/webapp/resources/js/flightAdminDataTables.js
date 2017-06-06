@@ -37,8 +37,15 @@ $(document).ready(function () {
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "aircraftName", "orderable": false},
-            {"data": "initialBaseTicketPrice", "orderable": false},
-            {"data": "maxBaseTicketPrice", "orderable": false},
+            {
+                "data": "initialBaseTicketPrice",
+                "render": appendDecimalsAndDollarSign,
+                "orderable": false
+            }, {
+                "data": "maxBaseTicketPrice",
+                "render": appendDecimalsAndDollarSign,
+                "orderable": false
+            },
             {"orderable": false, "render": renderUpdateBtn},
             {"orderable": false, "render": renderCancelDiscardCancellingBtn},
             {"orderable": false, "render": renderDeleteBtn}
@@ -138,14 +145,14 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
         if (!departureAirportCondition.hasClass('valid') && !(departureAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select departure airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectDepartureAirport'];
             departureAirportCondition.val('');
             departureAirportCondition.addClass('valid');
         }
 
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectArrivalAirport'];
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
         }
@@ -157,7 +164,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             departureAirportCondition.addClass('valid');
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
-            message += 'Departure and arrival airports can\'t be the same.';
+            message += i18n['flight.airportsCantBeSame'];
         }
 
 
@@ -167,13 +174,13 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
             if (fromDateTime > toDateTime) {
                 message = addNextLineSymbolIfNotEmpty(message);
-                message += '"from" date should be earlier than "dto" date!! Please reselect values!';
+                message += i18n['flight.fromShouldBeEarlier'];
             }
         }
 
         if (message.length !== 0) {
             swal({
-                title: "Validation of entered data in filter failed.",
+                title: i18n['common.validationFailed'],
                 text: message,
                 // type: "error",
                 confirmButtonText: "OK"
@@ -193,18 +200,18 @@ function save() {
     var message = "";
 
     if (!$('#aircraftName').hasClass('valid')) {
-        message += 'Please select aircraft from drop-down list.';
+        message += i18n['flight.selectAircraft'];
     }
 
     var departureAirport = $('#departureAirport');
     var arrivalAirport = $('#arrivalAirport');
     if (!departureAirport.hasClass('valid')) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please select departure airport from drop-down list.';
+        message += i18n['flight.selectDepartureAirport'];
     }
     if (!arrivalAirport.hasClass('valid')) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please select arrival airport from drop-down list.';
+        message += i18n['flight.selectArrivalAirport'];
     }
 
     if (departureAirport.val() === arrivalAirport.val()
@@ -214,7 +221,7 @@ function save() {
         // departureAirport.removeClass('valid');
         // arrivalAirport.val('');
         // arrivalAirport.removeClass('valid');
-        message += 'Departure and arrival airports can\'t be the same.';
+        message += i18n['flight.airportsCantBeSame'];
     }
 
     var currentMoment = new Date();
@@ -222,19 +229,19 @@ function save() {
     var departureLocalDateTimeValue = $("#departureLocalDateTime").val();
     if (departureLocalDateTimeValue.length === 0) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please set departure local date time.';
+        message += i18n['flight.selectDepartureTime'];
     } else if (new Date(departureLocalDateTimeValue) < currentMoment) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Departure local date time cannot be earlier than ' + dateToString(currentMoment);
+        message += i18n['flight.departureTimeCantBeEarlierThan'] + dateToString(currentMoment);
     }
 
     var arrivalLocalDateTimeValue = $("#arrivalLocalDateTime").val();
     if (arrivalLocalDateTimeValue.length === 0) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please set arrival local date time.';
+        message += i18n['flight.setArrivalTime'];
     } else if (new Date(arrivalLocalDateTimeValue) < currentMoment) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Arrival local date time cannot be earlier than ' + dateToString(currentMoment);
+        message += i18n['flight.arrivalTimeCantBeEarlierThan'] + dateToString(currentMoment);
     }
 
     var initialBaseTicketPrice = $('#initialBaseTicketPrice');
@@ -243,17 +250,17 @@ function save() {
     var maxBaseTicketPriceInt = parseInt(maxBaseTicketPrice.val(), 10);
     if (initialBaseTicketPriceInt > maxBaseTicketPriceInt) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Initial price cannot be greater than max ticket price.';
+        message += i18n['flight.initialPriceCantBeGreater'];
     }
 
     if (initialBaseTicketPriceInt < 5) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Initial price cannot be less than 5.00$';
+        message += i18n['flight.initialPriceCantBeLess'];
     }
 
     if (message.length !== 0) {
         swal({
-            title: "Validation of entered data failed.",
+            title: i18n['common.validationFailed'],
             text: message,
             // type: "error",
             confirmButtonText: "OK"

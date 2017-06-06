@@ -29,24 +29,19 @@ public class RootController {
     @Autowired
     private ITariffsDetailsService tariffsDetailsService;
 
-    @RequestMapping(value = "/flights", method = RequestMethod.GET)
+    @GetMapping(value = "/flights")
     public String flights(){
         return "flights";
     }
 
-    @RequestMapping(value = "/tickets", method = RequestMethod.GET)
+    @GetMapping(value = "/tickets")
     public String tickets(){
         return "tickets";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @GetMapping(value = "/users")
     public String users(){
         return "users";
-    }
-
-    @RequestMapping(value = "/airports", method = RequestMethod.GET)
-    public String airports(){
-        return "airports";
     }
 
     @GetMapping("/register")

@@ -19,13 +19,12 @@ import java.util.List;
 
 import static com.malikov.ticketsystem.util.UserUtil.prepareToSave;
 import static com.malikov.ticketsystem.util.UserUtil.updateFromTo;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
 import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
 
 /**
  * @author Yurii Malikov
  */
-@Service
+@Service("userService")
 @Transactional
 public class UserServiceImpl implements IUserService, UserDetailsService {
 

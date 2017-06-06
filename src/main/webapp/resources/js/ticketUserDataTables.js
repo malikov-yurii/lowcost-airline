@@ -41,13 +41,14 @@ $(document).ready(function () {
             {"data": "withPriorityRegistrationAndBoarding", "orderable": false},
             {"data": "withBaggage", "orderable": false},
             {"data": "seatNumber", "orderable": false},
-            {"data": "price", "orderable": false},
-            {"data": "status", "orderable": false},
- // todo we have a "data.remainingDelay" here for clock
+            {"data": "price", "render": appendDecimalsAndDollarSign, "orderable": false},
+            {"render": renderTicketStatus, "orderable": false},
+            // todo we have a "data.remainingDelay" here for clock
             {"orderable": false, "render": renderPayBtn},
             {"orderable": false, "render": renderDiscardBookingBtn}
         ],
-        "initComplete": onTableReady,
+        "initComplete": onTicketsTableReady,
+        "drawCallback": onTicketsTableReady,
         "order": [
             [
                 0,
@@ -61,36 +62,36 @@ $(document).ready(function () {
 });
 
 function showArchivedTickets(){
-    $(".page-title").html('Archived tickets');
-    $(".show-active").show();
-    $(".show-archived").hide();
+    $(".page-title").html(i18n['ticket.archivedTickets']);
+    $(".show-active").removeClass('active');
+    $(".show-archived").addClass('active');
     datatableApi.ajax.url( 'ajax/user/ticket/archived/' ).load();
     // forceDataTableReload();
 }
 
 function showActiveTickets(){
-    $(".page-title").html('Active tickets');
-    $(".show-active").hide();
-    $(".show-archived").show();
+    $(".page-title").html(i18n['ticket.activeTickets']);
+    $(".show-active").addClass('active');
+    $(".show-archived").removeClass('active');
     datatableApi.ajax.url( 'ajax/user/ticket/' ).load();
     // forceDataTableReload();
 }
 
 function renderDiscardBookingBtn(data, type, row) {
     return row.status === 'BOOKED'
-        ? '<a class="btn btn-xs btn-danger" onclick="confirmBookingCancelling(' + row.id + ');">' + /*i18n['common.delete']*/ 'discard booking' + '</a>'
-        :'';
+        ? '<a class="btn btn-xs btn-danger" onclick="confirmBookingCancelling(' + row.id + ');">' + i18n["ticket.discardBooking"] + '</a>'
+        : '';
 
 }
 
 function confirmBookingCancelling(id) {
     swal({
-            title: /*i18n['ticket.paymentWindowTitle']*/ 'Are you sure to cancel booking?',
+            title: i18n['ticket.ticket.areYouSureCancelBooking'],
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes, confirm booking cancelling',
-            cancelButtonText: "Discard cancelling"
+            confirmButtonText: i18n['ticket.confirmCancelBooking'],
+            cancelButtonText: i18n['ticket.discardCancelBooking']
         },
         function (isConfirm) {
             if (isConfirm) {
@@ -103,18 +104,18 @@ function confirmBookingCancelling(id) {
 
 function renderPayBtn(data, type, row) {
     return row.status === 'BOOKED'
-        ? '<a class="btn btn-xs btn-danger" onclick="confirmPayment(' + row.id + ');">' + /*i18n['common.delete']*/ 'pay' + '</a>'
+        ? '<a class="btn btn-xs btn-danger" onclick="confirmPayment(' + row.id + ');">' + i18n["ticket.pay"] + '</a>'
         :'';
 }
 
 function confirmPayment(id) {
     swal({
-            title: /*i18n['ticket.paymentWindowTitle']*/ 'Are you sure to pay for ticket?',
+            title: i18n['ticket.areYouSurePay'],
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes, confirm payment',
-            cancelButtonText: "No"
+            confirmButtonText: i18n['ticket.confirmPay'],
+            cancelButtonText: i18n['common.no']
         },
         function (isConfirm) {
             if (isConfirm) {
@@ -124,3 +125,18 @@ function confirmPayment(id) {
         });
 }
 
+
+function renderTicketStatus(data, type, row) {
+    if (row.status === 'BOOKED') {
+        return i18n['ticket.bookedFor'] + ': ' + renderTimer(row.remainingDelay);
+    } else {
+        return row.status;
+    }
+}
+
+function onTicketsTableReady() {
+    if (timerExists) {
+        startTimer();
+    }
+    onTableReady();
+}

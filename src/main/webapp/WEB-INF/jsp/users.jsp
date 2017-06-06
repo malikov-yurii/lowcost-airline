@@ -22,20 +22,20 @@
                             <div class="panel-body">
                                 <form:form class="form-horizontal" id="filter">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3"
-                                               for="lastNameCondition"><spring:message code="user.lastName"/>:</label>
-                                        <div class="col-sm-3">
-                                            <input class="input-filter form-control"
-                                                   name="lastNameCondition" id="lastNameCondition"
-                                                   placeholder="Eduardov">
+                                        <div class="container">
+                                            <label class="control-label col-sm-3"
+                                                   for="lastNameCondition"><spring:message code="user.lastName"/>:</label>
+                                            <div class="col-sm-3">
+                                                <input class="input-filter form-control"
+                                                       name="lastNameCondition" id="lastNameCondition"
+                                                       placeholder="Eduardov">
+                                            </div>
+                                            <a class="btn btn-primary pull-right" type="button" onclick="showOrUpdateTable(false, false)">
+                                                <span aria-hidden="true"><spring:message code="common.search"/></span>
+                                            </a>
                                         </div>
                                     </div>
                                 </form:form>
-                            </div>
-                            <div class="panel-footer text-right">
-                                <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
-                                    <span aria-hidden="true"><spring:message code="common.search"/></span>
-                                </a>
                             </div>
                         </div>
                     </div>

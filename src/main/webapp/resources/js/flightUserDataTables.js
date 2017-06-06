@@ -34,7 +34,11 @@ $(document).ready(function () {
             {"data": "arrivalAirport", "orderable": false},
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
-            {"data": "ticketPrice", "orderable": false},
+            {
+                "data": "ticketPrice",
+                "render": appendDecimalsAndDollarSign,
+                "orderable": false
+            },
             {"orderable": false, "render": renderPurchaseBtn}
         ],
         "initComplete": onTableReady,
@@ -101,7 +105,7 @@ $(document).ready(function () {
 function renderPurchaseBtn(data, type, row) {
     // return '<a>Buy ticket</a>';
     // return '<a class="btn btn-xs btn-primary" onclick="showPurchaseModal()">Buy ticket</a>';
-    return '<a class="btn btn-xs btn-primary purchase-btn">Buy ticket</a>';
+    return '<a class="btn btn-xs btn-primary purchase-btn">'+ i18n["ticket.buy"] +'</a>';
 }
 
 function showSetTicketDetailsModal() {
@@ -114,10 +118,11 @@ function showSetTicketDetailsModal() {
 
     $withBaggage.on('change', function () {
         if ($(this).is(':checked')) {
-            $price.val(parseInt($price.val()) + parseInt($baggagePrice.val()))
+            $price.val(parseInt($price.val()) + parseInt($baggagePrice.val()));
         } else {
-            $price.val(parseInt($price.val()) - parseInt($baggagePrice.val()))
+            $price.val(parseInt($price.val()) - parseInt($baggagePrice.val()));
         }
+        $('.price').text(appendDecimalsAndDollarSign($price.val()));
     });
 
     $withPriorityRegistrationAndBoarding.on('change', function () {
@@ -126,6 +131,7 @@ function showSetTicketDetailsModal() {
         } else {
             $price.val(parseInt($price.val()) - parseInt($priorityRegistrationAndBoardingPrice.val()))
         }
+        $('.price').text(appendDecimalsAndDollarSign($price.val()));
     });
 
     $.ajax({
@@ -138,16 +144,25 @@ function showSetTicketDetailsModal() {
             renderSeatPicker(data);
             freeSeats = data.freeSeats;
             $('#departureAirport').val(data.departureAirport);
+            $('.departureAirport').text(data.departureAirport);
             $('#arrivalAirport').val(data.arrivalAirport);
+            $('.arrivalAirport').text(data.arrivalAirport);
             $('#departureCity').val(data.departureCity);
+            $('.departureCity').text(data.departureCity);
             $('#arrivalCity').val(data.arrivalCity);
+            $('.arrivalCity').text(data.arrivalCity);
             $('#departureLocalDateTime').val(data.departureLocalDateTime);
+            $('.departureLocalDateTime').text(data.departureLocalDateTime);
             $('#arrivalLocalDateTime').val(data.arrivalLocalDateTime);
+            $('.arrivalLocalDateTime').text(data.arrivalLocalDateTime);
             $withBaggage.prop("checked", false);
             $withPriorityRegistrationAndBoarding.prop("checked", false);
             $('#price').val(data.ticketPriceDetails.baseTicketPrice);
+            $('.price').text(appendDecimalsAndDollarSign(data.ticketPriceDetails.baseTicketPrice));
             $baggagePrice.val(data.ticketPriceDetails.baggagePrice);
+            $('.baggagePrice').text(appendDecimalsAndDollarSign(data.ticketPriceDetails.baggagePrice));
             $priorityRegistrationAndBoardingPrice.val(data.ticketPriceDetails.priorityRegistrationAndBoardingPrice);
+            $('.priorityRegistrationAndBoardingPrice').text(appendDecimalsAndDollarSign(data.ticketPriceDetails.priorityRegistrationAndBoardingPrice));
             $('#passengerFirstName').val('');
             $('#passengerLastName').val('');
             $('#seatNumber').val(0);
@@ -168,19 +183,19 @@ function save() {
     var passengerLastName = $('#passengerLastName').val();
     var seatNumber = parseInt($('#seatNumber').val());
 
-    if (passengerFirstName.length === 0) {
+    if (passengerFirstName.length < 2 || passengerFirstName.match(/\d+/g)) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please input first name.';
+        message += i18n['common.inputCorrectFirstName'];
     }
 
-    if (passengerLastName.length === 0) {
+    if (passengerLastName.length < 2  || passengerLastName.match(/\d+/g)) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please input last name.';
+        message += i18n['common.inputCorrectLastName'];
     }
 
     if (seatNumber === 0) {
         message = addNextLineSymbolIfNotEmpty(message);
-        message += 'Please pick your seat.';
+        message += i18n['flight.pickYourSeat'];
     } else {
         var isFreeSeat = false;
         for (var i = 0; i < freeSeats.length; i++) {
@@ -191,13 +206,13 @@ function save() {
         }
         if (!isFreeSeat) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please pick your seat using picker. Fraud is illegal action';
+            message += i18n['flight.pickYourSeatLegally'];
         }
     }
 
     if (message.length !== 0) {
         swal({
-            title: "Validation of entered ticket data failed.",
+            title:  i18n['common.validationFailed'],
             text: message,
             // type: "error",
             confirmButtonText: "OK"
@@ -212,20 +227,24 @@ function save() {
             success: function (data) {
                 $('#id').val(data.bookedTicketId);
                 console.log(data.bookingDuration);
+                var bookingDuration = Math.floor(data.bookingDuration / 60000);
                 swal({
                         title: i18n['ticket.paymentWindowTitle'] + ' ' + data.bookedTicketTotalPrice + '$',
                         type: "warning",
+                        text: i18n['ticket.yourTicketBookedFor'] + ' ' + bookingDuration + ' ' + i18n['common.minutes'],
                         showCancelButton: true,
                         confirmButtonColor: '#DD6B55',
-                        confirmButtonText: 'Yes, confirm payment',
-                        cancelButtonText: "No, i will pay later",
+                        confirmButtonText: i18n['ticket.confirmPay'],
+                        cancelButtonText: i18n['ticket.cancelPay'],
                         // closeOnConfirm: false
                     },
                     function (isConfirm) {
                         if (isConfirm) {
                             payForTicket(data.bookedTicketId);
+                            popup(i18n['ticket.purchased']);
+
                         } else {
-                            alert("You can pay for ticket or discard booking on page tickets.");
+                            popup(i18n['ticket.booked']);
                             // swal hide to fast here it should work
                             // swal({
                             //     title: "Info.",
@@ -236,6 +255,7 @@ function save() {
                             // });
                             // debugger;
                         }
+
                         // forceDataTableReload();
                     });
                 forceDataTableReload();
@@ -260,7 +280,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
         if (!departureAirportCondition.hasClass('valid') && !(departureAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select departure airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectDepartureAirportForFilter'];
             departureAirportCondition.val('');
             departureAirportCondition.addClass('valid');
         }
@@ -268,7 +288,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
         // ;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectArrivalAirportForFilter'];
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
         }
@@ -280,7 +300,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             departureAirportCondition.addClass('valid');
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
-            message += 'Departure and arrival airports can\'t be the same.';
+            message += i18n['flight.airportsCantBeSame'];
         }
 
 
@@ -290,13 +310,13 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
             if (fromDateTime > toDateTime) {
                 message = addNextLineSymbolIfNotEmpty(message);
-                message += '"from" date should be earlier than "dto" date!! Please reselect values!';
+                message += i18n['flight.fromShouldBeEarlier'];
             }
         }
 
         if (message.length !== 0) {
             swal({
-                title: "Validation of entered data in filter failed.",
+                title: i18n['common.validationFailed'],
                 text: message,
                 // type: "error",
                 confirmButtonText: "OK"
@@ -347,4 +367,15 @@ function selectSeat(e) {
     $('.seat').removeClass('active');
     $(e.target).addClass('active');
     $('input#seatNumber').val(seat);
+}
+
+function popup(msg) {
+    var popup = $('<div class="popup">'+ msg +'</div>').appendTo($('body'));
+
+    popup.fadeIn('fast');
+    setTimeout(function() {
+        popup.fadeOut('fast', function() {
+            popup.remove();
+        })
+    }, 3000);
 }

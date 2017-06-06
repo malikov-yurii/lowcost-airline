@@ -22,32 +22,32 @@
                             <div class="panel-body">
                                 <form:form class="form-horizontal" id="filter">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3"
+                                        <label class="control-label col-sm-2"
                                                for="departureAirportCondition"><spring:message
                                                 code="airport.departure"/>:</label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <input class="input-filter form-control input-airport valid"
                                                    name="departureAirportCondition" id="departureAirportCondition">
                                         </div>
-                                        <label class="control-label col-sm-4"
+                                        <label class="control-label col-sm-2"
                                                for="arrivalAirportCondition"><spring:message
                                                 code="airport.arrival"/>:</label>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                             <input class="input-filter form-control input-airport valid"
                                                    name="arrivalAirportCondition" id="arrivalAirportCondition">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-3" for="fromDepartureDateTimeCondition">
+                                        <label class="control-label col-sm-2" for="fromDepartureDateTimeCondition">
                                             <spring:message code="flight.fromDepartureDateTime"/>:</label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <input class="input-filter form-control input-datetime active-input"
                                                    name="fromDepartureDateTimeCondition"
                                                    id="fromDepartureDateTimeCondition">
                                         </div>
-                                        <label class="control-label col-sm-4" for="toDepartureDateTimeCondition">
+                                        <label class="control-label col-sm-2" for="toDepartureDateTimeCondition">
                                             <spring:message code="flight.toDepartureDateTime"/>:</label>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-4">
                                             <input class="input-filter form-control input-datetime departure-datetime active-input"
                                                    name="toDepartureDateTimeCondition"
                                                    id="toDepartureDateTimeCondition">
@@ -112,147 +112,149 @@
                 </div>
                 <div class="modal-body">
                     <form:form class="form-horizontal" method="post" id="detailsForm">
-                        <div class="seat-picker__title">
-                            <spring:message code="ticket.pleaseSelectYourSeat"/>
-                        </div>
-                        <div class="seat-picker"></div>
-                        <input type="text" hidden="hidden" id="id" name="id"  value="0">
-                        <div class="form-group">
-                            <label for="departureAirport" class="control-label col-xs-3">
-                                <spring:message code="airport.departure"/></label>
-                            <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control input-airport" id="departureAirport"
-                                       name="departureAirport"
-                                       placeholder="please choose arrival airport from drop down list">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="arrivalAirport" class="control-label col-xs-3">
-                                <spring:message code="airport.arrival"/></label>
 
-                            <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control input-airport" id="arrivalAirport"
-                                       name="arrivalAirport"
-                                       placeholder="please choose arrival airport from drop down list">
-                            </div>
-                        </div>
+                        <input type="text" hidden="hidden" id="id" name="id" value="0">
+
+
                         <sec:authorize access="!hasRole('ROLE_ADMIN')">
-                            <div class="form-group">
-                                <label for="departureCity" class="control-label col-xs-3">
-                                    <spring:message code="city.departure"/></label>
-                                <div class="col-xs-9">
-                                    <input type="text" class="modal-input form-control input-city" id="departureCity"
-                                           name="departureCity" readonly="readonly">
-                                </div>
+                            <div class="seat-picker__title">
+                                <spring:message code="ticket.pleaseSelectYourSeat"/>
                             </div>
-                            <div class="form-group">
-                                <label for="arrivalCity" class="control-label col-xs-3">
-                                    <spring:message code="city.arrival"/></label>
+                            <div class="seat-picker"></div>
 
-                                <div class="col-xs-9">
-                                    <input type="text" class="modal-input form-control input-city" id="arrivalCity"
-                                           name="arrivalCity" readonly="readonly">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="price" class="control-label col-xs-3">
-                                    <spring:message code="flight.ticketPrice"/></label>
+                            <input type="hidden" class="modal-input form-control input-airport" id="departureAirport"
+                                   name="departureAirport">
+                            <input type="hidden" class="modal-input form-control input-airport" id="arrivalAirport"
+                                   name="arrivalAirport">
+                            <input type="hidden" id="departureCity" name="departureCity">
+                            <input type="hidden" id="arrivalCity" name="arrivalCity">
+                            <input type="hidden" id="seatNumber" name="seatNumber">
+                            <input type="hidden" id="baggagePrice" name="baggagePrice">
+                            <input type="hidden" id="price" name="price" value="<%=session.getAttribute("price")%>">
+                            <input type="hidden" id="priorityRegistrationAndBoardingPrice"
+                                   name="priorityRegistrationAndBoardingPrice">
+                            <input type="hidden" id="departureLocalDateTime" name="departureLocalDateTime">
+                            <input type="hidden" id="arrivalLocalDateTime" name="arrivalLocalDateTime">
 
-                                <div class="col-xs-9">
-                                    <input type="text" class="modal-input form-control " id="price"
-                                           name="price" readonly="readonly" value="<%=session.getAttribute("price")%>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="seatNumber" class="control-label col-xs-3">
-                                    <spring:message code="ticket.seatNumber"/></label>
 
-                                <div class="col-xs-9">
-                                    <input type="number" class="modal-input form-control " id="seatNumber"
-                                           name="seatNumber" readonly="readonly">
+                            <div class="row modal-group">
+                                <div class="col-md-6">
+                                    <div class="modal-subtitle">
+                                        <spring:message code="flights.departure"/>
+                                    </div>
+                                    <p>
+                                        <span class="departureCity"></span>, <span class="departureAirport"></span>,<br>
+                                        <span class="departureLocalDateTime"></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="modal-subtitle">
+                                        <spring:message code="flights.arrival"/>
+                                    </div>
+                                    <p>
+                                        <span class="arrivalCity"></span>, <span class="arrivalAirport"></span>,<br>
+                                        <span class="arrivalLocalDateTime"></span>
+                                    </p>
                                 </div>
                             </div>
+
+
                             <div class="form-group">
-                                <label for="passengerFirstName" class="control-label col-xs-3">
+                                <label for="passengerFirstName" class="control-label col-xs-5">
                                     <spring:message code="ticket.passengerFirstName"/></label>
 
-                                <div class="col-xs-9">
+                                <div class="col-xs-7">
                                     <input type="text" class="modal-input form-control" id="passengerFirstName"
                                            name="passengerFirstName"
                                            placeholder="Ivan">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="passengerLastName" class="control-label col-xs-3">
+                                <label for="passengerLastName" class="control-label col-xs-5">
                                     <spring:message code="ticket.passengerLastName"/></label>
 
-                                <div class="col-xs-9">
+                                <div class="col-xs-7">
                                     <input type="text" class="modal-input form-control" id="passengerLastName"
                                            name="passengerLastName"
                                            placeholder="Ivan">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="withBaggage" class="control-label col-xs-3">
+                                <label for="passengerLastName" class="control-label control-label-no-padding col-xs-5">
+                                    <spring:message code="flight.ticketPrice"/></label>
+                                <div class="col-xs-7">
+                                    <span class="price"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="withBaggage" class="control-label control-label-no-padding col-xs-5">
                                     <spring:message code="ticket.includeBaggage"/></label>
 
-                                <div class="col-xs-9">
-                                    <input type="checkbox" class="modal-input form-control" id="withBaggage"
+                                <div class="col-xs-7">
+                                    <input type="checkbox" class="modal-input" id="withBaggage"
                                            name="withBaggage">
+                                    <span class="form-group-text">&nbsp;&nbsp;(<spring:message code="ticket.baggagePrice"/> - <span class="baggagePrice"></span>)</span>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="withPriorityRegistrationAndBoarding"
-                                       class="control-label col-xs-3">
+                                       class="control-label control-label-no-padding col-xs-5">
                                     <spring:message code="ticket.includePriorityRegistration"/></label>
 
-                                <div class="col-xs-9">
-                                    <input type="checkbox" class="modal-input form-control"
+                                <div class="col-xs-7">
+                                    <input type="checkbox" class="modal-input"
                                            id="withPriorityRegistrationAndBoarding"
                                            name="withPriorityRegistrationAndBoarding">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="baggagePrice" class="control-label col-xs-3">
-                                    <spring:message code="ticket.baggagePrice"/></label>
-
-                                <div class="col-xs-9">
-                                    <input type="number" class="modal-input form-control" id="baggagePrice"
-                                           name="baggagePrice" readonly="readonly">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="priorityRegistrationAndBoardingPrice"
-                                       class="control-label col-xs-3">
-                                    <spring:message code="ticket.priorityRegistrationAndBoardingPrice"/></label>
-                                <div class="col-xs-9">
-                                    <input type="number" class="modal-input form-control"
-                                           id="priorityRegistrationAndBoardingPrice"
-                                           name="priorityRegistrationAndBoardingPrice" readonly="readonly">
+                                    <span class="form-group-text">&nbsp;&nbsp;(<spring:message code="ticket.priorityRegistrationAndBoardingPrice"/> - <span class="priorityRegistrationAndBoardingPrice"></span>)</span>
                                 </div>
                             </div>
                         </sec:authorize>
-                        <div class="form-group">
-                            <label for="departureLocalDateTime" class="control-label col-xs-3">
-                                <spring:message code="flight.departureLocalDateTime"/></label>
-                            <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control input-datetime active-input"
-                                       id="departureLocalDateTime"
-                                       name="departureLocalDateTime"
-                                       placeholder="please set arrival local date">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            0 <label for="arrivalLocalDateTime" class="control-label col-xs-3">
-                            <spring:message code="flight.arrivalLocalDateTime"/></label>
-                            <div class="col-xs-9">
-                                <input type="text" class="modal-input form-control input-datetime active-input"
-                                       id="arrivalLocalDateTime"
-                                       name="arrivalLocalDateTime"
-                                       placeholder="please set arrival local date">
-                            </div>
-                        </div>
+
+
+
+
+
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <div class="form-group">
+                                <label for="departureAirport" class="control-label col-xs-3">
+                                    <spring:message code="airport.departure"/></label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="modal-input form-control input-airport" id="departureAirport"
+                                           name="departureAirport"
+                                           placeholder="please choose arrival airport from drop down list">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="arrivalAirport" class="control-label col-xs-3">
+                                    <spring:message code="airport.arrival"/></label>
+
+                                <div class="col-xs-9">
+                                    <input type="text" class="modal-input form-control input-airport" id="arrivalAirport"
+                                           name="arrivalAirport"
+                                           placeholder="please choose arrival airport from drop down list">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="departureLocalDateTime" class="control-label col-xs-3">
+                                    <spring:message code="flight.departureLocalDateTime"/></label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="modal-input form-control input-datetime active-input"
+                                           id="departureLocalDateTime"
+                                           name="departureLocalDateTime"
+                                           placeholder="please set arrival local date">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="arrivalLocalDateTime" class="control-label col-xs-3">
+                                    <spring:message code="flight.arrivalLocalDateTime"/></label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="modal-input form-control input-datetime active-input"
+                                           id="arrivalLocalDateTime"
+                                           name="arrivalLocalDateTime"
+                                           placeholder="please set arrival local date">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="aircraftName" class="control-label col-xs-3">
                                     <spring:message code="aircraft.name"/></label>

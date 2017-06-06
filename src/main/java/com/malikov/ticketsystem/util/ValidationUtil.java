@@ -3,10 +3,25 @@ package com.malikov.ticketsystem.util;
 import com.malikov.ticketsystem.IHasId;
 import com.malikov.ticketsystem.util.exception.NotFoundException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Yurii Malikov
  */
 public class ValidationUtil {
+
+    public static Map<String, String> constraintCodeMap = new HashMap<String, String>() {
+        {
+            //put("ConstraintViolationException: Duplicate entry 'user@gmail.com' for key 'email'", "exception.users.duplicate_email");
+            //put("constraint [email]", "exception.users.duplicate_email");
+            //put("users_unique_email_idx", "exception.users.duplicate_email");
+            //put("email", "exception.users.duplicate_email");
+            // TODO: 6/5/2017 should user resource bundle instead!!
+            put("email", "Sorry, inputted email is not free. Choose another.");
+            put("seat", "Sorry, picked seat just has been booked by another user.");
+        }
+    };
 
     private ValidationUtil() {
     }

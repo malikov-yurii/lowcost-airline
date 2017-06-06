@@ -1,3 +1,5 @@
+var timerExists = 0;
+
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
     $('.form-control').val('');
@@ -86,11 +88,7 @@ function cancelBooking(id) {
         type: 'PUT',
         success: function () {
             // debugger;
-            swal({
-                title: "Cancel",
-                text: "Ticket booking has been canceled",
-                confirmButtonText: "OK"
-            });
+            popup(i18n['ticket.bookingCancel']);
             forceDataTableReload();
 
         }
@@ -104,8 +102,8 @@ function payForTicket(id) {
         type: 'PUT',
         data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
         success: function () {
-            alert("Ticket has been successfully purchased. You can access it in your profile");
             forceDataTableReload();
+            popup(i18n['ticket.purchaseSuccess']);
             // this swal hides too fast on flights page it should work
             // swal({
             //     title: "Payment success",
@@ -125,12 +123,12 @@ function renderDeleteBtn(data, type, row) {
 function deleteEntity(id) {
     swal({
             title: i18n['common.areYouSureWantToDelete'],
-            text: "This is final delete. No way dto restore data after confirmation",
+            text: i18n['common.finalDelete'],
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'Yes, I am sure',
-            cancelButtonText: "No, cancel it",
+            confirmButtonText: i18n['common.yesSure'],
+            cancelButtonText: i18n['common.noCancelIt']
         },
         function (isConfirm) {
             if (isConfirm) {
@@ -206,7 +204,7 @@ function dateToOffsetString(date) {
     // debugger;
     return date.toJSON().slice(0, 16) + "+" +
         (Math.floor(offsetHours / 10) === 0 ? "0" + offsetHours : offsetHours) +
-         ":" + (Math.floor(offsetMinutes / 10) === 0 ? "0" + offsetMinutes : offsetMinutes);
+        ":" + (Math.floor(offsetMinutes / 10) === 0 ? "0" + offsetMinutes : offsetMinutes);
 }
 
 
@@ -221,5 +219,48 @@ function onTableReady() {
     var header = $("meta[name='_csrf_header']").attr("content");
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
+    });
+}
+
+function appendDecimalsAndDollarSign(data) {
+    return parseFloat(data).toFixed(2) + ' $';
+}
+
+
+function renderTimer(time) {
+    timerExists++;
+    time = Math.round(time / 1000);
+    var secs = time % 60;
+    var mins = (time - secs) / 60;
+    if (mins < 10) mins = '0' + mins;
+    if (secs < 10) secs = '0' + secs;
+
+    return '<div class="timer" data-time="'+time+'">' +
+        '<div class="mins">'+ mins +'</div> : ' +
+        '<div class="secs">'+ secs +'</div>' +
+        '</div>';
+}
+
+function startTimer() {
+    var timersArray = document.querySelectorAll('.timer');
+
+    timersArray.forEach(function(element) {
+        var time = parseInt(element.getAttribute('data-time'));
+        var elementMins = element.querySelector('.mins');
+        var elementSecs = element.querySelector('.secs');
+
+        var interval = setInterval(function() {
+            time--;
+            var secs = time % 60;
+            var mins = (time - secs) / 60;
+
+            elementMins.innerHTML = mins < 10 ? '0' + mins : mins;
+            elementSecs.innerHTML = secs < 10 ? '0' + secs : secs;
+
+            if (time == 0) {
+                clearInterval(interval);
+                timerExists--;
+            }
+        }, 1000);
     });
 }

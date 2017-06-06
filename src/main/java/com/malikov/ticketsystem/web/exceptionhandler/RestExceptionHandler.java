@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,18 +25,6 @@ import java.util.Optional;
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class RestExceptionHandler {
     private static Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
-
-    private static Map<String, String> constraintCodeMap = new HashMap<String, String>() {
-        {
-            //put("ConstraintViolationException: Duplicate entry 'user@gmail.com' for key 'email'", "exception.users.duplicate_email");
-            //put("constraint [email]", "exception.users.duplicate_email");
-            //put("users_unique_email_idx", "exception.users.duplicate_email");
-            //put("email", "exception.users.duplicate_email");
-            // TODO: 6/5/2017 should user resource bundle instead!!
-            put("email", "Sorry, inputted email is not free. Choose another.");
-            put("seat", "Sorry, picked seat just has been booked by another user.");
-        }
-    };
 
     @Autowired
     private MessageSource messageSource;
@@ -55,7 +42,7 @@ public class RestExceptionHandler {
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
         if (rootMsg != null) {
-            Optional<Map.Entry<String, String>> entry = constraintCodeMap.entrySet().stream()
+            Optional<Map.Entry<String, String>> entry = ValidationUtil.constraintCodeMap.entrySet().stream()
                     .filter((it) -> rootMsg.contains(it.getKey()))
                     .findAny();
             if (entry.isPresent()) {

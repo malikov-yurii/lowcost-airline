@@ -33,7 +33,11 @@ $(document).ready(function () {
             {"data": "arrivalAirport", "orderable": false},
             {"data": "departureLocalDateTime", "className": "input-datetime", "orderable": false},
             {"data": "arrivalLocalDateTime", "className": "input-datetime", "orderable": false},
-            {"data": "ticketPrice", "orderable": false},
+            {
+                "data": "ticketPrice",
+                "render": appendDecimalsAndDollarSign,
+                "orderable": false
+            },
         ],
         "initComplete": onTableReady,
         "order": [
@@ -56,8 +60,10 @@ $(document).ready(function () {
     $('.departure-datetime, .modal-input.input-datetime').removeClass("active-input");
 
     $('.input-datetime.active-input').datetimepicker({
-        format: getDateTimePickerFormat()
-        , minDate: 0
+        format: getDateTimePickerFormat(),
+        minDate: 0,
+        onSelectDate: onSelectDateTime,
+        onSelectTime: onSelectDateTime
     });
 
     $('.input-airport').autocomplete({
@@ -104,7 +110,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
         if (!departureAirportCondition.hasClass('valid') && !(departureAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select departure airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectDepartureAirportForFilter'];
             departureAirportCondition.val('');
             departureAirportCondition.addClass('valid');
         }
@@ -112,7 +118,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
         // ;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
-            message += 'Please select arrival airport for filter from drop-down list or leave it empty.';
+            message += i18n['flight.selectArrivalAirportForFilter'];
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
         }
@@ -124,7 +130,7 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             departureAirportCondition.addClass('valid');
             arrivalAirportCondition.val('');
             arrivalAirportCondition.addClass('valid');
-            message += 'Departure and arrival airports can\'t be the same.';
+            message += i18n['flight.airportsCantBeSame'];
         }
 
 
@@ -134,13 +140,13 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
             if (fromDateTime > toDateTime) {
                 message = addNextLineSymbolIfNotEmpty(message);
-                message += '"from" date should be earlier than "dto" date!! Please reselect values!';
+                message += i18n['flight.fromShouldBeEarlier'];
             }
         }
 
         if (message.length !== 0) {
             swal({
-                title: "Validation of entered data in filter failed.",
+                title: i18n['common.validationFailer'],
                 text: message,
                 // type: "error",
                 confirmButtonText: "OK"
@@ -154,4 +160,10 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
         forceDataTableReload();
         // $('.datatable').attr("hidden", false);
     }
+}
+
+function onSelectDateTime (date) {
+    var newDate = new Date(date);
+    newDate.setHours(newDate.getHours() + 1443);
+    $('#toDepartureDateTimeCondition').val(dateToString(newDate));
 }

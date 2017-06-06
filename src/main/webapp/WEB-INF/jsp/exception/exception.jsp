@@ -10,9 +10,10 @@
 <div class="jumbotron">
     <div class="container">
         <br>
-        <h4>Application error: </h4>
+        <h4>Error occured: </h4>
+        <h2>${exceptionSimpleMessage}</h2>
+        <!--
         <h2>${exception.message}</h2>
-<!--
 <c:forEach items="${exception.stackTrace}" var="stackTrace">
     ${stackTrace}
 </c:forEach>

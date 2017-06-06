@@ -27,7 +27,7 @@
             <h2>${userDTO.firstName} <spring:message code="${register ? 'app.register' : 'app.profile'}"/></h2>
             <div class="view-box">
                 <form:form modelAttribute="userDTO" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
-                           charset="utf-8" accept-charset="UTF-8">
+                           charset="utf-8" accept-charset="UTF-8" onsubmit="return validateProfileForm()">
 
                     <spring:message code="user.firstName" var="firstName"/>
                     <lowcost:inputField label='${firstName}' name="firstName"/>
@@ -45,7 +45,7 @@
                     <lowcost:inputField label='${phoneNumber}' name="phoneNumber"/>
 
                     <div class="form-group">
-                        <div class="col-xs-offset-2 col-xs-10">
+                        <div class="col-xs-offset-6 col-xs-2">
                             <button type="submit" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>

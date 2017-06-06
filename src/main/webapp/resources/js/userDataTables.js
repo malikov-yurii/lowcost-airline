@@ -70,13 +70,13 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
     if (!($lastNameCondition.val().length === 0) || forceUpdate) {
 
         if (!$lastNameCondition.hasClass('valid') && !($lastNameCondition.val().length === 0)) {
-            message += 'Please select user last name for filter from drop-down list or leave it empty.';
+            message += i18n['common.selectUserLastNameFromDropdown'];
             $lastNameCondition.val('');
         }
 
         if (message.length !== 0) {
             swal({
-                title: "Validation of entered data in filter failed.",
+                title: i18n['common.validationFailed'],
                 text: message,
                 // type: "error",
                 confirmButtonText: "OK"

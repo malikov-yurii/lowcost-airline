@@ -8,6 +8,7 @@
 
 body {
     font-family: Arial, sans-serif;
+    min-width: 1200px;
 }
 
 .project-table {
@@ -306,9 +307,9 @@ th:nth-child(4) {
     color: #aa0505;
 }
 .order-table-head th:nth-last-child(1), .order-table-head th:nth-last-child(2), .order-table-head th:nth-last-child(3) {
-     border-right: 0;
-     border-left: 0;
- }
+    border-right: 0;
+    border-left: 0;
+}
 
 .applied-freelancer-table {
     width: 100%;
@@ -429,4 +430,106 @@ th:nth-child(4) {
 }
 .seat.enabled.active {
     background: red;
+}
+.select-lang {
+    float: right;
+    margin: 0 1% 0 0;
+}
+.select-lang > a {
+    line-height: 50px;
+}
+
+#filter .input-filter {
+    width: 100%;
+}
+.header-login-form {
+    float: right;
+    line-height: 50px;
+}
+.nav-block .header-login-form .btn {
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.nav-block .header-login-form .btn .glyphicon {
+    top: 0;
+}
+#userDTO input,
+#tariffsDetails input{
+    padding: 0 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    line-height: 28px;
+}
+
+#userDTO label,
+#tariffsDetails label {
+    padding-top: 0;
+    line-height: 30px;
+}
+.tariffs-desc {
+    line-height: 1.6;
+}
+.modal-group {
+    padding: 0 35px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.modal-group > .col-md-6:first-child {
+    border-right: 1px solid #ddd;
+}
+.modal-subtitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 6px;
+}
+.control-label.control-label-no-padding {
+    padding-top: 0;
+}
+.tickets-btn {
+    margin: 20px 5px 10px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid #ddd;
+    font-size: 17px;
+}
+.tickets-btn:focus {
+    outline: none;
+}
+.tickets-btn.active {
+    border-bottom-color: #5bc0de;
+}
+.error-text {
+    display: inline-block;
+}
+.error input {
+    outline: rgba(255, 0, 0, 0.64) auto 5px;
+}
+#detailsForm input {
+    max-width: 220px;
+}
+.popup {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 60%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 1px 0 15px 0 rgba(0,0,0,.3);
+    font-size: 17px;
+    text-align: center;
+}
+.timer .mins,
+.timer .secs {
+    display: inline-block;
+    vertical-align: top;
+}
+.table-tickets {
+    table-layout: fixed;
+    font-size: 14px;
+}
+.table-tickets thead {
+    font-size: 13px;
 }

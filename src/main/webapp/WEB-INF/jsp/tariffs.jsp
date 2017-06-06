@@ -16,7 +16,7 @@
     <div class="container">
         <div class="shadow">
             <h2><spring:message code="common.tariffs"/></h2>
-            <div class="view-box">
+            <div class="col-md-6 view-box">
                 <form:form modelAttribute="tariffsDetails" class="form-horizontal" method="PUT"
                            charset="utf-8" accept-charset="UTF-8">
                     <spring:message code="tariff.daysCountBeforeTicketPriceStartsToGrow"
@@ -41,7 +41,7 @@
                     <lowcost:inputField label='${active}' name="active"/>
 
                     <div class="form-group">
-                        <div class="col-xs-offset-2 col-xs-10">
+                        <div class="col-xs-offset-6 col-xs-2">
                             <button type="submit" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
@@ -49,10 +49,12 @@
                     </div>
                 </form:form>
             </div>
+            <div class="col-md-6 tariffs-desc">
+                <spring:message code="tariff.description"/>
+            </div>
         </div>
     </div>
 </div>
-<spring:message code="tariff.description"/>
 <jsp:include page="fragments/footer.jsp"/>
 <script type="text/javascript" src="resources/js/profile.js"></script>
 </body>

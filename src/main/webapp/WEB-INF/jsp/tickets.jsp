@@ -14,8 +14,8 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h3 class="page-title"><spring:message code="common.active"/></h3>
             <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <h3 class="page-title"><spring:message code="common.tickets"/></h3>
                 <div class="view-box">
                     <div class="row">
                         <div class="col-sm-7">
@@ -45,13 +45,13 @@
                 </div>
             </sec:authorize>
             <sec:authorize access="!hasRole('ROLE_ADMIN')">
-                <a class="btn btn-sm btn-info show-archived" onclick="showArchivedTickets()">
-                    <spring:message code="ticket.showArchived"/></a>
-                <a class="btn btn-sm btn-info show-active" style="display: none" onclick="showActiveTickets()">
-                    <spring:message code="ticket.showActive"/></a>
+                <button class="tickets-btn show-active active" onclick="showActiveTickets()">
+                    <spring:message code="ticket.active"/></button>
+                <button class="tickets-btn show-archived" onclick="showArchivedTickets()">
+                    <spring:message code="ticket.archivedTickets"/></button>
             </sec:authorize>
             <div class="view-box datatable" hidden="true">
-                <table class="table table-striped display" id="datatable">
+                <table class="table table-striped display table-tickets" id="datatable">
                     <thead>
                     <tr>
                         <th><spring:message code="common.id"/></th>
