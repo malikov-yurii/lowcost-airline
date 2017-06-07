@@ -3,7 +3,7 @@ package com.malikov.ticketsystem.web.controller.flight;
 import com.malikov.ticketsystem.dto.FlightDTO;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
-import com.malikov.ticketsystem.util.FlightUtil;
+import com.malikov.ticketsystem.util.dtoconverter.FlightDTOConverter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,7 +45,7 @@ public class FlightAnonymousAjaxController {
         List<FlightDTO> flightDTOs = flightService.getFlightTicketPriceMap(departureAirportName,
                 arrivalAirportName, fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity).entrySet()
                 .stream()
-                .map(entry -> FlightUtil.asDTO(entry.getKey(), entry.getValue()))
+                .map(entry -> FlightDTOConverter.asDTO(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
         ModelMap model = new ModelMap();
         int dataTableHasNextPageIndicator;

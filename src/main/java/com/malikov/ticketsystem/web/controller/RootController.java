@@ -6,7 +6,7 @@ import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.util.UserUtil;
+import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class RootController {
 
     @GetMapping("/profile")
     public String profile(ModelMap modelMap) {
-        modelMap.put("userDTO", UserUtil.asTo(userService.get(AuthorizedUser.id())));
+        modelMap.put("userDTO", UserDTOConverter.asTo(userService.get(AuthorizedUser.id())));
         return "profile";
     }
 

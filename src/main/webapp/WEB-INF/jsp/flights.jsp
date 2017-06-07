@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
@@ -11,7 +11,15 @@
 </head>
 <body class="flights">
 <jsp:include page="fragments/bodyHeader.jsp"/>
-<div class="jumbotron">
+<div class="jumbotron" style="padding-top: 10px;">
+    <sec:authorize access="!isAuthenticated()">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-7">
+                <spring:message code="common.login"/>: admin@gmail.com | user@gmail.com | <spring:message code="common.password"/>: 1111
+            </div>
+        </div>
+    </sec:authorize>
+
     <div class="container">
         <div class="shadow">
             <h3 class="page-title"><spring:message code="common.flights"/></h3>
@@ -62,7 +70,7 @@
                                     </a>
                                 </sec:authorize>
                                 <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
-                                    <span aria-hidden="true">Search</span>
+                                    <span aria-hidden="true"><spring:message code="common.search"/></span>
                                 </a>
                             </div>
                         </div>
@@ -295,8 +303,37 @@
         </div>
     </div>
 </sec:authorize>
-</body>
+
 <jsp:include page="fragments/footer.jsp"/>
+<script type="text/javascript">
+    <c:forEach var='key' items='<%=new String[]{
+    "flight.ticketPrice",
+    "flight.selectDepartureAirportForFilter",
+    "flight.selectArrivalAirportForFilter",
+    "flight.airportsCantBeSame",
+    "flight.fromShouldBeEarlier",
+    "flight.selectAircraft",
+    "flight.selectDepartureAirport",
+    "flight.selectArrivalAirport",
+    "flight.selectDepartureTime",
+    "flight.departureTimeCantBeEarlierThan",
+    "flight.setArrivalTime",
+    "flight.arrivalTimeCantBeEarlierThan",
+    "flight.initialPriceCantBeGreater",
+    "flight.initialPriceCantBeLess",
+    "flight.pickYourSeat",
+    "flight.pickYourSeatLegally",
+    "ticket.buy",
+    "ticket.paymentWindowTitle",
+    "ticket.yourTicketBookedFor",
+    "ticket.confirmPay",
+    "ticket.cancelPay",
+    "ticket.purchased",
+    "ticket.booked"}%>'>
+    i18n['${key}'] = "<spring:message code="${key}"/>";
+    </c:forEach>
+</script>
+</body>
 <script type="text/javascript" src="resources/js/dataTablesUtil.js"></script>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <script type="text/javascript" src="resources/js/flightAdminDataTables.js"></script>

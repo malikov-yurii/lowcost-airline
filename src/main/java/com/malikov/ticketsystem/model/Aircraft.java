@@ -14,7 +14,9 @@ public class Aircraft extends NamedEntity {
     @JoinColumn(name = "model_id")
     private AircraftModel model;
 
-    public Aircraft() {}
+
+    public Aircraft() {
+    }
 
     public Aircraft(Long id, String name, AircraftModel model) {
         super(id, name);
@@ -25,6 +27,7 @@ public class Aircraft extends NamedEntity {
         super(aircraft.getId(), aircraft.getName());
         model = aircraft.getModel();
     }
+
 
     public AircraftModel getModel() {
         return model;

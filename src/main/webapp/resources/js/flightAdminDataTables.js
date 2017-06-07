@@ -11,7 +11,6 @@ $(document).ready(function () {
         "ajax": {
             "url": ajaxUrl,
             "data": function (d) {
-                // ;
                 return {
                     draw: d.draw,
                     length: d.length,
@@ -22,11 +21,9 @@ $(document).ready(function () {
                     arrivalAirportCondition: $('#arrivalAirportCondition').val()
                 };
             }
-            // ,"dataSrc": ""
         },
         "iDeferLoading": 0,
         "searching": false,
-        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -79,7 +76,6 @@ $(document).ready(function () {
     });
 
 
-    // todo move controller dto admin controller
     $('.input-aircraft').autocomplete({
         source: 'ajax/admin/aircraft/autocomplete-by-name'
     });
@@ -97,25 +93,18 @@ $(document).ready(function () {
         ).on("autocompletechange",
         function (event, ui) {
             var $this = $(this);
-            // $this.addClass('valid'); ????????????? why was uncommented???????
-            // if ($this.hasClass('input-filter') && ($this.val().length === 0)) {
-            //     $this.addClass('valid');
-            // } else
             if (!$this.hasClass('in-process')) {
                 $this.removeClass('valid');
             }
             $this.removeClass('in-process');
         }
     ).autocomplete("option", "minLength", 2);
-
-    // $(".show-add-new-modal").html('');
 });
 
 
 function showAddModal() {
     $('#modalTitle').html('Add new ' + entityName);
     $('#id').val('0');
-    // $('.form-control').val('');
 
     $('#departureAirport,#arrivalAirport,#aircraftName').val('');
     var defaultDate = new Date();
@@ -133,7 +122,6 @@ function clearFilter() {
 }
 
 function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
-    // debugger;
     var message = "";
     var departureAirportCondition = $('#departureAirportCondition');
     var arrivalAirportCondition = $('#arrivalAirportCondition');
@@ -182,17 +170,14 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             swal({
                 title: i18n['common.validationFailed'],
                 text: message,
-                // type: "error",
                 confirmButtonText: "OK"
             });
             $('.datatable').attr("hidden", true);
         } else {
             forceDataTableReload();
-            // $('.datatable').attr("hidden", false);
         }
     } else {
         forceDataTableReload();
-        // $('.datatable').attr("hidden", false);
     }
 }
 
@@ -273,11 +258,9 @@ function save() {
             url: ajaxUrl,
             data: $('#detailsForm').serialize(),
             success: function () {
-                // ;
                 $('#editRow').modal('hide');
                 showOrUpdateTable(true, false);
                 successNoty('common.saved');
-                // ;
             }
         });
     }

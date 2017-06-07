@@ -39,8 +39,7 @@ public class FlightDTO extends BaseDTO {
             , String arrivalAirport
             , LocalDateTime departureLocalDateTime
             , LocalDateTime arrivalLocalDateTime
-            , BigDecimal ticketPrice
-    ) {
+            , BigDecimal ticketPrice) {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
         this.arrivalAirport = arrivalAirport != null ? arrivalAirport : "";
@@ -92,4 +91,56 @@ public class FlightDTO extends BaseDTO {
         this.ticketPrice = ticketPrice;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FlightDTO flightDTO = (FlightDTO) o;
+
+        if (departureAirport != null
+                ? !departureAirport.equals(flightDTO.departureAirport)
+                : flightDTO.departureAirport != null)
+            return false;
+
+        if (arrivalAirport != null
+                ? !arrivalAirport.equals(flightDTO.arrivalAirport)
+                : flightDTO.arrivalAirport != null)
+            return false;
+
+        if (departureLocalDateTime != null
+                ? !departureLocalDateTime.equals(flightDTO.departureLocalDateTime)
+                : flightDTO.departureLocalDateTime != null)
+            return false;
+
+        if (arrivalLocalDateTime != null
+                ? !arrivalLocalDateTime.equals(flightDTO.arrivalLocalDateTime)
+                : flightDTO.arrivalLocalDateTime != null)
+            return false;
+
+        return ticketPrice != null
+                ? ticketPrice.equals(flightDTO.ticketPrice)
+                : flightDTO.ticketPrice == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = departureAirport != null ? departureAirport.hashCode() : 0;
+        result = 31 * result + (arrivalAirport != null ? arrivalAirport.hashCode() : 0);
+        result = 31 * result + (departureLocalDateTime != null ? departureLocalDateTime.hashCode() : 0);
+        result = 31 * result + (arrivalLocalDateTime != null ? arrivalLocalDateTime.hashCode() : 0);
+        result = 31 * result + (ticketPrice != null ? ticketPrice.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FlightDTO{" +
+                "departureAirport='" + departureAirport + '\'' +
+                ", arrivalAirport='" + arrivalAirport + '\'' +
+                ", departureLocalDateTime=" + departureLocalDateTime +
+                ", arrivalLocalDateTime=" + arrivalLocalDateTime +
+                ", ticketPrice=" + ticketPrice +
+                '}';
+    }
 }

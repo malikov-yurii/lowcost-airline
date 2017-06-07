@@ -13,9 +13,11 @@ public class TicketPriceDetailsDTO {
 
     private BigDecimal priorityRegistrationAndBoardingPrice;
 
-    public TicketPriceDetailsDTO(){}
+    public TicketPriceDetailsDTO() {
+    }
 
-    public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationAndBoardingPrice) {
+    public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice,
+                                 BigDecimal priorityRegistrationAndBoardingPrice) {
         this.baseTicketPrice = baseTicketPrice.setScale(2);
         this.baggagePrice = baggagePrice.setScale(2);
         this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(2);
@@ -52,17 +54,27 @@ public class TicketPriceDetailsDTO {
 
         TicketPriceDetailsDTO that = (TicketPriceDetailsDTO) o;
 
-        if (baseTicketPrice != null ? !baseTicketPrice.equals(that.baseTicketPrice) : that.baseTicketPrice != null)
+        if (baseTicketPrice != null
+                ? !baseTicketPrice.equals(that.baseTicketPrice)
+                : that.baseTicketPrice != null) {
             return false;
-        if (baggagePrice != null ? !baggagePrice.equals(that.baggagePrice) : that.baggagePrice != null) return false;
-        return priorityRegistrationAndBoardingPrice != null ? priorityRegistrationAndBoardingPrice.equals(that.priorityRegistrationAndBoardingPrice) : that.priorityRegistrationAndBoardingPrice == null;
+        }
+        if (baggagePrice != null
+                ? !baggagePrice.equals(that.baggagePrice)
+                : that.baggagePrice != null) {
+            return false;
+        }
+        return priorityRegistrationAndBoardingPrice != null
+                ? priorityRegistrationAndBoardingPrice.equals(that.priorityRegistrationAndBoardingPrice)
+                : that.priorityRegistrationAndBoardingPrice == null;
     }
 
     @Override
     public int hashCode() {
         int result = baseTicketPrice != null ? baseTicketPrice.hashCode() : 0;
         result = 31 * result + (baggagePrice != null ? baggagePrice.hashCode() : 0);
-        result = 31 * result + (priorityRegistrationAndBoardingPrice != null ? priorityRegistrationAndBoardingPrice.hashCode() : 0);
+        result = 31 * result + (priorityRegistrationAndBoardingPrice != null
+                ? priorityRegistrationAndBoardingPrice.hashCode() : 0);
         return result;
     }
 

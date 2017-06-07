@@ -74,8 +74,6 @@ public class UserDTO extends BaseDTO {
         this.email = email;
     }
 
-
-    // TODO: 5/14/2017 get set password special actions for security?
     public String getPassword() {
         return password;
     }
@@ -90,6 +88,30 @@ public class UserDTO extends BaseDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDTO userDTO = (UserDTO) o;
+
+        if (firstName != null ? !firstName.equals(userDTO.firstName) : userDTO.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(userDTO.lastName) : userDTO.lastName != null) return false;
+        if (email != null ? !email.equals(userDTO.email) : userDTO.email != null) return false;
+        if (password != null ? !password.equals(userDTO.password) : userDTO.password != null) return false;
+        return phoneNumber != null ? phoneNumber.equals(userDTO.phoneNumber) : userDTO.phoneNumber == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = firstName != null ? firstName.hashCode() : 0;
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        return result;
     }
 
     @Override

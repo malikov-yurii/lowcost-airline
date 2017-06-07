@@ -11,21 +11,17 @@ $(document).ready(function () {
         "ajax": {
             "url": ajaxUrl,
             "data": function (d) {
-                // debugger;
                 return {
                     draw: d.draw,
                     length: d.length,
                     start: d.start,
-                    // todo    consider rename condition as filter or criteria
                     userEmailCondition: $('#userEmailCondition').val()
 
                 };
             }
-            // ,"dataSrc": ""
         },
         "iDeferLoading": 0,
         "searching": false,
-        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -115,96 +111,66 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
 
 function save() {
 
-    // todo add validation here using example in commetnts
+    var errorCount = 0;
+    var $form = $('#detailsForm');
+    var id = $form.find('#id');
+    var $firstName = $form.find('#passengerFirstName');
+    var $lastName = $form.find('#passengerLastName');
 
-    /*
-     var message = "";
 
-     if (!$('#aircraftName').hasClass('valid')) {
-     message += 'Please select aircraft from drop-down list.';
-     }
-
-     var departureAirport = $('#departureAirport');
-     var arrivalAirport = $('#arrivalAirport');
-     if (!departureAirport.hasClass('valid')) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Please select departure airport from drop-down list.';
-     }
-     if (!arrivalAirport.hasClass('valid')) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Please select arrival airport from drop-down list.';
-     }
-
-     if (departureAirport.val() === arrivalAirport.val()
-     && departureAirport.val().length !== 0 && arrivalAirport.val().length !== 0) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     // departureAirport.val('');
-     // departureAirport.removeClass('valid');
-     // arrivalAirport.val('');
-     // arrivalAirport.removeClass('valid');
-     message += 'Departure and arrival airports can\'t be the same.';
-     }
-
-     var currentMoment = new Date();
-
-     var departureLocalDateTimeValue = $("#departureLocalDateTime").val();
-     if (departureLocalDateTimeValue.length === 0) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Please set departure local date time.';
-     } else if (new Date(departureLocalDateTimeValue) < currentMoment) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Departure local date time cannot be earlier than ' + dateToString(currentMoment);
-     }
-
-     var arrivalLocalDateTimeValue = $("#arrivalLocalDateTime").val();
-     if (arrivalLocalDateTimeValue.length === 0) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Please set arrival local date time.';
-     } else if (new Date(arrivalLocalDateTimeValue) < currentMoment) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Arrival local date time cannot be earlier than ' + dateToString(currentMoment);
-     }
-
-     var initialBaseTicketPrice = $('#initialBaseTicketPrice');
-     var maxBaseTicketPrice = $('#maxBaseTicketPrice');
-     var initialBaseTicketPriceInt = parseInt(initialBaseTicketPrice.val(), 10);
-     var maxBaseTicketPriceInt = parseInt(maxBaseTicketPrice.val(), 10);
-     if (initialBaseTicketPriceInt > maxBaseTicketPriceInt) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Initial price cannot be greater than max ticket price.';
-     }
-
-     if (initialBaseTicketPriceInt < 5) {
-     message = addNextLineSymbolIfNotEmpty(message);
-     message += 'Initial price cannot be less than 5.00$';
-     }
-
-     if (message.length !== 0) {
-     swal({
-     title: "Validation of entered data failed.",
-     text: message,
-     // type: "error",
-     confirmButtonText: "OK"
-     });
-     } else {
-     $('.modal-input.valid, .modal-input.in-process').removeClass('valid in-process');
-     $('.in-process').removeClass('in-process');
-
-     */
-    $.ajax({
-        type: "PUT",
-        url: ajaxUrl,
-        data: $('#detailsForm').serialize(),
-        success: function () {
-            // ;
-            $('#editRow').modal('hide');
-            showOrUpdateTable(true, false);
-            successNoty('common.saved');
-            // ;
+    // Adds to counter if firstname is less than 2 symbols OR contains digits
+    if ($firstName.val().length < 2 || $firstName.val().match(/\d+/g)) {
+        if ($firstName.siblings('.error-text').length == 0) {
+            $firstName
+                .closest('.form-group')
+                .addClass('error')
+                .find('div')
+                .append('<div class="error-text">'+ i18n["common.inputCorrectFirstName"] +'</div>');
         }
-    });
+        errorCount++;
+    } else {
+        $firstName
+            .closest('.form-group')
+            .removeClass('error')
+            .find('.error-text')
+            .remove();
+    }
 
-    // } // end of last else
+
+    // Adds to counter if lastname is less than 2 symbols OR contains digits
+    if ($lastName.val().length < 2 || $lastName.val().match(/\d+/g)) {
+        if ($lastName.siblings('.error-text').length == 0) {
+            $lastName
+                .closest('.form-group')
+                .addClass('error')
+                .find('div')
+                .append('<div class="error-text">'+ i18n["common.inputCorrectLastName"] +'</div>');
+        }
+        errorCount++;
+    } else {
+        $lastName
+            .closest('.form-group')
+            .removeClass('error')
+            .find('.error-text')
+            .remove();
+    }
+
+
+    if (!errorCount) {
+        $.ajax({
+            type: "PUT",
+            url: ajaxUrl,
+            data: $form.serialize(),
+            success: function () {
+                $('#editRow').modal('hide');
+                showOrUpdateTable(true, false);
+                successNoty('common.saved');
+            }
+        });
+    }
+
+    return false;
+
 
 }
 

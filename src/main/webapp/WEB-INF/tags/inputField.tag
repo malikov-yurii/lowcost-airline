@@ -11,9 +11,9 @@
     <c:set var="cssGroup" value="form-group ${status.error ? 'error' : '' }"/>
     <div class="${cssGroup}">
 
-        <label class="control-label col-xs-2">${label}</label>
+        <label class="control-label col-xs-6">${label}</label>
 
-        <div class="col-xs-8">
+        <div class="col-xs-6">
             <c:choose>
                 <c:when test="${inputType == 'password'}"><form:password path="${name}"/></c:when>
                 <c:when test="${inputType == 'number'}"><form:input path="${name}" type="number"/></c:when>

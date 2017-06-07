@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 public class PasswordUtil {
 
     private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
-
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public static PasswordEncoder getPasswordEncoder() {

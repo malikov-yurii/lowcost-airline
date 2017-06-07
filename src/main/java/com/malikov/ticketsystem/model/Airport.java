@@ -6,7 +6,8 @@ import javax.persistence.*;
  * @author Yurii Malikov
  */
 @Entity
-@Table(name = "airports", uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "airports_unique_name_idx"))
+@Table(name = "airports", uniqueConstraints = @UniqueConstraint(columnNames = "name",
+                                                                 name = "airports_unique_name_idx"))
 public class Airport extends NamedEntity {
 
     // TODO: 6/5/2017 Consider changing it to LAZY
@@ -14,12 +15,15 @@ public class Airport extends NamedEntity {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public Airport(){}
+
+    public Airport() {
+    }
 
     public Airport(Long id, String name, City city) {
         super(id, name);
         this.city = city;
     }
+
 
     public City getCity() {
         return city;

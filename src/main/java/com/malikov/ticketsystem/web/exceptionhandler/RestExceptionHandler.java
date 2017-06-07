@@ -24,6 +24,7 @@ import java.util.Optional;
 @ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class RestExceptionHandler {
+
     private static Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @Autowired

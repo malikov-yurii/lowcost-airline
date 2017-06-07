@@ -18,12 +18,14 @@ public abstract class BaseEntity implements IHasId {
     @Access(value = AccessType.PROPERTY)
     private Long id;
 
+
     public BaseEntity() {
     }
 
-    protected BaseEntity(Long id){
+    protected BaseEntity(Long id) {
         this.id = id;
     }
+
 
     @Override
     public void setId(Long id) {

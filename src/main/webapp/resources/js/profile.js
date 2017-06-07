@@ -1,8 +1,3 @@
-$(function() {
-    // $('#userDTO').on('submit', validateProfileForm);
-
-});
-
 function validateProfileForm() {
     var errorCount = 0;
     var $firstName = $('#firstName');

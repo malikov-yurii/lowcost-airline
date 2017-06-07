@@ -5,8 +5,6 @@ package com.malikov.ticketsystem;
  */
 public class Profiles {
 
-    public static final String
-            MYSQL = "mySql",
-            MYSQL_TEST = "mySqlTest";
-
+    public static final String MYSQL = "mySql";
+    public static final String MYSQL_TEST = "mySqlTest";
 }

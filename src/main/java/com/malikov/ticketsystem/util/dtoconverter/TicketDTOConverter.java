@@ -1,9 +1,10 @@
-package com.malikov.ticketsystem.util;
+package com.malikov.ticketsystem.util.dtoconverter;
 
 import com.malikov.ticketsystem.dto.TicketDTO;
 import com.malikov.ticketsystem.dto.TicketWithRemainingDelayDTO;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
+import com.malikov.ticketsystem.util.DateTimeUtil;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -11,7 +12,7 @@ import java.time.ZoneOffset;
 /**
  * @author Yurii Malikov
  */
-public class TicketUtil {
+public class TicketDTOConverter {
 
     public static TicketDTO asDTO(Ticket ticket) {
         return new TicketDTO(ticket.getId(), ticket.getPassengerFirstName(), ticket.getPassengerLastName(),

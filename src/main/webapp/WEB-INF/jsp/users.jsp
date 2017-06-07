@@ -23,7 +23,7 @@
                                 <form:form class="form-horizontal" id="filter">
                                     <div class="form-group">
                                         <div class="container">
-                                            <label class="control-label col-sm-3"
+                                            <label class="control-label col-sm-4"
                                                    for="lastNameCondition"><spring:message code="user.lastName"/>:</label>
                                             <div class="col-sm-3">
                                                 <input class="input-filter form-control"
@@ -73,21 +73,21 @@
                         <label for="firstName" class="control-label col-xs-3">
                             <spring:message code="user.firstName"/></label>
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control" id="firstName" name="firstName">
+                            <input type="text" class="modal-input form-control" id="firstName" name="firstName" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="lastName" class="control-label col-xs-3">
                             <spring:message code="user.lastName"/></label>
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control" id="lastName" name="lastName">
+                            <input type="text" class="modal-input form-control" id="lastName" name="lastName" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="email" class="control-label col-xs-3">
                             <spring:message code="user.email"/></label>
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control" id="email"
+                            <input type="email" class="modal-input form-control" id="email"
                                    name="email">
                         </div>
                     </div>
@@ -95,13 +95,13 @@
                         <label for="phoneNumber" class="control-label col-xs-3">
                             <spring:message code="user.phoneNumber"/></label>
                         <div class="col-xs-9">
-                            <input type="text" class="modal-input form-control" id="phoneNumber"
-                                   name="phoneNumber">
+                            <input type="tel" class="modal-input form-control" id="phoneNumber"
+                                   name="phoneNumber" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button class="btn btn-primary" type="button" onclick="save()">
+                            <button class="btn btn-primary" type="submit">
                                 <spring:message code="common.save"/></button>
                         </div>
                     </div>

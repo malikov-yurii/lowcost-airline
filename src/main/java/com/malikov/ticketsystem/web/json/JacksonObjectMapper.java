@@ -22,23 +22,9 @@ public class JacksonObjectMapper extends ObjectMapper {
     }
 
     private JacksonObjectMapper() {
-        //ObjectMapper mapper = new ObjectMapper();
-
-        //registerModule(new Hibernate5Module());
-
-        //registerModule(new JavaTimeModule());
-
-
         SimpleModule module = new SimpleModule();
-        //module.addDeserializer(LocalDateTime.class, new OffsetDateTimeDeserializer()); // TODO: 5/23/2017 why i don't need deserializer but need serializer???????
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
-        //module.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
         registerModule(module);
-
-        //registerModule(new JavaTimeModule());
-        //findAndRegisterModules();
-
-
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);

@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 // TODO: 6/6/2017 why do i need constraint description here
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email",
-                                                              name = "users_unique_email_idx"))
+        name = "users_unique_email_idx"))
 public class User extends NamedEntity {
 
     @NotBlank
@@ -53,7 +53,8 @@ public class User extends NamedEntity {
     private Set<Ticket> tickets;
 
 
-    public User() {}
+    public User() {
+    }
 
     public User(Long id, String name, String lastName, String email, String password, String phoneNumber) {
         super(id, name);
@@ -62,14 +63,6 @@ public class User extends NamedEntity {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
-
-    //public User(String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
-    //    this.lastName = lastName;
-    //    this.email = email;
-    //    this.password = password;
-    //    this.phoneNumber = phoneNumber;
-    //    this.roles = roles;
-    //}
 
     public User(String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
         super(name);
@@ -88,24 +81,6 @@ public class User extends NamedEntity {
         this.phoneNumber = phoneNumber;
         this.roles = new HashSet<>(Arrays.asList(roles));
     }
-
-    //public User(Long id, String name, String lastName, String email, String password, String phoneNumber, Set<Role> roles) {
-    //    super(id, name);
-    //    this.lastName = lastName;
-    //    this.email = email;
-    //    this.password = password;
-    //    this.phoneNumber = phoneNumber;
-    //    this.roles = roles;
-    //}
-
-    //public User(User user) {
-    //    super(user.getId(), user.getName());
-    //    this.lastName = user.getLastName();
-    //    this.email = user.getEmail();
-    //    this.password = user.getPassword();
-    //    this.phoneNumber = user.getPhoneNumber();
-    //    this.roles = user.getRoles();
-    //}
 
     public String getLastName() {
         return lastName;

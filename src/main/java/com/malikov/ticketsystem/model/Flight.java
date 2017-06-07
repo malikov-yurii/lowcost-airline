@@ -50,10 +50,14 @@ public class Flight extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "flight")
     private List<Ticket> tickets;
 
+
     public Flight() {
     }
 
-    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    // TODO: 6/7/2017 change it to telescope?
+    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft,
+                  LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime,
+                  BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.aircraft = aircraft;
@@ -64,7 +68,9 @@ public class Flight extends BaseEntity {
         canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
 
-    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft, LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime, BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
+    public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft,
+                  LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime,
+                  BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
         super(id);
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
@@ -75,8 +81,6 @@ public class Flight extends BaseEntity {
         this.maxTicketBasePrice = maxTicketBasePrice;
         canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
     }
-
-
 
     public Flight(Flight flight) {
         super(flight.getId());
@@ -178,18 +182,39 @@ public class Flight extends BaseEntity {
 
         Flight flight = (Flight) o;
 
-        if (departureUtcDateTime != null ? !departureUtcDateTime.equals(flight.departureUtcDateTime) : flight.departureUtcDateTime != null)
+        if (departureUtcDateTime != null
+                ? !departureUtcDateTime.equals(flight.departureUtcDateTime)
+                : flight.departureUtcDateTime != null) {
             return false;
-        if (arrivalUtcDateTime != null ? !arrivalUtcDateTime.equals(flight.arrivalUtcDateTime) : flight.arrivalUtcDateTime != null)
+        }
+        if (arrivalUtcDateTime != null
+                ? !arrivalUtcDateTime.equals(flight.arrivalUtcDateTime)
+                : flight.arrivalUtcDateTime != null) {
             return false;
-        if (departureAirport != null ? !departureAirport.equals(flight.departureAirport) : flight.departureAirport != null)
+        }
+        if (departureAirport != null
+                ? !departureAirport.equals(flight.departureAirport)
+                : flight.departureAirport != null) {
             return false;
-        if (arrivalAirport != null ? !arrivalAirport.equals(flight.arrivalAirport) : flight.arrivalAirport != null)
+        }
+        if (arrivalAirport != null
+                ? !arrivalAirport.equals(flight.arrivalAirport)
+                : flight.arrivalAirport != null) {
             return false;
-        if (aircraft != null ? !aircraft.equals(flight.aircraft) : flight.aircraft != null) return false;
-        if (initialTicketBasePrice != null ? !initialTicketBasePrice.equals(flight.initialTicketBasePrice) : flight.initialTicketBasePrice != null)
+        }
+        if (aircraft != null
+                ? !aircraft.equals(flight.aircraft)
+                : flight.aircraft != null) {
             return false;
-        return maxTicketBasePrice != null ? maxTicketBasePrice.equals(flight.maxTicketBasePrice) : flight.maxTicketBasePrice == null;
+        }
+        if (initialTicketBasePrice != null
+                ? !initialTicketBasePrice.equals(flight.initialTicketBasePrice)
+                : flight.initialTicketBasePrice != null) {
+            return false;
+        }
+        return maxTicketBasePrice != null
+                ? maxTicketBasePrice.equals(flight.maxTicketBasePrice)
+                : flight.maxTicketBasePrice == null;
     }
 
     @Override

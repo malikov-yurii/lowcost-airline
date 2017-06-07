@@ -3,7 +3,7 @@ package com.malikov.ticketsystem.web.controller.flight;
 import com.malikov.ticketsystem.dto.FlightManageableDTO;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
-import com.malikov.ticketsystem.util.FlightUtil;
+import com.malikov.ticketsystem.util.dtoconverter.FlightDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -67,7 +67,7 @@ public class FlightAdminAjaxController {
                 departureAirportName, arrivalAirportName,
                 fromDepartureDateTime, toDepartureDateTime,
                 startingFrom, pageCapacity).stream()
-                .map(FlightUtil::asManageableDTO)
+                .map(FlightDTOConverter::asManageableDTO)
                 .collect(Collectors.toList());
         ModelMap model = new ModelMap();
         int dataTableHasNextPageIndicator;

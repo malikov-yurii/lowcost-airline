@@ -19,7 +19,7 @@ import java.time.ZoneOffset;
 @Entity
 // TODO: 6/6/2017 why do i need constraint description here
 @Table(name = "tickets", uniqueConstraints = @UniqueConstraint(columnNames = {"flight_id", "seat_number"},
-                                                                name = "flight_seat_unique_constraint"))
+        name = "flight_seat_unique_constraint"))
 public class Ticket extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -83,25 +83,16 @@ public class Ticket extends BaseEntity {
     private Integer seatNumber;
 
     @Enumerated(EnumType.STRING)
-    //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Column(name = "status")
     private TicketStatus status;
+
 
     public Ticket() {
     }
 
-    //public Ticket(Flight flight, User user, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
-    //              Boolean withBaggage, Boolean withPriorityRegistration) {
-    //    this.flight = flight;
-    //    this.user = user;
-    //    this.price = price;
-    //    this.purchaseOffsetDateTime = purchaseOffsetDateTime;
-    //    this.withBaggage = withBaggage;
-    //    this.withPriorityRegistration = withPriorityRegistration;
-    //}
-
-    public Ticket(Long id, Flight flight, User user, String passengerFirstName, String passengerLastName, BigDecimal price, OffsetDateTime purchaseOffsetDateTime,
-                  Boolean withBaggage, Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
+    public Ticket(Long id, Flight flight, User user, String passengerFirstName, String passengerLastName,
+                  BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage,
+                  Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
         super(id);
         this.flight = flight;
         this.user = user;
@@ -122,13 +113,6 @@ public class Ticket extends BaseEntity {
         this.seatNumber = seatNumber;
         this.status = status;
     }
-
-    //public Ticket(Ticket ticket) {
-    //    this(ticket.getId(), ticket.getFlight(), ticket.getUser(),
-    //            ticket.getPassengerFirstName(), ticket.getPassengerLastName(), ticket.getPrice(),
-    //            ticket.getPurchaseOffsetDateTime(), ticket.getWithBaggage(),
-    //            ticket.getWithPriorityRegistration(), ticket.getSeatNumber(), ticket.getStatus());
-    //}
 
     public Flight getFlight() {
         return flight;
@@ -274,30 +258,69 @@ public class Ticket extends BaseEntity {
 
         Ticket ticket = (Ticket) o;
 
-        if (price != null ? !price.equals(ticket.price) : ticket.price != null) return false;
-        if (purchaseOffsetDateTime != null ? !purchaseOffsetDateTime.equals(ticket.purchaseOffsetDateTime) : ticket.purchaseOffsetDateTime != null)
+        if (price != null ? !price.equals(ticket.price) : ticket.price != null) {
             return false;
-        if (withBaggage != null ? !withBaggage.equals(ticket.withBaggage) : ticket.withBaggage != null) return false;
-        if (withPriorityRegistration != null ? !withPriorityRegistration.equals(ticket.withPriorityRegistration) : ticket.withPriorityRegistration != null)
+        }
+        if (purchaseOffsetDateTime != null
+                ? !purchaseOffsetDateTime.equals(ticket.purchaseOffsetDateTime)
+                : ticket.purchaseOffsetDateTime != null) {
             return false;
-        if (passengerFirstName != null ? !passengerFirstName.equals(ticket.passengerFirstName) : ticket.passengerFirstName != null)
+        }
+        if (withBaggage != null
+                ? !withBaggage.equals(ticket.withBaggage)
+                : ticket.withBaggage != null) {
             return false;
-        if (passengerLastName != null ? !passengerLastName.equals(ticket.passengerLastName) : ticket.passengerLastName != null)
+        }
+        if (withPriorityRegistration != null
+                ? !withPriorityRegistration.equals(ticket.withPriorityRegistration)
+                : ticket.withPriorityRegistration != null) {
             return false;
-        if (departureAirportName != null ? !departureAirportName.equals(ticket.departureAirportName) : ticket.departureAirportName != null)
+        }
+        if (passengerFirstName != null
+                ? !passengerFirstName.equals(ticket.passengerFirstName)
+                : ticket.passengerFirstName != null) {
             return false;
-        if (arrivalAirportName != null ? !arrivalAirportName.equals(ticket.arrivalAirportName) : ticket.arrivalAirportName != null)
+        }
+        if (passengerLastName != null
+                ? !passengerLastName.equals(ticket.passengerLastName)
+                : ticket.passengerLastName != null) {
             return false;
-        if (departureCityName != null ? !departureCityName.equals(ticket.departureCityName) : ticket.departureCityName != null)
+        }
+        if (departureAirportName != null
+                ? !departureAirportName.equals(ticket.departureAirportName)
+                : ticket.departureAirportName != null) {
             return false;
-        if (arrivalCityName != null ? !arrivalCityName.equals(ticket.arrivalCityName) : ticket.arrivalCityName != null)
+        }
+        if (arrivalAirportName != null
+                ? !arrivalAirportName.equals(ticket.arrivalAirportName)
+                : ticket.arrivalAirportName != null) {
             return false;
-        if (departureUtcDateTime != null ? !departureUtcDateTime.equals(ticket.departureUtcDateTime) : ticket.departureUtcDateTime != null)
+        }
+        if (departureCityName != null
+                ? !departureCityName.equals(ticket.departureCityName)
+                : ticket.departureCityName != null) {
             return false;
-        if (departureZoneId != null ? !departureZoneId.equals(ticket.departureZoneId) : ticket.departureZoneId != null)
+        }
+        if (arrivalCityName != null
+                ? !arrivalCityName.equals(ticket.arrivalCityName)
+                : ticket.arrivalCityName != null) {
             return false;
-        if (arrivalOffsetDateTime != null ? !arrivalOffsetDateTime.equals(ticket.arrivalOffsetDateTime) : ticket.arrivalOffsetDateTime != null)
+        }
+        if (departureUtcDateTime != null
+                ? !departureUtcDateTime.equals(ticket.departureUtcDateTime)
+                : ticket.departureUtcDateTime != null) {
             return false;
+        }
+        if (departureZoneId != null
+                ? !departureZoneId.equals(ticket.departureZoneId)
+                : ticket.departureZoneId != null) {
+            return false;
+        }
+        if (arrivalOffsetDateTime != null
+                ? !arrivalOffsetDateTime.equals(ticket.arrivalOffsetDateTime)
+                : ticket.arrivalOffsetDateTime != null) {
+            return false;
+        }
         return seatNumber != null ? seatNumber.equals(ticket.seatNumber) : ticket.seatNumber == null;
     }
 

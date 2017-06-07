@@ -11,7 +11,7 @@ import com.malikov.ticketsystem.repository.IFlightRepository;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.ITicketService;
-import com.malikov.ticketsystem.util.TicketUtil;
+import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -67,7 +67,7 @@ public class TicketServiceImpl implements ITicketService {
                 .stream()
                 .map(ticket -> {
                     ScheduledFuture ticketRemovalTask = ticketIdRemovalTaskMap.get(ticket.getId());
-                    return TicketUtil.getTicketWithRemaimingDelayDTO(ticket,
+                    return TicketDTOConverter.getTicketWithRemaimingDelayDTO(ticket,
                             ticketRemovalTask != null
                                     ? ticketRemovalTask.getDelay(TimeUnit.MILLISECONDS)
                                     : null);
@@ -79,7 +79,7 @@ public class TicketServiceImpl implements ITicketService {
     public List<TicketDTO> getArchivedTickets(Long userId, Integer start, Integer limit) {
         return ticketRepository.getArchivedByUserId(userId, start, limit)
                 .stream()
-                .map(TicketUtil::asDTO)
+                .map(TicketDTOConverter::asDTO)
                 .collect(Collectors.toList());
     }
 
@@ -165,7 +165,7 @@ public class TicketServiceImpl implements ITicketService {
         }
 
         newTicket.setFlight(flight);
-        newTicket = TicketUtil.updateFromDTO(newTicket, ticketDTO);
+        newTicket = TicketDTOConverter.updateFromDTO(newTicket, ticketDTO);
         newTicket.setUser(userRepository.get(AuthorizedUser.id()));
         newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
         newTicket.setStatus(TicketStatus.BOOKED);
@@ -181,7 +181,7 @@ public class TicketServiceImpl implements ITicketService {
         // TODO: 5/5/2017 get rid of message  duplicating ??? how??
         Assert.notNull(ticketDTO, "ticket should not be null");
         Ticket ticket = ticketRepository.get(ticketDTO.getId());
-        ValidationUtil.checkNotFoundById(ticketRepository.save(TicketUtil.updateFromDTO(ticket, ticketDTO)),
+        ValidationUtil.checkNotFoundById(ticketRepository.save(TicketDTOConverter.updateFromDTO(ticket, ticketDTO)),
                                          ticketDTO.getId());
     }
 

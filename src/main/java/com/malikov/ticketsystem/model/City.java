@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.ZoneId;
 
 /**
-  * @author Yurii Malikov
+ * @author Yurii Malikov
  */
 @Entity
 @Table(name = "cities")
@@ -16,7 +16,9 @@ public class City extends NamedEntity {
     @Convert(converter = ZoneIdConverter.class)
     private ZoneId zoneId;
 
-    public City(){}
+
+    public City() {
+    }
 
     public City(Long id, String name, ZoneId zoneId) {
         super(id, name);
@@ -27,6 +29,7 @@ public class City extends NamedEntity {
         super(city.getId(), city.getName());
         zoneId = city.getZoneId();
     }
+
 
     public ZoneId getZoneId() {
         return zoneId;

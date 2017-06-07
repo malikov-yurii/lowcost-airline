@@ -11,20 +11,16 @@ $(document).ready(function () {
         "ajax": {
             "url": ajaxUrl,
             "data": function (d) {
-                // debugger;
                 return {
                     draw: d.draw,
                     length: d.length,
                     start: d.start,
-                    // todo    consider rename condition as filter or criteria
                     userEmailCondition: $('#userEmailCondition').val()
 
                 };
             }
-            // ,"dataSrc": ""
         },
         "searching": false,
-        // !!!!!!!!!!!! todo hide .disabled paginate_button and every paginate button if recordsTotal <= length
         "pagingType": "simple_numbers",
         "paging": true,
         "info": true,
@@ -43,7 +39,6 @@ $(document).ready(function () {
             {"data": "seatNumber", "orderable": false},
             {"data": "price", "render": appendDecimalsAndDollarSign, "orderable": false},
             {"render": renderTicketStatus, "orderable": false},
-            // todo we have a "data.remainingDelay" here for clock
             {"orderable": false, "render": renderPayBtn},
             {"orderable": false, "render": renderDiscardBookingBtn}
         ],
@@ -66,7 +61,6 @@ function showArchivedTickets(){
     $(".show-active").removeClass('active');
     $(".show-archived").addClass('active');
     datatableApi.ajax.url( 'ajax/user/ticket/archived/' ).load();
-    // forceDataTableReload();
 }
 
 function showActiveTickets(){
@@ -74,7 +68,6 @@ function showActiveTickets(){
     $(".show-active").addClass('active');
     $(".show-archived").removeClass('active');
     datatableApi.ajax.url( 'ajax/user/ticket/' ).load();
-    // forceDataTableReload();
 }
 
 function renderDiscardBookingBtn(data, type, row) {
@@ -96,6 +89,7 @@ function confirmBookingCancelling(id) {
         function (isConfirm) {
             if (isConfirm) {
                 cancelBooking(id);
+                popup(i18n['ticket.bookingCancel']);
             }
 
         });
@@ -120,6 +114,7 @@ function confirmPayment(id) {
         function (isConfirm) {
             if (isConfirm) {
                 payForTicket(id);
+                popup(i18n['ticket.purchaseSuccess']);
             }
 
         });

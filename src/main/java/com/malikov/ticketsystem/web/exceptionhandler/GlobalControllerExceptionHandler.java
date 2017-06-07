@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
                     .filter((it) -> rootMsg.contains(it.getKey()))
                     .findAny();
             entry.ifPresent(stringStringEntry -> mav.addObject("exceptionSimpleMessage",
-                                                               stringStringEntry.getValue()));
+                    stringStringEntry.getValue()));
         }
         mav.addObject("exception", e);
         return mav;

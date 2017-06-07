@@ -154,11 +154,9 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             $('.datatable').attr("hidden", true);
         } else {
             forceDataTableReload();
-            // $('.datatable').attr("hidden", false);
         }
     } else {
         forceDataTableReload();
-        // $('.datatable').attr("hidden", false);
     }
 }
 

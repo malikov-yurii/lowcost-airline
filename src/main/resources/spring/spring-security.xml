@@ -9,14 +9,6 @@
     <http pattern="/resources/**" security="none"/>
     <http pattern="/webjars/**" security="none"/>
     <http pattern="/**/anonymous/**" security="none"/>
-    <!--<http pattern="/register" security="none"/>-->
-
-    <!--<http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">-->
-    <!--<http-basic/>-->
-    <!--&lt;!&ndash;<intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>&ndash;&gt;-->
-    <!--<intercept-url pattern="/**" access="isAuthenticated()"/>-->
-    <!--<csrf disabled="true"/>-->
-    <!--</http>-->
 
     <http>
         <intercept-url pattern="/register" access="isAnonymous()"/>
@@ -25,18 +17,16 @@
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
 
-        <!--TODO TWO STRINGS BELOW ARE EQUAL????????-->
-        <!--<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
-        <!--todo why not working without below string (redirdtot to login.jsp)-->
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/**/user/**" access="hasRole('ROLE_USER')"/>
 
+        <!--todo why not working without below string (redirect to login.jsp)-->
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <form-login login-page="/flights" default-target-url="/flights"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
         <logout logout-success-url="/login"/>
-
     </http>
 
     <beans:bean id="encoder"
@@ -50,147 +40,4 @@
         </authentication-provider>
     </authentication-manager>
 
-</beans:beans><!--
-
-
-<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns="http://www.springframework.org/schema/security"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security.xsd">
-
-    <http pattern="/resources/**" security="none"/>
-    <http pattern="/webjars/**" security="none"/>
-
-
-    &lt;!&ndash;<http pattern="/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">&ndash;&gt;
-    &lt;!&ndash;<http-basic/>&ndash;&gt;
-    &lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>&ndash;&gt;&ndash;&gt;
-    &lt;!&ndash;<intercept-url pattern="/**/anonymous/**" access="isAuthenticated()"/>&ndash;&gt;
-    &lt;!&ndash;<csrf disabled="true"/>&ndash;&gt;
-    &lt;!&ndash;</http>&ndash;&gt;
-
-    <http pattern="/**/anonymous/**" security="none"/>
-    <http>
-        &lt;!&ndash;<intercept-url pattern="/flights" access="permitAll"/>&ndash;&gt;
-
-        <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
-
-
-        &lt;!&ndash;TODO TWO STRINGS BELOW ARE EQUAL????????&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/**" access="isAuthenticated()"/>&ndash;&gt;
-
-        <intercept-url pattern="/**/anonymous/**" access="permitAll"/>
-        <csrf disabled="true"/>
-
-        <intercept-url pattern="/flights" access="isAnonymous()"/>
-
-
-        <form-login login-page="/flights" default-target-url="/flights"
-                    always-use-default-target="true"
-                    authentication-failure-url="/login?error=true"
-                    login-processing-url="/spring_security_check"/>
-        <logout logout-success-url="/flights"/>
-    </http>
-
-
-    &lt;!&ndash;&lt;!&ndash;<http pattern="/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<http-basic/>&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>&ndash;&gt;&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/**/anonymous/**" access="isAuthenticated()"/>&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<csrf disabled="true"/>&ndash;&gt;&ndash;&gt;
-    &lt;!&ndash;&lt;!&ndash;</http>&ndash;&gt;&ndash;&gt;
-
-    &lt;!&ndash;<http>&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/flights" access="permitAll"/>&ndash;&gt;
-
-        &lt;!&ndash;<intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>&ndash;&gt;
-
-
-        &lt;!&ndash;&lt;!&ndash;TODO TWO STRINGS BELOW ARE EQUAL????????&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/**" access="isAuthenticated()"/>&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/**/anonymous/**" access="permitAll"/>&ndash;&gt;
-        &lt;!&ndash;<csrf disabled="true"/>&ndash;&gt;
-
-
-        &lt;!&ndash;<form-login login-page="/flights" default-target-url="/flights"&ndash;&gt;
-                    &lt;!&ndash;always-use-default-target="true"&ndash;&gt;
-                    &lt;!&ndash;authentication-failure-url="/login?error=true"&ndash;&gt;
-                    &lt;!&ndash;login-processing-url="/spring_security_check"/>&ndash;&gt;
-        &lt;!&ndash;<logout logout-success-url="/login"/>&ndash;&gt;
-    &lt;!&ndash;</http>&ndash;&gt;
-
-    <beans:bean id="encoder"
-                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-        <beans:constructor-arg name="strength" value="11"/>
-    </beans:bean>
-
-    <authentication-manager>
-        <authentication-provider user-service-ref="userService">
-            <password-encoder ref="encoder"/>
-        </authentication-provider>
-    </authentication-manager>
-
-</beans:beans>-->
-
-
-
-
-
-
-
-
-
-<!-- ok
-<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns="http://www.springframework.org/schema/security"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security.xsd">
-
-    <http pattern="/resources/**" security="none"/>
-    <http pattern="/webjars/**" security="none"/>
-
-    &lt;!&ndash;<http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">&ndash;&gt;
-        &lt;!&ndash;<http-basic/>&ndash;&gt;
-        &lt;!&ndash;&lt;!&ndash;<intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/**" access="isAuthenticated()"/>&ndash;&gt;
-        &lt;!&ndash;<csrf disabled="true"/>&ndash;&gt;
-    &lt;!&ndash;</http>&ndash;&gt;
-
-    <http>
-        <intercept-url pattern="/login" access="permitAll"/>
-
-        <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
-
-
-        &lt;!&ndash;TODO TWO STRINGS BELOW ARE EQUAL????????&ndash;&gt;
-        &lt;!&ndash;<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>&ndash;&gt;
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
-
-
-        <form-login login-page="/login" default-target-url="/flights"
-                    always-use-default-target="true"
-                    authentication-failure-url="/login?error=true"
-                    login-processing-url="/spring_security_check"/>
-        <logout logout-success-url="/login"/>
-    </http>
-
-    <beans:bean id="encoder"
-                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-        <beans:constructor-arg name="strength" value="11"/>
-    </beans:bean>
-
-    <authentication-manager>
-        <authentication-provider user-service-ref="userService">
-            <password-encoder ref="encoder"/>
-        </authentication-provider>
-    </authentication-manager>
-
-</beans:beans>-->
+</beans:beans>

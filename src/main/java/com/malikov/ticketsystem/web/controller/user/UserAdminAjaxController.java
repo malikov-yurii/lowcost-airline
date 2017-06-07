@@ -2,7 +2,7 @@ package com.malikov.ticketsystem.web.controller.user;
 
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.util.UserUtil;
+import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class UserAdminAjaxController {
             @RequestParam(value = "lastNameCondition") @SafeHtml @Size(min = 2) @NotBlank String lastNameCondition) {
         return userService.getByLastName(lastNameCondition)
                 .stream()
-                .map(UserUtil::asTo)
+                .map(UserDTOConverter::asTo)
                 .collect(Collectors.toList());
     }
 

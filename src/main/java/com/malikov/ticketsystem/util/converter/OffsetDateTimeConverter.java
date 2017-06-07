@@ -9,8 +9,7 @@ import java.util.Objects;
  * @author Yurii Malikov
  */
 @Converter(autoApply = true)
-public class OffsetDateTimeConverter implements
-        AttributeConverter<OffsetDateTime, String> {
+public class OffsetDateTimeConverter implements AttributeConverter<OffsetDateTime, String> {
 
     /**
      * @return a value as a String such as 2014-12-03T10:15:30+01:00

@@ -235,8 +235,7 @@ function save() {
                         showCancelButton: true,
                         confirmButtonColor: '#DD6B55',
                         confirmButtonText: i18n['ticket.confirmPay'],
-                        cancelButtonText: i18n['ticket.cancelPay'],
-                        // closeOnConfirm: false
+                        cancelButtonText: i18n['ticket.cancelPay']
                     },
                     function (isConfirm) {
                         if (isConfirm) {
@@ -244,18 +243,7 @@ function save() {
                             popup(i18n['ticket.purchased']);
                         } else {
                             popup(i18n['ticket.booked']);
-                            // swal hide to fast here it should work
-                            // swal({
-                            //     title: "Info.",
-                            //     text: "You can pay for ticket or discard booking on page tickets.",
-                            //     type: "info",
-                            //     confirmButtonText: "OK",
-                            //     closeOnConfirm: false
-                            // });
-                            // debugger;
                         }
-
-                        // forceDataTableReload();
                     });
                 forceDataTableReload();
             }
@@ -323,11 +311,9 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             $('.datatable').attr("hidden", true);
         } else {
             forceDataTableReload();
-            // $('.datatable').attr("hidden", false);
         }
     } else {
         forceDataTableReload();
-        // $('.datatable').attr("hidden", false);
     }
 }
 

@@ -1,15 +1,16 @@
-package com.malikov.ticketsystem.util;
+package com.malikov.ticketsystem.util.dtoconverter;
 
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.dto.FlightDTO;
 import com.malikov.ticketsystem.dto.FlightManageableDTO;
+import com.malikov.ticketsystem.util.DateTimeUtil;
 
 import java.math.BigDecimal;
 
 /**
  * @author Yurii Malikov
  */
-public class FlightUtil {
+public class FlightDTOConverter {
 
     public  static FlightDTO asDTO(Flight flight, BigDecimal ticketPrice){
         return new FlightDTO(flight.getId(),
@@ -22,7 +23,6 @@ public class FlightUtil {
                              ticketPrice
                 );
     }
-
 
     public  static FlightManageableDTO asManageableDTO(Flight flight){
         return new FlightManageableDTO(flight.getId(),
@@ -38,5 +38,4 @@ public class FlightUtil {
                              flight.isCanceled()
                 );
     }
-
 }

@@ -13,7 +13,7 @@ function forceDataTableReload() {
 }
 
 function renderUpdateBtn(data, type, row) {
-    return '<a class="btn btn-xs btn-primary update-btn">Update</a>';
+    return '<a class="btn btn-xs btn-primary update-btn">' + i18n['common.update'] + '</a>';
 }
 
 function renderCancelDiscardCancellingBtn(data, type, row) {
@@ -29,7 +29,7 @@ function setCanceled(id, isCanceled) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: 'Yes, I am sure!',
-            cancelButtonText: "No, cancel it!",
+            cancelButtonText: "No, cancel it!"
         },
         function (isConfirm) {
             if (isConfirm) {
@@ -49,16 +49,16 @@ function setCanceled(id, isCanceled) {
 function showUpdateModal() {
     var rowData = datatableApi.row($(this).closest('tr')).data();
 
-    $('#modalTitle').html(i18n['common.update'] + ' ' + entityName);
+    $('#modalTitle').html(i18n['common.update']);
 
-    // ;
-
-    $('.form-control.modal-input').addClass('valid');
-    $('.form-control.modal-input').removeClass('in-process');
+    $('.form-control.modal-input').addClass('valid').removeClass('in-process');
 
     for (var key in rowData) {
-        var $node = $('#' + key);
-        if ($node.length) $node.val(rowData[key]);
+        if (rowData.hasOwnProperty(key)) {
+
+            var $node = $('#' + key);
+            if ($node.length) $node.val(rowData[key]);
+        }
     }
 
     $('#editRow').modal();
@@ -87,10 +87,8 @@ function cancelBooking(id) {
         url: 'ajax/user/ticket/' + id + '/cancel-booking',
         type: 'PUT',
         success: function () {
-            // debugger;
             popup(i18n['ticket.bookingCancel']);
             forceDataTableReload();
-
         }
     });
 }
@@ -103,14 +101,6 @@ function payForTicket(id) {
         data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
         success: function () {
             forceDataTableReload();
-            // this swal hides too fast on flights page it should work
-            // swal({
-            //     title: "Payment success",
-            //     text: "Ticket has been successfully purchased. You can access it in your profile",
-            //     type: "info",
-            //     closeOnConfirm: false,
-            //     confirmButtonText: "OK"
-            // });
         }
     });
 }
@@ -145,7 +135,7 @@ function deleteEntity(id) {
 
 function save() {
     $.ajax({
-        type: "POST",
+        type: $('#detailsForm').find('#id').val() != 0 ? "PUT" : "POST",
         url: ajaxUrl,
         data: $('#detailsForm').serialize(),
         success: function () {
@@ -200,7 +190,6 @@ function dateToOffsetString(date) {
     var offsetHours = totalOffsetMinutes / 60;
     var offsetMinutes = totalOffsetMinutes % 60;
 
-    // debugger;
     return date.toJSON().slice(0, 16) + "+" +
         (Math.floor(offsetHours / 10) === 0 ? "0" + offsetHours : offsetHours) +
         ":" + (Math.floor(offsetMinutes / 10) === 0 ? "0" + offsetMinutes : offsetMinutes);

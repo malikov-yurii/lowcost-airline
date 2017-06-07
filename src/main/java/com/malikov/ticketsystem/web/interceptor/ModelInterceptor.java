@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This interceptor adds the user dto the model of every requests managed
+ * This interceptor adds the user name to the model of every requests managed
+ *
  * @author Yurii Malikov
  */
 public class ModelInterceptor extends HandlerInterceptorAdapter {
-
 
     // TODO: 6/1/2017 consider moving userFullName dto session and access it in jsp using getSessionAttribute. It must be better
     @Override

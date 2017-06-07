@@ -16,7 +16,9 @@ public class AircraftModel extends NamedEntity {
     @Range(min = 0, max = 450)
     private Integer passengerSeatsQuantity;
 
-    public AircraftModel(){}
+
+    public AircraftModel() {
+    }
 
     public AircraftModel(Long id, String name, Integer passengerSeatsQuantity) {
         super(id, name);
@@ -27,6 +29,7 @@ public class AircraftModel extends NamedEntity {
         super(aircraftModel.getId(), aircraftModel.getName());
         this.passengerSeatsQuantity = aircraftModel.getPassengerSeatsQuantity();
     }
+
 
     public Integer getPassengerSeatsQuantity() {
         return passengerSeatsQuantity;

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "tariffs_details")
-public class TariffsDetails extends BaseEntity{
+public class TariffsDetails extends BaseEntity {
 
     @Column(name = "days_before_ticket_price_starts_to_grow")
     private Integer daysCountBeforeTicketPriceStartsToGrow;
@@ -31,6 +31,7 @@ public class TariffsDetails extends BaseEntity{
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
 
+
     public TariffsDetails() {
     }
 
@@ -43,6 +44,7 @@ public class TariffsDetails extends BaseEntity{
         this.priorityRegistrationAndBoardingTariff = priorityRegistrationAndBoardingTariff;
         this.active = active;
     }
+
 
     public Integer getDaysCountBeforeTicketPriceStartsToGrow() {
         return daysCountBeforeTicketPriceStartsToGrow;
@@ -82,6 +84,52 @@ public class TariffsDetails extends BaseEntity{
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TariffsDetails that = (TariffsDetails) o;
+
+        if (daysCountBeforeTicketPriceStartsToGrow != null
+                ? !daysCountBeforeTicketPriceStartsToGrow.equals(that.daysCountBeforeTicketPriceStartsToGrow)
+                : that.daysCountBeforeTicketPriceStartsToGrow != null) {
+            return false;
+        }
+        if (weightOfTimeGrowthFactor != null
+                ? !weightOfTimeGrowthFactor.equals(that.weightOfTimeGrowthFactor)
+                : that.weightOfTimeGrowthFactor != null) {
+            return false;
+        }
+        if (baggageSurchargeOverMaxBaseTicketPrice != null
+                ? !baggageSurchargeOverMaxBaseTicketPrice.equals(that.baggageSurchargeOverMaxBaseTicketPrice)
+                : that.baggageSurchargeOverMaxBaseTicketPrice != null) {
+            return false;
+        }
+        if (priorityRegistrationAndBoardingTariff != null
+                ? !priorityRegistrationAndBoardingTariff.equals(that.priorityRegistrationAndBoardingTariff)
+                : that.priorityRegistrationAndBoardingTariff != null) {
+            return false;
+        }
+        return active != null ? active.equals(that.active) : that.active == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (daysCountBeforeTicketPriceStartsToGrow != null
+                ? daysCountBeforeTicketPriceStartsToGrow.hashCode() : 0);
+        result = 31 * result + (weightOfTimeGrowthFactor != null
+                ? weightOfTimeGrowthFactor.hashCode() : 0);
+        result = 31 * result + (baggageSurchargeOverMaxBaseTicketPrice != null
+                ? baggageSurchargeOverMaxBaseTicketPrice.hashCode() : 0);
+        result = 31 * result + (priorityRegistrationAndBoardingTariff != null
+                ? priorityRegistrationAndBoardingTariff.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        return result;
     }
 }
 

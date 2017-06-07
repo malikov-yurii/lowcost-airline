@@ -3,7 +3,7 @@ package com.malikov.ticketsystem.web.controller.ticket;
 import com.malikov.ticketsystem.dto.TicketDTO;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.service.ITicketService;
-import com.malikov.ticketsystem.util.TicketUtil;
+import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +40,7 @@ public class TicketAdminAjaxController {
 
         model.put("recordsTotal", dataTableHasNextPageIndicator);
         model.put("recordsFiltered", dataTableHasNextPageIndicator);
-        model.put("data", tickets.stream().map(TicketUtil::asDTO).collect(Collectors.toList()));
+        model.put("data", tickets.stream().map(TicketDTOConverter::asDTO).collect(Collectors.toList()));
         return model;
     }
 
