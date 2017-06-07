@@ -9,12 +9,9 @@ import com.malikov.ticketsystem.model.User;
 public class UserUtil {
 
     public static User createNewFromDTO(UserDTO newUser) {
-
-        // TODO: 5/14/2017 Get rid of new Role(USER) !!!!!!!!!!
         return new User(null, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail().toLowerCase(), newUser.getPassword(), newUser.getPhoneNumber());
     }
 
-    // TODO: 5/14/2017 Is it ok dto pass "" as password ??????????????
     public static UserDTO asTo(User user) {
         return new UserDTO(user.getId(), user.getName(), user.getLastName(), user.getEmail(), "", user.getPhoneNumber());
     }
@@ -36,5 +33,4 @@ public class UserUtil {
         user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
-
 }

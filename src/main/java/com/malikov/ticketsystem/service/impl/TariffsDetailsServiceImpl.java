@@ -3,9 +3,11 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
-import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkSuccess;
 
 /**
  * @author Yurii Malikov
@@ -24,14 +26,12 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService{
     @Override
     public void update(TariffsDetails tariffsDetailsDTO)
     {
-        TariffsDetails tariffsDetails = getActive();
-        ValidationUtil.checkSuccess(tariffsDetails, "not found active tariff details");
+        TariffsDetails tariffsDetails = checkSuccess(getActive(),"not found active tariff details");
         tariffsDetails.setBaggageSurchargeOverMaxBaseTicketPrice(tariffsDetailsDTO.getBaggageSurchargeOverMaxBaseTicketPrice());
         tariffsDetails.setPriorityRegistrationAndBoardingTariff(tariffsDetailsDTO.getPriorityRegistrationAndBoardingTariff());
         tariffsDetails.setDaysCountBeforeTicketPriceStartsToGrow(tariffsDetailsDTO.getDaysCountBeforeTicketPriceStartsToGrow());
         tariffsDetails.setWeightOfTimeGrowthFactor(tariffsDetailsDTO.getWeightOfTimeGrowthFactor());
         tariffsDetails.setActive(tariffsDetailsDTO.getActive());
-        ValidationUtil.checkSuccess(repository.save(tariffsDetails),
-                "not found tariffs details with id=" + tariffsDetailsDTO.getId());
+        checkNotFoundById(repository.save(tariffsDetails), tariffsDetailsDTO.getId());
     }
 }

@@ -79,7 +79,7 @@ public class FlightServiceImplTest{
         Assert.assertEquals(expected, actual);
     }
 
-    // TODO: 6/7/2017 Code style ok? 
+    // TODO: 6/7/2017 Code style ok?
     @Test
     public void testGetFlightTicketPriceMap(){
         when(airportRepository.getByName(AIRPORT_1_BORISPOL.getName())).thenReturn(AIRPORT_1_BORISPOL);

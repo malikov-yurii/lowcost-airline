@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundByName;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
@@ -49,8 +51,7 @@ public class FlightServiceImpl implements IFlightService {
 
     @Override
     public Flight get(long flightId) {
-        return ValidationUtil.checkSuccess(flightRepository.get(flightId),
-                "not found flight with flightId=" + flightId);
+        return checkNotFoundById(flightRepository.get(flightId), flightId);
     }
 
     @Override
@@ -58,16 +59,13 @@ public class FlightServiceImpl implements IFlightService {
         ValidationUtil.checkNew(flightManageableDTO);
 
         Airport departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        ValidationUtil.checkSuccess(departureAirport, "not found departure airport with name="
-                + flightManageableDTO.getDepartureAirport());
+        checkNotFoundByName(departureAirport, flightManageableDTO.getDepartureAirport());
 
         Airport arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        ValidationUtil.checkSuccess(arrivalAirport, "not found arrival airport with name="
-                + flightManageableDTO.getArrivalAirport());
+        checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
 
         Aircraft aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        ValidationUtil.checkSuccess(aircraft, "not found arrival airport with name="
-                + flightManageableDTO.getAircraftName());
+        checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
 
         return flightRepository.save(new Flight(departureAirport, arrivalAirport, aircraft,
                 DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
@@ -90,18 +88,15 @@ public class FlightServiceImpl implements IFlightService {
         flight = get(flightManageableDTO.getId());
 
         departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        ValidationUtil.checkSuccess(departureAirport, "not found departure airport with name="
-                + flightManageableDTO.getDepartureAirport());
+        checkNotFoundByName(departureAirport, flightManageableDTO.getDepartureAirport());
         flight.setDepartureAirport(departureAirport);
 
         arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        ValidationUtil.checkSuccess(arrivalAirport, "not found arrival airport with name="
-                + flightManageableDTO.getArrivalAirport());
+        checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
         flight.setArrivalAirport(arrivalAirport);
 
         aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        ValidationUtil.checkSuccess(aircraft, "not found arrival airport with name="
-                + flightManageableDTO.getAircraftName());
+        checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
         flight.setAircraft(aircraft);
 
         flight.setDepartureUtcDateTime(DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
@@ -117,16 +112,15 @@ public class FlightServiceImpl implements IFlightService {
 
     @Override
     public void delete(long flightId) {
-        ValidationUtil.checkSuccess(flightRepository.delete(flightId),
-                "not found flight with flightId = " + flightId);
+        checkNotFoundById(flightRepository.delete(flightId), flightId);
     }
 
     @Override
     @Transactional
     public void setCanceledStatus(long flightId, boolean cancelStatus) {
-        Flight flight = flightRepository.get(flightId);
-        ValidationUtil.checkSuccess(flight, "not found flight with flightId = " + flightId);
+        Flight flight = checkNotFoundById(flightRepository.get(flightId), flightId);
         flight.setCanceled(cancelStatus);
+        flightRepository.save(flight);
     }
 
     @Override
@@ -172,16 +166,14 @@ public class FlightServiceImpl implements IFlightService {
 
         if (departureAirportNameCondition != null && departureAirportNameCondition.length() != 0) {
             departureAirport = airportRepository.getByName(departureAirportNameCondition);
-            ValidationUtil.checkSuccess(departureAirport, "not found departure airport with name="
-                    + departureAirportNameCondition);
+            checkNotFoundByName(departureAirport, departureAirportNameCondition);
         } else {
             departureAirport = null;
         }
 
         if (arrivalAirportNameCondition != null && arrivalAirportNameCondition.length() != 0) {
             arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-            ValidationUtil.checkSuccess(arrivalAirport, "not found arrival airport with name="
-                    + arrivalAirportNameCondition);
+            checkNotFoundByName(arrivalAirport, arrivalAirportNameCondition);
         } else {
             arrivalAirport = null;
         }
@@ -219,12 +211,10 @@ public class FlightServiceImpl implements IFlightService {
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
 
         departureAirport = airportRepository.getByName(departureAirportNameCondition);
-        ValidationUtil.checkSuccess(departureAirport, "not found departure airport with name="
-                + departureAirportNameCondition);
+        checkNotFoundByName(departureAirport, departureAirportNameCondition);
 
         arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-        ValidationUtil.checkSuccess(arrivalAirport, "not found arrival airport with name="
-                + arrivalAirportNameCondition);
+        checkNotFoundByName(arrivalAirport, arrivalAirportNameCondition);
 
         fromDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(fromDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());

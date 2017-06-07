@@ -19,7 +19,8 @@ import java.util.List;
 
 import static com.malikov.ticketsystem.util.UserUtil.prepareToSave;
 import static com.malikov.ticketsystem.util.UserUtil.updateFromTo;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundWithId;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkSuccess;
 
 /**
  * @author Yurii Malikov
@@ -36,7 +37,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Override
     public User get(long userId) {
-        return checkNotFoundWithId(userRepository.get(userId), userId);
+        return checkNotFoundById(userRepository.get(userId), userId);
     }
 
     @Override
@@ -61,12 +62,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Override
     public void delete(long userId) {
-        ValidationUtil.checkSuccess(userRepository.delete(userId), "not found user with id" + userId);
+        checkNotFoundById(userRepository.delete(userId), userId);
     }
 
     @Override
     public User getByEmail(String email) {
-        return ValidationUtil.checkSuccess(userRepository.getByEmail(email), "email=" + email);
+        return checkSuccess(userRepository.getByEmail(email), "not found by email=" + email);
     }
 
     @Override
