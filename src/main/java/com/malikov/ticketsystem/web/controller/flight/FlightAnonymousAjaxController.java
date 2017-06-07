@@ -42,7 +42,7 @@ public class FlightAnonymousAjaxController {
             @RequestParam(value = "draw") int draw,
             @RequestParam(value = "start") int startingFrom,
             @RequestParam(value = "length") int pageCapacity) {
-        List<FlightDTO> flightDTOs = flightService.getFlightTicketPriceMapFilteredBy(departureAirportName,
+        List<FlightDTO> flightDTOs = flightService.getFlightTicketPriceMap(departureAirportName,
                 arrivalAirportName, fromDepartureDateTime, toDepartureDateTime, startingFrom, pageCapacity).entrySet()
                 .stream()
                 .map(entry -> FlightUtil.asDTO(entry.getKey(), entry.getValue()))

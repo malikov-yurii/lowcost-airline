@@ -45,6 +45,8 @@ public class FlightTestData {
             DateTimeUtil.parseToLocalDateTime("2017-06-27 12:00"), DateTimeUtil.parseToLocalDateTime("2017-06-27 13:00"),
             new BigDecimal("20.00"), new BigDecimal("40.00"));
 
+    public static final int FLIGHT_4_TICKET_QUANTITY = 4;
+
     public static final List<Flight> FLIGHTS = Arrays.asList(FLIGHT_1, FLIGHT_2, FLIGHT_3, FLIGHT_4, FLIGHT_5, FLIGHT_6);
 
     // TODO: 5/15/2017 Use patterng dto get rid of dublicating??????????????

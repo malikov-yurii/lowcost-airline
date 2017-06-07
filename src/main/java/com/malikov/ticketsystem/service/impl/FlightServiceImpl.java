@@ -205,9 +205,11 @@ public class FlightServiceImpl implements IFlightService {
     }
 
     @Override
-    public Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportNameCondition,
-             String arrivalAirportNameCondition, LocalDateTime fromDepartureDateTimeCondition,
-             LocalDateTime toDepartureDateTimeCondition, Integer first, Integer limit) {
+    public Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportNameCondition,
+                                                           String arrivalAirportNameCondition,
+                                                           LocalDateTime fromDepartureDateTimeCondition,
+                                                           LocalDateTime toDepartureDateTimeCondition,
+                                                           Integer first, Integer limit) {
         Airport departureAirport;
         Airport arrivalAirport;
         LocalDateTime fromDepartureUtcDateTime;
@@ -238,7 +240,7 @@ public class FlightServiceImpl implements IFlightService {
 
         flightTicketPriceMap = new HashMap<>();
         filteredFlightsTicketCountMap.forEach((flight, ticketsQuantity) -> flightTicketPriceMap.put(flight,
-                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity)));
+                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity).setScale(2)));
 
         return flightTicketPriceMap;
     }
@@ -268,8 +270,8 @@ public class FlightServiceImpl implements IFlightService {
 
         utcTimePointPriceStartsToGrow = flight.getDepartureUtcDateTime()
                 .minusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
-        long daysBetweenGrowthStartAndNow = DAYS.between(utcTimePointPriceStartsToGrow,
-                LocalDateTime.now(ZoneId.of("UTC")));
+        long daysBetweenGrowthStartAndNow = DAYS.between(LocalDateTime.now(ZoneId.of("UTC")),
+                utcTimePointPriceStartsToGrow);
 
         if (daysBetweenGrowthStartAndNow > 0) {
             ticketPrice = ticketPrice.add(perDayPriceGrowth.multiply(new BigDecimal(daysBetweenGrowthStartAndNow)));

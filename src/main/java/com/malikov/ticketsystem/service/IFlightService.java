@@ -86,7 +86,9 @@ public interface IFlightService {
      * @return filtered, limited by conditions and ordered by departure datetime desc flights
      *          with current ticket price. Or returns empty map if not found any.
      */
-    Map<Flight, BigDecimal> getFlightTicketPriceMapFilteredBy(String departureAirportNameCondition,
-            String arrivalAirportNameCondition, LocalDateTime fromDepartureDateTimeCondition,
-            LocalDateTime toDepartureDateTimeCondition,Integer first, Integer limit);
+    Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportNameCondition,
+                                                    String arrivalAirportNameCondition,
+                                                    LocalDateTime fromDepartureDateTimeCondition,
+                                                    LocalDateTime toDepartureDateTimeCondition,
+                                                    Integer first, Integer limit);
 }
