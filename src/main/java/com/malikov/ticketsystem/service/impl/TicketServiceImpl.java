@@ -115,10 +115,10 @@ public class TicketServiceImpl implements ITicketService {
 
         // TODO: 6/6/2017 ValidationUtil.checkSuccess??
         ticketRepository.save(ticket);
-        terminateAutomaticalRemovalTask(ticketId);
+        terminateAutomaticRemovalTask(ticketId);
     }
 
-    private void terminateAutomaticalRemovalTask(Long ticketId) {
+    private void terminateAutomaticRemovalTask(Long ticketId) {
         ticketIdRemovalTaskMap.get(ticketId).cancel(false);
         ticketIdRemovalTaskMap.remove(ticketId);
     }
@@ -188,7 +188,7 @@ public class TicketServiceImpl implements ITicketService {
     @Override
     public void delete(long ticketId) {
         checkNotFoundById(ticketRepository.delete(ticketId), ticketId);
-        terminateAutomaticalRemovalTask(ticketId);
+        terminateAutomaticRemovalTask(ticketId);
     }
 
     /**

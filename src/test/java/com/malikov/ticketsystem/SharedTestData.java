@@ -1,11 +1,11 @@
 package com.malikov.ticketsystem;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Yurii Malikov
  */
 public class SharedTestData {
 
-    public static final LocalDateTime FIXED_DATE_TIME = LocalDateTime.of(2017, 6, 17, 12, 0);
+    public static final int STARTING_FROM_FIRST = 0;
+
+    public static final int NOT_LIMITED = 1_000_000;
 }
