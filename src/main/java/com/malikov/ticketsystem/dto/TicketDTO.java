@@ -2,8 +2,11 @@ package com.malikov.ticketsystem.dto;
 
 import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.util.DateTimeUtil;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,27 +14,47 @@ import java.time.LocalDateTime;
  * @author Yurii Malikov
  */
 
-// TODO: 5/31/2017 I can change it for tickets table
 public class TicketDTO extends BaseDTO {
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 50)
     private String passengerFirstName;
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 50)
     private String passengerLastName;
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 255)
     private String departureAirport;
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 255)
     private String arrivalAirport;
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 70)
     private String departureCity;
 
+    @NotNull
+    @SafeHtml
+    @Size(min = 2, max = 70)
     private String arrivalCity;
 
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalLocalDateTime;
 
+    @NotNull
     private BigDecimal price;
 
     private Boolean withBaggage;

@@ -1,16 +1,22 @@
 package com.malikov.ticketsystem.dto;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ROUND_HALF_UP;
 
 /**
  * @author Yurii Malikov
  */
 public class TicketPriceDetailsDTO {
 
+    @NotNull
     private BigDecimal baseTicketPrice;
 
+    @NotNull
     private BigDecimal baggagePrice;
 
+    @NotNull
     private BigDecimal priorityRegistrationAndBoardingPrice;
 
     public TicketPriceDetailsDTO() {
@@ -18,9 +24,9 @@ public class TicketPriceDetailsDTO {
 
     public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice,
                                  BigDecimal priorityRegistrationAndBoardingPrice) {
-        this.baseTicketPrice = baseTicketPrice.setScale(2);
-        this.baggagePrice = baggagePrice.setScale(2);
-        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(2);
+        this.baseTicketPrice = baseTicketPrice.setScale(6, ROUND_HALF_UP);
+        this.baggagePrice = baggagePrice.setScale(6, ROUND_HALF_UP);
+        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(6, ROUND_HALF_UP);
     }
 
     public BigDecimal getBaseTicketPrice() {
@@ -28,7 +34,7 @@ public class TicketPriceDetailsDTO {
     }
 
     public void setBaseTicketPrice(BigDecimal baseTicketPrice) {
-        this.baseTicketPrice = baseTicketPrice.setScale(2);
+        this.baseTicketPrice = baseTicketPrice.setScale(6, ROUND_HALF_UP);
     }
 
     public BigDecimal getBaggagePrice() {
@@ -36,7 +42,7 @@ public class TicketPriceDetailsDTO {
     }
 
     public void setBaggagePrice(BigDecimal baggagePrice) {
-        this.baggagePrice = baggagePrice.setScale(2);
+        this.baggagePrice = baggagePrice.setScale(6, ROUND_HALF_UP);
     }
 
     public BigDecimal getPriorityRegistrationAndBoardingPrice() {
@@ -44,7 +50,7 @@ public class TicketPriceDetailsDTO {
     }
 
     public void setPriorityRegistrationAndBoardingPrice(BigDecimal priorityRegistrationAndBoardingPrice) {
-        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(2);
+        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(6, ROUND_HALF_UP);
     }
 
     @Override

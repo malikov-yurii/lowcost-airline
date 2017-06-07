@@ -6,8 +6,8 @@ import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.IRoleRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
-import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import com.malikov.ticketsystem.util.ValidationUtil;
+import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
 import static com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter.prepareToSave;
 import static com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter.updateFromTo;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkSuccess;
 
 /**
  * @author Yurii Malikov
@@ -67,7 +66,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Override
     public User getByEmail(String email) {
-        return checkSuccess(userRepository.getByEmail(email), "not found by email=" + email);
+        return ValidationUtil.checkNotFound(userRepository.getByEmail(email), "not found by email=" + email);
     }
 
     @Override

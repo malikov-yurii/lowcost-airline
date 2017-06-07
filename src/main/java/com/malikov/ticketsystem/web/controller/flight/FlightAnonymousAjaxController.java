@@ -4,7 +4,6 @@ import com.malikov.ticketsystem.dto.FlightDTO;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.dtoconverter.FlightDTOConverter;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ui.ModelMap;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,8 +37,8 @@ public class FlightAnonymousAjaxController {
                     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,
             @RequestParam(value = "toDepartureDateTimeCondition") @NotNull
                     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime toDepartureDateTime,
-            @RequestParam(value = "departureAirportCondition") @NotBlank String departureAirportName,
-            @RequestParam(value = "arrivalAirportCondition") @NotBlank String arrivalAirportName,
+            @RequestParam(value = "departureAirportCondition") @Size(min = 2, max = 255) String departureAirportName,
+            @RequestParam(value = "arrivalAirportCondition") @Size(min = 2, max = 255) String arrivalAirportName,
             @RequestParam(value = "draw") int draw,
             @RequestParam(value = "start") int startingFrom,
             @RequestParam(value = "length") int pageCapacity) {

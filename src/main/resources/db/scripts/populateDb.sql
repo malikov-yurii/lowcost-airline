@@ -11,22 +11,14 @@ TRUNCATE TABLE tariffs_details;
 TRUNCATE TABLE tickets;
 SET FOREIGN_KEY_CHECKS = 1;
 
-ALTER TABLE users
-  AUTO_INCREMENT 1;
-ALTER TABLE roles
-  AUTO_INCREMENT 1;
-ALTER TABLE cities
-AUTO_INCREMENT 1;
-ALTER TABLE airports
-  AUTO_INCREMENT 1;
-ALTER TABLE aircraft_models
-AUTO_INCREMENT 1;
-ALTER TABLE aircraft
-AUTO_INCREMENT 1;
-ALTER TABLE flights
-  AUTO_INCREMENT 1;
-ALTER TABLE tickets
-  AUTO_INCREMENT 1;
+ALTER TABLE users AUTO_INCREMENT 1;
+ALTER TABLE roles AUTO_INCREMENT 1;
+ALTER TABLE cities AUTO_INCREMENT 1;
+ALTER TABLE airports AUTO_INCREMENT 1;
+ALTER TABLE aircraft_models AUTO_INCREMENT 1;
+ALTER TABLE aircraft AUTO_INCREMENT 1;
+ALTER TABLE flights AUTO_INCREMENT 1;
+ALTER TABLE tickets AUTO_INCREMENT 1;
 
 INSERT INTO users (name, last_name, email, password, phone_number) VALUES
   ('Eduard', 'Eduardov', 'user@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
@@ -57,7 +49,8 @@ INSERT INTO users (name, last_name, email, password, phone_number) VALUES
   ('Rock', 'Jonson', 'jonson@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+440741234567'),
   ('Lil', 'John', 'john@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+440751234567'),
   ('Bruce', 'Brusov', 'brusov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+440761234567'),
-  ('Mark', 'Markov', 'markov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm', '+440771234567');
+  ('Mark', 'Markov', 'markov@gmail.com', '$2a$11$bRQR2FxnBrKnr/PS0eaDUeEQzO2ZtYJllGPIkdekZ0q6rJVJrCmXm',
+   '+440771234567');
 
 INSERT INTO roles (role) VALUES
   ('ROLE_USER'),
@@ -73,7 +66,6 @@ INSERT INTO user_roles (user_id, role_id) VALUES
   (7, 1),
   (8, 1),
   (8, 2),
-
   (9, 1),
   (10, 1),
   (11, 1),
@@ -120,11 +112,9 @@ VALUES
   (1, 3, 2, '2017-06-22 06:30', '2017-06-22 08:00', 40, 60, FALSE),
   (3, 1, 2, '2017-06-26 12:00', '2017-06-26 15:30', 40, 60, FALSE),
   (4, 1, 3, '2017-06-27 12:00', '2017-06-27 13:00', 20, 40, FALSE),
-
   (1, 4, 3, '2017-06-21 08:00', '2017-06-21 11:00', 20, 40, FALSE),
   (1, 3, 3, '2017-06-22 08:00', '2017-06-21 11:11', 20, 40, TRUE),
-  (1, 3, 3, '2017-04-22 08:00', '2017-06-21 11:11', 20, 40, FALSE )
-;
+  (1, 3, 3, '2017-04-22 08:00', '2017-06-21 11:11', 20, 40, FALSE);
 
 INSERT INTO tariffs_details (days_before_ticket_price_starts_to_grow, weight_of_time_growth_factor,
                              baggage_surcharge_over_max_base_ticket_price,
@@ -169,7 +159,6 @@ VALUES
 
   (6, 8, 40, '2017-05-20T08:30+02:00', FALSE, FALSE, 'Abu', 'Kumar', 'Leonardo da Vinci International Airport', 'Rome',
       'Boryspil International Airport', 'Kyiv', '2017-06-27T12:00', 'Europe/Rome', '2017-06-27T16:00+03:00', 1, 'PAID'),
-
 
   (2, 9, 34, '2017-05-23T12:30+03:00', FALSE, FALSE, 'Viola', 'White', 'Boryspil International Airport', 'Kyiv',
       'Heathrow Airport', 'London', '2017-06-23T07:30', 'Europe/Kiev', '2017-06-23T12:00+01:00', 5, 'PAID'),
@@ -265,7 +254,5 @@ VALUES
       'Leonardo da Vinci International Airport', 'Rome', '2017-05-21T08:00', 'Europe/Kiev', '2017-05-21T13:00+02:00', 1, 'PAID'),
 
   (8, 1, 115, '2017-03-20T14:30+03:00', TRUE, TRUE, 'Eduard', 'Eduardov', 'Boryspil International Airport', 'Kyiv',
-      'Leonardo da Vinci International Airport', 'Rome', '2017-05-21T08:00', 'Europe/Kiev', '2017-05-21T13:00+02:00', 1, 'PAID')
-
-;
+      'Leonardo da Vinci International Airport', 'Rome', '2017-05-21T08:00', 'Europe/Kiev', '2017-05-21T13:00+02:00', 2, 'PAID');
 

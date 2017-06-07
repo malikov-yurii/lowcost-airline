@@ -32,8 +32,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
 import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkSuccess;
 
 /**
  * @author Yurii Malikov
@@ -75,6 +75,7 @@ public class TicketServiceImpl implements ITicketService {
                 .collect(Collectors.toList());
     }
 
+    // TODO: 6/7/2017 is it ok to return dto from service ???
     @Override
     public List<TicketDTO> getArchivedTickets(Long userId, Integer start, Integer limit) {
         return ticketRepository.getArchivedByUserId(userId, start, limit)
@@ -87,7 +88,7 @@ public class TicketServiceImpl implements ITicketService {
     @Transactional
     public void cancelBooking(Long ticketId) {
         Ticket ticket = ticketRepository.get(ticketId);
-        checkSuccess(ticket != null
+        checkNotFound(ticket != null
                         && ticket.getStatus().equals(TicketStatus.BOOKED)
                         && ticket.getUser().getId() == AuthorizedUser.id(),
                 "not found booked ticket with id=" + ticketId + "for authorized user.");
@@ -108,12 +109,12 @@ public class TicketServiceImpl implements ITicketService {
             throw new IllegalArgumentException("Only ticket booked ticket can by processed.");
         }
 
-        checkSuccess(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),"Rejected by bank.");
+        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),"Rejected by bank.");
 
         ticket.setStatus(TicketStatus.PAID);
         ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
 
-        // TODO: 6/6/2017 ValidationUtil.checkSuccess??
+        // TODO: 6/6/2017 ValidationUtil.checkNotFound??
         ticketRepository.save(ticket);
         terminateAutomaticRemovalTask(ticketId);
     }
@@ -165,7 +166,7 @@ public class TicketServiceImpl implements ITicketService {
         }
 
         newTicket.setFlight(flight);
-        newTicket = TicketDTOConverter.updateFromDTO(newTicket, ticketDTO);
+        newTicket = TicketDTOConverter.updateFromDTOBeforeBooking(newTicket, ticketDTO);
         newTicket.setUser(userRepository.get(AuthorizedUser.id()));
         newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
         newTicket.setStatus(TicketStatus.BOOKED);
@@ -179,10 +180,12 @@ public class TicketServiceImpl implements ITicketService {
     @Override
     public void update(TicketDTO ticketDTO) {
         // TODO: 5/5/2017 get rid of message  duplicating ??? how??
-        Assert.notNull(ticketDTO, "ticket should not be null");
+        Assert.notNull(ticketDTO, "ticket must not be null");
         Ticket ticket = ticketRepository.get(ticketDTO.getId());
-        ValidationUtil.checkNotFoundById(ticketRepository.save(TicketDTOConverter.updateFromDTO(ticket, ticketDTO)),
-                                         ticketDTO.getId());
+        ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
+        ticket.setPassengerLastName(ticketDTO.getPassengerLastName());
+        ticket.setPrice(ticketDTO.getPrice());
+        ValidationUtil.checkNotFoundById(ticketRepository.save(ticket), ticket.getId());
     }
 
     @Override

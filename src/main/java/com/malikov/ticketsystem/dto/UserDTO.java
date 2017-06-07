@@ -1,5 +1,6 @@
 package com.malikov.ticketsystem.dto;
 
+import com.malikov.ticketsystem.util.validator.PhoneNumber;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -15,22 +16,26 @@ public class UserDTO extends BaseDTO {
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 50)
     private String firstName;
 
     @NotBlank
     @SafeHtml
+    @Size(min = 2, max = 50)
     private String lastName;
 
     @Email
     @NotBlank
     @SafeHtml
+    @Size(min = 5, max = 255)
     private String email;
 
-    @Size(min = 4, max = 64, message = " password must be between 4 and 64 characters")
+    @Size(min = 4, max = 255)
     @SafeHtml
     private String password;
 
     @NotBlank
+    @PhoneNumber
     private String phoneNumber;
 
 

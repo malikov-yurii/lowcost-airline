@@ -25,7 +25,7 @@ public class AirportAnonymousAjaxController {
 
     @GetMapping(value = "/autocomplete-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> autocompleteAirport(@RequestParam("term") @NotNull @SafeHtml
-                                                @Size(min = 2, message = "must be >= 2") String nameMask) {
+                                                @Size(min = 2, max = 255) String nameMask) {
         return airportService.getNamesByNameMask(nameMask);
     }
 }

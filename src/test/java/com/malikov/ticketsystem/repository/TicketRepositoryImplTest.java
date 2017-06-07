@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ public class TicketRepositoryImplTest extends AbstractRepositoryTest {
     @Test
     public void testGetActiveByUserId() {
         new Expectations(LocalDateTime.class) {{
-            LocalDateTime.now(); result = BEFORE_USER_2_LAST_TICKET_DEPARTURE_DATE_TIME;
+            LocalDateTime.now(ZoneId.of("UTC")); result = BEFORE_USER_2_LAST_TICKET_DEPARTURE_DATE_TIME;
         }};
         LOG.info("LocalDateTime.now()=" + LocalDateTime.now());
 
@@ -47,7 +48,7 @@ public class TicketRepositoryImplTest extends AbstractRepositoryTest {
     @Test
     public void testGetArchivedByUserId() {
         new Expectations(LocalDateTime.class) {{
-            LocalDateTime.now(); result = AFTER_USER_2_FIRST_TICKET_DEPARTURE_DATE_TIME;
+            LocalDateTime.now(ZoneId.of("UTC")); result = AFTER_USER_2_FIRST_TICKET_DEPARTURE_DATE_TIME;
         }};
         LOG.info("LocalDateTime.now()=" + LocalDateTime.now());
 

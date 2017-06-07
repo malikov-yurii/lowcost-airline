@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +24,9 @@ public class TicketAdminAjaxController {
     private ITicketService ticketService;
 
     @GetMapping
-    // TODO: 5/31/2017 not need preauthorize (in xml permit all?
-    //@PreAuthorize()
+    // TODO: 5/31/2017 not need preauthorize?
     public ModelMap getFilteredPage(
-            @RequestParam(value = "userEmailCondition", required = false) String userEmailCondition,
+            @RequestParam(value = "userEmailCondition") @Size(min = 5, max = 255) String userEmailCondition,
             @RequestParam(value = "draw") Integer draw,
             @RequestParam(value = "start") Integer startingFrom,
             @RequestParam(value = "length") Integer pageCapacity) {
@@ -47,7 +48,7 @@ public class TicketAdminAjaxController {
 
     @PutMapping
     // TODO: 6/1/2017 validate dto?
-    public void updateTicket(TicketDTO ticketDTO) {
+    public void updateTicket(@Valid TicketDTO ticketDTO) {
         ticketService.update(ticketDTO);
     }
 

@@ -5,6 +5,7 @@ import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -14,36 +15,48 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
  * @author Yurii Malikov
  */
 
-// TODO: 5/31/2017 I can change it for tickets table
 @JsonInclude(ALWAYS)
 public class TicketWithRemainingDelayDTO extends BaseDTO {
 
+    @NotNull
     private String passengerFirstName;
 
+    @NotNull
     private String passengerLastName;
 
+    @NotNull
     private String departureAirport;
 
+    @NotNull
     private String arrivalAirport;
 
+    @NotNull
     private String departureCity;
 
+    @NotNull
     private String arrivalCity;
 
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
+    @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime arrivalLocalDateTime;
 
+    @NotNull
     private BigDecimal price;
 
+    @NotNull
     private Boolean withBaggage;
 
+    @NotNull
     private Boolean withPriorityRegistrationAndBoarding;
 
+    @NotNull
     private Integer seatNumber;
 
+    @NotNull
     private TicketStatus status;
 
     private Long remainingDelay;

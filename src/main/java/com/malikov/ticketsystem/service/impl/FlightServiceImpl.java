@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.service.impl;
 
-import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.dto.FlightManageableDTO;
+import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
@@ -23,8 +23,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundByName;
+import static com.malikov.ticketsystem.util.ValidationUtil.*;
+import static java.math.RoundingMode.HALF_UP;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
@@ -56,6 +56,8 @@ public class FlightServiceImpl implements IFlightService {
 
     @Override
     public Flight create(FlightManageableDTO flightManageableDTO) {
+        LocalDateTime departureUtcDateTime;
+        LocalDateTime arrivalUtcDateTime;
         ValidationUtil.checkNew(flightManageableDTO);
 
         Airport departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
@@ -64,15 +66,21 @@ public class FlightServiceImpl implements IFlightService {
         Airport arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
         checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
 
+        checkNotSame(departureAirport, arrivalAirport);
+
+        departureUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
+                departureAirport.getCity().getZoneId());
+        arrivalUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
+                arrivalAirport.getCity().getZoneId());
+
+        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime);
+
         Aircraft aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
         checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
 
         return flightRepository.save(new Flight(departureAirport, arrivalAirport, aircraft,
-                DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
-                        departureAirport.getCity().getZoneId()),
-                DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
-                        arrivalAirport.getCity().getZoneId()),
-                flightManageableDTO.getInitialBaseTicketPrice(), flightManageableDTO.getMaxBaseTicketPrice()));
+                departureUtcDateTime, arrivalUtcDateTime, flightManageableDTO.getInitialBaseTicketPrice(),
+                flightManageableDTO.getMaxBaseTicketPrice()));
     }
 
     @Override
@@ -82,6 +90,8 @@ public class FlightServiceImpl implements IFlightService {
         Airport departureAirport;
         Airport arrivalAirport;
         Aircraft aircraft;
+        LocalDateTime departureUtcDateTime;
+        LocalDateTime arrivalUtcDateTime;
 
         ValidationUtil.checkNotNew(flightManageableDTO);
 
@@ -95,14 +105,19 @@ public class FlightServiceImpl implements IFlightService {
         checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
         flight.setArrivalAirport(arrivalAirport);
 
+        checkNotSame(departureAirport, arrivalAirport);
+
         aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
         checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
         flight.setAircraft(aircraft);
 
-        flight.setDepartureUtcDateTime(DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
-                departureAirport.getCity().getZoneId()));
-        flight.setArrivalUtcDateTime(DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
-                arrivalAirport.getCity().getZoneId()));
+        departureUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
+                departureAirport.getCity().getZoneId());
+        arrivalUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
+                arrivalAirport.getCity().getZoneId());
+        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime);
+        flight.setDepartureUtcDateTime(departureUtcDateTime);
+        flight.setArrivalUtcDateTime(arrivalUtcDateTime);
 
         flight.setInitialTicketBasePrice(flightManageableDTO.getInitialBaseTicketPrice());
         flight.setMaxTicketBasePrice(flightManageableDTO.getMaxBaseTicketPrice());
@@ -129,7 +144,7 @@ public class FlightServiceImpl implements IFlightService {
         Integer bookedTicketsQuantity = ticketRepository.countTickets(flightId);
 
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
-        ValidationUtil.checkSuccess(tariffsDetails, "not found active tariff policy");
+        ValidationUtil.checkNotFound(tariffsDetails, "not found active tariff policy");
 
         BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
         BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
@@ -177,20 +192,24 @@ public class FlightServiceImpl implements IFlightService {
         } else {
             arrivalAirport = null;
         }
+        checkNotSame(departureAirport, arrivalAirport);
+
 
         if (fromDepartureDateTimeCondition != null && departureAirport != null) {
             fromDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(fromDepartureDateTimeCondition,
-                                                                departureAirport.getCity().getZoneId());
+                    departureAirport.getCity().getZoneId());
         } else {
             fromDepartureUtcDateTime = fromDepartureDateTimeCondition;
         }
 
         if (toDepartureDateTimeCondition != null && departureAirport != null) {
             toDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(toDepartureDateTimeCondition,
-                                                              departureAirport.getCity().getZoneId());
+                    departureAirport.getCity().getZoneId());
         } else {
             toDepartureUtcDateTime = toDepartureDateTimeCondition;
         }
+
+        ValidationUtil.validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime);
 
         return flightRepository.getFiltered(departureAirport, arrivalAirport,
                 fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);
@@ -215,22 +234,24 @@ public class FlightServiceImpl implements IFlightService {
 
         arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
         checkNotFoundByName(arrivalAirport, arrivalAirportNameCondition);
+        checkNotSame(departureAirport, arrivalAirport);
 
         fromDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(fromDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
         toDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(toDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
+        validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime);
 
         filteredFlightsTicketCountMap = flightRepository.getFilteredFlightTicketCountMap(
                 departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);
 
-        if(filteredFlightsTicketCountMap.isEmpty()) {
+        if (filteredFlightsTicketCountMap.isEmpty()) {
             return Collections.emptyMap();
         }
 
         flightTicketPriceMap = new HashMap<>();
         filteredFlightsTicketCountMap.forEach((flight, ticketsQuantity) -> flightTicketPriceMap.put(flight,
-                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity).setScale(2)));
+                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity).setScale(6, HALF_UP)));
 
         return flightTicketPriceMap;
     }
@@ -254,14 +275,13 @@ public class FlightServiceImpl implements IFlightService {
         fillingGrowthPotential = totalGrowthPotential.subtract(timeGrowthPotential);
 
         perTicketPriceGrowth = fillingGrowthPotential.divide(new BigDecimal(flight.getAircraft().getModel()
-                .getPassengerSeatsQuantity()));
+                .getPassengerSeatsQuantity()), HALF_UP);
         perDayPriceGrowth = timeGrowthPotential.divide(new BigDecimal(tariffsDetails
-                .getDaysCountBeforeTicketPriceStartsToGrow()));
+                .getDaysCountBeforeTicketPriceStartsToGrow()), HALF_UP);
 
         utcTimePointPriceStartsToGrow = flight.getDepartureUtcDateTime()
                 .minusDays(tariffsDetails.getDaysCountBeforeTicketPriceStartsToGrow());
-        long daysBetweenGrowthStartAndNow = DAYS.between(LocalDateTime.now(ZoneId.of("UTC")),
-                utcTimePointPriceStartsToGrow);
+        long daysBetweenGrowthStartAndNow = utcTimePointPriceStartsToGrow.until(LocalDateTime.now(ZoneId.of("UTC")), DAYS);
 
         if (daysBetweenGrowthStartAndNow > 0) {
             ticketPrice = ticketPrice.add(perDayPriceGrowth.multiply(new BigDecimal(daysBetweenGrowthStartAndNow)));

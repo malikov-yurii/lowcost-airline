@@ -3,7 +3,6 @@ package com.malikov.ticketsystem.web.controller.user;
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.service.IUserService;
 import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +27,8 @@ public class UserAdminAjaxController {
     IUserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getByLastName(
-            @RequestParam(value = "lastNameCondition") @SafeHtml @Size(min = 2) @NotBlank String lastNameCondition) {
+    public List<UserDTO> getByLastName(@RequestParam(value = "lastNameCondition")
+                                           @SafeHtml @Size(min = 2, max = 50) @NotNull String lastNameCondition) {
         return userService.getByLastName(lastNameCondition)
                 .stream()
                 .map(UserDTOConverter::asTo)
@@ -36,14 +36,14 @@ public class UserAdminAjaxController {
     }
 
     @GetMapping(value = "/autocomplete-by-email", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> autocompleteByEmail(@RequestParam("term") @SafeHtml @Size(min = 2)
-                                            @NotBlank String emailMask) {
+    public List<String> autocompleteByEmail(@RequestParam("term") @SafeHtml @Size(min = 2, max = 255)
+                                            @NotNull String emailMask) {
         return userService.getEmailsByMask(emailMask);
     }
 
     @GetMapping(value = "/autocomplete-by-last-name", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> autocompleteByLastName(@RequestParam("term") @SafeHtml @Size(min = 2)
-                                               @NotBlank String lastNameMask) {
+    public List<String> autocompleteByLastName(@RequestParam("term") @SafeHtml @Size(min = 2, max = 50)
+                                                   @NotNull String lastNameMask) {
         return userService.getLastNamesByMask(lastNameMask);
     }
 

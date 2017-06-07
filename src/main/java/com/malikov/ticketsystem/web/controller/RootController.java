@@ -98,7 +98,7 @@ public class RootController {
     }
 
     @PostMapping("/tariffs")
-    public void saveTariffs(@Valid TariffsDetails tariffsDetails, ModelMap model) {
+    public void saveTariffs(@Valid TariffsDetails tariffsDetails) {
         tariffsDetailsService.update(tariffsDetails);
     }
 }

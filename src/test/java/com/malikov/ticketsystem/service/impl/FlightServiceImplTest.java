@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import static com.malikov.ticketsystem.AirportTestData.AIRPORT_LUTON;
 import static com.malikov.ticketsystem.FlightTestData.FLIGHT_4;
 import static com.malikov.ticketsystem.TariffDetailsTestData.ACTIVE_TARIFF_DETAILS;
 import static com.malikov.ticketsystem.TicketTestData.FLIGHT_4_TICKET_QUANTITY;
+import static java.math.RoundingMode.HALF_UP;
 import static org.mockito.Mockito.when;
 
 /**
@@ -62,9 +64,9 @@ public class FlightServiceImplTest extends AbstractTest{
     public void initializeMockito(){
         MockitoAnnotations.initMocks(this);
 
-        new Expectations(LocalDateTime.class) {{ LocalDateTime.now(); result = FIXED_DATE_TIME; }};
+        new Expectations(LocalDateTime.class) {{ LocalDateTime.now(ZoneId.of("UTC")); result = FIXED_DATE_TIME; }};
         LOG.info("LocalDateTime.now()=" + LocalDateTime.now() + ". FIXED_DATE_TIME = " + FIXED_DATE_TIME);
-        
+
         when(tariffsDetailsRepository.getActiveTariffsDetails()).thenReturn(ACTIVE_TARIFF_DETAILS);
     }
 
@@ -74,8 +76,8 @@ public class FlightServiceImplTest extends AbstractTest{
         when(flightRepository.get(FLIGHT_4.getId())).thenReturn(FLIGHT_4);
 
         TicketPriceDetailsDTO actual = flightService.getTicketPriceDetails(FLIGHT_4.getId());
-        TicketPriceDetailsDTO expected = new TicketPriceDetailsDTO(new BigDecimal(46), new BigDecimal(62),
-                new BigDecimal(7));
+        TicketPriceDetailsDTO expected = new TicketPriceDetailsDTO(new BigDecimal(47).setScale(6, HALF_UP),
+                new BigDecimal(62).setScale(6, HALF_UP), new BigDecimal(7).setScale(6, HALF_UP));
 
         Assert.assertEquals(expected, actual);
     }
@@ -92,7 +94,7 @@ public class FlightServiceImplTest extends AbstractTest{
                 .thenReturn(new HashMap<Flight, Long>() {{ put(FLIGHT_4, 2L); }});
 
         Map<Flight, BigDecimal> expected = new HashMap<Flight, BigDecimal>() {{
-            put(FLIGHT_4, new BigDecimal("46.00")); }};
+            put(FLIGHT_4, new BigDecimal(47).setScale(6, HALF_UP)); }};
 
         Map<Flight, BigDecimal> actual = flightService.getFlightTicketPriceMap(AIRPORT_BORISPOL.getName(),
                 AIRPORT_LUTON.getName(),DateTimeUtil.MIN, DateTimeUtil.MAX, 0, 10);

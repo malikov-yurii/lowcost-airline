@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class TicketRepositoryImpl implements ITicketRepository {
                                         "ORDER BY t.departureUtcDateTime " +
                                         "DESC", Ticket.class)
                 .setParameter("userId", userId)
-                .setParameter("now", LocalDateTime.now())
+                .setParameter("now", LocalDateTime.now(ZoneId.of("UTC")))
                 .setFirstResult(start)
                 .setMaxResults(limit)
                 .getResultList();
@@ -44,7 +45,7 @@ public class TicketRepositoryImpl implements ITicketRepository {
                                         "WHERE u.id=:userId AND t.departureUtcDateTime<:now " +
                                         "ORDER BY t.departureUtcDateTime DESC", Ticket.class)
                 .setParameter("userId", userId)
-                .setParameter("now", LocalDateTime.now())
+                .setParameter("now", LocalDateTime.now(ZoneId.of("UTC")))
                 .setFirstResult(start)
                 .setMaxResults(limit)
                 .getResultList();
