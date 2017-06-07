@@ -86,7 +86,7 @@ function renderDiscardBookingBtn(data, type, row) {
 
 function confirmBookingCancelling(id) {
     swal({
-            title: i18n['ticket.ticket.areYouSureCancelBooking'],
+            title: i18n['ticket.areYouSureCancelBooking'],
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',

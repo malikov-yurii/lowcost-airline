@@ -242,7 +242,6 @@ function save() {
                         if (isConfirm) {
                             payForTicket(data.bookedTicketId);
                             popup(i18n['ticket.purchased']);
-
                         } else {
                             popup(i18n['ticket.booked']);
                             // swal hide to fast here it should work
@@ -367,15 +366,4 @@ function selectSeat(e) {
     $('.seat').removeClass('active');
     $(e.target).addClass('active');
     $('input#seatNumber').val(seat);
-}
-
-function popup(msg) {
-    var popup = $('<div class="popup">'+ msg +'</div>').appendTo($('body'));
-
-    popup.fadeIn('fast');
-    setTimeout(function() {
-        popup.fadeOut('fast', function() {
-            popup.remove();
-        })
-    }, 3000);
 }

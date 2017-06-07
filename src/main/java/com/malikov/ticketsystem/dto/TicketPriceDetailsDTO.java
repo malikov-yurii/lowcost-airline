@@ -13,6 +13,8 @@ public class TicketPriceDetailsDTO {
 
     private BigDecimal priorityRegistrationAndBoardingPrice;
 
+    public TicketPriceDetailsDTO(){}
+
     public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice, BigDecimal priorityRegistrationAndBoardingPrice) {
         this.baseTicketPrice = baseTicketPrice;
         this.baggagePrice = baggagePrice;

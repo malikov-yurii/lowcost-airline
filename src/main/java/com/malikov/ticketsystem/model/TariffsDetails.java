@@ -34,6 +34,16 @@ public class TariffsDetails extends BaseEntity{
     public TariffsDetails() {
     }
 
+    public TariffsDetails(Integer daysCountBeforeTicketPriceStartsToGrow, BigDecimal weightOfTimeGrowthFactor,
+                          BigDecimal baggageSurchargeOverMaxBaseTicketPrice,
+                          BigDecimal priorityRegistrationAndBoardingTariff, Boolean active) {
+        this.daysCountBeforeTicketPriceStartsToGrow = daysCountBeforeTicketPriceStartsToGrow;
+        this.weightOfTimeGrowthFactor = weightOfTimeGrowthFactor;
+        this.baggageSurchargeOverMaxBaseTicketPrice = baggageSurchargeOverMaxBaseTicketPrice;
+        this.priorityRegistrationAndBoardingTariff = priorityRegistrationAndBoardingTariff;
+        this.active = active;
+    }
+
     public Integer getDaysCountBeforeTicketPriceStartsToGrow() {
         return daysCountBeforeTicketPriceStartsToGrow;
     }

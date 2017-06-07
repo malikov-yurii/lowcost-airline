@@ -32,7 +32,6 @@ function validateProfileForm() {
     // Adds to counter if lastname is less than 2 symbols OR contains digits
     if ($lastName.val().length < 2 || $lastName.val().match(/\d+/g)) {
         if ($lastName.siblings('.error-text').length == 0) {
-            console.log('sd');
             $lastName
                 .closest('.form-group')
                 .addClass('error')
@@ -60,6 +59,7 @@ function validateProfileForm() {
         phoneNumberArray[1].length < 11 ||
         phoneNumberArray[1].length > 14
     ) {
+
         if ($phoneNumber.siblings('.error-text').length == 0) {
             $phoneNumber
                 .closest('.form-group')
@@ -67,7 +67,7 @@ function validateProfileForm() {
                 .find('div')
                 .append('<div class="error-text"' +
                     'title="'+ i18n["common.phoneNumberFormat"] +
-                    '>'+ i18n["common.inputCorrectPhoneNumber"] +'"</div>');
+                    '">'+ i18n["common.inputCorrectPhoneNumber"] +'</div>');
         }
         errorCount++;
     } else {

@@ -41,13 +41,24 @@ public class FlightServiceImplTest{
     @Test
     public void testGetTicketPriceDetails() {
 
-        //Long flightId = 1L;
-        //TariffsDetails tariffsDetails = new TariffsDetails()
-        //
-        //when(ticketRepository.countTickets(flightId)).thenReturn(4);
-        //when(tariffsDetailsRepository.getActiveTariffsDetails()).thenReturn(4);
-        //w
+        /*LocalDateTime fixedDateTime = LocalDateTime.of(2017, 6, 24, 12, 0);
 
+        new Expectations(LocalDateTime.class) {{
+            LocalDateTime.now(); result = fixedDateTime;
+        }};
+
+        Long flightId = FlightTestData.FLIGHT_4.getId();
+        TariffsDetails activeTariffsDetails = new TariffsDetails(10,
+                new BigDecimal(0.5), new BigDecimal(2), new BigDecimal(7), true);
+
+        when(ticketRepository.countTickets(flightId)).thenReturn(4);
+        when(tariffsDetailsRepository.getActiveTariffsDetails()).thenReturn(activeTariffsDetails);
+        TicketPriceDetailsDTO actual = flightService.getTicketPriceDetails(flightId);
+        TicketPriceDetailsDTO expected = new TicketPriceDetailsDTO(new BigDecimal(46), new BigDecimal(42), new BigDecimal(7));
+
+        Assert.assertEquals(expected, actual);
+
+*/
       /*  Flight flight = get(flightId);
         Integer bookedTicketsQuantity = ticketRepository.countTickets(flightId);
 

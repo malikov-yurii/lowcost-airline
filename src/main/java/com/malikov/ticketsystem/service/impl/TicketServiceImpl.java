@@ -82,6 +82,7 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     @Override
+    @Transactional
     public void cancelBooking(Long ticketId) {
         Ticket ticket = ticketRepository.get(ticketId);
         ValidationUtil.checkSuccess(ticket, "not found ticket with id=" + ticketId);

@@ -103,7 +103,6 @@ function payForTicket(id) {
         data: {'purchaseOffsetDateTime': dateToOffsetString(new Date())},
         success: function () {
             forceDataTableReload();
-            popup(i18n['ticket.purchaseSuccess']);
             // this swal hides too fast on flights page it should work
             // swal({
             //     title: "Payment success",
@@ -263,4 +262,15 @@ function startTimer() {
             }
         }, 1000);
     });
+}
+
+function popup(msg) {
+    var popup = $('<div class="popup">'+ msg +'</div>').appendTo($('body'));
+
+    popup.fadeIn('fast');
+    setTimeout(function() {
+        popup.fadeOut('fast', function() {
+            popup.remove();
+        })
+    }, 3000);
 }
