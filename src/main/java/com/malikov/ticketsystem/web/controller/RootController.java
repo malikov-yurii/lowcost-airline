@@ -2,6 +2,7 @@ package com.malikov.ticketsystem.web.controller;
 
 import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.dto.UserDTO;
+import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
 import com.malikov.ticketsystem.service.IUserService;
@@ -96,9 +97,8 @@ public class RootController {
         return "tariffs";
     }
 
-    @PutMapping("/tariffs")
-    public String saveTariffs(@Valid UserDTO userDTO, ModelMap model) {
-        model.addAttribute("tariffsDetails", tariffsDetailsService.getActive());
-        return "tariffs";
+    @PostMapping("/tariffs")
+    public void saveTariffs(@Valid TariffsDetails tariffsDetails, ModelMap model) {
+        tariffsDetailsService.update(tariffsDetails);
     }
 }

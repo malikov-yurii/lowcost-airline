@@ -17,7 +17,7 @@
         <div class="shadow">
             <h2><spring:message code="common.tariffs"/></h2>
             <div class="col-md-6 view-box">
-                <form:form modelAttribute="tariffsDetails" class="form-horizontal" method="PUT"
+                <form:form modelAttribute="tariffsDetails" class="form-horizontal" method="post"
                            charset="utf-8" accept-charset="UTF-8">
                     <spring:message code="tariff.daysCountBeforeTicketPriceStartsToGrow"
                                     var="daysCountBeforeTicketPriceStartsToGrow"/>
@@ -56,6 +56,5 @@
     </div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
-<script type="text/javascript" src="resources/js/profile.js"></script>
 </body>
 </html>

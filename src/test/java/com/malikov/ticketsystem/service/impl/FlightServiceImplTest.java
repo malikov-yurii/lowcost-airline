@@ -1,9 +1,13 @@
 package com.malikov.ticketsystem.service.impl;
 
+import com.malikov.ticketsystem.FlightTestData;
+import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
+import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.IFlightRepository;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
 import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.service.IFlightService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
+
+import static org.mockito.Mockito.when;
 
 /**
  * @author Yurii Malikov
@@ -41,24 +49,24 @@ public class FlightServiceImplTest{
     @Test
     public void testGetTicketPriceDetails() {
 
-        /*LocalDateTime fixedDateTime = LocalDateTime.of(2017, 6, 24, 12, 0);
-
-        new Expectations(LocalDateTime.class) {{
-            LocalDateTime.now(); result = fixedDateTime;
-        }};
+        //LocalDateTime fixedDateTime = LocalDateTime.of(2017, 6, 24, 12, 0);
+        //
+        //new Expectations(LocalDateTime.class) {{
+        //    LocalDateTime.now(); result = fixedDateTime;
+        //}};
 
         Long flightId = FlightTestData.FLIGHT_4.getId();
         TariffsDetails activeTariffsDetails = new TariffsDetails(10,
                 new BigDecimal(0.5), new BigDecimal(2), new BigDecimal(7), true);
 
         when(ticketRepository.countTickets(flightId)).thenReturn(4);
+        when(flightRepository.get(flightId)).thenReturn(FlightTestData.FLIGHT_4);
         when(tariffsDetailsRepository.getActiveTariffsDetails()).thenReturn(activeTariffsDetails);
         TicketPriceDetailsDTO actual = flightService.getTicketPriceDetails(flightId);
-        TicketPriceDetailsDTO expected = new TicketPriceDetailsDTO(new BigDecimal(46), new BigDecimal(42), new BigDecimal(7));
+        TicketPriceDetailsDTO expected = new TicketPriceDetailsDTO(new BigDecimal(44), new BigDecimal(62), new BigDecimal(7));
 
         Assert.assertEquals(expected, actual);
 
-*/
       /*  Flight flight = get(flightId);
         Integer bookedTicketsQuantity = ticketRepository.countTickets(flightId);
 

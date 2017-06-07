@@ -22,9 +22,16 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService{
     }
 
     @Override
-    public void update(TariffsDetails tariffsDetails)
+    public void update(TariffsDetails tariffsDetailsDTO)
     {
+        TariffsDetails tariffsDetails = getActive();
+        ValidationUtil.checkSuccess(tariffsDetails, "not found active tariff details");
+        tariffsDetails.setBaggageSurchargeOverMaxBaseTicketPrice(tariffsDetailsDTO.getBaggageSurchargeOverMaxBaseTicketPrice());
+        tariffsDetails.setPriorityRegistrationAndBoardingTariff(tariffsDetailsDTO.getPriorityRegistrationAndBoardingTariff());
+        tariffsDetails.setDaysCountBeforeTicketPriceStartsToGrow(tariffsDetailsDTO.getDaysCountBeforeTicketPriceStartsToGrow());
+        tariffsDetails.setWeightOfTimeGrowthFactor(tariffsDetailsDTO.getWeightOfTimeGrowthFactor());
+        tariffsDetails.setActive(tariffsDetailsDTO.getActive());
         ValidationUtil.checkSuccess(repository.save(tariffsDetails),
-                "not found tariffs details with id=" + tariffsDetails.getId());
+                "not found tariffs details with id=" + tariffsDetailsDTO.getId());
     }
 }
