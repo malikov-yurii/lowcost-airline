@@ -88,7 +88,7 @@ public class TicketServiceImpl implements ITicketService {
 
         ValidationUtil.checkSuccess(ticket != null
                         && ticket.getStatus().equals(TicketStatus.BOOKED)
-                        && ticket.getUser().getId() != AuthorizedUser.id(),
+                        && ticket.getUser().getId() == AuthorizedUser.id(),
                 "not found booked ticket with id=" + ticketId + "for authorized user.");
         delete(ticketId);
     }

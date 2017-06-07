@@ -116,6 +116,10 @@
         <webjars-datatables.version>1.10.13</webjars-datatables.version>
 
 
+        <mockito.version>1.10.19</mockito.version>
+
+
+
 
         <!--9-->
         <!--<webjars-bootstrap.version>3.3.7-1</webjars-bootstrap.version>-->
@@ -132,7 +136,15 @@
 
     <dependencies>
 
-<!--???????????????-->
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+
+
+        <!--???????????????-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>

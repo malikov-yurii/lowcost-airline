@@ -1,69 +1,12 @@
-package com.malikov.ticketsystem.service.impl;
-
-import com.malikov.ticketsystem.repository.IFlightRepository;
-import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
-import com.malikov.ticketsystem.repository.ITicketRepository;
-import com.malikov.ticketsystem.service.IFlightService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+package com.malikov.ticketsystem.repository;
 
 /**
  * @author Yurii Malikov
  */
-@RunWith(MockitoJUnitRunner.class)
-public class FlightServiceImplTest{
-
-    @Mock
-    IFlightRepository flightRepository;
-
-    @Mock
-    ITariffsDetailsRepository tariffsDetailsRepository;
-
-    @Mock
-    ITicketRepository ticketRepository;
-
-    @InjectMocks
-    IFlightService flightService= new FlightServiceImpl();
-
-    @Before
-    public void initializeMockito(){
-        MockitoAnnotations.initMocks(this);
-    }
+public class FlightServiceImplTest extends AbstractServiceTest {
+/*
 
 
-
-
-    @Test
-    public void testGetTicketPriceDetails() {
-
-        //Long flightId = 1L;
-        //TariffsDetails tariffsDetails = new TariffsDetails()
-        //
-        //when(ticketRepository.countTickets(flightId)).thenReturn(4);
-        //when(tariffsDetailsRepository.getActiveTariffsDetails()).thenReturn(4);
-        //w
-
-      /*  Flight flight = get(flightId);
-        Integer bookedTicketsQuantity = ticketRepository.countTickets(flightId);
-
-        TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
-        ValidationUtil.checkSuccess(tariffsDetails, "not found active tariff policy");
-
-        BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
-        BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
-                .add(flight.getMaxTicketBasePrice());
-
-        return new TicketPriceDetailsDTO(ticketPrice, baggagePrice,
-                tariffsDetails.getPriorityRegistrationAndBoardingTariff());*/
-    }
-
-
-    /*
     // TODO: 5/29/2017 Refactor
     @Autowired
     IFlightRepository repository;

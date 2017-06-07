@@ -1,6 +1,4 @@
-package com.malikov.ticketsystem.service.impl;
-
-import com.malikov.ticketsystem.service.AbstractServiceTest;
+package com.malikov.ticketsystem.repository;
 
 /**
  * @author Yurii Malikov
