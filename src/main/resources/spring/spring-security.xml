@@ -22,12 +22,17 @@
         <!--todo why not working without below string (redirect to login.jsp)-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
+        <custom-filter after="BASIC_AUTH_FILTER" ref="myFilter" />
+
         <form-login login-page="/flights" default-target-url="/flights"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
         <logout logout-success-url="/login"/>
     </http>
+
+    <beans:bean id="myFilter" class="com.malikov.ticketsystem.web.filter.AddFullNameToRequestFilter"/>
+
 
     <beans:bean id="encoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
