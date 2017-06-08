@@ -3,17 +3,21 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
-import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.stereotype.Service;
 
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
+import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
 
 /**
  * @author Yurii Malikov
  */
-@Service
-public class TariffsDetailsServiceImpl implements ITariffsDetailsService{
+@Service("tariffService")
+public class TariffsDetailsServiceImpl implements ITariffsDetailsService, MessageSourceAware {
+
+    private MessageSource messageSource;
 
     @Autowired
     private ITariffsDetailsRepository repository;
@@ -24,14 +28,23 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService{
     }
 
     @Override
-    public void update(TariffsDetails tariffsDetailsDTO)
-    {
-        TariffsDetails tariffsDetails = ValidationUtil.checkNotFound(getActive(),"not found active tariff details");
-        tariffsDetails.setBaggageSurchargeOverMaxBaseTicketPrice(tariffsDetailsDTO.getBaggageSurchargeOverMaxBaseTicketPrice());
-        tariffsDetails.setPriorityRegistrationAndBoardingTariff(tariffsDetailsDTO.getPriorityRegistrationAndBoardingTariff());
-        tariffsDetails.setDaysCountBeforeTicketPriceStartsToGrow(tariffsDetailsDTO.getDaysCountBeforeTicketPriceStartsToGrow());
+    public void update(TariffsDetails tariffsDetailsDTO) {
+        TariffsDetails tariffsDetails = checkNotFound(getActive(),
+                getMessage(messageSource,"exception.notFoundByActiveTariffDetails"));
+        tariffsDetails.setBaggageSurchargeOverMaxBaseTicketPrice(tariffsDetailsDTO
+                .getBaggageSurchargeOverMaxBaseTicketPrice());
+        tariffsDetails.setPriorityRegistrationAndBoardingTariff(tariffsDetailsDTO
+                .getPriorityRegistrationAndBoardingTariff());
+        tariffsDetails.setDaysCountBeforeTicketPriceStartsToGrow(tariffsDetailsDTO
+                .getDaysCountBeforeTicketPriceStartsToGrow());
         tariffsDetails.setWeightOfTimeGrowthFactor(tariffsDetailsDTO.getWeightOfTimeGrowthFactor());
         tariffsDetails.setActive(tariffsDetailsDTO.getActive());
-        checkNotFoundById(repository.save(tariffsDetails), tariffsDetailsDTO.getId());
+        checkNotFound(repository.save(tariffsDetails),
+                getMessage(messageSource,"exception.notFoundById") + tariffsDetailsDTO.getId());
+    }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }

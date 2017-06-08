@@ -88,6 +88,7 @@ public class TicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(long id) {
         return em.createQuery("DELETE FROM Ticket t WHERE t.id=:id")
                 .setParameter("id", id)

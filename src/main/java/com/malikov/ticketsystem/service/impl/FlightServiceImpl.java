@@ -15,6 +15,8 @@ import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
 import static com.malikov.ticketsystem.util.ValidationUtil.*;
 import static java.math.RoundingMode.HALF_UP;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -30,8 +33,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 /**
  * @author Yurii Malikov
  */
-@Service
-public class FlightServiceImpl implements IFlightService {
+@Service("flightService")
+public class FlightServiceImpl implements IFlightService, MessageSourceAware {
+
+    private MessageSource messageSource;
 
     @Autowired
     private IFlightRepository flightRepository;
@@ -48,35 +53,42 @@ public class FlightServiceImpl implements IFlightService {
     @Autowired
     private ITariffsDetailsRepository tariffsDetailsRepository;
 
-
     @Override
     public Flight get(long flightId) {
-        return checkNotFoundById(flightRepository.get(flightId), flightId);
+        return checkNotFound(flightRepository.get(flightId),
+                getMessage(messageSource,"exception.notFoundById") + flightId);
     }
+
 
     @Override
     public Flight create(FlightManageableDTO flightManageableDTO) {
         LocalDateTime departureUtcDateTime;
         LocalDateTime arrivalUtcDateTime;
-        ValidationUtil.checkNew(flightManageableDTO);
+        ValidationUtil.checkNew(flightManageableDTO,
+                getMessage(messageSource,"exception.mustBeNew"));
 
         Airport departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        checkNotFoundByName(departureAirport, flightManageableDTO.getDepartureAirport());
+        checkNotFound(departureAirport,getMessage(messageSource,"exception.notFoundByName")
+                        + flightManageableDTO.getDepartureAirport());
 
         Airport arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
+        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+                + flightManageableDTO.getArrivalAirport());
 
-        checkNotSame(departureAirport, arrivalAirport);
+        checkNotEqual(departureAirport, arrivalAirport,
+                getMessage(messageSource,"exception.mustNotBeSame"));
 
         departureUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
                 departureAirport.getCity().getZoneId());
         arrivalUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
                 arrivalAirport.getCity().getZoneId());
 
-        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime);
+        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime,
+                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
 
         Aircraft aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
+        checkNotFound(aircraft, getMessage(messageSource,"exception.notFoundByName")
+                + flightManageableDTO.getAircraftName());
 
         return flightRepository.save(new Flight(departureAirport, arrivalAirport, aircraft,
                 departureUtcDateTime, arrivalUtcDateTime, flightManageableDTO.getInitialBaseTicketPrice(),
@@ -93,29 +105,35 @@ public class FlightServiceImpl implements IFlightService {
         LocalDateTime departureUtcDateTime;
         LocalDateTime arrivalUtcDateTime;
 
-        ValidationUtil.checkNotNew(flightManageableDTO);
+        ValidationUtil.checkNotNew(flightManageableDTO,
+                getMessage(messageSource,"exception.mustBeNotNew"));
 
         flight = get(flightManageableDTO.getId());
 
         departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        checkNotFoundByName(departureAirport, flightManageableDTO.getDepartureAirport());
+        checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+                + flightManageableDTO.getDepartureAirport());
         flight.setDepartureAirport(departureAirport);
 
         arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        checkNotFoundByName(arrivalAirport, flightManageableDTO.getArrivalAirport());
+        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+                + flightManageableDTO.getArrivalAirport());
         flight.setArrivalAirport(arrivalAirport);
 
-        checkNotSame(departureAirport, arrivalAirport);
+        checkNotEqual(departureAirport, arrivalAirport,
+                getMessage(messageSource,"exception.mustNotBeSame"));
 
         aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        checkNotFoundByName(aircraft, flightManageableDTO.getAircraftName());
+        checkNotFound(aircraft, getMessage(messageSource,"exception.notFoundByName")
+                + flightManageableDTO.getAircraftName());
         flight.setAircraft(aircraft);
 
         departureUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
                 departureAirport.getCity().getZoneId());
         arrivalUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
                 arrivalAirport.getCity().getZoneId());
-        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime);
+        validateFromToDates(departureUtcDateTime, arrivalUtcDateTime,
+                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
         flight.setDepartureUtcDateTime(departureUtcDateTime);
         flight.setArrivalUtcDateTime(arrivalUtcDateTime);
 
@@ -127,13 +145,15 @@ public class FlightServiceImpl implements IFlightService {
 
     @Override
     public void delete(long flightId) {
-        checkNotFoundById(flightRepository.delete(flightId), flightId);
+        checkNotFound(flightRepository.delete(flightId),
+                getMessage(messageSource,"exception.notFoundById") + flightId);
     }
 
     @Override
     @Transactional
     public void setCanceledStatus(long flightId, boolean cancelStatus) {
-        Flight flight = checkNotFoundById(flightRepository.get(flightId), flightId);
+        Flight flight = checkNotFound(flightRepository.get(flightId),
+                getMessage(messageSource,"exception.notFoundById") + flightId);
         flight.setCanceled(cancelStatus);
         flightRepository.save(flight);
     }
@@ -144,7 +164,8 @@ public class FlightServiceImpl implements IFlightService {
         Integer bookedTicketsQuantity = ticketRepository.countTickets(flightId);
 
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
-        ValidationUtil.checkNotFound(tariffsDetails, "not found active tariff policy");
+        checkNotFound(tariffsDetails,
+                getMessage(messageSource,"exception.notFoundByActiveTariffDetails"));
 
         BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
         BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
@@ -181,18 +202,21 @@ public class FlightServiceImpl implements IFlightService {
 
         if (departureAirportNameCondition != null && departureAirportNameCondition.length() != 0) {
             departureAirport = airportRepository.getByName(departureAirportNameCondition);
-            checkNotFoundByName(departureAirport, departureAirportNameCondition);
+            checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+                    + departureAirportNameCondition);
         } else {
             departureAirport = null;
         }
 
         if (arrivalAirportNameCondition != null && arrivalAirportNameCondition.length() != 0) {
             arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-            checkNotFoundByName(arrivalAirport, arrivalAirportNameCondition);
+            checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+                    + arrivalAirportNameCondition);
         } else {
             arrivalAirport = null;
         }
-        checkNotSame(departureAirport, arrivalAirport);
+        checkNotEqual(departureAirport, arrivalAirport,
+                getMessage(messageSource,"exception.mustNotBeSame"));
 
 
         if (fromDepartureDateTimeCondition != null && departureAirport != null) {
@@ -209,7 +233,8 @@ public class FlightServiceImpl implements IFlightService {
             toDepartureUtcDateTime = toDepartureDateTimeCondition;
         }
 
-        ValidationUtil.validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime);
+        ValidationUtil.validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime,
+                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
 
         return flightRepository.getFiltered(departureAirport, arrivalAirport,
                 fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);
@@ -230,17 +255,21 @@ public class FlightServiceImpl implements IFlightService {
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
 
         departureAirport = airportRepository.getByName(departureAirportNameCondition);
-        checkNotFoundByName(departureAirport, departureAirportNameCondition);
+        checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+                + departureAirportNameCondition);
 
         arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-        checkNotFoundByName(arrivalAirport, arrivalAirportNameCondition);
-        checkNotSame(departureAirport, arrivalAirport);
+        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+                + arrivalAirportNameCondition);
+        checkNotEqual(departureAirport, arrivalAirport,
+                getMessage(messageSource,"exception.mustNotBeSame") );
 
         fromDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(fromDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
         toDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(toDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
-        validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime);
+        validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime,
+                getMessage(messageSource,"exception.fromCannotBeAfterTo") );
 
         filteredFlightsTicketCountMap = flightRepository.getFilteredFlightTicketCountMap(
                 departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);
@@ -292,5 +321,10 @@ public class FlightServiceImpl implements IFlightService {
         }
 
         return ticketPrice;
+    }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }

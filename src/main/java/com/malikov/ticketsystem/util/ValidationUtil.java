@@ -14,29 +14,16 @@ public class ValidationUtil {
 
     public static Map<String, String> constraintCodeMap = new HashMap<String, String>() {
         {
-            // TODO: 6/5/2017 i must use resource bundle instead!!
-            put("email", "Sorry, inputted email is not free. Choose another.");
-            put("seat", "Sorry, picked seat just has been booked by another user.");
+            put("email", "exception.sorryEmailIsNotFree");
+            put("seat", "exception.sorrySeatIsNotFreeAlready");
         }
     };
 
     private ValidationUtil() {
     }
 
-    public static void checkNotFoundById(boolean found, long id) {
-        checkNotFound(found, "not found with id=" + id);
-    }
-
-    public static <T> T checkNotFoundById(T object, long id) {
-        return checkNotFound(object, "not found with id=" + id);
-    }
-
-    public static <T> T checkNotFoundByName(T object, String name) {
-        return checkNotFound(object, "not found by name=" + name);
-    }
-
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
+    public static <T> T checkNotFound(T object, String message) {
+        checkNotFound(object != null, message);
         return object;
     }
     public static void checkNotFound(boolean found, String message) {
@@ -51,34 +38,33 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkNotNew(IHasId bean) {
+    public static void checkNotNew(IHasId bean, String message) {
         if (bean.isNew()) {
-            throw new IllegalArgumentException(bean + " must be not new (id!=null && id!=0)");
+            throw new IllegalArgumentException(bean.toString() + message);
         }
     }
 
-    public static void checkNew(IHasId bean) {
+    public static void checkNew(IHasId bean, String message) {
         if (!bean.isNew()) {
-            throw new IllegalArgumentException(bean + " must be new (id==null or id=0)");
+            throw new IllegalArgumentException(bean.toString() + message);
         }
     }
 
-    public static <T> void checkNotSame(T firstObject, T secondObject) {
+    public static <T> void checkNotEqual(T firstObject, T secondObject, String message) {
         if (firstObject != null && secondObject != null) {
-            validate(!firstObject.equals(secondObject), "must not be same");
+            validate(!firstObject.equals(secondObject), message);
         }
     }
 
-    public static <T> void checkEquals(T firstObject, T secondObject) {
+    public static <T> void checkEqual(T firstObject, T secondObject, String message) {
         if (firstObject != null && secondObject != null) {
-            validate(firstObject.equals(secondObject), "must be same");
+            validate(firstObject.equals(secondObject), message);
         }
     }
 
-    public static void validateFromToDates(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+    public static void validateFromToDates(LocalDateTime fromDateTime, LocalDateTime toDateTime, String message) {
         if (fromDateTime != null && toDateTime != null) {
-            validate(fromDateTime.compareTo(toDateTime) < 0,
-                    "\"from datetime\" cannot be after \"to\" datetime");
+            validate(fromDateTime.compareTo(toDateTime) < 0, message);
         }
     }
 

@@ -13,6 +13,8 @@ import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
@@ -34,16 +36,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS;
+import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
 import static com.malikov.ticketsystem.util.ValidationUtil.*;
 
 /**
  * @author Yurii Malikov
  */
-@Service
+@Service("ticketService")
 @Transactional
-public class TicketServiceImpl implements ITicketService {
+public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
     private static final Map<Long, ScheduledFuture> ticketIdRemovalTaskMap = new HashMap<>();
+
+    private MessageSource messageSource;
 
     @Autowired
     private TaskScheduler scheduler;
@@ -89,7 +94,7 @@ public class TicketServiceImpl implements ITicketService {
         checkNotFound(ticket != null
                         && ticket.getStatus().equals(TicketStatus.BOOKED)
                         && ticket.getUser().getId() == AuthorizedUser.id(),
-                "not found booked ticket with id=" + ticketId + "for authorized user.");
+                getMessage(messageSource,"exception.notFoundById") + ticketId);
         delete(ticketId);
     }
 
@@ -97,17 +102,20 @@ public class TicketServiceImpl implements ITicketService {
     // TODO: 6/1/2017 It should be transactional ?
     @Transactional
     public void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
-        Ticket ticket = checkNotFoundById(ticketRepository.get(ticketId), ticketId);
+        Ticket ticket = checkNotFound(ticketRepository.get(ticketId),
+                getMessage(messageSource,"exception.notFoundById") + ticketId);
 
         if (!ticket.getUser().getId().equals(AuthorizedUser.id())) {
-            throw new AccessDeniedException("Access denied to ticket with id=" + ticketId);
+            throw new AccessDeniedException(getMessage(messageSource,"exception.accessDenied"));
         }
 
         if (!ticket.getStatus().equals(TicketStatus.BOOKED)) {
-            throw new IllegalArgumentException("Only ticket booked ticket can by processed.");
+            throw new IllegalArgumentException(getMessage(messageSource,
+                    "exception.onlyBookedTicketCanBeProcessed"));
         }
 
-        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()), "Rejected by bank.");
+        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),
+                getMessage(messageSource,"exception.rejectedByBank"));
 
         ticket.setStatus(TicketStatus.PAID);
         ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
@@ -130,7 +138,8 @@ public class TicketServiceImpl implements ITicketService {
         scheduler = new ConcurrentTaskScheduler(localExecutor);
 
         return scheduler.schedule(() -> {
-                    checkNotFoundById(ticketRepository.deleteIfNotPaid(ticketId), ticketId);
+                    checkNotFound(ticketRepository.deleteIfNotPaid(ticketId),
+                            getMessage(messageSource,"exception.notFoundById") + ticketId);
                     ticketIdRemovalTaskMap.remove(ticketId);
                 },
                 new Date(System.currentTimeMillis() + BOOKING_DURATION_MILLIS));
@@ -144,7 +153,9 @@ public class TicketServiceImpl implements ITicketService {
                                                         TicketPriceDetailsDTO ticketPriceDetailsDTO) {
         Ticket newTicket = new Ticket();
         BigDecimal ticketPrice;
-        Flight flight = checkNotFoundById(flightRepository.get(flightId), flightId);
+        Flight flight = checkNotFound(flightRepository.get(flightId),
+                getMessage(messageSource,"exception.notFoundById") + flightId);
+
 
         ticketPrice = ticketPriceDetailsDTO.getBaseTicketPrice();
 
@@ -157,11 +168,24 @@ public class TicketServiceImpl implements ITicketService {
             ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getPriorityRegistrationAndBoardingPrice());
         }
 
-        checkEquals(ticketPrice, ticketDTO.getPrice());
+        checkEqual(ticketPrice, ticketDTO.getPrice(),
+                getMessage(messageSource, "exception.mustBeSame"));
 
         ticketDTO.setPrice(ticketPrice);
         newTicket.setFlight(flight);
+
         newTicket = TicketDTOConverter.updateFromDTOBeforeBooking(newTicket, ticketDTO);
+        checkEqual(flight.getDepartureUtcDateTime(), newTicket.getDepartureUtcDateTime(),
+                getMessage(messageSource,"exception.mustBeSame"));
+        checkEqual(flight.getDepartureAirport().getName(), newTicket.getDepartureAirportName(),
+                getMessage(messageSource,"exception.mustBeSame"));
+        checkEqual(flight.getArrivalAirport().getName(), newTicket.getArrivalAirportName(),
+                getMessage(messageSource,"exception.mustBeSame"));
+        checkEqual(flight.getDepartureAirport().getCity().getName(), newTicket.getDepartureCityName(),
+                getMessage(messageSource,"exception.mustBeSame"));
+        checkEqual(flight.getArrivalAirport().getCity().getName(), newTicket.getArrivalCityName(),
+                getMessage(messageSource,"exception.notFoundByName") );
+
         newTicket.setUser(userRepository.get(AuthorizedUser.id()));
         newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
         newTicket.setStatus(TicketStatus.BOOKED);
@@ -180,12 +204,14 @@ public class TicketServiceImpl implements ITicketService {
         ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
         ticket.setPassengerLastName(ticketDTO.getPassengerLastName());
         ticket.setPrice(ticketDTO.getPrice());
-        checkNotFoundById(ticketRepository.save(ticket), ticket.getId());
+        checkNotFound(ticketRepository.save(ticket),
+                getMessage(messageSource,"exception.notFoundById") + ticket.getId());
     }
 
     @Override
     public void delete(long ticketId) {
-        checkNotFoundById(ticketRepository.delete(ticketId), ticketId);
+        checkNotFound(ticketRepository.delete(ticketId),
+                getMessage(messageSource,"exception.notFoundById") + ticketId);
         terminateAutomaticRemovalTask(ticketId);
     }
 
@@ -202,5 +228,10 @@ public class TicketServiceImpl implements ITicketService {
     @Override
     public List<Ticket> getByUserEmail(String email, Integer start, Integer limit) {
         return ticketRepository.getByEmail(email, start, limit);
+    }
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }
