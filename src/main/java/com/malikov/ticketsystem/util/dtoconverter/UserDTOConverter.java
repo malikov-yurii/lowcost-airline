@@ -23,16 +23,20 @@ public class UserDTOConverter {
         user.setName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+
         if (userDTO.getPassword() != null) {
             user.setPassword(userDTO.getPassword());
         }
+
         user.setPhoneNumber(userDTO.getPhoneNumber());
+
         return user;
     }
 
     public static User prepareToSave(User user) {
         user.setPassword(PasswordUtil.encode(user.getPassword()));
         user.setEmail(user.getEmail().toLowerCase());
+
         return user;
     }
 }

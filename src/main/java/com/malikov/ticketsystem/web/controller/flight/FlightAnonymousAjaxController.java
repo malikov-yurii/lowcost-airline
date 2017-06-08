@@ -30,8 +30,6 @@ public class FlightAnonymousAjaxController {
     private IFlightService flightService;
 
     @GetMapping
-    // TODO: 5/31/2017 not need preauthorize (cause in xml permit all)?
-    //@PreAuthorize()
     public ModelMap getFilteredPage(
             @RequestParam(value = "fromDepartureDateTimeCondition") @NotNull
                     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN) LocalDateTime fromDepartureDateTime,

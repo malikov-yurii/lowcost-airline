@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +31,7 @@ public class GlobalControllerExceptionHandler {
         LOG.error("Exception at request " + req.getRequestURL(), e);
         ModelAndView mav = new ModelAndView("exception");
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
+
         if (rootMsg != null) {
             Optional<Map.Entry<String, String>> entry = ValidationUtil.constraintCodeMap.entrySet().stream()
                     .filter((it) -> rootMsg.contains(it.getKey()))
@@ -40,7 +40,9 @@ public class GlobalControllerExceptionHandler {
                     mav.addObject("exceptionSimpleMessage",
                             getMessage(messageSource, stringStringEntry.getValue())));
         }
+
         mav.addObject("exception", e);
+
         return mav;
     }
 }
