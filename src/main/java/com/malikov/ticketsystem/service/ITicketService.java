@@ -29,8 +29,7 @@ public interface ITicketService {
     /**
      * @return persisted ticket or null if seat is now free already
      */
-    Ticket createNewBookedTicketAndScheduledTask(TicketDTO ticketDTO, long flightId,
-                                                 TicketPriceDetailsDTO ticketPriceDetailsDTO);
+    Ticket createNewBookedTicketAndScheduledTask(TicketDTO ticketDTO, long flightId, TicketPriceDetailsDTO ticketPriceDetails);
 
     /**
      * @param purchaseOffsetDateTime has information about local datetime and offset from place

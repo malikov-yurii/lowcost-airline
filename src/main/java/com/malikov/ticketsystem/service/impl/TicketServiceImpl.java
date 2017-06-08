@@ -12,7 +12,6 @@ import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
-import com.malikov.ticketsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
@@ -24,7 +23,10 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -32,8 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
-import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFoundById;
+import static com.malikov.ticketsystem.util.ValidationUtil.*;
 
 /**
  * @author Yurii Malikov
@@ -109,7 +110,7 @@ public class TicketServiceImpl implements ITicketService {
             throw new IllegalArgumentException("Only ticket booked ticket can by processed.");
         }
 
-        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),"Rejected by bank.");
+        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()), "Rejected by bank.");
 
         ticket.setStatus(TicketStatus.PAID);
         ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
@@ -160,11 +161,9 @@ public class TicketServiceImpl implements ITicketService {
             ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getPriorityRegistrationAndBoardingPrice());
         }
 
-        if (!ticketPrice.equals(ticketDTO.getPrice())) {
-            // TODO: 6/1/2017 Send email to admin about fraud attempt (id of user, flight, pricefraud)
-            ticketDTO.setPrice(ticketPrice);
-        }
+        checkEquals(ticketPrice, ticketDTO.getPrice());
 
+        ticketDTO.setPrice(ticketPrice);
         newTicket.setFlight(flight);
         newTicket = TicketDTOConverter.updateFromDTOBeforeBooking(newTicket, ticketDTO);
         newTicket.setUser(userRepository.get(AuthorizedUser.id()));
@@ -185,7 +184,7 @@ public class TicketServiceImpl implements ITicketService {
         ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
         ticket.setPassengerLastName(ticketDTO.getPassengerLastName());
         ticket.setPrice(ticketDTO.getPrice());
-        ValidationUtil.checkNotFoundById(ticketRepository.save(ticket), ticket.getId());
+        checkNotFoundById(ticketRepository.save(ticket), ticket.getId());
     }
 
     @Override

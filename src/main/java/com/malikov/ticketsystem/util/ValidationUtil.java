@@ -69,7 +69,7 @@ public class ValidationUtil {
         }
     }
 
-    public static <T> void checkSame(T firstObject, T secondObject) {
+    public static <T> void checkEquals(T firstObject, T secondObject) {
         if (firstObject != null && secondObject != null) {
             validate(firstObject.equals(secondObject), "must be same");
         }

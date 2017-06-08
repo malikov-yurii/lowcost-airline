@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 /**
@@ -159,7 +160,7 @@ public class TicketDTO extends BaseDTO {
     }
 
     public BigDecimal getPrice() {
-        return price;
+        return price.setScale(6, RoundingMode.HALF_UP);
     }
 
     public void setPrice(BigDecimal price) {

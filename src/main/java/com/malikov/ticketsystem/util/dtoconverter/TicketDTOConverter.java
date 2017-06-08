@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import static com.malikov.ticketsystem.util.ValidationUtil.checkSame;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkEquals;
 
 /**
  * @author Yurii Malikov
@@ -40,22 +40,22 @@ public class TicketDTOConverter {
         Flight flight = ticket.getFlight();
         LocalDateTime dtoDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(ticketDTO.getDepartureLocalDateTime(),
                 flight.getDepartureAirport().getCity().getZoneId());
-        checkSame(flight.getDepartureUtcDateTime(), dtoDepartureUtcDateTime);
+        checkEquals(flight.getDepartureUtcDateTime(), dtoDepartureUtcDateTime);
 
         OffsetDateTime dtoArrivalOffsetDateTime = OffsetDateTime.of(ticketDTO.getArrivalLocalDateTime(),
                 flight.getArrivalAirport().getCity().getZoneId()
                         .getRules().getOffset(ticket.getFlight().getDepartureUtcDateTime().toInstant(ZoneOffset.UTC)));
 
-        checkSame(flight.getDepartureAirport().getName(), ticketDTO.getDepartureAirport());
+        checkEquals(flight.getDepartureAirport().getName(), ticketDTO.getDepartureAirport());
         ticket.setDepartureAirportName(ticketDTO.getDepartureAirport());
 
-        checkSame(flight.getArrivalAirport().getName(), ticketDTO.getArrivalAirport());
+        checkEquals(flight.getArrivalAirport().getName(), ticketDTO.getArrivalAirport());
         ticket.setArrivalAirportName(ticketDTO.getArrivalAirport());
 
-        checkSame(flight.getDepartureAirport().getCity().getName(), ticketDTO.getDepartureCity());
+        checkEquals(flight.getDepartureAirport().getCity().getName(), ticketDTO.getDepartureCity());
         ticket.setDepartureCityName(ticketDTO.getDepartureCity());
 
-        checkSame(flight.getArrivalAirport().getCity().getName(), ticketDTO.getArrivalCity());
+        checkEquals(flight.getArrivalAirport().getCity().getName(), ticketDTO.getArrivalCity());
         ticket.setArrivalCityName(ticketDTO.getArrivalCity());
 
         ticket.setDepartureUtcDateTime(dtoDepartureUtcDateTime);

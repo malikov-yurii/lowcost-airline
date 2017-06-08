@@ -85,7 +85,6 @@ public class TicketUserAjaxController {
         TicketPriceDetailsDTO ticketPriceDetailsDTO = flightService.getTicketPriceDetails(flight.getId());
 
         session.setAttribute("flightId", flight.getId());
-        session.setAttribute("ticketPriceDetails", ticketPriceDetailsDTO);
 
         model.put("flightId", flight.getId());
         model.put("ticketPriceDetails", ticketPriceDetailsDTO);
@@ -112,7 +111,7 @@ public class TicketUserAjaxController {
     public ModelMap createNewBookedTicket(@Valid TicketDTO ticketDTO, HttpSession session) {
         Long flightId = (Long) session.getAttribute("flightId");
         Ticket bookedTicket = ticketService.createNewBookedTicketAndScheduledTask(ticketDTO, flightId,
-                (TicketPriceDetailsDTO) session.getAttribute("ticketPriceDetails"));
+                flightService.getTicketPriceDetails(flightId));
         ModelMap model = new ModelMap();
         model.put("bookedTicketId", bookedTicket.getId());
         model.put("bookedTicketTotalPrice", bookedTicket.getPrice());
