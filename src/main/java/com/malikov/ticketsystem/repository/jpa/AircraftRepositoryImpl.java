@@ -21,12 +21,12 @@ public class AircraftRepositoryImpl implements IAircraftRepository {
 
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     @Transactional
     public Aircraft save(Aircraft aircraft) {
         aircraft.setModel(em.getReference(AircraftModel.class, aircraft.getModel().getId()));
-        if (aircraft.isNew()){
+        if (aircraft.isNew()) {
             em.persist(aircraft);
             return aircraft;
         }
@@ -54,8 +54,8 @@ public class AircraftRepositoryImpl implements IAircraftRepository {
 
     @Override
     public Aircraft getByName(String name) {
-        List<Aircraft> airports =  em.createQuery("SELECT a FROM Aircraft a " +
-                        "WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC", Aircraft.class)
+        List<Aircraft> airports = em.createQuery("SELECT a FROM Aircraft a " +
+                "WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC", Aircraft.class)
                 .setParameter("name", name).getResultList();
         return DataAccessUtils.singleResult(airports);
     }
@@ -63,7 +63,7 @@ public class AircraftRepositoryImpl implements IAircraftRepository {
     @Override
     public List<Aircraft> getByNameMask(String nameMask) {
         return em.createQuery("SELECT a FROM Aircraft a " +
-                        "WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC", Aircraft.class)
+                "WHERE lower(a.name) LIKE lower(:nameMask) ORDER BY a.id ASC", Aircraft.class)
                 .setParameter("nameMask", '%' + nameMask + '%')
                 .getResultList();
     }

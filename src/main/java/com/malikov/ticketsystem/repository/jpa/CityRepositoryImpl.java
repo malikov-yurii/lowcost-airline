@@ -19,7 +19,7 @@ public class CityRepositoryImpl implements ICityRepository {
 
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     @Transactional
     public City save(City city) {

@@ -47,28 +47,23 @@ public class FlightManageableDTO extends BaseDTO {
     private Boolean canceled;
 
 
-    public FlightManageableDTO(
-            Long id
-            , String departureAirport
-            , String arrivalAirport
-            , LocalDateTime departureLocalDateTime
-            , LocalDateTime arrivalLocalDateTime
-            , String aircraftName
-            , BigDecimal initialBaseTicketPrice
-            , BigDecimal maxBaseTicketPrice
-            , Boolean canceled) {
+    public FlightManageableDTO() {}
+
+    public FlightManageableDTO(Long id, String departureAirport, String arrivalAirport,
+                               LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime,
+                               String aircraftName, BigDecimal initialBaseTicketPrice, BigDecimal maxBaseTicketPrice,
+                               Boolean canceled) {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
         this.arrivalAirport = arrivalAirport != null ? arrivalAirport : "";
         this.departureLocalDateTime = departureLocalDateTime;
         this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.aircraftName = aircraftName != null ? aircraftName : "";
-        this.initialBaseTicketPrice = initialBaseTicketPrice != null ? initialBaseTicketPrice : new BigDecimal(0);
+        this.initialBaseTicketPrice = initialBaseTicketPrice != null
+                ? initialBaseTicketPrice
+                : new BigDecimal(0);
         this.maxBaseTicketPrice = maxBaseTicketPrice != null ? maxBaseTicketPrice : new BigDecimal(0);
         this.canceled = canceled;
-    }
-
-    public FlightManageableDTO() {
     }
 
 

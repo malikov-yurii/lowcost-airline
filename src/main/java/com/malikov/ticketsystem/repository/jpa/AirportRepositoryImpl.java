@@ -21,12 +21,12 @@ public class AirportRepositoryImpl implements IAirportRepository {
 
     @PersistenceContext
     protected EntityManager em;
-    
+
     @Override
     @Transactional
     public Airport save(Airport airport) {
         airport.setCity(em.getReference(City.class, airport.getCity().getId()));
-        if (airport.isNew()){
+        if (airport.isNew()) {
             em.persist(airport);
             return airport;
         }
@@ -54,8 +54,8 @@ public class AirportRepositoryImpl implements IAirportRepository {
 
     @Override
     public Airport getByName(String name) {
-        List<Airport> airports =  em.createQuery("SELECT a FROM Airport a " +
-                        "WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC", Airport.class)
+        List<Airport> airports = em.createQuery("SELECT a FROM Airport a " +
+                "WHERE lower(a.name) = lower(:name) ORDER BY a.id ASC", Airport.class)
                 .setParameter("name", name).getResultList();
         return DataAccessUtils.singleResult(airports);
     }

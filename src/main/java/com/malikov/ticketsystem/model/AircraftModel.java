@@ -17,8 +17,7 @@ public class AircraftModel extends NamedEntity {
     private Integer passengerSeatsQuantity;
 
 
-    public AircraftModel() {
-    }
+    public AircraftModel() {}
 
     public AircraftModel(Long id, String name, Integer passengerSeatsQuantity) {
         super(id, name);

@@ -28,7 +28,6 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        // TODO: 6/6/2017 Is it ok?
         Set<Role> roleReferences = new HashSet();
         for (Role role : user.getRoles()) {
             roleReferences.add(em.getReference(Role.class, role.getId()));
@@ -78,14 +77,19 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<String> getByEmailMask(String emailMask) {
-        return em.createQuery("SELECT u.email FROM User u WHERE lower(u.email) LIKE lower(:emailMask) ORDER BY u.email ASC", String.class)
+        return em.createQuery("SELECT u.email FROM User u " +
+                                        "WHERE lower(u.email) " +
+                                        "LIKE lower(:emailMask) " +
+                                        "ORDER BY u.email ASC", String.class)
                 .setParameter("emailMask", '%' + emailMask + '%')
                 .getResultList();
     }
 
     @Override
     public List<String> getLastNamesBy(String lastNameMask) {
-        return em.createQuery("SELECT u.lastName FROM User u WHERE lower(u.lastName) LIKE lower(:lastNameMask) ORDER BY u.lastName ASC", String.class)
+        return em.createQuery("SELECT u.lastName FROM User u " +
+                                "WHERE lower(u.lastName) LIKE lower(:lastNameMask) " +
+                                "ORDER BY u.lastName ASC", String.class)
                 .setParameter("lastNameMask", '%' + lastNameMask + '%')
                 .getResultList();
     }

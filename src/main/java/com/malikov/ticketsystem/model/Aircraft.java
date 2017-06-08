@@ -9,14 +9,12 @@ import javax.persistence.*;
 @Table(name = "aircraft")
 public class Aircraft extends NamedEntity {
 
-    // TODO: 6/5/2017 Consider changing it to LAZY
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id")
     private AircraftModel model;
 
 
-    public Aircraft() {
-    }
+    public Aircraft() {}
 
     public Aircraft(Long id, String name, AircraftModel model) {
         super(id, name);

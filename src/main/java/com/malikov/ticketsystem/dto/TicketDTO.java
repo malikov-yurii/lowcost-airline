@@ -66,17 +66,14 @@ public class TicketDTO extends BaseDTO {
 
     private TicketStatus status;
 
-    public TicketDTO(){}
+    public TicketDTO() {}
 
-    public TicketDTO(Long id, String passengerFirstName, String passengerLastName,
-                     String departureAirportName, String arrivalAirportName,
-                     String departureCityName, String arrivalCityName,
-                     LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime,
-                     BigDecimal price, Boolean hasBaggage, Boolean hasPriorityRegistrationAndBoarding,
-                     Integer seatNumber,
+    public TicketDTO(Long id, String passengerFirstName, String passengerLastName, String departureAirportName,
+                     String arrivalAirportName, String departureCityName, String arrivalCityName,
+                     LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime, BigDecimal price,
+                     Boolean hasBaggage, Boolean hasPriorityRegistrationAndBoarding, Integer seatNumber,
                      TicketStatus status) {
         super(id);
-        // TODO: 5/30/2017 Should i remove unnecessary this.
         this.passengerFirstName = passengerFirstName;
         this.passengerLastName = passengerLastName;
         this.departureAirport = departureAirportName;

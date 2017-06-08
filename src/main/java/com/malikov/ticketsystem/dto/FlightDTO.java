@@ -24,7 +24,6 @@ public class FlightDTO extends BaseDTO {
     @Size(min = 2)
     private String arrivalAirport;
 
-    // TODO: 5/20/2017 How can I replace it with spring formatter??????
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     private LocalDateTime departureLocalDateTime;
 
@@ -33,13 +32,11 @@ public class FlightDTO extends BaseDTO {
 
     private BigDecimal ticketPrice;
 
-    public FlightDTO(
-            Long id
-            , String departureAirport
-            , String arrivalAirport
-            , LocalDateTime departureLocalDateTime
-            , LocalDateTime arrivalLocalDateTime
-            , BigDecimal ticketPrice) {
+
+    public FlightDTO() {}
+
+    public FlightDTO(Long id, String departureAirport, String arrivalAirport, LocalDateTime departureLocalDateTime,
+                     LocalDateTime arrivalLocalDateTime, BigDecimal ticketPrice) {
         super(id);
         this.departureAirport = departureAirport != null ? departureAirport : "";
         this.arrivalAirport = arrivalAirport != null ? arrivalAirport : "";
@@ -48,8 +45,6 @@ public class FlightDTO extends BaseDTO {
         this.ticketPrice = ticketPrice != null ? ticketPrice : new BigDecimal(0);
     }
 
-    public FlightDTO() {
-    }
 
     public String getDepartureAirport() {
         return departureAirport;

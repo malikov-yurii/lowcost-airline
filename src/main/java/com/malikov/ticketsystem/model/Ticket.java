@@ -17,7 +17,6 @@ import java.time.ZoneOffset;
  * @author Yurii Malikov
  */
 @Entity
-// TODO: 6/6/2017 why do i need constraint description here
 @Table(name = "tickets", uniqueConstraints = @UniqueConstraint(columnNames = {"flight_id", "seat_number"},
         name = "flight_seat_unique_constraint"))
 public class Ticket extends BaseEntity {
@@ -40,16 +39,13 @@ public class Ticket extends BaseEntity {
     private OffsetDateTime purchaseOffsetDateTime;
 
     @Column(name = "has_baggage")
-    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean hasBaggage;
 
     @Column(name = "has_priority_registration")
-    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean hasPriorityRegistration;
 
-    // TODO: 5/8/2017 Maybe I need dto store ticket information in a single column and parseToLocalDateTime if I need dto??? But in a such case I cannot easily add column with additional ticket information
     @Column(name = "passenger_name")
     private String passengerFirstName;
 
@@ -113,6 +109,7 @@ public class Ticket extends BaseEntity {
         this.seatNumber = seatNumber;
         this.status = status;
     }
+
 
     public Flight getFlight() {
         return flight;

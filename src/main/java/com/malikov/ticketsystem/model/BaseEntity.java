@@ -19,8 +19,7 @@ public abstract class BaseEntity implements IHasId {
     private Long id;
 
 
-    public BaseEntity() {
-    }
+    public BaseEntity() {}
 
     protected BaseEntity(Long id) {
         this.id = id;

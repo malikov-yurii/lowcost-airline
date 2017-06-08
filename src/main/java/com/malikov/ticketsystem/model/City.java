@@ -17,8 +17,7 @@ public class City extends NamedEntity {
     private ZoneId zoneId;
 
 
-    public City() {
-    }
+    public City() {}
 
     public City(Long id, String name, ZoneId zoneId) {
         super(id, name);

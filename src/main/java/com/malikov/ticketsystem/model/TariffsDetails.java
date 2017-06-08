@@ -27,7 +27,6 @@ public class TariffsDetails extends BaseEntity {
     private BigDecimal priorityRegistrationAndBoardingTariff;
 
     @Column(name = "active")
-    // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
 

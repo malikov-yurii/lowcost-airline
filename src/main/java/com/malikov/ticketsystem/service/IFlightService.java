@@ -84,7 +84,7 @@ public interface IFlightService {
      * @param first excludes from result list first flights
      * @param limit excludes from result list flights next to flights[start + limit]
      * @return filtered, limited by conditions and ordered by departure datetime desc flights
-     *          with current ticket price. Or returns empty map if not found any.
+     *          with current ticket price.  Full flights excluded. Or returns empty map if not found any.
      */
     Map<Flight, BigDecimal> getFlightTicketPriceMap(String departureAirportNameCondition,
                                                     String arrivalAirportNameCondition,

@@ -279,8 +279,14 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         }
 
         flightTicketPriceMap = new HashMap<>();
-        filteredFlightsTicketCountMap.forEach((flight, ticketsQuantity) -> flightTicketPriceMap.put(flight,
-                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity).setScale(6, HALF_UP)));
+        filteredFlightsTicketCountMap
+                .forEach((flight, ticketsQuantity) -> {
+                    if (flight.getAircraft().getModel().getPassengerSeatsQuantity() > ticketsQuantity) {
+                        flightTicketPriceMap.put(flight,
+                                calculateTicketPrice(tariffsDetails, flight, ticketsQuantity)
+                                        .setScale(6, HALF_UP));
+                    }
+                });
 
         return flightTicketPriceMap;
     }

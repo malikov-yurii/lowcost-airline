@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "flights")
 public class Flight extends BaseEntity {
 
-    // TODO: 6/5/2017 EAGER LAZY FOR ALL DONT FORGET
     @OneToOne
     @JoinColumn(name = "departure_airport_id")
     private Airport departureAirport;
@@ -51,22 +50,7 @@ public class Flight extends BaseEntity {
     private List<Ticket> tickets;
 
 
-    public Flight() {
-    }
-
-    // TODO: 6/7/2017 change it to telescope?
-    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft,
-                  LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime,
-                  BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.aircraft = aircraft;
-        this.departureUtcDateTime = departureUtcDateTime;
-        this.arrivalUtcDateTime = arrivalUtcDateTime;
-        this.initialTicketBasePrice = initialTicketBasePrice;
-        this.maxTicketBasePrice = maxTicketBasePrice;
-        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
-    }
+    public Flight() {}
 
     public Flight(Long id, Airport departureAirport, Airport arrivalAirport, Aircraft aircraft,
                   LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime,
@@ -79,20 +63,16 @@ public class Flight extends BaseEntity {
         this.arrivalUtcDateTime = arrivalUtcDateTime;
         this.initialTicketBasePrice = initialTicketBasePrice;
         this.maxTicketBasePrice = maxTicketBasePrice;
-        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
+        canceled = false;
     }
 
-    public Flight(Flight flight) {
-        super(flight.getId());
-        departureAirport = flight.getDepartureAirport();
-        arrivalAirport = flight.getArrivalAirport();
-        aircraft = flight.getAircraft();
-        departureUtcDateTime = flight.getDepartureUtcDateTime();
-        arrivalUtcDateTime = flight.getUtcLocalDateTime();
-        initialTicketBasePrice = flight.getInitialTicketBasePrice();
-        maxTicketBasePrice = flight.getMaxTicketBasePrice();
-        canceled = false; // TODO: 5/23/2017 Do I need dto do it explicitly??
+    public Flight(Airport departureAirport, Airport arrivalAirport, Aircraft aircraft,
+                  LocalDateTime departureUtcDateTime, LocalDateTime arrivalUtcDateTime,
+                  BigDecimal initialTicketBasePrice, BigDecimal maxTicketBasePrice) {
+        this(null, departureAirport, arrivalAirport, aircraft, departureUtcDateTime, arrivalUtcDateTime,
+                initialTicketBasePrice, maxTicketBasePrice);
     }
+
 
     public LocalDateTime getDepartureUtcDateTime() {
         return departureUtcDateTime;

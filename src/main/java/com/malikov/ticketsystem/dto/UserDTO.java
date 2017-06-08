@@ -39,8 +39,7 @@ public class UserDTO extends BaseDTO {
     private String phoneNumber;
 
 
-    public UserDTO() {
-    }
+    public UserDTO() {}
 
     public UserDTO(Long id, String firstName, String lastName, String email, String password, String phoneNumber) {
         super(id);

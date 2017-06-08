@@ -16,6 +16,7 @@ public class ValidationUtil {
         {
             put("email", "exception.sorryEmailIsNotFree");
             put("seat", "exception.sorrySeatIsNotFreeAlready");
+            put("null", "exception.notFound");
         }
     };
 

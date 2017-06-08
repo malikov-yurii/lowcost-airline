@@ -19,14 +19,14 @@ public class TicketPriceDetailsDTO {
     @NotNull
     private BigDecimal priorityRegistrationAndBoardingPrice;
 
-    public TicketPriceDetailsDTO() {
-    }
+    public TicketPriceDetailsDTO() {}
 
     public TicketPriceDetailsDTO(BigDecimal baseTicketPrice, BigDecimal baggagePrice,
                                  BigDecimal priorityRegistrationAndBoardingPrice) {
         this.baseTicketPrice = baseTicketPrice.setScale(6, ROUND_HALF_UP);
         this.baggagePrice = baggagePrice.setScale(6, ROUND_HALF_UP);
-        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice.setScale(6, ROUND_HALF_UP);
+        this.priorityRegistrationAndBoardingPrice = priorityRegistrationAndBoardingPrice
+                .setScale(6, ROUND_HALF_UP);
     }
 
     public BigDecimal getBaseTicketPrice() {

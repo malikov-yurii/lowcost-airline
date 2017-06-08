@@ -9,10 +9,11 @@ public abstract class BaseDTO implements IHasId {
 
     protected Long id;
 
-    public BaseDTO() {
-    }
+
+    public BaseDTO() {}
 
     public BaseDTO(Long id) {
+
         this.id = id;
     }
 

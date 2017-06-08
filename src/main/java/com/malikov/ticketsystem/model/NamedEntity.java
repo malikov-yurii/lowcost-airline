@@ -18,9 +18,7 @@ public abstract class NamedEntity extends BaseEntity {
     private String name;
 
 
-    public NamedEntity() {
-    }
-
+    public NamedEntity() {}
 
     protected NamedEntity(String name) {
         this.name = name;
@@ -30,6 +28,7 @@ public abstract class NamedEntity extends BaseEntity {
         super(id);
         this.name = name;
     }
+
 
     public void setName(String name) {
         this.name = name;
