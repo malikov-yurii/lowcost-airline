@@ -164,20 +164,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="withBaggage" class="control-label col-xs-5">
+                            <label for="hasBaggage" class="control-label col-xs-5">
                                 <spring:message code="ticket.includeBaggage"/></label>
                             <div class="col-xs-7">
-                                <input type="text" class="modal-input form-control" id="withBaggage"
-                                       name="withBaggage" readonly="readonly">
+                                <input type="text" class="modal-input form-control" id="hasBaggage"
+                                       name="hasBaggage" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="withPriorityRegistrationAndBoarding" class="control-label col-xs-5">
+                            <label for="hasPriorityRegistrationAndBoarding" class="control-label col-xs-5">
                                 <spring:message code="ticket.includePriorityRegistration"/></label>
                             <div class="col-xs-7">
                                 <input type="text" class="modal-input form-control"
-                                       id="withPriorityRegistrationAndBoarding"
-                                       name="withPriorityRegistrationAndBoarding" readonly="readonly">
+                                       id="hasPriorityRegistrationAndBoarding"
+                                       name="hasPriorityRegistrationAndBoarding" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group">

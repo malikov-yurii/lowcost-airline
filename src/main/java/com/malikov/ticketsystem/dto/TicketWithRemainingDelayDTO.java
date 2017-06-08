@@ -48,10 +48,10 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
     private BigDecimal price;
 
     @NotNull
-    private Boolean withBaggage;
+    private Boolean hasBaggage;
 
     @NotNull
-    private Boolean withPriorityRegistrationAndBoarding;
+    private Boolean hasPriorityRegistrationAndBoarding;
 
     @NotNull
     private Integer seatNumber;
@@ -69,7 +69,7 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
                                        String departureAirportName, String arrivalAirportName,
                                        String departureCityName, String arrivalCityName,
                                        LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime,
-                                       BigDecimal price, Boolean withBaggage, Boolean withPriorityRegistrationAndBoarding,
+                                       BigDecimal price, Boolean hasBaggage, Boolean hasPriorityRegistrationAndBoarding,
                                        Integer seatNumber,
                                        TicketStatus status,
                                        Long remainingDelay) {
@@ -84,10 +84,10 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
         this.departureLocalDateTime = departureLocalDateTime;
         this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.price = price;
-        this.withBaggage = withBaggage == null ? false : withBaggage;
-        this.withPriorityRegistrationAndBoarding = withPriorityRegistrationAndBoarding == null
+        this.hasBaggage = hasBaggage == null ? false : hasBaggage;
+        this.hasPriorityRegistrationAndBoarding = hasPriorityRegistrationAndBoarding == null
                 ? false
-                : withPriorityRegistrationAndBoarding;
+                : hasPriorityRegistrationAndBoarding;
         this.seatNumber = seatNumber;
         this.status = status;
         this.remainingDelay = remainingDelay;
@@ -166,20 +166,20 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
         this.price = price;
     }
 
-    public Boolean getWithBaggage() {
-        return withBaggage;
+    public Boolean isHasBaggage() {
+        return hasBaggage;
     }
 
-    public void setWithBaggage(Boolean withBaggage) {
-        this.withBaggage = withBaggage;
+    public void setHasBaggage(Boolean hasBaggage) {
+        this.hasBaggage = hasBaggage;
     }
 
-    public Boolean getWithPriorityRegistrationAndBoarding() {
-        return withPriorityRegistrationAndBoarding;
+    public Boolean isHasPriorityRegistrationAndBoarding() {
+        return hasPriorityRegistrationAndBoarding;
     }
 
-    public void setWithPriorityRegistrationAndBoarding(Boolean withPriorityRegistrationAndBoarding) {
-        this.withPriorityRegistrationAndBoarding = withPriorityRegistrationAndBoarding;
+    public void setHasPriorityRegistrationAndBoarding(Boolean hasPriorityRegistrationAndBoarding) {
+        this.hasPriorityRegistrationAndBoarding = hasPriorityRegistrationAndBoarding;
     }
 
     public Integer getSeatNumber() {
@@ -242,11 +242,11 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
                 : that.arrivalLocalDateTime != null)
             return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
-        if (withBaggage != null
-                ? !withBaggage.equals(that.withBaggage) : that.withBaggage != null) return false;
-        if (withPriorityRegistrationAndBoarding != null
-                ? !withPriorityRegistrationAndBoarding.equals(that.withPriorityRegistrationAndBoarding)
-                : that.withPriorityRegistrationAndBoarding != null)
+        if (hasBaggage != null
+                ? !hasBaggage.equals(that.hasBaggage) : that.hasBaggage != null) return false;
+        if (hasPriorityRegistrationAndBoarding != null
+                ? !hasPriorityRegistrationAndBoarding.equals(that.hasPriorityRegistrationAndBoarding)
+                : that.hasPriorityRegistrationAndBoarding != null)
             return false;
         if (seatNumber != null
                 ? !seatNumber.equals(that.seatNumber) : that.seatNumber != null) return false;
@@ -265,9 +265,9 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
         result = 31 * result + (departureLocalDateTime != null ? departureLocalDateTime.hashCode() : 0);
         result = 31 * result + (arrivalLocalDateTime != null ? arrivalLocalDateTime.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (withBaggage != null ? withBaggage.hashCode() : 0);
-        result = 31 * result + (withPriorityRegistrationAndBoarding != null
-                ? withPriorityRegistrationAndBoarding.hashCode() : 0);
+        result = 31 * result + (hasBaggage != null ? hasBaggage.hashCode() : 0);
+        result = 31 * result + (hasPriorityRegistrationAndBoarding != null
+                ? hasPriorityRegistrationAndBoarding.hashCode() : 0);
         result = 31 * result + (seatNumber != null ? seatNumber.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (remainingDelay != null ? remainingDelay.hashCode() : 0);
@@ -286,8 +286,8 @@ public class TicketWithRemainingDelayDTO extends BaseDTO {
                 ", departureLocalDateTime=" + departureLocalDateTime +
                 ", arrivalLocalDateTime=" + arrivalLocalDateTime +
                 ", price=" + price +
-                ", withBaggage=" + withBaggage +
-                ", withPriorityRegistrationAndBoarding=" + withPriorityRegistrationAndBoarding +
+                ", hasBaggage=" + hasBaggage +
+                ", hasPriorityRegistrationAndBoarding=" + hasPriorityRegistrationAndBoarding +
                 ", seatNumber=" + seatNumber +
                 ", status=" + status +
                 ", remainingDelay=" + remainingDelay +

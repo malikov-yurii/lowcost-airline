@@ -152,12 +152,12 @@ public class TicketServiceImpl implements ITicketService {
 
         ticketPrice = ticketPriceDetailsDTO.getBaseTicketPrice();
 
-        if (ticketDTO.getWithBaggage() != null && ticketDTO.getWithBaggage()) {
+        if (ticketDTO.isHasBaggage() != null && ticketDTO.isHasBaggage()) {
             ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getBaggagePrice());
         }
 
-        if (ticketDTO.getWithPriorityRegistrationAndBoarding() != null
-                && ticketDTO.getWithPriorityRegistrationAndBoarding()) {
+        if (ticketDTO.isHasPriorityRegistrationAndBoarding() != null
+                && ticketDTO.isHasPriorityRegistrationAndBoarding()) {
             ticketPrice = ticketPrice.add(ticketPriceDetailsDTO.getPriorityRegistrationAndBoardingPrice());
         }
 

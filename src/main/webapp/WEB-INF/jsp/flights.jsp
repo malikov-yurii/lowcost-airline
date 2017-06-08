@@ -195,25 +195,25 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="withBaggage" class="control-label control-label-no-padding col-xs-5">
+                                <label for="hasBaggage" class="control-label control-label-no-padding col-xs-5">
                                     <spring:message code="ticket.includeBaggage"/></label>
 
                                 <div class="col-xs-7">
-                                    <input type="checkbox" class="modal-input" id="withBaggage"
-                                           name="withBaggage">
+                                    <input type="checkbox" class="modal-input" id="hasBaggage"
+                                           name="hasBaggage">
                                     <span class="form-group-text">&nbsp;&nbsp;(<spring:message code="ticket.baggagePrice"/> - <span class="baggagePrice"></span>)</span>
 
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="withPriorityRegistrationAndBoarding"
+                                <label for="hasPriorityRegistrationAndBoarding"
                                        class="control-label control-label-no-padding col-xs-5">
                                     <spring:message code="ticket.includePriorityRegistration"/></label>
 
                                 <div class="col-xs-7">
                                     <input type="checkbox" class="modal-input"
-                                           id="withPriorityRegistrationAndBoarding"
-                                           name="withPriorityRegistrationAndBoarding">
+                                           id="hasPriorityRegistrationAndBoarding"
+                                           name="hasPriorityRegistrationAndBoarding">
                                     <span class="form-group-text">&nbsp;&nbsp;(<spring:message code="ticket.priorityRegistrationAndBoardingPrice"/> - <span class="priorityRegistrationAndBoardingPrice"></span>)</span>
                                 </div>
                             </div>

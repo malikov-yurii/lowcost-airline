@@ -39,15 +39,15 @@ public class Ticket extends BaseEntity {
     @Convert(converter = OffsetDateTimeConverter.class)
     private OffsetDateTime purchaseOffsetDateTime;
 
-    @Column(name = "with_baggage")
+    @Column(name = "has_baggage")
     // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean withBaggage;
+    private Boolean hasBaggage;
 
-    @Column(name = "with_priority_registration")
+    @Column(name = "has_priority_registration")
     // TODO: 5/28/2017 Do I need annotation below
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean withPriorityRegistration;
+    private Boolean hasPriorityRegistration;
 
     // TODO: 5/8/2017 Maybe I need dto store ticket information in a single column and parseToLocalDateTime if I need dto??? But in a such case I cannot easily add column with additional ticket information
     @Column(name = "passenger_name")
@@ -91,15 +91,15 @@ public class Ticket extends BaseEntity {
     }
 
     public Ticket(Long id, Flight flight, User user, String passengerFirstName, String passengerLastName,
-                  BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean withBaggage,
-                  Boolean withPriorityRegistration, Integer seatNumber, TicketStatus status) {
+                  BigDecimal price, OffsetDateTime purchaseOffsetDateTime, Boolean hasBaggage,
+                  Boolean hasPriorityRegistration, Integer seatNumber, TicketStatus status) {
         super(id);
         this.flight = flight;
         this.user = user;
         this.price = price;
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
-        this.withBaggage = withBaggage;
-        this.withPriorityRegistration = withPriorityRegistration;
+        this.hasBaggage = hasBaggage;
+        this.hasPriorityRegistration = hasPriorityRegistration;
         this.passengerFirstName = passengerFirstName;
         this.passengerLastName = passengerLastName;
         departureAirportName = flight.getDepartureAirport().getName();
@@ -146,20 +146,20 @@ public class Ticket extends BaseEntity {
         this.purchaseOffsetDateTime = purchaseOffsetDateTime;
     }
 
-    public Boolean getWithBaggage() {
-        return withBaggage;
+    public Boolean isHasBaggage() {
+        return hasBaggage;
     }
 
-    public void setWithBaggage(Boolean withBaggage) {
-        this.withBaggage = withBaggage;
+    public void setHasBaggage(Boolean hasBaggage) {
+        this.hasBaggage = hasBaggage;
     }
 
-    public Boolean getWithPriorityRegistration() {
-        return withPriorityRegistration;
+    public Boolean isHasPriorityRegistration() {
+        return hasPriorityRegistration;
     }
 
-    public void setWithPriorityRegistration(Boolean withPriorityRegistration) {
-        this.withPriorityRegistration = withPriorityRegistration;
+    public void setHasPriorityRegistration(Boolean hasPriorityRegistration) {
+        this.hasPriorityRegistration = hasPriorityRegistration;
     }
 
     public String getPassengerFirstName() {
@@ -266,14 +266,14 @@ public class Ticket extends BaseEntity {
                 : ticket.purchaseOffsetDateTime != null) {
             return false;
         }
-        if (withBaggage != null
-                ? !withBaggage.equals(ticket.withBaggage)
-                : ticket.withBaggage != null) {
+        if (hasBaggage != null
+                ? !hasBaggage.equals(ticket.hasBaggage)
+                : ticket.hasBaggage != null) {
             return false;
         }
-        if (withPriorityRegistration != null
-                ? !withPriorityRegistration.equals(ticket.withPriorityRegistration)
-                : ticket.withPriorityRegistration != null) {
+        if (hasPriorityRegistration != null
+                ? !hasPriorityRegistration.equals(ticket.hasPriorityRegistration)
+                : ticket.hasPriorityRegistration != null) {
             return false;
         }
         if (passengerFirstName != null
@@ -331,8 +331,8 @@ public class Ticket extends BaseEntity {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (purchaseOffsetDateTime != null ? purchaseOffsetDateTime.hashCode() : 0);
-        result = 31 * result + (withBaggage != null ? withBaggage.hashCode() : 0);
-        result = 31 * result + (withPriorityRegistration != null ? withPriorityRegistration.hashCode() : 0);
+        result = 31 * result + (hasBaggage != null ? hasBaggage.hashCode() : 0);
+        result = 31 * result + (hasPriorityRegistration != null ? hasPriorityRegistration.hashCode() : 0);
         result = 31 * result + (passengerFirstName != null ? passengerFirstName.hashCode() : 0);
         result = 31 * result + (passengerLastName != null ? passengerLastName.hashCode() : 0);
         result = 31 * result + (departureAirportName != null ? departureAirportName.hashCode() : 0);
@@ -353,8 +353,8 @@ public class Ticket extends BaseEntity {
                 ", userId=" + user.getId() +
                 ", price=" + price +
                 ", purchaseOffsetDateTime=" + purchaseOffsetDateTime +
-                ", withBaggage=" + withBaggage +
-                ", withPriorityRegistration=" + withPriorityRegistration +
+                ", hasBaggage=" + hasBaggage +
+                ", hasPriorityRegistration=" + hasPriorityRegistration +
                 ", passengerFirstName='" + passengerFirstName + '\'' +
                 ", passengerLastName='" + passengerLastName + '\'' +
                 ", departureAirportName='" + departureAirportName + '\'' +

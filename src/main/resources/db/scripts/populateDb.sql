@@ -123,7 +123,7 @@ VALUES
   (10, 0.5, 2, 7, TRUE),
   (30, 0.5, 1.11, 5.11, FALSE);
 
-INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime, with_baggage, with_priority_registration,
+INSERT INTO tickets (flight_id, user_id, price, purchase_offsetdatetime, has_baggage, has_priority_registration,
                      passenger_name, passenger_last_name,
                      departure_airport_name, departure_city_name,
                      arrival_airport_name, arrival_city_name,

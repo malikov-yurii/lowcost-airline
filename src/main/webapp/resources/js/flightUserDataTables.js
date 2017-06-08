@@ -103,8 +103,8 @@ $(document).ready(function () {
 });
 
 $('#editRow').on('hidden.bs.modal', function() {
-    $("#withBaggage").off('change');
-    $("#withPriorityRegistrationAndBoarding").off('change');
+    $("#hasBaggage").off('change');
+    $("#hasPriorityRegistrationAndBoarding").off('change');
 });
 
 function renderPurchaseBtn(data, type, row) {
@@ -114,12 +114,12 @@ function renderPurchaseBtn(data, type, row) {
 function showSetTicketDetailsModal() {
     var rowData = datatableApi.row($(this).closest('tr')).data();
     var $price = $("#price");
-    var $withBaggage = $("#withBaggage");
-    var $withPriorityRegistrationAndBoarding = $("#withPriorityRegistrationAndBoarding");
+    var $hasBaggage = $("#hasBaggage");
+    var $hasPriorityRegistrationAndBoarding = $("#hasPriorityRegistrationAndBoarding");
     var $baggagePrice = $("#baggagePrice");
     var $priorityRegistrationAndBoardingPrice = $("#priorityRegistrationAndBoardingPrice");
 
-    $withBaggage.on('change', function () {
+    $hasBaggage.on('change', function () {
         if ($(this).is(':checked')) {
             $price.val(parseInt($price.val()) + parseInt($baggagePrice.val()));
         } else {
@@ -128,7 +128,7 @@ function showSetTicketDetailsModal() {
         $('.price').text(appendDecimalsAndDollarSign($price.val()));
     });
 
-    $withPriorityRegistrationAndBoarding.on('change', function () {
+    $hasPriorityRegistrationAndBoarding.on('change', function () {
         if ($(this).is(':checked')) {
             $price.val(parseInt($price.val()) + parseInt($priorityRegistrationAndBoardingPrice.val()))
         } else {
@@ -158,8 +158,8 @@ function showSetTicketDetailsModal() {
             $('.departureLocalDateTime').text(data.departureLocalDateTime);
             $('#arrivalLocalDateTime').val(data.arrivalLocalDateTime);
             $('.arrivalLocalDateTime').text(data.arrivalLocalDateTime);
-            $withBaggage.prop("checked", false);
-            $withPriorityRegistrationAndBoarding.prop("checked", false);
+            $hasBaggage.prop("checked", false);
+            $hasPriorityRegistrationAndBoarding.prop("checked", false);
             $('#price').val(data.ticketPriceDetails.baseTicketPrice);
             $('.price').text(appendDecimalsAndDollarSign(data.ticketPriceDetails.baseTicketPrice));
             $baggagePrice.val(data.ticketPriceDetails.baggagePrice);

@@ -58,9 +58,9 @@ public class TicketDTO extends BaseDTO {
     @NotNull
     private BigDecimal price;
 
-    private Boolean withBaggage;
+    private Boolean hasBaggage;
 
-    private Boolean withPriorityRegistrationAndBoarding;
+    private Boolean hasPriorityRegistrationAndBoarding;
 
     private Integer seatNumber;
 
@@ -72,7 +72,7 @@ public class TicketDTO extends BaseDTO {
                      String departureAirportName, String arrivalAirportName,
                      String departureCityName, String arrivalCityName,
                      LocalDateTime departureLocalDateTime, LocalDateTime arrivalLocalDateTime,
-                     BigDecimal price, Boolean withBaggage, Boolean withPriorityRegistrationAndBoarding,
+                     BigDecimal price, Boolean hasBaggage, Boolean hasPriorityRegistrationAndBoarding,
                      Integer seatNumber,
                      TicketStatus status) {
         super(id);
@@ -86,10 +86,10 @@ public class TicketDTO extends BaseDTO {
         this.departureLocalDateTime = departureLocalDateTime;
         this.arrivalLocalDateTime = arrivalLocalDateTime;
         this.price = price;
-        this.withBaggage = withBaggage == null ? false : withBaggage;
-        this.withPriorityRegistrationAndBoarding = withPriorityRegistrationAndBoarding == null
+        this.hasBaggage = hasBaggage == null ? false : hasBaggage;
+        this.hasPriorityRegistrationAndBoarding = hasPriorityRegistrationAndBoarding == null
                 ? false
-                : withPriorityRegistrationAndBoarding;
+                : hasPriorityRegistrationAndBoarding;
         this.seatNumber = seatNumber;
         this.status = status;
     }
@@ -167,20 +167,20 @@ public class TicketDTO extends BaseDTO {
         this.price = price;
     }
 
-    public Boolean getWithBaggage() {
-        return withBaggage;
+    public Boolean isHasBaggage() {
+        return hasBaggage;
     }
 
-    public void setWithBaggage(Boolean withBaggage) {
-        this.withBaggage = withBaggage;
+    public void setHasBaggage(Boolean hasBaggage) {
+        this.hasBaggage = hasBaggage;
     }
 
-    public Boolean getWithPriorityRegistrationAndBoarding() {
-        return withPriorityRegistrationAndBoarding;
+    public Boolean isHasPriorityRegistrationAndBoarding() {
+        return hasPriorityRegistrationAndBoarding;
     }
 
-    public void setWithPriorityRegistrationAndBoarding(Boolean withPriorityRegistrationAndBoarding) {
-        this.withPriorityRegistrationAndBoarding = withPriorityRegistrationAndBoarding;
+    public void setHasPriorityRegistrationAndBoarding(Boolean hasPriorityRegistrationAndBoarding) {
+        this.hasPriorityRegistrationAndBoarding = hasPriorityRegistrationAndBoarding;
     }
 
     public Integer getSeatNumber() {
@@ -238,11 +238,11 @@ public class TicketDTO extends BaseDTO {
                 : ticketDTO.arrivalLocalDateTime != null)
             return false;
         if (price != null ? !price.equals(ticketDTO.price) : ticketDTO.price != null) return false;
-        if (withBaggage != null ? !withBaggage.equals(ticketDTO.withBaggage) : ticketDTO.withBaggage != null)
+        if (hasBaggage != null ? !hasBaggage.equals(ticketDTO.hasBaggage) : ticketDTO.hasBaggage != null)
             return false;
-        if (withPriorityRegistrationAndBoarding != null
-                ? !withPriorityRegistrationAndBoarding.equals(ticketDTO.withPriorityRegistrationAndBoarding)
-                : ticketDTO.withPriorityRegistrationAndBoarding != null)
+        if (hasPriorityRegistrationAndBoarding != null
+                ? !hasPriorityRegistrationAndBoarding.equals(ticketDTO.hasPriorityRegistrationAndBoarding)
+                : ticketDTO.hasPriorityRegistrationAndBoarding != null)
             return false;
         if (seatNumber != null
                 ? !seatNumber.equals(ticketDTO.seatNumber)
@@ -261,9 +261,9 @@ public class TicketDTO extends BaseDTO {
         result = 31 * result + (departureLocalDateTime != null ? departureLocalDateTime.hashCode() : 0);
         result = 31 * result + (arrivalLocalDateTime != null ? arrivalLocalDateTime.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (withBaggage != null ? withBaggage.hashCode() : 0);
-        result = 31 * result + (withPriorityRegistrationAndBoarding != null
-                ? withPriorityRegistrationAndBoarding.hashCode() : 0);
+        result = 31 * result + (hasBaggage != null ? hasBaggage.hashCode() : 0);
+        result = 31 * result + (hasPriorityRegistrationAndBoarding != null
+                ? hasPriorityRegistrationAndBoarding.hashCode() : 0);
         result = 31 * result + (seatNumber != null ? seatNumber.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
