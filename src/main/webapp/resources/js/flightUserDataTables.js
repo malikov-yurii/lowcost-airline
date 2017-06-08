@@ -102,9 +102,12 @@ $(document).ready(function () {
     // $(".show-add-new-modal").html('');
 });
 
+$('#editRow').on('hidden.bs.modal', function() {
+    $("#withBaggage").off('change');
+    $("#withPriorityRegistrationAndBoarding").off('change');
+});
+
 function renderPurchaseBtn(data, type, row) {
-    // return '<a>Buy ticket</a>';
-    // return '<a class="btn btn-xs btn-primary" onclick="showPurchaseModal()">Buy ticket</a>';
     return '<a class="btn btn-xs btn-primary purchase-btn">'+ i18n["ticket.buy"] +'</a>';
 }
 

@@ -63,10 +63,10 @@ public class FlightAdminAjaxController {
             @RequestParam(value = "draw") Integer draw,
             @RequestParam(value = "start") Integer startingFrom,
             @RequestParam(value = "length") Integer pageCapacity) {
-        List<FlightManageableDTO> flightManageableDTOS = flightService.getAllFiltered(
-                departureAirportName, arrivalAirportName,
-                fromDepartureDateTime, toDepartureDateTime,
-                startingFrom, pageCapacity).stream()
+
+        List<FlightManageableDTO> flightManageableDTOS = flightService.getAllFiltered(departureAirportName,
+                    arrivalAirportName, fromDepartureDateTime, toDepartureDateTime,
+                    startingFrom, pageCapacity).stream()
                 .map(FlightDTOConverter::asManageableDTO)
                 .collect(Collectors.toList());
         ModelMap model = new ModelMap();

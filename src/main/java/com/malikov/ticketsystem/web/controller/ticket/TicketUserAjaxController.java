@@ -59,8 +59,7 @@ public class TicketUserAjaxController {
     public ModelMap getArchivedUserTickets(@RequestParam(value = "draw") Integer draw,
                                                                 @RequestParam(value = "start") Integer startingFrom,
                                                                 @RequestParam(value = "length") Integer pageCapacity) {
-        List<TicketDTO> ticketDTOs =
-                ticketService.getArchivedTickets(AuthorizedUser.id(),startingFrom, pageCapacity);
+        List<TicketDTO> ticketDTOs = ticketService.getArchivedTickets(AuthorizedUser.id(),startingFrom, pageCapacity);
         ModelMap model = new ModelMap();
 
         int dataTableHasNextPageIndicator = startingFrom + ticketDTOs.size() + 1;
