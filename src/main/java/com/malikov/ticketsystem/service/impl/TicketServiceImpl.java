@@ -43,6 +43,10 @@ import static com.malikov.ticketsystem.util.ValidationUtil.*;
 @Transactional
 public class TicketServiceImpl implements ITicketService {
 
+    private static final Map<Long, ScheduledFuture> ticketIdRemovalTaskMap = new HashMap<>();
+
+    @Autowired
+    private TaskScheduler scheduler;
 
     @Autowired
     private ITicketRepository ticketRepository;
@@ -52,13 +56,6 @@ public class TicketServiceImpl implements ITicketService {
 
     @Autowired
     private IUserRepository userRepository;
-
-    //@Autowired
-    // TODO: 6/3/2017
-    private TaskScheduler scheduler = new ConcurrentTaskScheduler(Executors.newSingleThreadScheduledExecutor());
-
-    // TODO: 5/30/2017 Get rid of it in service!
-    private static final Map<Long, ScheduledFuture> ticketIdRemovalTaskMap = new HashMap<>();
 
 
     @Override
@@ -97,7 +94,7 @@ public class TicketServiceImpl implements ITicketService {
     }
 
     @Override
-    // TODO: 6/1/2017 It should be transactional
+    // TODO: 6/1/2017 It should be transactional ?
     @Transactional
     public void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
         Ticket ticket = checkNotFoundById(ticketRepository.get(ticketId), ticketId);
@@ -115,7 +112,6 @@ public class TicketServiceImpl implements ITicketService {
         ticket.setStatus(TicketStatus.PAID);
         ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
 
-        // TODO: 6/6/2017 ValidationUtil.checkNotFound??
         ticketRepository.save(ticket);
         terminateAutomaticRemovalTask(ticketId);
     }
