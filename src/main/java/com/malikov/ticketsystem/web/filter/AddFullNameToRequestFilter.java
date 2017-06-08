@@ -16,10 +16,10 @@ public class AddFullNameToRequestFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-            AuthorizedUser authorizedUser = AuthorizedUser.safeGet();
-            if (authorizedUser != null) {
-                request.setAttribute("userFullName", authorizedUser.getFullName());
-            }
+        AuthorizedUser authorizedUser = AuthorizedUser.safeGet();
+        if (authorizedUser != null) {
+            request.setAttribute("userFullName", authorizedUser.getFullName());
+        }
         chain.doFilter(request, response);
     }
 }

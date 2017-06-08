@@ -128,7 +128,7 @@ public class FlightRepositoryImpl implements IFlightRepository {
                                                 LocalDateTime toDepartureUtcDateTime) {
         if (departureAirport != null || arrivalAirport != null
                 || fromDepartureUtcDateTime != null || toDepartureUtcDateTime != null) {
-            final List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> predicates = new ArrayList<>();
 
             if (departureAirport != null) {
                 predicates.add(criteriaBuilder.equal(root.get("departureAirport"), departureAirport));
@@ -152,36 +152,3 @@ public class FlightRepositoryImpl implements IFlightRepository {
         return Collections.emptyList();
     }
 }
-
-/*
-        @Override
-        @SuppressWarnings({"unchecked", "deprecation"})
-        public List<Flight> getFiltered(Airport departureAirport, Airport arrivalAirport,
-                                        LocalDateTime fromDepartureUtcDateTime,
-                                        LocalDateTime toDepartureUtcDateTime,
-                                        Integer first, Integer limit) {
-            Criteria criteria = ((Session) em.getDelegate()).createCriteria(Flight.class);
-
-            if (toDepartureUtcDateTime != null) {
-                criteria.add(Restrictions.lt("departureUtcDateTime", toDepartureUtcDateTime));
-            }
-
-            if (fromDepartureUtcDateTime != null) {
-                criteria.add(Restrictions.gt("departureUtcDateTime", fromDepartureUtcDateTime));
-            }
-
-            if (departureAirport != null) {
-                criteria.add(Restrictions.eq("departureAirport", departureAirport));
-            }
-
-            if (arrivalAirport != null) {
-                criteria.add(Restrictions.eq("arrivalAirport", arrivalAirport));
-            }
-
-            return criteria.setFirstResult(first)
-                            .setMaxResults(limit)
-                            .list();
-        }
-
-*/
-

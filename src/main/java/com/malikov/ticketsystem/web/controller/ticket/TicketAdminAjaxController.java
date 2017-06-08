@@ -24,14 +24,12 @@ public class TicketAdminAjaxController {
     private ITicketService ticketService;
 
     @GetMapping
-    // TODO: 5/31/2017 not need preauthorize?
     public ModelMap getFilteredPage(
             @RequestParam(value = "userEmailCondition") @Size(min = 5, max = 255) String userEmailCondition,
             @RequestParam(value = "draw") Integer draw,
             @RequestParam(value = "start") Integer startingFrom,
             @RequestParam(value = "length") Integer pageCapacity) {
         List<Ticket> tickets = ticketService.getByUserEmail(userEmailCondition, startingFrom, pageCapacity + 1);
-        //// TODO: 6/3/2017 consider get rid of code duplication
         if (tickets.size() > pageCapacity) {
             tickets.remove(tickets.size() - 1);
         }
@@ -47,7 +45,6 @@ public class TicketAdminAjaxController {
 
 
     @PutMapping
-    // TODO: 6/1/2017 validate dto?
     public void updateTicket(@Valid TicketDTO ticketDTO) {
         ticketService.update(ticketDTO);
     }

@@ -28,7 +28,6 @@ public class UserDTOConverter {
         }
         user.setPhoneNumber(userDTO.getPhoneNumber());
         return user;
-
     }
 
     public static User prepareToSave(User user) {

@@ -73,7 +73,6 @@ function validateProfileForm() {
             .remove();
     }
 
-
     if (errorCount) {
         return false;
     }

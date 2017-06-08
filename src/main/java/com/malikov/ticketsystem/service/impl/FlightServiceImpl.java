@@ -56,7 +56,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
     @Override
     public Flight get(long flightId) {
         return checkNotFound(flightRepository.get(flightId),
-                getMessage(messageSource,"exception.notFoundById") + flightId);
+                getMessage(messageSource, "exception.notFoundById") + flightId);
     }
 
 
@@ -65,18 +65,18 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         LocalDateTime departureUtcDateTime;
         LocalDateTime arrivalUtcDateTime;
         ValidationUtil.checkNew(flightManageableDTO,
-                getMessage(messageSource,"exception.mustBeNew"));
+                getMessage(messageSource, "exception.mustBeNew"));
 
         Airport departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        checkNotFound(departureAirport,getMessage(messageSource,"exception.notFoundByName")
-                        + flightManageableDTO.getDepartureAirport());
+        checkNotFound(departureAirport, getMessage(messageSource, "exception.notFoundByName")
+                + flightManageableDTO.getDepartureAirport());
 
         Airport arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(arrivalAirport, getMessage(messageSource, "exception.notFoundByName")
                 + flightManageableDTO.getArrivalAirport());
 
         checkNotEqual(departureAirport, arrivalAirport,
-                getMessage(messageSource,"exception.mustNotBeSame"));
+                getMessage(messageSource, "exception.mustNotBeSame"));
 
         departureUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getDepartureLocalDateTime(),
                 departureAirport.getCity().getZoneId());
@@ -84,10 +84,10 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
                 arrivalAirport.getCity().getZoneId());
 
         validateFromToDates(departureUtcDateTime, arrivalUtcDateTime,
-                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
+                getMessage(messageSource, "exception.fromCannotBeAfterTo"));
 
         Aircraft aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        checkNotFound(aircraft, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(aircraft, getMessage(messageSource, "exception.notFoundByName")
                 + flightManageableDTO.getAircraftName());
 
         return flightRepository.save(new Flight(departureAirport, arrivalAirport, aircraft,
@@ -106,25 +106,25 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         LocalDateTime arrivalUtcDateTime;
 
         ValidationUtil.checkNotNew(flightManageableDTO,
-                getMessage(messageSource,"exception.mustBeNotNew"));
+                getMessage(messageSource, "exception.mustBeNotNew"));
 
         flight = get(flightManageableDTO.getId());
 
         departureAirport = airportRepository.getByName(flightManageableDTO.getDepartureAirport());
-        checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(departureAirport, getMessage(messageSource, "exception.notFoundByName")
                 + flightManageableDTO.getDepartureAirport());
         flight.setDepartureAirport(departureAirport);
 
         arrivalAirport = airportRepository.getByName(flightManageableDTO.getArrivalAirport());
-        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(arrivalAirport, getMessage(messageSource, "exception.notFoundByName")
                 + flightManageableDTO.getArrivalAirport());
         flight.setArrivalAirport(arrivalAirport);
 
         checkNotEqual(departureAirport, arrivalAirport,
-                getMessage(messageSource,"exception.mustNotBeSame"));
+                getMessage(messageSource, "exception.mustNotBeSame"));
 
         aircraft = aircraftService.getByName(flightManageableDTO.getAircraftName());
-        checkNotFound(aircraft, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(aircraft, getMessage(messageSource, "exception.notFoundByName")
                 + flightManageableDTO.getAircraftName());
         flight.setAircraft(aircraft);
 
@@ -133,7 +133,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         arrivalUtcDateTime = DateTimeUtil.zoneIdToUtc(flightManageableDTO.getArrivalLocalDateTime(),
                 arrivalAirport.getCity().getZoneId());
         validateFromToDates(departureUtcDateTime, arrivalUtcDateTime,
-                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
+                getMessage(messageSource, "exception.fromCannotBeAfterTo"));
         flight.setDepartureUtcDateTime(departureUtcDateTime);
         flight.setArrivalUtcDateTime(arrivalUtcDateTime);
 
@@ -146,14 +146,14 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
     @Override
     public void delete(long flightId) {
         checkNotFound(flightRepository.delete(flightId),
-                getMessage(messageSource,"exception.notFoundById") + flightId);
+                getMessage(messageSource, "exception.notFoundById") + flightId);
     }
 
     @Override
     @Transactional
     public void setCanceledStatus(long flightId, boolean cancelStatus) {
         Flight flight = checkNotFound(flightRepository.get(flightId),
-                getMessage(messageSource,"exception.notFoundById") + flightId);
+                getMessage(messageSource, "exception.notFoundById") + flightId);
         flight.setCanceled(cancelStatus);
         flightRepository.save(flight);
     }
@@ -165,7 +165,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
 
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
         checkNotFound(tariffsDetails,
-                getMessage(messageSource,"exception.notFoundByActiveTariffDetails"));
+                getMessage(messageSource, "exception.notFoundByActiveTariffDetails"));
 
         BigDecimal ticketPrice = calculateTicketPrice(tariffsDetails, flight, bookedTicketsQuantity.longValue());
         BigDecimal baggagePrice = tariffsDetails.getBaggageSurchargeOverMaxBaseTicketPrice()
@@ -202,7 +202,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
 
         if (departureAirportNameCondition != null && departureAirportNameCondition.length() != 0) {
             departureAirport = airportRepository.getByName(departureAirportNameCondition);
-            checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+            checkNotFound(departureAirport, getMessage(messageSource, "exception.notFoundByName")
                     + departureAirportNameCondition);
         } else {
             departureAirport = null;
@@ -210,13 +210,13 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
 
         if (arrivalAirportNameCondition != null && arrivalAirportNameCondition.length() != 0) {
             arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-            checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+            checkNotFound(arrivalAirport, getMessage(messageSource, "exception.notFoundByName")
                     + arrivalAirportNameCondition);
         } else {
             arrivalAirport = null;
         }
         checkNotEqual(departureAirport, arrivalAirport,
-                getMessage(messageSource,"exception.mustNotBeSame"));
+                getMessage(messageSource, "exception.mustNotBeSame"));
 
 
         if (fromDepartureDateTimeCondition != null && departureAirport != null) {
@@ -234,7 +234,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         }
 
         ValidationUtil.validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime,
-                getMessage(messageSource,"exception.fromCannotBeAfterTo"));
+                getMessage(messageSource, "exception.fromCannotBeAfterTo"));
 
         return flightRepository.getFiltered(departureAirport, arrivalAirport,
                 fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);
@@ -255,21 +255,21 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         TariffsDetails tariffsDetails = tariffsDetailsRepository.getActiveTariffsDetails();
 
         departureAirport = airportRepository.getByName(departureAirportNameCondition);
-        checkNotFound(departureAirport, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(departureAirport, getMessage(messageSource, "exception.notFoundByName")
                 + departureAirportNameCondition);
 
         arrivalAirport = airportRepository.getByName(arrivalAirportNameCondition);
-        checkNotFound(arrivalAirport, getMessage(messageSource,"exception.notFoundByName")
+        checkNotFound(arrivalAirport, getMessage(messageSource, "exception.notFoundByName")
                 + arrivalAirportNameCondition);
         checkNotEqual(departureAirport, arrivalAirport,
-                getMessage(messageSource,"exception.mustNotBeSame") );
+                getMessage(messageSource, "exception.mustNotBeSame"));
 
         fromDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(fromDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
         toDepartureUtcDateTime = DateTimeUtil.zoneIdToUtc(toDepartureDateTimeCondition,
                 departureAirport.getCity().getZoneId());
         validateFromToDates(fromDepartureUtcDateTime, toDepartureUtcDateTime,
-                getMessage(messageSource,"exception.fromCannotBeAfterTo") );
+                getMessage(messageSource, "exception.fromCannotBeAfterTo"));
 
         filteredFlightsTicketCountMap = flightRepository.getFilteredFlightTicketCountMap(
                 departureAirport, arrivalAirport, fromDepartureUtcDateTime, toDepartureUtcDateTime, first, limit);

@@ -202,10 +202,6 @@ function save() {
     if (departureAirport.val() === arrivalAirport.val()
         && departureAirport.val().length !== 0 && arrivalAirport.val().length !== 0) {
         message = addNextLineSymbolIfNotEmpty(message);
-        // departureAirport.val('');
-        // departureAirport.removeClass('valid');
-        // arrivalAirport.val('');
-        // arrivalAirport.removeClass('valid');
         message += i18n['flight.airportsCantBeSame'];
     }
 
@@ -264,7 +260,6 @@ function save() {
             }
         });
     }
-
 }
 
 

@@ -54,7 +54,6 @@ public class RoleRepositoryImpl implements IRoleRepository {
     public Role getByName(String roleName) {
         List<Role> roles = em.createQuery("SELECT r FROM Role r WHERE r.name=:roleName", Role.class)
                 .setParameter("roleName", roleName).getResultList();
-        // TODO: 6/3/2017 Single resultList??
         return DataAccessUtils.singleResult(roles);
     }
 }

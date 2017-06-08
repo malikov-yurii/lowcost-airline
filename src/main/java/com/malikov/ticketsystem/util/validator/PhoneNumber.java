@@ -13,7 +13,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneNumber {
 
-    // TODO: 6/7/2017 use bundle message here
     String message() default "Please provide a valid phone number.";
 
     Class<?>[] groups() default {};

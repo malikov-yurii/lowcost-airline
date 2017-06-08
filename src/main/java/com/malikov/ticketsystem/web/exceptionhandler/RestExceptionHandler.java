@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
+
 @ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class RestExceptionHandler {
@@ -48,10 +50,8 @@ public class RestExceptionHandler {
                     .findAny();
             if (entry.isPresent()) {
                 return logAndGetErrorInfo(req,
-                        new DataIntegrityViolationException(
-                                //messageSource.getMessage(entry.get().getValue(), null, LocaleContextHolder.getLocale())
-                                entry.get().getValue()
-                        ), false);
+                        new DataIntegrityViolationException(getMessage(messageSource, entry.get().getValue())),
+                        false);
             }
         }
         return logAndGetErrorInfo(req, e, true);

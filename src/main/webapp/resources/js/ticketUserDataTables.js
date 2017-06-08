@@ -116,7 +116,6 @@ function confirmPayment(id) {
                 payForTicket(id);
                 popup(i18n['ticket.purchaseSuccess']);
             }
-
         });
 }
 

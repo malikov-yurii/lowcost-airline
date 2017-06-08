@@ -21,7 +21,6 @@ $(document).ready(function () {
                     arrivalAirportCondition: $('#arrivalAirportCondition').val()
                 };
             }
-            // ,"dataSrc": ""
         },
         "iDeferLoading": 0,
         "searching": false,
@@ -86,10 +85,6 @@ $(document).ready(function () {
         ).on("autocompletechange",
         function (event, ui) {
             var $this = $(this);
-            // $this.addClass('valid'); ????????????? why was uncommented???????
-            // if ($this.hasClass('input-filter') && ($this.val().length === 0)) {
-            //     $this.addClass('valid');
-            // } else
             if (!$this.hasClass('in-process')) {
                 $this.removeClass('valid');
             }
@@ -102,13 +97,13 @@ $(document).ready(function () {
     // $(".show-add-new-modal").html('');
 });
 
-$('#editRow').on('hidden.bs.modal', function() {
+$('#editRow').on('hidden.bs.modal', function () {
     $("#hasBaggage").off('change');
     $("#hasPriorityRegistrationAndBoarding").off('change');
 });
 
 function renderPurchaseBtn(data, type, row) {
-    return '<a class="btn btn-xs btn-primary purchase-btn">'+ i18n["ticket.buy"] +'</a>';
+    return '<a class="btn btn-xs btn-primary purchase-btn">' + i18n["ticket.buy"] + '</a>';
 }
 
 function showSetTicketDetailsModal() {
@@ -173,10 +168,6 @@ function showSetTicketDetailsModal() {
             $('#editRow').modal();
         }
     });
-
-
-    // todo implement what if error??? (when last ticket just has been bought)
-
 }
 
 function save() {
@@ -191,7 +182,7 @@ function save() {
         message += i18n['common.inputCorrectFirstName'];
     }
 
-    if (passengerLastName.length < 2  || passengerLastName.match(/\d+/g)) {
+    if (passengerLastName.length < 2 || passengerLastName.match(/\d+/g)) {
         message = addNextLineSymbolIfNotEmpty(message);
         message += i18n['common.inputCorrectLastName'];
     }
@@ -215,7 +206,7 @@ function save() {
 
     if (message.length !== 0) {
         swal({
-            title:  i18n['common.validationFailed'],
+            title: i18n['common.validationFailed'],
             text: message,
             // type: "error",
             confirmButtonText: "OK"
@@ -255,8 +246,6 @@ function save() {
     }
 }
 
-
-
 function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
 
     var message = "";
@@ -275,7 +264,6 @@ function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, o
             departureAirportCondition.addClass('valid');
         }
 
-        // ;
         if (!arrivalAirportCondition.hasClass('valid') && !(arrivalAirportCondition.val().length === 0)) {
             message = addNextLineSymbolIfNotEmpty(message);
             message += i18n['flight.selectArrivalAirportForFilter'];
@@ -324,14 +312,12 @@ function moveFocusToNextFormElement(formElement) {
     formElement.parents().eq(1).next().find('.form-control').first().focus();
 }
 
-
 function addNextLineSymbolIfNotEmpty(message) {
     if (message.length !== 0) {
         message += '\n'
     }
     return message;
 }
-
 
 function renderSeatPicker(data) {
     var content = '';
@@ -345,10 +331,7 @@ function renderSeatPicker(data) {
     for (var j = 0; j < data.freeSeats.length; j++) {
         $('.seat[data-seat=' + data.freeSeats[j] + ']').removeClass('disabled').addClass('enabled');
     }
-
-
 }
-
 
 function selectSeat(e) {
     var seat = $(e.target).data('seat');

@@ -68,7 +68,7 @@ public class RootController {
 
                 return "redirect:login?message=app.registered&username=" + userDTO.getEmail();
             } catch (DataIntegrityViolationException ex) {
-                result.rejectValue("email", "exception.users.duplicate_email");
+                result.rejectValue("email", "exception.sorryEmailIsNotFree");
             }
         }
         model.addAttribute("register", true);
@@ -86,9 +86,10 @@ public class RootController {
         if (!result.hasErrors()) {
             try {
                 LOG.info("update " + userDTO);
+                userDTO.setId(AuthorizedUser.id());
                 userService.update(userDTO);
                 status.setComplete();
-                return "redirect:meals";
+                return "redirect:profile";
             } catch (DataIntegrityViolationException ex) {
                 result.rejectValue("email", "exception.users.duplicate_email");
             }

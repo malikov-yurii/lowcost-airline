@@ -39,7 +39,7 @@ public class TicketUserAjaxController {
                                                                 @RequestParam(value = "start") Integer startingFrom,
                                                                 @RequestParam(value = "length") Integer pageCapacity) {
         List<TicketWithRemainingDelayDTO> ticketWithRemainingDelayDTOs =
-                ticketService.getActiveTicketsDelays(AuthorizedUser.id(),startingFrom, pageCapacity);
+                ticketService.getActiveTicketsWithDelays(AuthorizedUser.id(),startingFrom, pageCapacity);
         ModelMap model = new ModelMap();
         int dataTableHasNextPageIndicator = startingFrom + ticketWithRemainingDelayDTOs.size() + 1;
 
@@ -103,7 +103,6 @@ public class TicketUserAjaxController {
         model.put("totalSeats", flight.getAircraft().getModel().getPassengerSeatsQuantity());
         model.put("freeSeats", flightService.getFreeSeats(flight.getId()).toArray(new Integer[0]));
 
-        // TODO: 6/6/2017 should i use return ResponseEntity.ok(model); instead
         return model;
     }
 

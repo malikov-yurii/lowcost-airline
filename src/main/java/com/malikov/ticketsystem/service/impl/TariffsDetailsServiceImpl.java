@@ -30,7 +30,7 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService, Messag
     @Override
     public void update(TariffsDetails tariffsDetailsDTO) {
         TariffsDetails tariffsDetails = checkNotFound(getActive(),
-                getMessage(messageSource,"exception.notFoundByActiveTariffDetails"));
+                getMessage(messageSource, "exception.notFoundByActiveTariffDetails"));
         tariffsDetails.setBaggageSurchargeOverMaxBaseTicketPrice(tariffsDetailsDTO
                 .getBaggageSurchargeOverMaxBaseTicketPrice());
         tariffsDetails.setPriorityRegistrationAndBoardingTariff(tariffsDetailsDTO
@@ -40,7 +40,7 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService, Messag
         tariffsDetails.setWeightOfTimeGrowthFactor(tariffsDetailsDTO.getWeightOfTimeGrowthFactor());
         tariffsDetails.setActive(tariffsDetailsDTO.getActive());
         checkNotFound(repository.save(tariffsDetails),
-                getMessage(messageSource,"exception.notFoundById") + tariffsDetailsDTO.getId());
+                getMessage(messageSource, "exception.notFoundById") + tariffsDetailsDTO.getId());
     }
 
     @Override

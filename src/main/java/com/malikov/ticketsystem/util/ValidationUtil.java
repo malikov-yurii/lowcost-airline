@@ -27,6 +27,7 @@ public class ValidationUtil {
         checkNotFound(object != null, message);
         return object;
     }
+
     public static void checkNotFound(boolean found, String message) {
         if (!found) {
             throw new NotFoundException(message);

@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepository{
+public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepository {
 
     @PersistenceContext
     protected EntityManager em;

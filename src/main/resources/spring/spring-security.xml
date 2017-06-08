@@ -19,7 +19,6 @@
 
         <intercept-url pattern="/**/user/**" access="hasRole('ROLE_USER')"/>
 
-        <!--todo why not working without below string (redirect to login.jsp)-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
         <custom-filter after="BASIC_AUTH_FILTER" ref="myFilter" />

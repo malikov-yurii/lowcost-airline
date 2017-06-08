@@ -28,9 +28,9 @@ public class TicketDTOConverter {
         return new TicketWithRemainingDelayDTO(ticket.getId(), ticket.getPassengerFirstName(),
                 ticket.getPassengerLastName(), ticket.getDepartureAirportName(), ticket.getArrivalAirportName(),
                 ticket.getDepartureCityName(), ticket.getArrivalCityName(),
-                DateTimeUtil.utcToZoneId(ticket.getDepartureUtcDateTime(), ticket.getDepartureZoneId())
-                , ticket.getArrivalOffsetDateTime().toLocalDateTime()
-                , ticket.getPrice() , ticket.isHasBaggage(), ticket.isHasPriorityRegistration(),
+                DateTimeUtil.utcToZoneId(ticket.getDepartureUtcDateTime(), ticket.getDepartureZoneId()),
+                ticket.getArrivalOffsetDateTime().toLocalDateTime(),
+                ticket.getPrice(), ticket.isHasBaggage(), ticket.isHasPriorityRegistration(),
                 ticket.getSeatNumber(), ticket.getStatus(), remaininDelay);
     }
 
@@ -44,13 +44,9 @@ public class TicketDTOConverter {
                         .getRules().getOffset(ticket.getFlight().getDepartureUtcDateTime().toInstant(ZoneOffset.UTC)));
 
         ticket.setDepartureAirportName(ticketDTO.getDepartureAirport());
-
         ticket.setArrivalAirportName(ticketDTO.getArrivalAirport());
-
         ticket.setDepartureCityName(ticketDTO.getDepartureCity());
-
         ticket.setArrivalCityName(ticketDTO.getArrivalCity());
-
         ticket.setDepartureUtcDateTime(dtoDepartureUtcDateTime);
         ticket.setArrivalOffsetDateTime(dtoArrivalOffsetDateTime);
         ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
@@ -58,7 +54,7 @@ public class TicketDTOConverter {
         ticket.setHasBaggage(ticketDTO.isHasBaggage() != null ? ticketDTO.isHasBaggage() : false);
         ticket.setHasPriorityRegistration(ticketDTO.isHasPriorityRegistrationAndBoarding() != null
                 ? ticketDTO.isHasPriorityRegistrationAndBoarding()
-                :false);
+                : false);
         ticket.setPrice(ticketDTO.getPrice());
         ticket.setSeatNumber(ticketDTO.getSeatNumber());
         return ticket;

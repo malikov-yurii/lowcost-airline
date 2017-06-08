@@ -42,12 +42,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
     @Override
     public User get(long userId) {
         return checkNotFound(userRepository.get(userId),
-                getMessage(messageSource,"exception.notFoundById") + userId);
+                getMessage(messageSource, "exception.notFoundById") + userId);
     }
 
     @Override
     public User create(UserDTO userDTO) {
-        ValidationUtil.checkNew(userDTO, getMessage(messageSource,"exception.mustBeNew"));
+        ValidationUtil.checkNew(userDTO, getMessage(messageSource, "exception.mustBeNew"));
         User user = UserDTOConverter.createNewFromDTO(userDTO);
         user.setRoles(Collections.singleton(roleRepository.getByName("ROLE_USER")));
         return userRepository.save(prepareToSave(user));
@@ -68,13 +68,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
     @Override
     public void delete(long userId) {
         checkNotFound(userRepository.delete(userId),
-                getMessage(messageSource,"exception.notFoundById") + userId);
+                getMessage(messageSource, "exception.notFoundById") + userId);
     }
 
     @Override
     public User getByEmail(String email) {
         return checkNotFound(userRepository.getByEmail(email),
-                getMessage(messageSource,"exception.notFoundByEmail") + email);
+                getMessage(messageSource, "exception.notFoundByEmail") + email);
     }
 
     @Override

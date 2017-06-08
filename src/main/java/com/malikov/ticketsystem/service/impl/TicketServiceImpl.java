@@ -64,7 +64,30 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
 
     @Override
-    public List<TicketWithRemainingDelayDTO> getActiveTicketsDelays(long userId, Integer start, Integer limit) {
+    public void update(TicketDTO ticketDTO) {
+        Assert.notNull(ticketDTO, "ticket must not be null");
+        Ticket ticket = ticketRepository.get(ticketDTO.getId());
+        ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
+        ticket.setPassengerLastName(ticketDTO.getPassengerLastName());
+        ticket.setPrice(ticketDTO.getPrice());
+        checkNotFound(ticketRepository.save(ticket),
+                getMessage(messageSource, "exception.notFoundById") + ticket.getId());
+    }
+
+    @Override
+    public void delete(long ticketId) {
+        checkNotFound(ticketRepository.delete(ticketId),
+                getMessage(messageSource, "exception.notFoundById") + ticketId);
+        terminateAutomaticRemovalTask(ticketId);
+    }
+
+    @Override
+    public List<Ticket> getByUserEmail(String email, Integer start, Integer limit) {
+        return ticketRepository.getByEmail(email, start, limit);
+    }
+
+    @Override
+    public List<TicketWithRemainingDelayDTO> getActiveTicketsWithDelays(long userId, Integer start, Integer limit) {
         return ticketRepository
                 .getActiveByUserId(userId, start, limit)
                 .stream()
@@ -78,7 +101,6 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
                 .collect(Collectors.toList());
     }
 
-    // TODO: 6/7/2017 is it ok to return dto from service ???
     @Override
     public List<TicketDTO> getArchivedTickets(Long userId, Integer start, Integer limit) {
         return ticketRepository.getArchivedByUserId(userId, start, limit)
@@ -94,59 +116,10 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
         checkNotFound(ticket != null
                         && ticket.getStatus().equals(TicketStatus.BOOKED)
                         && ticket.getUser().getId() == AuthorizedUser.id(),
-                getMessage(messageSource,"exception.notFoundById") + ticketId);
+                getMessage(messageSource, "exception.notFoundById") + ticketId);
         delete(ticketId);
     }
 
-    @Override
-    // TODO: 6/1/2017 It should be transactional ?
-    @Transactional
-    public void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
-        Ticket ticket = checkNotFound(ticketRepository.get(ticketId),
-                getMessage(messageSource,"exception.notFoundById") + ticketId);
-
-        if (!ticket.getUser().getId().equals(AuthorizedUser.id())) {
-            throw new AccessDeniedException(getMessage(messageSource,"exception.accessDenied"));
-        }
-
-        if (!ticket.getStatus().equals(TicketStatus.BOOKED)) {
-            throw new IllegalArgumentException(getMessage(messageSource,
-                    "exception.onlyBookedTicketCanBeProcessed"));
-        }
-
-        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),
-                getMessage(messageSource,"exception.rejectedByBank"));
-
-        ticket.setStatus(TicketStatus.PAID);
-        ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
-
-        ticketRepository.save(ticket);
-        terminateAutomaticRemovalTask(ticketId);
-    }
-
-    private void terminateAutomaticRemovalTask(Long ticketId) {
-        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
-        ticketIdRemovalTaskMap.remove(ticketId);
-    }
-
-
-    // TODO: 5/30/2017 remove annotation?
-    // TODO: 6/1/2017 Should i delete unnecessary ifNotPaid checking?
-    @Async
-    private ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
-        ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
-        scheduler = new ConcurrentTaskScheduler(localExecutor);
-
-        return scheduler.schedule(() -> {
-                    checkNotFound(ticketRepository.deleteIfNotPaid(ticketId),
-                            getMessage(messageSource,"exception.notFoundById") + ticketId);
-                    ticketIdRemovalTaskMap.remove(ticketId);
-                },
-                new Date(System.currentTimeMillis() + BOOKING_DURATION_MILLIS));
-    }
-
-    // TODO: 5/30/2017 make it transactional??
-    // TODO: 5/30/2017 consider splitting into several methods
     @Override
     @Transactional
     public Ticket createNewBookedTicketAndScheduledTask(TicketDTO ticketDTO, long flightId,
@@ -154,7 +127,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
         Ticket newTicket = new Ticket();
         BigDecimal ticketPrice;
         Flight flight = checkNotFound(flightRepository.get(flightId),
-                getMessage(messageSource,"exception.notFoundById") + flightId);
+                getMessage(messageSource, "exception.notFoundById") + flightId);
 
 
         ticketPrice = ticketPriceDetailsDTO.getBaseTicketPrice();
@@ -176,15 +149,15 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
         newTicket = TicketDTOConverter.updateFromDTOBeforeBooking(newTicket, ticketDTO);
         checkEqual(flight.getDepartureUtcDateTime(), newTicket.getDepartureUtcDateTime(),
-                getMessage(messageSource,"exception.mustBeSame"));
+                getMessage(messageSource, "exception.mustBeSame"));
         checkEqual(flight.getDepartureAirport().getName(), newTicket.getDepartureAirportName(),
-                getMessage(messageSource,"exception.mustBeSame"));
+                getMessage(messageSource, "exception.mustBeSame"));
         checkEqual(flight.getArrivalAirport().getName(), newTicket.getArrivalAirportName(),
-                getMessage(messageSource,"exception.mustBeSame"));
+                getMessage(messageSource, "exception.mustBeSame"));
         checkEqual(flight.getDepartureAirport().getCity().getName(), newTicket.getDepartureCityName(),
-                getMessage(messageSource,"exception.mustBeSame"));
+                getMessage(messageSource, "exception.mustBeSame"));
         checkEqual(flight.getArrivalAirport().getCity().getName(), newTicket.getArrivalCityName(),
-                getMessage(messageSource,"exception.notFoundByName") );
+                getMessage(messageSource, "exception.notFoundByName"));
 
         newTicket.setUser(userRepository.get(AuthorizedUser.id()));
         newTicket.setDepartureZoneId(flight.getDepartureAirport().getCity().getZoneId());
@@ -197,22 +170,46 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
     }
 
     @Override
-    public void update(TicketDTO ticketDTO) {
-        // TODO: 5/5/2017 get rid of message  duplicating ??? how??
-        Assert.notNull(ticketDTO, "ticket must not be null");
-        Ticket ticket = ticketRepository.get(ticketDTO.getId());
-        ticket.setPassengerFirstName(ticketDTO.getPassengerFirstName());
-        ticket.setPassengerLastName(ticketDTO.getPassengerLastName());
-        ticket.setPrice(ticketDTO.getPrice());
-        checkNotFound(ticketRepository.save(ticket),
-                getMessage(messageSource,"exception.notFoundById") + ticket.getId());
+    @Transactional
+    public void processPaymentByUser(Long ticketId, OffsetDateTime purchaseOffsetDateTime) {
+        Ticket ticket = checkNotFound(ticketRepository.get(ticketId),
+                getMessage(messageSource, "exception.notFoundById") + ticketId);
+
+        if (!ticket.getUser().getId().equals(AuthorizedUser.id())) {
+            throw new AccessDeniedException(getMessage(messageSource, "exception.accessDenied"));
+        }
+
+        if (!ticket.getStatus().equals(TicketStatus.BOOKED)) {
+            throw new IllegalArgumentException(getMessage(messageSource,
+                    "exception.onlyBookedTicketCanBeProcessed"));
+        }
+
+        checkNotFound(getWithdrawalStatus(AuthorizedUser.id(), ticket.getPrice()),
+                getMessage(messageSource, "exception.rejectedByBank"));
+
+        ticket.setStatus(TicketStatus.PAID);
+        ticket.setPurchaseOffsetDateTime(purchaseOffsetDateTime);
+
+        ticketRepository.save(ticket);
+        terminateAutomaticRemovalTask(ticketId);
     }
 
-    @Override
-    public void delete(long ticketId) {
-        checkNotFound(ticketRepository.delete(ticketId),
-                getMessage(messageSource,"exception.notFoundById") + ticketId);
-        terminateAutomaticRemovalTask(ticketId);
+    @Async
+    private ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
+        ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
+        scheduler = new ConcurrentTaskScheduler(localExecutor);
+
+        return scheduler.schedule(() -> {
+                    checkNotFound(ticketRepository.deleteIfNotPaid(ticketId),
+                            getMessage(messageSource, "exception.notFoundById") + ticketId);
+                    ticketIdRemovalTaskMap.remove(ticketId);
+                },
+                new Date(System.currentTimeMillis() + BOOKING_DURATION_MILLIS));
+    }
+
+    private void terminateAutomaticRemovalTask(Long ticketId) {
+        ticketIdRemovalTaskMap.get(ticketId).cancel(false);
+        ticketIdRemovalTaskMap.remove(ticketId);
     }
 
     /**
@@ -223,11 +220,6 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
      */
     private boolean getWithdrawalStatus(long userId, BigDecimal price) {
         return true;
-    }
-
-    @Override
-    public List<Ticket> getByUserEmail(String email, Integer start, Integer limit) {
-        return ticketRepository.getByEmail(email, start, limit);
     }
 
     @Override

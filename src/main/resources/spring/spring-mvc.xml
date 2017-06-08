@@ -9,10 +9,6 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <!--<todo>need to place sheduler here?</todo>-->
-    <!--<task:scheduler id="myScheduler" pool-size="10" />-->
-
-
     <bean class="com.malikov.ticketsystem.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
     <mvc:default-servlet-handler/>
