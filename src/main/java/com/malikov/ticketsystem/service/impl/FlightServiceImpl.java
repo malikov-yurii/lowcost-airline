@@ -168,11 +168,11 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
 
     @Override
     public Set<Integer> getFreeSeats(Long flightId) {
-        List<Integer> notFreeSeatsNumbers = ticketRepository.getOccupiedSeatsNumbers(flightId);
+        List<Integer> occupiedSeatNumbers = ticketRepository.getOccupiedSeatNumbers(flightId);
         Set<Integer> freeSeats = new HashSet<>();
 
         for (int i = 1; i <= get(flightId).getAircraft().getModel().getPassengerSeatsQuantity(); i++) {
-            if (!notFreeSeatsNumbers.contains(i)) {
+            if (!occupiedSeatNumbers.contains(i)) {
                 freeSeats.add(i);
             }
         }

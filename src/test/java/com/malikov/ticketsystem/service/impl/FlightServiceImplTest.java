@@ -16,15 +16,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.malikov.ticketsystem.AirportTestData.AIRPORT_BORISPOL;
@@ -56,6 +59,9 @@ public class FlightServiceImplTest extends AbstractTest{
     @Mock
     private IAirportRepository airportRepository;
 
+    @Mock
+    MessageSource messageSource;
+
     @InjectMocks
     private IFlightService flightService = new FlightServiceImpl();
 
@@ -72,6 +78,8 @@ public class FlightServiceImplTest extends AbstractTest{
 
     @Test
     public void testGetTicketPriceDetails() {
+        when(messageSource.getMessage(Mockito.anyString(), Mockito.any(), Mockito.any(Locale.class)))
+                .thenReturn("Not found");
         when(ticketRepository.countTickets(FLIGHT_4.getId())).thenReturn(FLIGHT_4_TICKET_QUANTITY);
         when(flightRepository.get(FLIGHT_4.getId())).thenReturn(FLIGHT_4);
 
@@ -82,9 +90,10 @@ public class FlightServiceImplTest extends AbstractTest{
         Assert.assertEquals(expected, actual);
     }
 
-    // TODO: 6/7/2017 Code style ok?
     @Test
     public void testGetFlightTicketPriceMap(){
+        when(messageSource.getMessage(Mockito.anyString(), Mockito.any(), Mockito.any(Locale.class)))
+                .thenReturn("Not found");
         when(airportRepository.getByName(AIRPORT_BORISPOL.getName())).thenReturn(AIRPORT_BORISPOL);
         when(airportRepository.getByName(AIRPORT_LUTON.getName())).thenReturn(AIRPORT_LUTON);
         when(flightRepository.getFilteredFlightTicketCountMap(AIRPORT_BORISPOL, AIRPORT_LUTON,

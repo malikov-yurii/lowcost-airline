@@ -52,7 +52,7 @@ public class TicketRepositoryImpl implements ITicketRepository {
     }
 
     @Override
-    public List<Integer> getOccupiedSeatsNumbers(Long flightId) {
+    public List<Integer> getOccupiedSeatNumbers(Long flightId) {
         return em.createQuery("SELECT t.seatNumber FROM Ticket t " +
                                         "WHERE t.flight.id=:flightId", Integer.class)
                 .setParameter("flightId", flightId)

@@ -60,11 +60,11 @@ public class TicketRepositoryImplTest extends AbstractRepositoryTest {
     }
 
     @Test
-    public void testGetOccupiedSeatsNumbers() {
+    public void testGetOccupiedSeatNumbers() {
         List<Integer> expected = Arrays.asList(FLIGHT_4_USER_6_TICKET.getSeatNumber(),
                 FLIGHT_4_USER_7_TICKET.getSeatNumber());
 
-        List<Integer> actual = ticketRepository.getOccupiedSeatsNumbers(FLIGHT_4.getId());
+        List<Integer> actual = ticketRepository.getOccupiedSeatNumbers(FLIGHT_4.getId());
 
         assertEquals(expected, actual);
     }

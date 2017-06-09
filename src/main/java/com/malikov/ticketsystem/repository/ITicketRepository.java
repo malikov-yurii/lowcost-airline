@@ -24,7 +24,7 @@ public interface ITicketRepository extends IGenericRepository<Ticket> {
     /**
      * @return numbers of not free seats (which have booked of purchased status) for flight
      */
-    List<Integer> getOccupiedSeatsNumbers(Long flightId);
+    List<Integer> getOccupiedSeatNumbers(Long flightId);
 
     /**
      * @param start excludes from result list first tickets

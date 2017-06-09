@@ -12,5 +12,4 @@ import org.springframework.test.context.jdbc.SqlConfig;
         config = @SqlConfig(encoding = "UTF-8")
 )
 public abstract class AbstractRepositoryTest extends AbstractTest{
-
 }
