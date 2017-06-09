@@ -1,4 +1,6 @@
-.idea
-out
-target
-*.iml
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.idea/
+log/
+src/test/resources/
+target/

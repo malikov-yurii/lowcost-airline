@@ -88,6 +88,7 @@ public class RootController {
                 LOG.info("update " + userDTO);
                 userDTO.setId(AuthorizedUser.id());
                 userService.update(userDTO);
+                AuthorizedUser.get().update(userDTO);
                 status.setComplete();
                 return "redirect:profile";
             } catch (DataIntegrityViolationException ex) {

@@ -35,14 +35,16 @@
                                                 code="airport.departure"/>:</label>
                                         <div class="col-sm-4">
                                             <input class="input-filter form-control input-airport valid"
-                                                   name="departureAirportCondition" id="departureAirportCondition">
+                                                   name="departureAirportCondition" id="departureAirportCondition"
+                                            placeholder="input departure airport">
                                         </div>
                                         <label class="control-label col-sm-2"
                                                for="arrivalAirportCondition"><spring:message
                                                 code="airport.arrival"/>:</label>
                                         <div class="col-sm-4">
                                             <input class="input-filter form-control input-airport valid"
-                                                   name="arrivalAirportCondition" id="arrivalAirportCondition">
+                                                   name="arrivalAirportCondition" id="arrivalAirportCondition"
+                                                   placeholder="input arrival airport">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -51,24 +53,26 @@
                                         <div class="col-sm-4">
                                             <input class="input-filter form-control input-datetime active-input"
                                                    name="fromDepartureDateTimeCondition"
-                                                   id="fromDepartureDateTimeCondition">
+                                                   id="fromDepartureDateTimeCondition"
+                                                   placeholder="pick using date time picker">
                                         </div>
                                         <label class="control-label col-sm-2" for="toDepartureDateTimeCondition">
                                             <spring:message code="flight.toDepartureDateTime"/>:</label>
                                         <div class="col-sm-4">
                                             <input class="input-filter form-control input-datetime departure-datetime active-input"
                                                    name="toDepartureDateTimeCondition"
-                                                   id="toDepartureDateTimeCondition">
+                                                   id="toDepartureDateTimeCondition"
+                                                   placeholder="pick using date time picker">
                                         </div>
                                     </div>
                                 </form:form>
                             </div>
                             <div class="panel-footer text-right">
-                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <%--<sec:authorize access="hasRole('ROLE_ADMIN')">--%>
                                     <a class="btn btn-danger" type="button" onclick="clearFilter()">
                                         <span aria-hidden="true"><spring:message code="filter.clear"/></span>
                                     </a>
-                                </sec:authorize>
+                                <%--</sec:authorize>--%>
                                 <a class="btn btn-primary" type="button" onclick="showOrUpdateTable(false, false)">
                                     <span aria-hidden="true"><spring:message code="common.search"/></span>
                                 </a>

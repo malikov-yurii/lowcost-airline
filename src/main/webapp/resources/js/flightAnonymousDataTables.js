@@ -164,3 +164,7 @@ function onSelectDateTime (date) {
     newDate.setHours(newDate.getHours() + 1443);
     $('#toDepartureDateTimeCondition').val(dateToString(newDate));
 }
+
+function clearFilter() {
+    $("#filter")[0].reset();
+}

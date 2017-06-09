@@ -339,3 +339,7 @@ function selectSeat(e) {
     $(e.target).addClass('active');
     $('input#seatNumber').val(seat);
 }
+
+function clearFilter() {
+    $("#filter")[0].reset();
+}

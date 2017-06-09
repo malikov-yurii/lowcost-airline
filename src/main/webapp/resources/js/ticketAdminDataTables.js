@@ -186,3 +186,4 @@ function addNextLineSymbolIfNotEmpty(message) {
     }
     return message;
 }
+

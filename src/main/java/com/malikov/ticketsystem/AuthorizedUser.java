@@ -27,7 +27,6 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
             return null;
         }
         Object principal = auth.getPrincipal();
-        // TODO: 6/3/2017 Why principal is instanceof AuthorizedUser???
         return (principal instanceof AuthorizedUser) ? (AuthorizedUser) principal : null;
     }
 
