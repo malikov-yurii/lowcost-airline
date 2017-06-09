@@ -124,7 +124,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
                         && ticket.getUser().getId() == AuthorizedUser.id(),
                 getMessage(messageSource, "exception.notFoundById") + ticketId);
         delete(ticketId);
-        LOG.info("Booking canceled.");
+        LOG.info("Booking for ticket={} canceled.", ticketId);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
         Ticket bookedTicket = ticketRepository.save(newTicket);
         ticketIdRemovalTaskMap.put(bookedTicket.getId(), getDeleteIfNotPaidTask(bookedTicket.getId()));
-        LOG.info("New booked ticket created.");
+        LOG.info("New booked ticket {} created.", newTicket);
 
         return bookedTicket;
     }
@@ -206,7 +206,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
     private ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
         ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
         scheduler = new ConcurrentTaskScheduler(localExecutor);
-        LOG.info("Scheduled future created.");
+        LOG.info("Scheduled future for ticket {} created.", ticketId);
 
         return scheduler.schedule(() -> {
                     checkNotFound(ticketRepository.deleteIfNotPaid(ticketId),

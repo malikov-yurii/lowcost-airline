@@ -45,7 +45,7 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService, Messag
         tariffsDetails.setActive(tariffsDetailsDTO.getActive());
         checkNotFound(repository.save(tariffsDetails),
                 getMessage(messageSource, "exception.notFoundById") + tariffsDetailsDTO.getId());
-        LOG.info("Tariff updated.");
+        LOG.info("Tariff {} updated.", tariffsDetails);
     }
 
     @Override

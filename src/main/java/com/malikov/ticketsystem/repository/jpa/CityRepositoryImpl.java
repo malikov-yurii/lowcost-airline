@@ -29,7 +29,7 @@ public class CityRepositoryImpl implements ICityRepository {
     public City save(City city) {
         if (city.isNew()) {
             em.persist(city);
-            LOG.info("New city created.");
+            LOG.info("New {} created.", city);
             return city;
         }
         return get(city.getId()) != null ? em.merge(city) : null;

@@ -79,7 +79,7 @@ public class FlightServiceImplTest extends AbstractTest{
     @Test
     public void testGetTicketPriceDetails() {
         when(messageSource.getMessage(Mockito.anyString(), Mockito.any(), Mockito.any(Locale.class)))
-                .thenReturn("Not found");
+                .thenReturn("dummy text");
         when(ticketRepository.countTickets(FLIGHT_4.getId())).thenReturn(FLIGHT_4_TICKET_QUANTITY);
         when(flightRepository.get(FLIGHT_4.getId())).thenReturn(FLIGHT_4);
 
@@ -93,7 +93,7 @@ public class FlightServiceImplTest extends AbstractTest{
     @Test
     public void testGetFlightTicketPriceMap(){
         when(messageSource.getMessage(Mockito.anyString(), Mockito.any(), Mockito.any(Locale.class)))
-                .thenReturn("Not found");
+                .thenReturn("dummy text");
         when(airportRepository.getByName(AIRPORT_BORISPOL.getName())).thenReturn(AIRPORT_BORISPOL);
         when(airportRepository.getByName(AIRPORT_LUTON.getName())).thenReturn(AIRPORT_LUTON);
         when(flightRepository.getFilteredFlightTicketCountMap(AIRPORT_BORISPOL, AIRPORT_LUTON,

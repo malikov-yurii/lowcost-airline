@@ -40,7 +40,7 @@ public class TicketRepositoryImpl implements ITicketRepository {
         ticket.setUser(em.getReference(User.class, ticket.getUser().getId()));
         if (ticket.isNew()){
             em.persist(ticket);
-            LOG.info("New ticket created.");
+            LOG.info("New {} created.", ticket);
             return ticket;
         }
         return get(ticket.getId()) != null ? em.merge(ticket) : null;

@@ -29,7 +29,7 @@ public class AircraftModelRepositoryImpl implements IAircraftModelRepository {
     public AircraftModel save(AircraftModel aircraftModel) {
         if (aircraftModel.isNew()) {
             em.persist(aircraftModel);
-            LOG.info("New aircraft model created.");
+            LOG.info("New  {} created.", aircraftModel);
             return aircraftModel;
         }
         return get(aircraftModel.getId()) != null ? em.merge(aircraftModel) : null;

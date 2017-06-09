@@ -44,7 +44,7 @@ public class FlightRepositoryImpl implements IFlightRepository {
         flight.setArrivalAirport(em.getReference(Airport.class, flight.getArrivalAirport().getId()));
         if (flight.isNew()) {
             em.persist(flight);
-            LOG.info("New flight created.");
+            LOG.info("New {} created.", flight);
             return flight;
         }
         return get(flight.getId()) != null ? em.merge(flight) : null;

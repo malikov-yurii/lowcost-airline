@@ -30,7 +30,7 @@ public class RoleRepositoryImpl implements IRoleRepository {
     public Role save(Role role) {
         if (role.isNew()) {
             em.persist((role));
-            LOG.info("New role created.");
+            LOG.info("New {} created.", role);
             return role;
         } else {
             return em.merge(role);

@@ -62,7 +62,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
         ValidationUtil.checkNotNew(userDTO, getMessage(messageSource, "exception.mustBeNotNew"));
         User user = updateFromTo(get(userDTO.getId()), userDTO);
         userRepository.save(prepareToSave(user));
-        LOG.info("User updated.");
+        LOG.info("{} updated.", userDTO);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
     public void delete(long userId) {
         checkNotFound(userRepository.delete(userId),
                 getMessage(messageSource, "exception.notFoundById") + userId);
-        LOG.info("User deleted.");
+        LOG.info("User={} deleted.", userId);
     }
 
     @Override

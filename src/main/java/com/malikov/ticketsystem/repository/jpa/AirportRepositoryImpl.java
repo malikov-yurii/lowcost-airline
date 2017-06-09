@@ -32,7 +32,7 @@ public class AirportRepositoryImpl implements IAirportRepository {
         airport.setCity(em.getReference(City.class, airport.getCity().getId()));
         if (airport.isNew()) {
             em.persist(airport);
-            LOG.info("New airport created.");
+            LOG.info("New {} created.", airport);
             return airport;
         }
         return get(airport.getId()) != null ? em.merge(airport) : null;

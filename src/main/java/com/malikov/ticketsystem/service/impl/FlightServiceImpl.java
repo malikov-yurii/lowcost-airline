@@ -137,14 +137,14 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
 
         flightRepository.save(flight);
 
-        LOG.info("Flight updated.");
+        LOG.info("{} updated.", flight);
     }
 
     @Override
     public void delete(long flightId) {
         checkNotFound(flightRepository.delete(flightId),
                 getMessage(messageSource, "exception.notFoundById") + flightId);
-        LOG.info("Flight deleted.");
+        LOG.info("Flight with id={} deleted.", flightId);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
                 getMessage(messageSource, "exception.notFoundById") + flightId);
         flight.setCanceled(cancelStatus);
         flightRepository.save(flight);
-        LOG.info("Flight canceled.");
+        LOG.info("Flight with id= {} changed status to.", flightId, cancelStatus);
     }
 
     @Override

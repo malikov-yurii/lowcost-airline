@@ -32,7 +32,7 @@ public class AircraftRepositoryImpl implements IAircraftRepository {
         aircraft.setModel(em.getReference(AircraftModel.class, aircraft.getModel().getId()));
         if (aircraft.isNew()) {
             em.persist(aircraft);
-            LOG.info("New aircraft created.");
+            LOG.info("New {} created.", aircraft);
             return aircraft;
         }
         return get(aircraft.getId()) != null ? em.merge(aircraft) : null;

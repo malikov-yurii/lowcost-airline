@@ -39,7 +39,7 @@ public class UserRepositoryImpl implements IUserRepository {
         user.setRoles(roleReferences);
         if (user.isNew()){
             em.persist((user));
-            LOG.info("New user created.");
+            LOG.info("New {} created.", user);
             return user;
         } else {
             return em.merge(user);

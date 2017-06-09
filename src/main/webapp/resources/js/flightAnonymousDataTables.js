@@ -96,7 +96,6 @@ $(document).ready(function () {
 
 });
 
-// todo consider moving it for shared file for all flight.js
 function showOrUpdateTable(forceUpdate, nextPreviousPage, added, isTabPressed, orderId) {
 
     var message = "";

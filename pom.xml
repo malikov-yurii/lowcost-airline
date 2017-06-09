@@ -176,7 +176,6 @@
             <version>${hibernate-validator.version}</version>
         </dependency>
 
-        <!-- todo for hibernate validator or just html validation?????????? -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>

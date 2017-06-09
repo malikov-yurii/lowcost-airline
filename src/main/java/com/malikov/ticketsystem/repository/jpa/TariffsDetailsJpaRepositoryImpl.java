@@ -28,7 +28,7 @@ public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepositor
     public TariffsDetails save(TariffsDetails tariffsDetails) {
         if (tariffsDetails.isNew()) {
             em.persist(tariffsDetails);
-            LOG.info("New tariff created.");
+            LOG.info("New {} created.", tariffsDetails);
             return tariffsDetails;
         }
         return get(tariffsDetails.getId()) != null ? em.merge(tariffsDetails) : null;
