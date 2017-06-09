@@ -8,6 +8,8 @@ import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.IUserService;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -30,6 +32,8 @@ import static com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter.update
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements IUserService, UserDetailsService, MessageSourceAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private MessageSource messageSource;
 
@@ -58,6 +62,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
         ValidationUtil.checkNotNew(userDTO, getMessage(messageSource, "exception.mustBeNotNew"));
         User user = updateFromTo(get(userDTO.getId()), userDTO);
         userRepository.save(prepareToSave(user));
+        LOG.info("User updated.");
     }
 
     @Override
@@ -69,6 +74,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService, Messag
     public void delete(long userId) {
         checkNotFound(userRepository.delete(userId),
                 getMessage(messageSource, "exception.notFoundById") + userId);
+        LOG.info("User deleted.");
     }
 
     @Override

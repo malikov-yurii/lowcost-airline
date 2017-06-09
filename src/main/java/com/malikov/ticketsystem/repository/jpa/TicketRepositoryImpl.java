@@ -4,6 +4,8 @@ import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
 import com.malikov.ticketsystem.repository.ITicketRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,35 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TicketRepositoryImpl implements ITicketRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TicketRepositoryImpl.class);
+
     @PersistenceContext
     protected EntityManager em;
+
+    @Override
+    public Ticket get(long id) {
+        return em.find(Ticket.class, id);
+    }
+
+    @Override
+    @Transactional
+    public Ticket save(Ticket ticket) {
+        ticket.setUser(em.getReference(User.class, ticket.getUser().getId()));
+        if (ticket.isNew()){
+            em.persist(ticket);
+            LOG.info("New ticket created.");
+            return ticket;
+        }
+        return get(ticket.getId()) != null ? em.merge(ticket) : null;
+    }
+
+    @Override
+    @Transactional
+    public boolean delete(long id) {
+        return em.createQuery("DELETE FROM Ticket t WHERE t.id=:id")
+                .setParameter("id", id)
+                .executeUpdate() != 0;
+    }
 
     @Override
     public List<Ticket> getActiveByUserId(long userId, Integer start, Integer limit) {
@@ -74,30 +103,6 @@ public class TicketRepositoryImpl implements ITicketRepository {
         query.setParameter("ticketId", ticketId);
         query.setParameter("status", TicketStatus.BOOKED);
         return query.executeUpdate() != 0;
-    }
-
-    @Override
-    @Transactional
-    public Ticket save(Ticket ticket) {
-        ticket.setUser(em.getReference(User.class, ticket.getUser().getId()));
-        if (ticket.isNew()){
-            em.persist(ticket);
-            return ticket;
-        }
-        return get(ticket.getId()) != null ? em.merge(ticket) : null;
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(long id) {
-        return em.createQuery("DELETE FROM Ticket t WHERE t.id=:id")
-                .setParameter("id", id)
-                .executeUpdate() != 0;
-    }
-
-    @Override
-    public Ticket get(long id) {
-        return em.find(Ticket.class, id);
     }
 
     @Override

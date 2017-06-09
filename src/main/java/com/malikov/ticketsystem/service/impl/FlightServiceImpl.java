@@ -14,6 +14,8 @@ import com.malikov.ticketsystem.service.IAircraftService;
 import com.malikov.ticketsystem.service.IFlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.ValidationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -35,6 +37,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
  */
 @Service("flightService")
 public class FlightServiceImpl implements IFlightService, MessageSourceAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FlightServiceImpl.class);
 
     private MessageSource messageSource;
 
@@ -132,12 +136,15 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
         flight.setMaxTicketBasePrice(flightManageableDTO.getMaxBaseTicketPrice());
 
         flightRepository.save(flight);
+
+        LOG.info("Flight updated.");
     }
 
     @Override
     public void delete(long flightId) {
         checkNotFound(flightRepository.delete(flightId),
                 getMessage(messageSource, "exception.notFoundById") + flightId);
+        LOG.info("Flight deleted.");
     }
 
     @Override
@@ -147,6 +154,7 @@ public class FlightServiceImpl implements IFlightService, MessageSourceAware {
                 getMessage(messageSource, "exception.notFoundById") + flightId);
         flight.setCanceled(cancelStatus);
         flightRepository.save(flight);
+        LOG.info("Flight canceled.");
     }
 
     @Override

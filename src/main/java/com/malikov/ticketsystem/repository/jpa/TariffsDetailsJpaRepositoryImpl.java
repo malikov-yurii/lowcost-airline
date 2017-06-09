@@ -2,6 +2,8 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TariffsDetailsJpaRepositoryImpl.class);
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -24,6 +28,7 @@ public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepositor
     public TariffsDetails save(TariffsDetails tariffsDetails) {
         if (tariffsDetails.isNew()) {
             em.persist(tariffsDetails);
+            LOG.info("New tariff created.");
             return tariffsDetails;
         }
         return get(tariffsDetails.getId()) != null ? em.merge(tariffsDetails) : null;

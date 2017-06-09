@@ -3,6 +3,8 @@ package com.malikov.ticketsystem.repository.jpa;
 import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.AircraftModel;
 import com.malikov.ticketsystem.repository.IAircraftRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class AircraftRepositoryImpl implements IAircraftRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AircraftRepositoryImpl.class);
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -28,6 +32,7 @@ public class AircraftRepositoryImpl implements IAircraftRepository {
         aircraft.setModel(em.getReference(AircraftModel.class, aircraft.getModel().getId()));
         if (aircraft.isNew()) {
             em.persist(aircraft);
+            LOG.info("New aircraft created.");
             return aircraft;
         }
         return get(aircraft.getId()) != null ? em.merge(aircraft) : null;

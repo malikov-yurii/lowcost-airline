@@ -12,11 +12,12 @@ import com.malikov.ticketsystem.repository.ITicketRepository;
 import com.malikov.ticketsystem.repository.IUserRepository;
 import com.malikov.ticketsystem.service.ITicketService;
 import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,8 @@ import java.util.stream.Collectors;
 
 import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS;
 import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
-import static com.malikov.ticketsystem.util.ValidationUtil.*;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkEqual;
+import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
 
 /**
  * @author Yurii Malikov
@@ -45,6 +47,8 @@ import static com.malikov.ticketsystem.util.ValidationUtil.*;
 @Service("ticketService")
 @Transactional
 public class TicketServiceImpl implements ITicketService, MessageSourceAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TicketServiceImpl.class);
 
     private static final Map<Long, ScheduledFuture> ticketIdRemovalTaskMap = new HashMap<>();
 
@@ -72,12 +76,14 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
         ticket.setPrice(ticketDTO.getPrice());
         checkNotFound(ticketRepository.save(ticket),
                 getMessage(messageSource, "exception.notFoundById") + ticket.getId());
+        LOG.info("Ticket updated.");
     }
 
     @Override
     public void delete(long ticketId) {
         checkNotFound(ticketRepository.delete(ticketId),
                 getMessage(messageSource, "exception.notFoundById") + ticketId);
+        LOG.info("Ticket deleted.");
         terminateAutomaticRemovalTask(ticketId);
     }
 
@@ -118,6 +124,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
                         && ticket.getUser().getId() == AuthorizedUser.id(),
                 getMessage(messageSource, "exception.notFoundById") + ticketId);
         delete(ticketId);
+        LOG.info("Booking canceled.");
     }
 
     @Override
@@ -165,6 +172,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
         Ticket bookedTicket = ticketRepository.save(newTicket);
         ticketIdRemovalTaskMap.put(bookedTicket.getId(), getDeleteIfNotPaidTask(bookedTicket.getId()));
+        LOG.info("New booked ticket created.");
 
         return bookedTicket;
     }
@@ -192,12 +200,13 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
 
         ticketRepository.save(ticket);
         terminateAutomaticRemovalTask(ticketId);
+        LOG.info("Payment succeed.");
     }
 
-    @Async
     private ScheduledFuture getDeleteIfNotPaidTask(long ticketId) {
         ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
         scheduler = new ConcurrentTaskScheduler(localExecutor);
+        LOG.info("Scheduled future created.");
 
         return scheduler.schedule(() -> {
                     checkNotFound(ticketRepository.deleteIfNotPaid(ticketId),
@@ -210,6 +219,7 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
     private void terminateAutomaticRemovalTask(Long ticketId) {
         ticketIdRemovalTaskMap.get(ticketId).cancel(false);
         ticketIdRemovalTaskMap.remove(ticketId);
+        LOG.info("Removal task terminated.");
     }
 
     /**

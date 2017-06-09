@@ -4,6 +4,8 @@ import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.repository.IFlightRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class FlightRepositoryImpl implements IFlightRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FlightRepositoryImpl.class);
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -40,6 +44,7 @@ public class FlightRepositoryImpl implements IFlightRepository {
         flight.setArrivalAirport(em.getReference(Airport.class, flight.getArrivalAirport().getId()));
         if (flight.isNew()) {
             em.persist(flight);
+            LOG.info("New flight created.");
             return flight;
         }
         return get(flight.getId()) != null ? em.merge(flight) : null;

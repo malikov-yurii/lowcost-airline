@@ -2,6 +2,8 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Role;
 import com.malikov.ticketsystem.repository.IRoleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class RoleRepositoryImpl implements IRoleRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RoleRepositoryImpl.class);
+
     @PersistenceContext
     protected EntityManager em;
 
@@ -26,6 +30,7 @@ public class RoleRepositoryImpl implements IRoleRepository {
     public Role save(Role role) {
         if (role.isNew()) {
             em.persist((role));
+            LOG.info("New role created.");
             return role;
         } else {
             return em.merge(role);

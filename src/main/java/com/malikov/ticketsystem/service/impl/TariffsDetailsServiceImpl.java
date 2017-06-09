@@ -3,6 +3,8 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
 import com.malikov.ticketsystem.service.ITariffsDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -16,6 +18,8 @@ import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
  */
 @Service("tariffService")
 public class TariffsDetailsServiceImpl implements ITariffsDetailsService, MessageSourceAware {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TariffsDetailsServiceImpl.class);
 
     private MessageSource messageSource;
 
@@ -41,6 +45,7 @@ public class TariffsDetailsServiceImpl implements ITariffsDetailsService, Messag
         tariffsDetails.setActive(tariffsDetailsDTO.getActive());
         checkNotFound(repository.save(tariffsDetails),
                 getMessage(messageSource, "exception.notFoundById") + tariffsDetailsDTO.getId());
+        LOG.info("Tariff updated.");
     }
 
     @Override
