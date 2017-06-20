@@ -6,8 +6,8 @@ import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.dto.TicketWithRemainingDelayDTO;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
-import com.malikov.ticketsystem.service.IFlightService;
-import com.malikov.ticketsystem.service.ITicketService;
+import com.malikov.ticketsystem.service.FlightService;
+import com.malikov.ticketsystem.service.TicketService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,10 +29,10 @@ import static com.malikov.ticketsystem.util.DateTimeUtil.BOOKING_DURATION_MILLIS
 public class TicketUserAjaxController {
 
     @Autowired
-    private ITicketService ticketService;
+    private TicketService ticketService;
 
     @Autowired
-    private IFlightService flightService;
+    private FlightService flightService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ModelMap getActiveUserTicketsWithRemainingDelaysPage(@RequestParam(value = "draw") Integer draw,

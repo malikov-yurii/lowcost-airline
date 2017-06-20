@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface ITicketService {
+public interface TicketService {
 
     /**
      * Updates ticket using data from ticketDTO

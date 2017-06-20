@@ -2,7 +2,7 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Role;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.repository.IUserRepository;
+import com.malikov.ticketsystem.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -22,7 +22,7 @@ import java.util.Set;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class UserRepositoryImpl implements IUserRepository {
+public class UserRepositoryImpl implements UserRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserRepositoryImpl.class);
 

@@ -5,7 +5,7 @@ import com.malikov.ticketsystem.model.Role;
 /**
  * @author Yurii Malikov
  */
-public interface IRoleRepository extends IGenericRepository<Role> {
+public interface RoleRepository extends GenericRepository<Role> {
 
     /**
      * @return role found by role name or null if not found ane

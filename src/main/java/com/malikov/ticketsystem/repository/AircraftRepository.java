@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IAircraftRepository extends IGenericRepository<Aircraft> {
+public interface AircraftRepository extends GenericRepository<Aircraft> {
 
     /**
      * @return entity found by name or null if entity with such name does not exists

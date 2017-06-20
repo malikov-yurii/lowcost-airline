@@ -6,12 +6,12 @@ import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.TariffsDetails;
-import com.malikov.ticketsystem.repository.IAirportRepository;
-import com.malikov.ticketsystem.repository.IFlightRepository;
-import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
-import com.malikov.ticketsystem.repository.ITicketRepository;
-import com.malikov.ticketsystem.service.IAircraftService;
-import com.malikov.ticketsystem.service.IFlightService;
+import com.malikov.ticketsystem.repository.AirportRepository;
+import com.malikov.ticketsystem.repository.FlightRepository;
+import com.malikov.ticketsystem.repository.TariffsDetailsRepository;
+import com.malikov.ticketsystem.repository.TicketRepository;
+import com.malikov.ticketsystem.service.AircraftService;
+import com.malikov.ticketsystem.service.FlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import org.slf4j.Logger;
@@ -36,26 +36,26 @@ import static java.time.temporal.ChronoUnit.DAYS;
  * @author Yurii Malikov
  */
 @Service("flightService")
-public class FlightServiceImpl implements IFlightService, MessageSourceAware {
+public class FlightServiceImpl implements FlightService, MessageSourceAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlightServiceImpl.class);
 
     private MessageSource messageSource;
 
     @Autowired
-    private IFlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Autowired
-    private IAirportRepository airportRepository;
+    private AirportRepository airportRepository;
 
     @Autowired
-    private IAircraftService aircraftService;
+    private AircraftService aircraftService;
 
     @Autowired
-    private ITicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    private ITariffsDetailsRepository tariffsDetailsRepository;
+    private TariffsDetailsRepository tariffsDetailsRepository;
 
     @Override
     public Flight get(long flightId) {

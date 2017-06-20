@@ -2,7 +2,7 @@ package com.malikov.ticketsystem.web.controller.ticket;
 
 import com.malikov.ticketsystem.dto.TicketDTO;
 import com.malikov.ticketsystem.model.Ticket;
-import com.malikov.ticketsystem.service.ITicketService;
+import com.malikov.ticketsystem.service.TicketService;
 import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class TicketAdminAjaxController {
 
     @Autowired
-    private ITicketService ticketService;
+    private TicketService ticketService;
 
     @GetMapping
     public ModelMap getFilteredPage(

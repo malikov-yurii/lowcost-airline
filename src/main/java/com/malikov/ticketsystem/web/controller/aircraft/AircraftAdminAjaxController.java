@@ -1,6 +1,6 @@
 package com.malikov.ticketsystem.web.controller.aircraft;
 
-import com.malikov.ticketsystem.service.IAircraftService;
+import com.malikov.ticketsystem.service.AircraftService;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AircraftAdminAjaxController {
 
     @Autowired
-    private IAircraftService aircraftService;
+    private AircraftService aircraftService;
 
     @GetMapping(value = "/autocomplete-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> autocompleteAirport(@RequestParam("term") @NotNull @SafeHtml

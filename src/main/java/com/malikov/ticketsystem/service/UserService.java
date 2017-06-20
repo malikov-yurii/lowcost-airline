@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IUserService{
+public interface UserService {
 
     /**
      * @return new saved user with role USER_ROLE

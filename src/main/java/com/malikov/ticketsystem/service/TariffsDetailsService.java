@@ -6,7 +6,7 @@ import com.malikov.ticketsystem.util.exception.NotFoundException;
 /**
  * @author Yurii Malikov
  */
-public interface ITariffsDetailsService {
+public interface TariffsDetailsService {
 
     /**
      * @return tariff details with active = true

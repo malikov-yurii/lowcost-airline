@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface ITicketRepository extends IGenericRepository<Ticket> {
+public interface TicketRepository extends GenericRepository<Ticket> {
 
     /**
      * Checks if ticket has status booked before update

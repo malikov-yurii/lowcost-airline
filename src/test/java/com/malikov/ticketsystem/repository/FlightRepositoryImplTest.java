@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class FlightRepositoryImplTest extends AbstractRepositoryTest {
 
     @Autowired
-    private IFlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Test
     public void testGetFilteredFlightTicketCountMap(){

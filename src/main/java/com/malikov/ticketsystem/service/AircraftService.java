@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IAircraftService {
+public interface AircraftService {
 
     /**
      * @return aircraft which full name exactly matches parameter or null if not found

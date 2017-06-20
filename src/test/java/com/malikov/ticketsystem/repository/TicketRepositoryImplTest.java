@@ -29,7 +29,7 @@ public class TicketRepositoryImplTest extends AbstractRepositoryTest {
     private static final Logger LOG = LoggerFactory.getLogger(FlightServiceImplTest.class);
 
     @Autowired
-    private ITicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Test
     public void testGetActiveByUserId() {

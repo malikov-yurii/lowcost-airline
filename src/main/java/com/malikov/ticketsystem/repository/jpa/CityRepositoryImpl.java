@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.City;
-import com.malikov.ticketsystem.repository.ICityRepository;
+import com.malikov.ticketsystem.repository.CityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class CityRepositoryImpl implements ICityRepository {
+public class CityRepositoryImpl implements CityRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(CityRepositoryImpl.class);
 

@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.TariffsDetails;
-import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
+import com.malikov.ticketsystem.repository.TariffsDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class TariffsDetailsJpaRepositoryImpl implements ITariffsDetailsRepository {
+public class TariffsDetailsJpaRepositoryImpl implements TariffsDetailsRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(TariffsDetailsJpaRepositoryImpl.class);
 

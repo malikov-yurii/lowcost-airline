@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.web.controller.flight;
 
 import com.malikov.ticketsystem.dto.FlightDTO;
-import com.malikov.ticketsystem.service.IFlightService;
+import com.malikov.ticketsystem.service.FlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.dtoconverter.FlightDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class FlightAnonymousAjaxController {
 
     @Autowired
-    private IFlightService flightService;
+    private FlightService flightService;
 
     @GetMapping
     public ModelMap getFilteredPage(

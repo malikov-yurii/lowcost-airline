@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IUserRepository extends IGenericRepository<User> {
+public interface UserRepository extends GenericRepository<User> {
 
     /**
      * @return user loaded by email or null if not found

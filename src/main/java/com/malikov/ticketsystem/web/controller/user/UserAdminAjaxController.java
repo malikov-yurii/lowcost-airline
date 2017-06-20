@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.web.controller.user;
 
 import com.malikov.ticketsystem.dto.UserDTO;
-import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.service.UserService;
 import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class UserAdminAjaxController {
 
     @Autowired
-    IUserService userService;
+    UserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getByLastName(@RequestParam(value = "lastNameCondition")

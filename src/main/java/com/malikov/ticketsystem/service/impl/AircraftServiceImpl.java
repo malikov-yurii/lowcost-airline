@@ -1,8 +1,8 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.Aircraft;
-import com.malikov.ticketsystem.repository.IAircraftRepository;
-import com.malikov.ticketsystem.service.IAircraftService;
+import com.malikov.ticketsystem.repository.AircraftRepository;
+import com.malikov.ticketsystem.service.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
  * @author Yurii Malikov
  */
 @Service
-public class AircraftServiceImpl implements IAircraftService {
+public class AircraftServiceImpl implements AircraftService {
 
     @Autowired
-    private IAircraftRepository repository;
+    private AircraftRepository repository;
 
     @Override
     public Aircraft getByName(String name) {

@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.web.controller.flight;
 
 import com.malikov.ticketsystem.dto.FlightManageableDTO;
-import com.malikov.ticketsystem.service.IFlightService;
+import com.malikov.ticketsystem.service.FlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import com.malikov.ticketsystem.util.dtoconverter.FlightDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class FlightAdminAjaxController {
 
     @Autowired
-    private IFlightService flightService;
+    private FlightService flightService;
 
     @PostMapping
     public ResponseEntity<String> create(@Valid FlightManageableDTO flightManageableDTO) {

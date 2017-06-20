@@ -1,8 +1,8 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.TariffsDetails;
-import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
-import com.malikov.ticketsystem.service.ITariffsDetailsService;
+import com.malikov.ticketsystem.repository.TariffsDetailsRepository;
+import com.malikov.ticketsystem.service.TariffsDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
  * @author Yurii Malikov
  */
 @Service("tariffService")
-public class TariffsDetailsServiceImpl implements ITariffsDetailsService, MessageSourceAware {
+public class TariffsDetailsServiceImpl implements TariffsDetailsService, MessageSourceAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(TariffsDetailsServiceImpl.class);
 
     private MessageSource messageSource;
 
     @Autowired
-    private ITariffsDetailsRepository repository;
+    private TariffsDetailsRepository repository;
 
     @Override
     public TariffsDetails getActive() {

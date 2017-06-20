@@ -3,11 +3,11 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.AbstractTest;
 import com.malikov.ticketsystem.dto.TicketPriceDetailsDTO;
 import com.malikov.ticketsystem.model.Flight;
-import com.malikov.ticketsystem.repository.IAirportRepository;
-import com.malikov.ticketsystem.repository.IFlightRepository;
-import com.malikov.ticketsystem.repository.ITariffsDetailsRepository;
-import com.malikov.ticketsystem.repository.ITicketRepository;
-import com.malikov.ticketsystem.service.IFlightService;
+import com.malikov.ticketsystem.repository.AirportRepository;
+import com.malikov.ticketsystem.repository.FlightRepository;
+import com.malikov.ticketsystem.repository.TariffsDetailsRepository;
+import com.malikov.ticketsystem.repository.TicketRepository;
+import com.malikov.ticketsystem.service.FlightService;
 import com.malikov.ticketsystem.util.DateTimeUtil;
 import mockit.Expectations;
 import org.junit.Assert;
@@ -48,22 +48,22 @@ public class FlightServiceImplTest extends AbstractTest{
     public static final LocalDateTime FIXED_DATE_TIME = LocalDateTime.of(2017, 6, 17, 12, 0);
 
     @Mock
-    private IFlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Mock
-    private ITariffsDetailsRepository tariffsDetailsRepository;
+    private TariffsDetailsRepository tariffsDetailsRepository;
 
     @Mock
-    private ITicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Mock
-    private IAirportRepository airportRepository;
+    private AirportRepository airportRepository;
 
     @Mock
     MessageSource messageSource;
 
     @InjectMocks
-    private IFlightService flightService = new FlightServiceImpl();
+    private FlightService flightService = new FlightServiceImpl();
 
 
     @Before

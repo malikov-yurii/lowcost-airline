@@ -4,8 +4,8 @@ import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.TariffsDetails;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.service.ITariffsDetailsService;
-import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.service.TariffsDetailsService;
+import com.malikov.ticketsystem.service.UserService;
 import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +30,10 @@ public class RootController {
     MessageSource messageSource;
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Autowired
-    private ITariffsDetailsService tariffsDetailsService;
+    private TariffsDetailsService tariffsDetailsService;
 
     @GetMapping(value = "/flights")
     public String flights(){

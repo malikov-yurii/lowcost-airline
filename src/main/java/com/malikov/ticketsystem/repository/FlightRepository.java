@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Yurii Malikov
  */
-public interface IFlightRepository extends IGenericRepository<Flight>{
+public interface FlightRepository extends GenericRepository<Flight> {
 
     /**
      * All parameters should be not null.

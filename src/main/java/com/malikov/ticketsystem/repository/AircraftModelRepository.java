@@ -5,5 +5,5 @@ import com.malikov.ticketsystem.model.AircraftModel;
 /**
  * @author Yurii Malikov
  */
-public interface IAircraftModelRepository extends IGenericRepository<AircraftModel> {
+public interface AircraftModelRepository extends GenericRepository<AircraftModel> {
 }

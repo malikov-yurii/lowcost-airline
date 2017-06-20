@@ -32,7 +32,6 @@
 
     <beans:bean id="myFilter" class="com.malikov.ticketsystem.web.filter.AddFullNameToRequestFilter"/>
 
-
     <beans:bean id="encoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <beans:constructor-arg name="strength" value="11"/>

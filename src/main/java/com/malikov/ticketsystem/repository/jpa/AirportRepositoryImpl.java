@@ -2,7 +2,7 @@ package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.City;
-import com.malikov.ticketsystem.repository.IAirportRepository;
+import com.malikov.ticketsystem.repository.AirportRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -19,7 +19,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class AirportRepositoryImpl implements IAirportRepository {
+public class AirportRepositoryImpl implements AirportRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(AirportRepositoryImpl.class);
 

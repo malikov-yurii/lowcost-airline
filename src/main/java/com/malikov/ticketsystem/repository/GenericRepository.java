@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IGenericRepository<T> {
+public interface GenericRepository<T> {
 
     /**
      * @return persisted entity if it is new otherwise updated entity or null if not found by id

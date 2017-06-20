@@ -5,5 +5,5 @@ import com.malikov.ticketsystem.model.City;
 /**
  * @author Yurii Malikov
  */
-public interface ICityRepository extends IGenericRepository<City> {
+public interface CityRepository extends GenericRepository<City> {
 }

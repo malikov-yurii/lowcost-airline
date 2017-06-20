@@ -3,7 +3,7 @@ package com.malikov.ticketsystem.repository.jpa;
 import com.malikov.ticketsystem.model.Aircraft;
 import com.malikov.ticketsystem.model.Airport;
 import com.malikov.ticketsystem.model.Flight;
-import com.malikov.ticketsystem.repository.IFlightRepository;
+import com.malikov.ticketsystem.repository.FlightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class FlightRepositoryImpl implements IFlightRepository {
+public class FlightRepositoryImpl implements FlightRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlightRepositoryImpl.class);
 

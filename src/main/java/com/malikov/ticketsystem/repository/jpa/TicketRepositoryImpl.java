@@ -3,7 +3,7 @@ package com.malikov.ticketsystem.repository.jpa;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.TicketStatus;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.repository.ITicketRepository;
+import com.malikov.ticketsystem.repository.TicketRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class TicketRepositoryImpl implements ITicketRepository {
+public class TicketRepositoryImpl implements TicketRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicketRepositoryImpl.class);
 

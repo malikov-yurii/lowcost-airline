@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Yurii Malikov
  */
-public interface IAirportRepository extends IGenericRepository<Airport> {
+public interface AirportRepository extends GenericRepository<Airport> {
 
     /**
      * @return null if not found

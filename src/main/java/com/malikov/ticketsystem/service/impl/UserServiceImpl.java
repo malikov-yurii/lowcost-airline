@@ -3,9 +3,9 @@ package com.malikov.ticketsystem.service.impl;
 import com.malikov.ticketsystem.AuthorizedUser;
 import com.malikov.ticketsystem.dto.UserDTO;
 import com.malikov.ticketsystem.model.User;
-import com.malikov.ticketsystem.repository.IRoleRepository;
-import com.malikov.ticketsystem.repository.IUserRepository;
-import com.malikov.ticketsystem.service.IUserService;
+import com.malikov.ticketsystem.repository.RoleRepository;
+import com.malikov.ticketsystem.repository.UserRepository;
+import com.malikov.ticketsystem.service.UserService;
 import com.malikov.ticketsystem.util.ValidationUtil;
 import com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter;
 import org.slf4j.Logger;
@@ -31,17 +31,17 @@ import static com.malikov.ticketsystem.util.dtoconverter.UserDTOConverter.update
  */
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements IUserService, UserDetailsService, MessageSourceAware {
+public class UserServiceImpl implements UserService, UserDetailsService, MessageSourceAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private MessageSource messageSource;
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private IRoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Override
     public User get(long userId) {

@@ -1,7 +1,7 @@
 package com.malikov.ticketsystem.repository.jpa;
 
 import com.malikov.ticketsystem.model.Role;
-import com.malikov.ticketsystem.repository.IRoleRepository;
+import com.malikov.ticketsystem.repository.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -18,7 +18,7 @@ import java.util.List;
 @SuppressWarnings("JpaQlInspection")
 @Repository
 @Transactional(readOnly = true)
-public class RoleRepositoryImpl implements IRoleRepository {
+public class RoleRepositoryImpl implements RoleRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoleRepositoryImpl.class);
 

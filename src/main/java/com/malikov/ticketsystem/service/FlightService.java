@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @author Yurii Malikov
  */
-public interface IFlightService {
+public interface FlightService {
 
     /**
      * @return flight found by flightId

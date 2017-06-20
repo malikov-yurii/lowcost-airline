@@ -7,10 +7,10 @@ import com.malikov.ticketsystem.dto.TicketWithRemainingDelayDTO;
 import com.malikov.ticketsystem.model.Flight;
 import com.malikov.ticketsystem.model.Ticket;
 import com.malikov.ticketsystem.model.TicketStatus;
-import com.malikov.ticketsystem.repository.IFlightRepository;
-import com.malikov.ticketsystem.repository.ITicketRepository;
-import com.malikov.ticketsystem.repository.IUserRepository;
-import com.malikov.ticketsystem.service.ITicketService;
+import com.malikov.ticketsystem.repository.FlightRepository;
+import com.malikov.ticketsystem.repository.TicketRepository;
+import com.malikov.ticketsystem.repository.UserRepository;
+import com.malikov.ticketsystem.service.TicketService;
 import com.malikov.ticketsystem.util.dtoconverter.TicketDTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ import static com.malikov.ticketsystem.util.ValidationUtil.checkNotFound;
  */
 @Service("ticketService")
 @Transactional
-public class TicketServiceImpl implements ITicketService, MessageSourceAware {
+public class TicketServiceImpl implements TicketService, MessageSourceAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicketServiceImpl.class);
 
@@ -58,13 +58,13 @@ public class TicketServiceImpl implements ITicketService, MessageSourceAware {
     private TaskScheduler scheduler;
 
     @Autowired
-    private ITicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    private IFlightRepository flightRepository;
+    private FlightRepository flightRepository;
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
 
     @Override

@@ -54,7 +54,7 @@
                                             <input class="input-filter form-control input-datetime active-input"
                                                    name="fromDepartureDateTimeCondition"
                                                    id="fromDepartureDateTimeCondition"
-                                                   placeholder="pick using date time picker">
+                                                   placeholder="departure date time">
                                         </div>
                                         <label class="control-label col-sm-2" for="toDepartureDateTimeCondition">
                                             <spring:message code="flight.toDepartureDateTime"/>:</label>
@@ -62,7 +62,7 @@
                                             <input class="input-filter form-control input-datetime departure-datetime active-input"
                                                    name="toDepartureDateTimeCondition"
                                                    id="toDepartureDateTimeCondition"
-                                                   placeholder="pick using date time picker">
+                                                   placeholder="departure date time">
                                         </div>
                                     </div>
                                 </form:form>

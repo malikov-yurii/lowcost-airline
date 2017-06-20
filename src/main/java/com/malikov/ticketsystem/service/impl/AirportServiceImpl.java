@@ -1,8 +1,8 @@
 package com.malikov.ticketsystem.service.impl;
 
 import com.malikov.ticketsystem.model.Airport;
-import com.malikov.ticketsystem.repository.IAirportRepository;
-import com.malikov.ticketsystem.service.IAirportService;
+import com.malikov.ticketsystem.repository.AirportRepository;
+import com.malikov.ticketsystem.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class AirportServiceImpl implements IAirportService {
+public class AirportServiceImpl implements AirportService {
 
     @Autowired
-    private IAirportRepository airportRepository;
+    private AirportRepository airportRepository;
 
     @Override
     public List<String> getNamesByNameMask(String nameMask) {
