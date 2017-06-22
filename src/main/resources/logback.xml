@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-
     <jmxConfigurator/>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
@@ -24,7 +23,6 @@
     <logger name="org.springframework.security.web.csrf.CsrfFilter" level="debug"/>
     <logger name="com.malikov.ticketsystem" level="debug"/>
 
-    <!--log hibernate showSql-->
     <logger name="org.hibernate.SQL" level="debug"/>
 
     <root level="info">

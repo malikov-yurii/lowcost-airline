@@ -21,8 +21,8 @@ import java.util.Set;
 public class User extends NamedEntity {
 
     @NotBlank
-    @Column(name = "last_name", nullable = false)
     @SafeHtml
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "email", nullable = false, unique = true)
