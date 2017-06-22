@@ -8,9 +8,9 @@ Bootstrap, webjars, JSP
 jQuery plugins (dataTables, autocomplete, datetimepicker, sweetalert, noty)
 
 Web project based on roles:
--anonymous can search flights and register
--user can log in, book and purchase tickets, load his active and archived tickets
--admin has base functionality to manage flights, tickets and users
+- anonymous can search flights and register
+- user can log in, book and purchase tickets, load his active and archived tickets
+- admin has base functionality to manage flights, tickets and users
 
 While developing I practiced working with Spring(Security,IOC,MVC),Hibernate,
 jUnit, Mockito, REST approach, multitier architecture.
