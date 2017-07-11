@@ -1,22 +1,24 @@
+group = 'com.malikov'
+description = 'lowcost'
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'war'
 
-group = 'com.malikov'
-version = '1.0'
-
-description = """Ticket System"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
 repositories {
         
-     maven { url "http://repo.maven.apache.org/maven2" }
+//     maven { url "http://repo.maven.apache.org/maven2" }
+    mavenCentral()
 }
+
 dependencies {
     compile group: 'org.aspectj', name: 'aspectjrt', version:'1.7.0'
     compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.7.0'
