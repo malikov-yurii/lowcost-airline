@@ -21,7 +21,7 @@ import static com.malikov.ticketsystem.util.MessageUtil.getMessage;
 public class GlobalControllerExceptionHandler {
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 

@@ -1,27 +1,21 @@
 package com.malikov.ticketsystem.repository;
 
-import com.malikov.ticketsystem.model.Flight;
-import com.malikov.ticketsystem.util.DateTimeUtil;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+/*
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.malikov.ticketsystem.AirportTestData.AIRPORT_BORISPOL;
-import static com.malikov.ticketsystem.AirportTestData.AIRPORT_LUTON;
-import static com.malikov.ticketsystem.FlightTestData.FLIGHT_4;
-import static org.junit.Assert.assertEquals;
-
+*/
 /**
  * @author Yurii Malikov
- */
+ *//*
+
 public class FlightRepositoryImplTest extends AbstractRepositoryTest {
 
     @Autowired
     private FlightRepository flightRepository;
+
+    //@After
+    //public void cleanUpAspects() {
+    //    AnnotationTransactionAspect.aspectOf().setTransactionManager(null);
+    //}
 
     @Test
     public void testGetFilteredFlightTicketCountMap(){
@@ -50,3 +44,4 @@ public class FlightRepositoryImplTest extends AbstractRepositoryTest {
         assertEquals(expected, actual);
     }
 }
+*/

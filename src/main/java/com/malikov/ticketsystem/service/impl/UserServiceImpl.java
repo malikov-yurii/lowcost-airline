@@ -85,12 +85,12 @@ public class UserServiceImpl implements UserService, UserDetailsService, Message
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
-        User u = userRepository.getByEmail(email.toLowerCase());
-        if (u == null) {
+        User user = getByEmail(email.toLowerCase());
+        if (user == null) {
             throw new UsernameNotFoundException(getMessage(messageSource,
                     "exception.notFoundByEmail") + email);
         }
-        return new AuthorizedUser(u);
+        return new AuthorizedUser(user);
     }
 
     @Override

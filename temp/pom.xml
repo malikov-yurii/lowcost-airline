@@ -77,6 +77,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
@@ -297,6 +309,16 @@
             <artifactId>spring-security-test</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
+
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-aspects &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-aspects</artifactId>-->
+            <!--<version>4.3.2.RELEASE</version>-->
+        <!--</dependency>-->
+
+
     </dependencies>
 
     <dependencyManagement>
